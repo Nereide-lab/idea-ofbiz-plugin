@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>org.apache.ofbiz.pluginIntellijNereide</id>
     <name>OFBiz IDEA Integration</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">OFBiz</vendor>
+    <vendor email="" url="">OFBiz</vendor>
 
     <description><![CDATA[
     <p&gt;&lt;strong&gt;OFBiz&lt;/strong&gt; is the APACHE fundation free ERP. Strong and resilient, it is completely free to use and expand.
@@ -14,6 +14,8 @@ This plugin is based on the last Community release of the Scipio ERP plugin for 
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.xml.contributor.XmlContributor" />
+
     </extensions>
 
     <actions>
