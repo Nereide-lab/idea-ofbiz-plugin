@@ -1,10 +1,11 @@
 package org.apache.ofbiz.project;
 
 
-import com.intellij.util.xml.DomElement;
+import com.intellij.util.xml.DomElement
+import org.apache.ofbiz.xml.domelement.ControllerFile;
 
 public interface ProjectStructureInterface {
 
-    DomElement getControllerUri(String name);
+    ControllerFile.RequestMap getControllerUri(String name);
 
 }
