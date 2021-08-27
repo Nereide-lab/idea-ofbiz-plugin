@@ -1,10 +1,13 @@
-package org.apache.ofbiz.xml.domelement
+package org.apache.ofbiz.xml.domelement;
 
-import com.intellij.util.xml.DomElement
-import com.intellij.util.xml.GenericAttributeValue
-import com.intellij.util.xml.NameValue
-import com.intellij.util.xml.SubTagList
-import com.intellij.util.xmlb.annotations.Attribute
+import com.intellij.util.xml.DomElement;
+import com.intellij.util.xml.GenericAttributeValue;
+import com.intellij.util.xml.NameValue;
+import com.intellij.util.xml.SubTagList;
+import com.intellij.util.xmlb.annotations.Attribute;
+
+import java.util.List;
+
 
 public interface ControllerFile extends DomElement {
 

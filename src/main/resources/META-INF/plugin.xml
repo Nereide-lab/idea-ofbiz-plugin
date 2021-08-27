@@ -8,13 +8,17 @@
 This plugin is based on the last Community release of the Scipio ERP plugin for IDEA, and aims to help you expand OFBiz for your needs.&lt;/p&gt;
     ]]></description>
 
-    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
-         on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <projectService serviceInterface="org.apache.ofbiz.ProjectStructureInterface"
+                        serviceImplementation="org.apache.ofbiz.ProjectStructureImpl" />
+
+        <dom.fileMetaData implementation="org.apache.ofbiz.xml.domelement.ControllerFileDescription"
+                          rootTagName="site-conf" />
+
         <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.xml.contributor.XmlContributor" />
+
 
     </extensions>
 

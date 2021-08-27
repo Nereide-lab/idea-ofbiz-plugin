@@ -1,13 +1,16 @@
-package org.apache.ofbiz.project;
+package org.apache.ofbiz;
 
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.xml.DomElement;
 import com.intellij.util.xml.DomFileElement;
-import com.intellij.util.xml.DomService
+import com.intellij.util.xml.DomManager;
+import com.intellij.util.xml.DomService;
 import org.apache.ofbiz.xml.domelement.ControllerFile;
 import org.apache.ofbiz.xml.domelement.ControllerFile.RequestMap;
+
+import java.util.List;
+
 
 public class ProjectStructureImpl implements ProjectStructureInterface {
     private final Project project;

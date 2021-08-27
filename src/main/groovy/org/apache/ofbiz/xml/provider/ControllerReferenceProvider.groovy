@@ -17,7 +17,7 @@ class ControllerReferenceProvider extends PsiReferenceProvider {
     public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (element instanceof XmlAttributeValue) {
             ControllerReference test = new ControllerReference((XmlAttributeValue) element, true);
-            PsiReference[] reference = {test};
+            PsiReference[] reference = (PsiReference) test;
             return reference;
         }
         return  PsiReference.EMPTY_ARRAY;
