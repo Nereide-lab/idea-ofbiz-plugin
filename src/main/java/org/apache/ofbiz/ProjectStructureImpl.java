@@ -4,10 +4,9 @@ package org.apache.ofbiz;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.xml.DomFileElement;
-import com.intellij.util.xml.DomManager;
 import com.intellij.util.xml.DomService;
-import org.apache.ofbiz.xml.domelement.ControllerFile;
-import org.apache.ofbiz.xml.domelement.ControllerFile.RequestMap;
+import org.apache.ofbiz.xml.dom.ControllerFile;
+import org.apache.ofbiz.xml.dom.ControllerFile.RequestMap;
 
 import java.util.List;
 

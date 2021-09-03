@@ -14,7 +14,7 @@ This plugin is based on the last Community release of the Scipio ERP plugin for 
         <projectService serviceInterface="org.apache.ofbiz.ProjectStructureInterface"
                         serviceImplementation="org.apache.ofbiz.ProjectStructureImpl" />
 
-        <dom.fileMetaData implementation="org.apache.ofbiz.xml.domelement.ControllerFileDescription"
+        <dom.fileMetaData implementation="org.apache.ofbiz.xml.dom.ControllerFileDescription"
                           rootTagName="site-conf" />
 
         <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.xml.contributor.XmlContributor" />

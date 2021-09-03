@@ -1,4 +1,4 @@
-package org.apache.ofbiz.xml.domelement;
+package org.apache.ofbiz.xml.dom;
 
 import com.intellij.util.xml.DomElement;
 import com.intellij.util.xml.GenericAttributeValue;
