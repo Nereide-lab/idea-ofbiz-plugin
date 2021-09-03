@@ -1,4 +1,4 @@
-package org.apache.ofbiz;
+package org.apache.ofbiz.base.project;
 
 
 import com.intellij.openapi.project.Project;
@@ -11,10 +11,10 @@ import org.apache.ofbiz.xml.dom.ControllerFile.RequestMap;
 import java.util.List;
 
 
-public class ProjectStructureImpl implements ProjectStructureInterface {
+public class ProjectServiceImpl implements ProjectServiceInterface {
     private final Project project;
 
-    public ProjectStructureImpl(Project project) {
+    public ProjectServiceImpl(Project project) {
         this.project = project;
     }
 

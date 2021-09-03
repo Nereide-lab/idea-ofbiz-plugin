@@ -11,8 +11,8 @@ This plugin is based on the last Community release of the Scipio ERP plugin for 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceInterface="org.apache.ofbiz.ProjectStructureInterface"
-                        serviceImplementation="org.apache.ofbiz.ProjectStructureImpl" />
+        <projectService serviceInterface="org.apache.ofbiz.base.project.ProjectServiceInterface"
+                        serviceImplementation="org.apache.ofbiz.base.project.ProjectServiceImpl" />
 
         <dom.fileMetaData implementation="org.apache.ofbiz.xml.dom.ControllerFileDescription"
                           rootTagName="site-conf" />
