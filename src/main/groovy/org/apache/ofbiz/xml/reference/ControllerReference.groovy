@@ -4,7 +4,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.xml.DomElement
-import org.apache.ofbiz.ProjectStructureInterface
+import org.apache.ofbiz.base.project.ProjectServiceInterface
 
 import org.jetbrains.annotations.Nullable
 
@@ -15,7 +15,7 @@ public class ControllerReference extends PsiReferenceBase<XmlAttributeValue> {
 
     @Nullable
     public PsiElement resolve() {
-        ProjectStructureInterface structureService = this.element.getProject().getService(ProjectStructureInterface.class)
+        ProjectServiceInterface structureService = this.element.getProject().getService(ProjectServiceInterface.class)
         DomElement definition = structureService.getControllerUri(this.getValue());
         return definition != null ? definition.getXmlElement() : null;
         return
