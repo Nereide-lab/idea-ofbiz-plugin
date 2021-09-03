@@ -1,6 +1,5 @@
 package org.apache.ofbiz.xml.reference
 
-import com.intellij.openapi.components.ServiceManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.xml.XmlAttributeValue
@@ -16,7 +15,7 @@ public class ControllerReference extends PsiReferenceBase<XmlAttributeValue> {
 
     @Nullable
     public PsiElement resolve() {
-        ProjectStructureInterface structureService = ServiceManager.getService(this.getElement().getProject(), ProjectStructureInterface.class);
+        ProjectStructureInterface structureService = this.element.getProject().getService(ProjectStructureInterface.class)
         DomElement definition = structureService.getControllerUri(this.getValue());
         return definition != null ? definition.getXmlElement() : null;
         return
