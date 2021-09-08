@@ -1,4 +1,4 @@
-package org.apache.ofbiz.xml.dom;
+package org.apache.ofbiz.dom;
 
 import com.intellij.util.xml.DomElement;
 import com.intellij.util.xml.GenericAttributeValue;
@@ -6,10 +6,8 @@ import com.intellij.util.xml.NameValue;
 import com.intellij.util.xml.SubTagList;
 import com.intellij.util.xmlb.annotations.Attribute;
 
-import java.util.List;
 
-
-public interface ControllerFile extends DomElement {
+interface ControllerFile extends DomElement {
 
     /* Request */
 
@@ -27,7 +25,7 @@ public interface ControllerFile extends DomElement {
     @SubTagList("view-map")
     List<ViewMap> getViewMap();
 
-    public interface ViewMap extends ControllerFile {
+    interface ViewMap extends ControllerFile {
         @NameValue
         @Attribute("name")
         GenericAttributeValue<String> getName();
@@ -38,4 +36,3 @@ public interface ControllerFile extends DomElement {
     }
 
 }
-

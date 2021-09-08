@@ -4,25 +4,23 @@
     <vendor email="" url="">OFBiz</vendor>
 
     <description><![CDATA[
-    <p&gt;&lt;strong&gt;OFBiz&lt;/strong&gt; is the APACHE fundation free ERP. Strong and resilient, it is completely free to use and expand.
-This plugin is based on the last Community release of the Scipio ERP plugin for IDEA, and aims to help you expand OFBiz for your needs.&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;OFBiz&lt;/strong&gt; is the APACHE fundation free ERP. Strong and resilient, it is completely free to use and expand.
+    This plugin aims to help you expand OFBiz for your needs.&lt;/p&gt;
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <projectService serviceInterface="org.apache.ofbiz.base.project.ProjectServiceInterface"
-                        serviceImplementation="org.apache.ofbiz.base.project.ProjectServiceImpl" />
 
-        <dom.fileMetaData implementation="org.apache.ofbiz.xml.dom.ControllerFileDescription"
-                          rootTagName="site-conf" />
+        <!-- Utilitaires de projet / récupération de fichiers pour recherches -->
+        <projectService serviceInterface="org.apache.ofbiz.project.ProjectServiceInterface"
+                        serviceImplementation="org.apache.ofbiz.project.ProjectServiceImpl" />
 
-        <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.xml.contributor.XmlContributor" />
+        <!-- Support des reférences XML -->
+        <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.contributor.XmlContributor"/>
 
+        <!-- Descriptions de fichier XML -->
+        <dom.fileMetaData implementation="org.apache.ofbiz.dom.ControllerFileDescription" rootTagName="site-conf" />
 
     </extensions>
-
-    <actions>
-        <!-- Add your actions here -->
-    </actions>
 </idea-plugin>
