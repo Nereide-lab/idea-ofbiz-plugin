@@ -11,26 +11,26 @@ interface ControllerFile extends DomElement {
     /* Request */
 
     @SubTagList("request-map")
-    List<RequestMap> getRequestMap();
+    List<RequestMap> getRequestMap()
 
     interface RequestMap extends ControllerFile {
         @NameValue
         @Attribute("uri")
-        GenericAttributeValue<String> getUri();
+        GenericAttributeValue<String> getUri()
     }
 
     /* View Map */
 
     @SubTagList("view-map")
-    List<ViewMap> getViewMap();
+    List<ViewMap> getViewMap()
 
     interface ViewMap extends ControllerFile {
         @NameValue
         @Attribute("name")
-        GenericAttributeValue<String> getName();
+        GenericAttributeValue<String> getName()
 
         @Attribute("type")
-        GenericAttributeValue<String> getType();
+        GenericAttributeValue<String> getType()
 
     }
 

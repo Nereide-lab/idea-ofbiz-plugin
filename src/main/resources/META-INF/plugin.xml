@@ -21,6 +21,7 @@
 
         <!-- Descriptions de fichier XML -->
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.ControllerFileDescription" rootTagName="site-conf" />
+        <dom.fileMetaData implementation="org.apache.ofbiz.dom.EntityModelFileDescription" rootTagName="entitymodel" />
 
     </extensions>
 </idea-plugin>

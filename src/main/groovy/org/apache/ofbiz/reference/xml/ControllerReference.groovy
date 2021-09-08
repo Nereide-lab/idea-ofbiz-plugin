@@ -9,13 +9,13 @@ import org.jetbrains.annotations.Nullable
 
 class ControllerReference extends PsiReferenceBase<XmlAttributeValue> {
     ControllerReference(XmlAttributeValue element, boolean soft) {
-        super(element, soft);
+        super(element, soft)
     }
 
     @Nullable
     PsiElement resolve() {
         ProjectServiceInterface structureService = this.element.getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = structureService.getControllerUri(this.getValue());
-        return definition != null ? definition.getXmlElement() : null;
+        DomElement definition = structureService.getControllerUri(this.getValue())
+        return definition != null ? definition.getXmlElement() : null
     }
 }

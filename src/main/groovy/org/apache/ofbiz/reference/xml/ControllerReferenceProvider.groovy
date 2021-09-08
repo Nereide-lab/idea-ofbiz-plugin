@@ -11,14 +11,14 @@ import org.jetbrains.annotations.NotNull
 class ControllerReferenceProvider extends PsiReferenceProvider {
     ControllerReferenceProvider() {}
 
-    private static final Logger LOG = Logger.getInstance(ControllerReferenceProvider.class);
+    private static final Logger LOG = Logger.getInstance(ControllerReferenceProvider.class)
 
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (element instanceof XmlAttributeValue) {
-            ControllerReference test = new ControllerReference((XmlAttributeValue) element, true);
-            PsiReference[] reference = (PsiReference) test;
-            return reference;
+            ControllerReference controller = new ControllerReference((XmlAttributeValue) element, true)
+            PsiReference[] reference = (PsiReference) controller
+            return reference
         }
-        return PsiReference.EMPTY_ARRAY;
+        return PsiReference.EMPTY_ARRAY
     }
 }
