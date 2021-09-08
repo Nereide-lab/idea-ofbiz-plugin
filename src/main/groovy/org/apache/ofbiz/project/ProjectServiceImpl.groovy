@@ -32,7 +32,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getMatchingElementFromClassFiles(EntityModelFile.class, "getViewEntities", "getEntityName", name);
     }
 
-    private DomElement<?> getMatchingElementFromClassFiles(Class classFile,
+    private DomElement getMatchingElementFromClassFiles(Class classFile,
                                                                String fileElementGetterName,
                                                                String elementValueGetterName,
                                                                String matchingValue ) {
