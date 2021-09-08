@@ -5,7 +5,6 @@ import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.xml.DomElement
 import org.apache.ofbiz.project.ProjectServiceInterface
-
 import org.jetbrains.annotations.Nullable
 
 class ControllerReference extends PsiReferenceBase<XmlAttributeValue> {

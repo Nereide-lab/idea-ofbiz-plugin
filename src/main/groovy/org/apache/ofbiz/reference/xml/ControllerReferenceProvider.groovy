@@ -19,7 +19,6 @@ class ControllerReferenceProvider extends PsiReferenceProvider {
             PsiReference[] reference = (PsiReference) test;
             return reference;
         }
-        return  PsiReference.EMPTY_ARRAY;
+        return PsiReference.EMPTY_ARRAY;
     }
 }
-
