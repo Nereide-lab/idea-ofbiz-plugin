@@ -4,9 +4,11 @@ package org.apache.ofbiz.base.project;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.xml.DomFileElement;
 import com.intellij.util.xml.DomManager;
+import com.intellij.util.xml.DomService;
 import org.apache.ofbiz.base.util.FileUtil;
 import org.apache.ofbiz.xml.dom.ControllerFile;
 import org.apache.ofbiz.xml.dom.ControllerFile.RequestMap;
@@ -35,6 +37,9 @@ public class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     private List<DomFileElement<ControllerFile>> getControllerFiles() {
+        List<DomFileElement<ControllerFile>> toto = DomService.getInstance().getFileElements(ControllerFile.class, this.project, GlobalSearchScope.allScope(this.project));
+        return toto;
+        /*
         List<DomFileElement<ControllerFile>> files = new LinkedList<>();
         try {
             // TODO mettre les fichiers en cache
@@ -51,6 +56,7 @@ public class ProjectServiceImpl implements ProjectServiceInterface {
             e.printStackTrace();
         }
         return files;
+         */
     }
 
 }
