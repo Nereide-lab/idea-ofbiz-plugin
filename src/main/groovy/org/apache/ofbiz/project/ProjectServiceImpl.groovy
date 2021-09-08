@@ -32,16 +32,15 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getMatchingElementFromClassFiles(EntityModelFile.class, "getViewEntities", "getEntityName", name);
     }
 
-
-    private List<DomFileElement<?>> getMatchingElementFromClassFiles(Class classFile,
-                                                               String getFileElementMethod,
-                                                               String getElementValueMethod,
+    private DomElement<?> getMatchingElementFromClassFiles(Class classFile,
+                                                               String fileElementGetterName,
+                                                               String elementValueGetterName,
                                                                String matchingValue ) {
         List<DomFileElement<?>> projectFiles = getClassMatchingProjectFiles(classFile, this.project)
         for (DomFileElement<?> projectFile : projectFiles) {
-            List<DomElement> elements = projectFile.getRootElement()."$getFileElementMethod"()
+            List<DomElement> elements = projectFile.getRootElement()."$fileElementGetterName"()
             for (DomElement element : elements) {
-                if (element."$getElementValueMethod"().getValue().equalsIgnoreCase(matchingValue)) return element
+                if (element."$elementValueGetterName"().getValue().equalsIgnoreCase(matchingValue)) return element
             }
         }
         return null
