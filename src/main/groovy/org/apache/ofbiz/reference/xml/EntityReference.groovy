@@ -17,26 +17,28 @@
 
 package org.apache.ofbiz.reference.xml
 
-import com.intellij.openapi.components.ServiceManager
+
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.util.xml.DomElement
 import org.apache.ofbiz.project.ProjectServiceInterface
-import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
- class EntityReference extends PsiReferenceBase<XmlElement> {
+class EntityReference extends PsiReferenceBase<XmlElement> {
     EntityReference(XmlAttributeValue entityName, boolean soft) {
         super(entityName, soft)
     }
 
     @Nullable
-     PsiElement resolve() {
+    PsiElement resolve() {
         ProjectServiceInterface structureService = this.element.getProject().getService(ProjectServiceInterface.class)
 
         DomElement definition = structureService.getEntity(this.getValue())
+        // Si on ne trouve pas dans les définitions d'entité, on cherche dans les vues
+        if (!definition) definition = structureService.getViewEntity(this.getValue())
+
         return definition != null ? definition.getXmlElement() : null
     }
 }
