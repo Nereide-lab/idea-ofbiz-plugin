@@ -11,8 +11,7 @@ import org.apache.ofbiz.dom.EntityModelFile
 import org.apache.ofbiz.dom.EntityModelFile.Entity
 import org.apache.ofbiz.dom.EntityModelFile.ViewEntity
 
-import java.util.function.BiFunction
-import java.util.function.Function
+
 
 class ProjectServiceImpl implements ProjectServiceInterface {
     private final Project project
@@ -22,34 +21,34 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     RequestMap getControllerUri(String name) {
-        return getMatchinTagFromClassFile(ControllerFile.class, ControllerFile.&getRequestMap, RequestMap.&getUri, name);
+        return getMatchingElementFromClassFiles(ControllerFile.class, "getRequestMap", "getUri", name);
     }
 
     Entity getEntity(String name){
-        return getMatchinTagFromClassFile(EntityModelFile.class, EntityModelFile.&getEntities, Entity.&getEntityName, name);
+        return getMatchingElementFromClassFiles(EntityModelFile.class, "getEntities", "getEntityName", name);
     }
 
     ViewEntity getViewEntity(String name){
-        return getMatchinTagFromClassFile(EntityModelFile.class, EntityModelFile.&getViewEntities, ViewEntity.&getEntityName, name);
+        return getMatchingElementFromClassFiles(EntityModelFile.class, "getViewEntities", "getEntityName", name);
     }
 
 
-    private List<DomFileElement<?>> getMatchinTagFromClassFile(Class classFile,
-                                                               Function getFileElementMethod,
-                                                               Function getElementValueMethod,
+    private List<DomFileElement<?>> getMatchingElementFromClassFiles(Class classFile,
+                                                               String getFileElementMethod,
+                                                               String getElementValueMethod,
                                                                String matchingValue ) {
-        List<DomFileElement<?>> projectFiles = getClassProjectMatchingFiles(classFile, this.project)
+        List<DomFileElement<?>> projectFiles = getClassMatchingProjectFiles(classFile, this.project)
         for (DomFileElement<?> projectFile : projectFiles) {
-            List<DomElement> elements = getFileElementMethod.apply(projectFile.getRootElement())
+            List<DomElement> elements = projectFile.getRootElement()."$getFileElementMethod"()
             for (DomElement element : elements) {
-                if (getElementValueMethod.apply(element).getValue().equalsIgnoreCase(matchingValue)) return element
+                if (element."$getElementValueMethod"().getValue().equalsIgnoreCase(matchingValue)) return element
             }
         }
         return null
     }
 
-    private static List<DomFileElement<?>> getClassProjectMatchingFiles (Class classFile, Project project) {
-        return DomService.getInstance().getFileElements( classFile , project, GlobalSearchScope.allScope(project));
+    private static List<DomFileElement<?>> getClassMatchingProjectFiles (Class classFile, Project project) {
+        return DomService.getInstance().getFileElements(classFile , project, GlobalSearchScope.allScope(project));
     }
-    // TODO : Générifier la récupération d'un type particulier de fichier ?
+
 }
