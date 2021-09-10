@@ -1,4 +1,4 @@
-package org.apache.ofbiz.contributor
+package org.apache.ofbiz.reference.contributor
 
 
 import com.intellij.patterns.XmlNamedElementPattern.XmlAttributePattern

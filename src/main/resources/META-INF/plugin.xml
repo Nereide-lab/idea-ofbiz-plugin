@@ -17,7 +17,7 @@
                         serviceImplementation="org.apache.ofbiz.project.ProjectServiceImpl"/>
 
         <!-- Support des reférences XML -->
-        <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.contributor.XmlContributor"/>
+        <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.reference.contributor.XmlContributor"/>
 
         <!-- Descriptions de fichier XML -->
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.ControllerFileDescription" rootTagName="site-conf"/>
