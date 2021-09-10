@@ -5,7 +5,9 @@ Next steps to implement
 |       REFERENCES           |
 |############################|
 ### XML
-[] références vers les services
+[X] références vers les définitions de services
+[] références vers les implémentations de services
+[] références vers les emplacements de scripts ou de ftl
 [] références vers les écrans
 [] références vers les formulaires
 [] références vers les labels
