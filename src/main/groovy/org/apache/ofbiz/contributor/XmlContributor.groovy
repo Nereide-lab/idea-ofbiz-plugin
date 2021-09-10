@@ -1,11 +1,13 @@
 package org.apache.ofbiz.contributor
 
+
 import com.intellij.patterns.XmlNamedElementPattern.XmlAttributePattern
 import com.intellij.patterns.XmlPatterns
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
 import org.apache.ofbiz.reference.xml.ControllerReferenceProvider
 import org.apache.ofbiz.reference.xml.EntityReferenceProvider
+import org.apache.ofbiz.reference.xml.ServiceReferenceProvider
 import org.jetbrains.annotations.NotNull
 
 class XmlContributor extends PsiReferenceContributor {
@@ -17,6 +19,9 @@ class XmlContributor extends PsiReferenceContributor {
         )
         registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
                 .withParent(ENTITY_NAME_ATTR_PATTERN), new EntityReferenceProvider()
+        )
+        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
+                .withParent(SERVICE_NAME_ATTR_PATTERN), new ServiceReferenceProvider()
         )
     }
 
@@ -32,4 +37,8 @@ class XmlContributor extends PsiReferenceContributor {
     public static final XmlAttributePattern ENTITY_NAME_ATTR_PATTERN =
             XmlPatterns.xmlAttribute()
                     .withName("entity", "entity-name", "default-entity-name", "rel-entity-name")
+
+    public static final XmlAttributePattern SERVICE_NAME_ATTR_PATTERN =
+            XmlPatterns.xmlAttribute()
+                    .withName("service", "service-name")
 }

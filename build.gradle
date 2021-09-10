@@ -29,3 +29,9 @@ patchPluginXml {
 test {
     useJUnitPlatform()
 }
+
+tasks{
+    runIde {
+        jvmArgs("-Xmx2048m")
+    }
+}
