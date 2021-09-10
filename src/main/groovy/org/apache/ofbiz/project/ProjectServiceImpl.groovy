@@ -12,6 +12,8 @@ import org.apache.ofbiz.dom.EntityModelFile.Entity
 import org.apache.ofbiz.dom.EntityModelFile.ViewEntity
 import org.apache.ofbiz.dom.ServiceDefFile
 import org.apache.ofbiz.dom.ServiceDefFile.Service
+import org.apache.ofbiz.dom.UiLabelFile
+import org.apache.ofbiz.dom.UiLabelFile.Property
 
 
 class ProjectServiceImpl implements ProjectServiceInterface {
@@ -35,6 +37,10 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     Service getService(String name) {
         return getMatchingElementFromXmlFiles(ServiceDefFile.class, "getServices", "getName", name)
+    }
+
+    Property getProperty(String name) {
+        return getMatchingElementFromXmlFiles(UiLabelFile.class, "getProperties", "getKey", name)
     }
 
     private DomElement getMatchingElementFromXmlFiles(Class classFile,

@@ -14,15 +14,16 @@
 
         <!-- Utilitaires de projet / récupération de fichiers pour recherches -->
         <projectService serviceInterface="org.apache.ofbiz.project.ProjectServiceInterface"
-                        serviceImplementation="org.apache.ofbiz.project.ProjectServiceImpl" />
+                        serviceImplementation="org.apache.ofbiz.project.ProjectServiceImpl"/>
 
         <!-- Support des reférences XML -->
         <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.contributor.XmlContributor"/>
 
         <!-- Descriptions de fichier XML -->
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.ControllerFileDescription" rootTagName="site-conf" />
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.EntityModelFileDescription" rootTagName="entitymodel" />
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.ServiceDefFileDescription" rootTagName="services" />
+        <dom.fileMetaData implementation="org.apache.ofbiz.dom.ControllerFileDescription" rootTagName="site-conf"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.dom.EntityModelFileDescription" rootTagName="entitymodel"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.dom.ServiceDefFileDescription" rootTagName="services"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.dom.UiLabelFileDescription" rootTagName="resource"/>
 
     </extensions>
 </idea-plugin>

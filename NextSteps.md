@@ -10,7 +10,8 @@ Next steps to implement
 [] références vers les emplacements de scripts ou de ftl
 [] références vers les écrans
 [] références vers les formulaires
-[] références vers les labels
+[X] références vers les labels
+[] références vers les events
 
 ### JAVA
 [] références vers les entités

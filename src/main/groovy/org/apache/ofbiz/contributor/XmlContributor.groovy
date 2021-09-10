@@ -8,6 +8,7 @@ import com.intellij.psi.PsiReferenceRegistrar
 import org.apache.ofbiz.reference.xml.ControllerReferenceProvider
 import org.apache.ofbiz.reference.xml.EntityReferenceProvider
 import org.apache.ofbiz.reference.xml.ServiceReferenceProvider
+import org.apache.ofbiz.reference.xml.UiLabelReferenceProvider
 import org.jetbrains.annotations.NotNull
 
 class XmlContributor extends PsiReferenceContributor {
@@ -22,6 +23,9 @@ class XmlContributor extends PsiReferenceContributor {
         )
         registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
                 .withParent(SERVICE_NAME_ATTR_PATTERN), new ServiceReferenceProvider()
+        )
+        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
+                .withParent(PROPERTY_ATTR_PATTERN), new UiLabelReferenceProvider()
         )
     }
 
@@ -41,4 +45,8 @@ class XmlContributor extends PsiReferenceContributor {
     public static final XmlAttributePattern SERVICE_NAME_ATTR_PATTERN =
             XmlPatterns.xmlAttribute()
                     .withName("service", "service-name")
+
+    public static final XmlAttributePattern PROPERTY_ATTR_PATTERN =
+            XmlPatterns.xmlAttribute().withValue(
+                    XmlPatterns.string().startsWith('${uiLabelMap.'))
 }
