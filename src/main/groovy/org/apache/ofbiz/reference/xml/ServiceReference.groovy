@@ -14,7 +14,7 @@ class ServiceReference extends PsiReferenceBase<XmlAttributeValue> {
 
     @Nullable
     PsiElement resolve() {
-        ProjectServiceInterface structureService = this.element.getProject().getService(ProjectServiceInterface.class)
+        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
         DomElement definition = structureService.getService(this.getValue())
         return definition != null ? definition.getXmlElement() : null
     }

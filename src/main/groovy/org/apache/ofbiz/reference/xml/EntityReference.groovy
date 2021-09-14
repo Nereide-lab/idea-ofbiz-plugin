@@ -33,7 +33,7 @@ class EntityReference extends PsiReferenceBase<XmlElement> {
 
     @Nullable
     PsiElement resolve() {
-        ProjectServiceInterface structureService = this.element.getProject().getService(ProjectServiceInterface.class)
+        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
 
         DomElement definition = structureService.getEntity(this.getValue())
         // Si on ne trouve pas dans les définitions d'entité, on cherche dans les vues

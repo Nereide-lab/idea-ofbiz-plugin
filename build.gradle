@@ -20,6 +20,7 @@ dependencies {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version = '2021.2'
+    plugins = ['java']
 }
 patchPluginXml {
     changeNotes = """
@@ -30,7 +31,7 @@ test {
     useJUnitPlatform()
 }
 
-tasks{
+tasks {
     runIde {
         jvmArgs("-Xmx2048m")
     }

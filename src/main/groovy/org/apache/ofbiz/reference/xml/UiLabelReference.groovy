@@ -14,16 +14,16 @@ class UiLabelReference extends PsiReferenceBase<XmlAttributeValue> {
 
     @Nullable
     PsiElement resolve() {
-        ProjectServiceInterface structureService = this.element.getProject().getService(ProjectServiceInterface.class)
+        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
         DomElement definition = structureService.getProperty(this.getUiLabelAwareValue())
         return definition != null ? definition.getXmlElement() : null
     }
 
     String getUiLabelAwareValue() {
-        String text = this.getValue();
+        String text = this.getValue()
         if (text.startsWith('${')) {
-            return text.substring(13, text.length() - 1);
+            return text.substring(13, text.length() - 1)
         }
-        return text;
+        return text
     }
 }
