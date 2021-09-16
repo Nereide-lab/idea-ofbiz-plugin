@@ -12,6 +12,7 @@ import com.intellij.psi.PsiReferenceRegistrar
 import com.intellij.util.ProcessingContext
 import org.apache.ofbiz.reference.java.EntityJavaReference
 import org.apache.ofbiz.reference.java.ServiceJavaReference
+import org.apache.ofbiz.reference.java.UiLabelJavaReference
 import org.jetbrains.annotations.NotNull
 
 class JavaContributor extends PsiReferenceContributor {
@@ -33,6 +34,15 @@ class JavaContributor extends PsiReferenceContributor {
                 PsiLiteralExpression el = (PsiLiteralExpression)element
                 EntityJavaReference entity = new EntityJavaReference(el, true)
                 PsiReference[] reference = (PsiReference) entity
+                return reference
+            }
+        })
+        registrar.registerReferenceProvider(LABEL_REFERENCE, new PsiReferenceProvider() {
+            @NotNull
+            PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+                PsiLiteralExpression el = (PsiLiteralExpression)element
+                UiLabelJavaReference label = new UiLabelJavaReference(el, true)
+                PsiReference[] reference = (PsiReference) label
                 return reference
             }
         })
