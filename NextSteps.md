@@ -15,7 +15,7 @@ Next steps to implement
 ### JAVA
 [X] références vers les entités
 [X] références vers les services
-[] références vers les labels
+[X] références vers les labels
 
 ### GROOVY
 [] références vers les entités
