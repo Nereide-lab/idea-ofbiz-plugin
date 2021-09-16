@@ -10,6 +10,7 @@ import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.PsiReferenceRegistrar
 import com.intellij.util.ProcessingContext
+import org.apache.ofbiz.reference.java.EntityJavaReference
 import org.apache.ofbiz.reference.java.ServiceJavaReference
 import org.jetbrains.annotations.NotNull
 
@@ -23,6 +24,15 @@ class JavaContributor extends PsiReferenceContributor {
                 PsiLiteralExpression el = (PsiLiteralExpression)element
                 ServiceJavaReference service = new ServiceJavaReference(el, true)
                 PsiReference[] reference = (PsiReference) service
+                return reference
+            }
+        })
+        registrar.registerReferenceProvider(ENTITY_CALL, new PsiReferenceProvider() {
+            @NotNull
+            PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+                PsiLiteralExpression el = (PsiLiteralExpression)element
+                EntityJavaReference entity = new EntityJavaReference(el, true)
+                PsiReference[] reference = (PsiReference) entity
                 return reference
             }
         })
@@ -136,7 +146,7 @@ class JavaContributor extends PsiReferenceContributor {
                             .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                    .methodCallParameter(0, PsiJavaPatterns.psiMethod()
+                    .methodCallParameter(1, PsiJavaPatterns.psiMethod()
                             .withName("addMemberEntity")
                             .definedInClass("org.apache.ofbiz.entity.model.DynamicViewEntity"))),
 
@@ -165,7 +175,7 @@ class JavaContributor extends PsiReferenceContributor {
             PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
                     .withName("findList").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
-            PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
+            PsiJavaPatterns.literalExpression().methodCallParameter(1, PsiJavaPatterns.psiMethod()
                     .withName("addMemberEntity").definedInClass("org.apache.ofbiz.entity.model.DynamicViewEntity")),
 
             PsiJavaPatterns.literalExpression().methodCallParameter(1, PsiJavaPatterns.psiMethod().
