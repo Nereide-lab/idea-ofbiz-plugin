@@ -11,6 +11,7 @@ Next steps to implement
 [] références vers les formulaires
 [X] références vers les labels
 [] références vers les events
+[] références vers les simple-methods
 
 ### JAVA
 [X] références vers les entités
