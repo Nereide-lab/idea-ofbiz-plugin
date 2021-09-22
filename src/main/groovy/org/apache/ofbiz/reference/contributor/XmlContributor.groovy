@@ -7,6 +7,7 @@ import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
 import org.apache.ofbiz.reference.xml.ControllerReferenceProvider
 import org.apache.ofbiz.reference.xml.EntityReferenceProvider
+import org.apache.ofbiz.reference.xml.FormReferenceProvider
 import org.apache.ofbiz.reference.xml.ServiceReferenceProvider
 import org.apache.ofbiz.reference.xml.UiLabelReferenceProvider
 import org.jetbrains.annotations.NotNull
@@ -26,6 +27,9 @@ class XmlContributor extends PsiReferenceContributor {
         )
         registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
                 .withParent(PROPERTY_ATTR_PATTERN), new UiLabelReferenceProvider()
+        )
+        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
+                .withParent(FORM_LOCATION_PATTERN), new FormReferenceProvider()
         )
     }
 
@@ -49,4 +53,22 @@ class XmlContributor extends PsiReferenceContributor {
     public static final XmlAttributePattern PROPERTY_ATTR_PATTERN =
             XmlPatterns.xmlAttribute().withValue(
                     XmlPatterns.string().startsWith('${uiLabelMap.'))
+
+    public static final XmlAttributePattern FORM_LOCATION_PATTERN = XmlPatterns.xmlAttribute().andOr(
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("include-form"))
+                    .withName("name"),
+
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("include-grid"))
+                    .withName("name"),
+
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("form"))
+                    .withName("extends"),
+
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("grid"))
+                    .withName("extends")
+    )
 }

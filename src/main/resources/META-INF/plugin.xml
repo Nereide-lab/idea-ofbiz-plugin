@@ -28,6 +28,7 @@
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.EntityModelFileDescription" rootTagName="entitymodel"/>
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.ServiceDefFileDescription" rootTagName="services"/>
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.UiLabelFileDescription" rootTagName="resource"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.dom.FormFileDescription" rootTagName="forms"/>
 
     </extensions>
 </idea-plugin>
