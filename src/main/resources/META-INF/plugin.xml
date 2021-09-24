@@ -10,6 +10,7 @@
 
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
+    <depends>org.intellij.groovy</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
@@ -22,6 +23,9 @@
 
         <!-- Support des références Java -->
         <psi.referenceContributor language="JAVA" implementation="org.apache.ofbiz.reference.contributor.JavaContributor"/>
+
+        <!-- Support des références Groovy -->
+        <psi.referenceContributor language="Groovy" implementation="org.apache.ofbiz.reference.contributor.GroovyContributor"/>
 
         <!-- Descriptions de fichier XML -->
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.ControllerFileDescription" rootTagName="site-conf"/>
