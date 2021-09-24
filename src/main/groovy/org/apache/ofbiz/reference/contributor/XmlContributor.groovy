@@ -7,6 +7,7 @@ import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
 import org.apache.ofbiz.reference.xml.ControllerReferenceProvider
 import org.apache.ofbiz.reference.xml.EntityReferenceProvider
+import org.apache.ofbiz.reference.xml.FileReferenceProvider
 import org.apache.ofbiz.reference.xml.FormReferenceProvider
 import org.apache.ofbiz.reference.xml.ServiceReferenceProvider
 import org.apache.ofbiz.reference.xml.UiLabelReferenceProvider
@@ -31,6 +32,10 @@ class XmlContributor extends PsiReferenceContributor {
         registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
                 .withParent(FORM_LOCATION_PATTERN), new FormReferenceProvider()
         )
+        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
+                .withParent(FILE_LOCATION_ATTR_PATTERN), new FileReferenceProvider()
+        )
+
     }
 
     // =============================================================
@@ -71,4 +76,12 @@ class XmlContributor extends PsiReferenceContributor {
                     .withParent(XmlPatterns.xmlTag().withName("grid"))
                     .withName("extends")
     )
+
+    public static final XmlAttributePattern FILE_LOCATION_ATTR_PATTERN =
+            XmlPatterns.xmlAttribute()
+                    .withName("entity-xml-url", "xml-resource", "extends-resource",
+                            "resourceValue", "resource", "template", "page", "location", "image-location",
+                            "component-location", "fallback-location", "default-fallback-location",
+                            "default-location", "path")
+
 }

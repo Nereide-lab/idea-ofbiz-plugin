@@ -1,5 +1,6 @@
 package org.apache.ofbiz.project
 
+import com.intellij.psi.PsiDirectory
 import org.apache.ofbiz.dom.ControllerFile.RequestMap
 import org.apache.ofbiz.dom.EntityModelFile.Entity
 import org.apache.ofbiz.dom.EntityModelFile.ViewEntity
@@ -23,5 +24,7 @@ interface ProjectServiceInterface {
     Form getForm(String name)
 
     Property getProperty(String name)
+
+    PsiDirectory getComponentDir(String name)
 
 }

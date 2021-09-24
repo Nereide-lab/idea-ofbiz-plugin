@@ -1,10 +1,12 @@
 package org.apache.ofbiz.project
 
 import com.intellij.openapi.project.Project
+import com.intellij.psi.PsiDirectory
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomService
+import org.apache.ofbiz.dom.ComponentFile
 import org.apache.ofbiz.dom.ControllerFile
 import org.apache.ofbiz.dom.ControllerFile.RequestMap
 import org.apache.ofbiz.dom.EntityModelFile
@@ -51,6 +53,21 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     FormFile.Form getForm(String name) {
         return getMatchingElementFromXmlFiles(FormFile.class, "getForms", "getName", name)
     }
+
+    PsiDirectory getComponentDir(String name) {
+        List<DomFileElement> componentFiles = DomService.getInstance()
+                .getFileElements(ComponentFile.class, project, GlobalSearchScope.allScope(project))
+
+        for (DomFileElement component : componentFiles) {
+            if (component.getRootElement().getName().getValue().equalsIgnoreCase(name)) {
+                component = (DomFileElement) component
+                return component.getFile().getContainingDirectory()
+            }
+        }
+        return null
+    }
+
+
 
     private DomElement getMatchingElementFromXmlFiles(Class classFile,
                                                       String fileElementGetterName,

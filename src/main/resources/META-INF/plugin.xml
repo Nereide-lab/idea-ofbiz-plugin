@@ -28,6 +28,7 @@
         <psi.referenceContributor language="Groovy" implementation="org.apache.ofbiz.reference.contributor.GroovyContributor"/>
 
         <!-- Descriptions de fichier XML -->
+        <dom.fileMetaData implementation="org.apache.ofbiz.dom.ComponentFileDescription" rootTagName="ofbiz-component"/>
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.ControllerFileDescription" rootTagName="site-conf"/>
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.EntityModelFileDescription" rootTagName="entitymodel"/>
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.ServiceDefFileDescription" rootTagName="services"/>
