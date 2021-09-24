@@ -13,6 +13,8 @@ import org.apache.ofbiz.dom.EntityModelFile
 import org.apache.ofbiz.dom.EntityModelFile.Entity
 import org.apache.ofbiz.dom.EntityModelFile.ViewEntity
 import org.apache.ofbiz.dom.FormFile
+import org.apache.ofbiz.dom.FormFile.Form
+import org.apache.ofbiz.dom.FormFile.Grid
 import org.apache.ofbiz.dom.ServiceDefFile
 import org.apache.ofbiz.dom.ServiceDefFile.Service
 import org.apache.ofbiz.dom.UiLabelFile
@@ -46,11 +48,11 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getMatchingElementFromXmlFiles(UiLabelFile.class, "getProperties", "getKey", name)
     }
 
-    FormFile.Grid getGrid(String name) {
+    Grid getGrid(String name) {
         return getMatchingElementFromXmlFiles(FormFile.class, "getGrids", "getName", name)
     }
 
-    FormFile.Form getForm(String name) {
+    Form getForm(String name) {
         return getMatchingElementFromXmlFiles(FormFile.class, "getForms", "getName", name)
     }
 
