@@ -6,9 +6,9 @@ Next steps to implement
 ### XML
 [X] références vers les définitions de services
 [X] références vers les implémentations de services
-[] références vers les emplacements de scripts ou de ftl
+[X] références vers les emplacements de scripts ou de ftl
 [] références vers les écrans
-[] références vers les formulaires
+[X] références vers les formulaires
 [X] références vers les labels
 [] références vers les events
 [] références vers les simple-methods
@@ -19,9 +19,9 @@ Next steps to implement
 [X] références vers les labels
 
 ### GROOVY
-[] références vers les entités
-[] références vers les services
-[] références vers les labels
+[X] références vers les entités
+[X] références vers les services
+[X] références vers les labels
 
 |############################|
 |      AUTRES (plus tard)    |
