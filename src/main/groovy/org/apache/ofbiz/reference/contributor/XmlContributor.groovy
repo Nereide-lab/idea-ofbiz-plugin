@@ -9,6 +9,7 @@ import org.apache.ofbiz.reference.xml.ControllerReferenceProvider
 import org.apache.ofbiz.reference.xml.EntityReferenceProvider
 import org.apache.ofbiz.reference.xml.FileReferenceProvider
 import org.apache.ofbiz.reference.xml.FormReferenceProvider
+import org.apache.ofbiz.reference.xml.ScreenReferenceProvider
 import org.apache.ofbiz.reference.xml.ServiceReferenceProvider
 import org.apache.ofbiz.reference.xml.UiLabelReferenceProvider
 import org.jetbrains.annotations.NotNull
@@ -34,6 +35,9 @@ class XmlContributor extends PsiReferenceContributor {
         )
         registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
                 .withParent(FILE_LOCATION_ATTR_PATTERN), new FileReferenceProvider()
+        )
+        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
+                .withParent(SCREEN_ATTR_PATTERN), new ScreenReferenceProvider()
         )
 
     }
@@ -83,5 +87,17 @@ class XmlContributor extends PsiReferenceContributor {
                             "resourceValue", "resource", "template", "page", "location", "image-location",
                             "component-location", "fallback-location", "default-fallback-location",
                             "default-location", "path")
+
+    public static final XmlAttributePattern SCREEN_ATTR_PATTERN = XmlPatterns.xmlAttribute().andOr(
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("include-screen"))
+                    .withName("name")/*,
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("view-map")
+                        .withChild( XmlPatterns.xmlAttribute().withName("type").withValue(
+                                XmlPatterns.string().equalTo("screen"))))
+                    .withName("page")*/
+    )
+
 
 }
