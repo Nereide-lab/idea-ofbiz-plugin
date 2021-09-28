@@ -55,9 +55,16 @@ class XmlContributor extends PsiReferenceContributor {
             XmlPatterns.xmlAttribute()
                     .withName("entity", "entity-name", "default-entity-name", "rel-entity-name")
 
-    public static final XmlAttributePattern SERVICE_NAME_ATTR_PATTERN =
+    public static final XmlAttributePattern SERVICE_NAME_ATTR_PATTERN = XmlPatterns.xmlAttribute().andOr(
             XmlPatterns.xmlAttribute()
-                    .withName("service", "service-name")
+                    .withName("service", "service-name"),
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("event")
+                            .withChild( XmlPatterns.xmlAttribute().withName("type")
+                                    .withValue(XmlPatterns.string().contains("service")))
+                    )
+                    .withName("invoke")
+    )
 
     public static final XmlAttributePattern PROPERTY_ATTR_PATTERN =
             XmlPatterns.xmlAttribute().withValue(
