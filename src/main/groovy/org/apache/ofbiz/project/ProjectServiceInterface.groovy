@@ -1,6 +1,7 @@
 package org.apache.ofbiz.project
 
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiMethod
 import org.apache.ofbiz.dom.ControllerFile.ViewMap
 import org.apache.ofbiz.dom.ControllerFile.RequestMap
 import org.apache.ofbiz.dom.EntityModelFile.Entity
@@ -36,4 +37,5 @@ interface ProjectServiceInterface {
 
     PsiDirectory getComponentDir(String name)
 
+    PsiMethod getMethod(String name)
 }
