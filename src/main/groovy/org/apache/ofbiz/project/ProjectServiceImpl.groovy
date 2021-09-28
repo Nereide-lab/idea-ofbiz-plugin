@@ -16,6 +16,8 @@ import org.apache.ofbiz.dom.EntityModelFile.ViewEntity
 import org.apache.ofbiz.dom.FormFile
 import org.apache.ofbiz.dom.FormFile.Form
 import org.apache.ofbiz.dom.FormFile.Grid
+import org.apache.ofbiz.dom.MenuFile
+import org.apache.ofbiz.dom.MenuFile.Menu
 import org.apache.ofbiz.dom.ScreenFile
 import org.apache.ofbiz.dom.ScreenFile.Screen
 import org.apache.ofbiz.dom.ServiceDefFile
@@ -65,6 +67,10 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     Screen getScreen(String name) {
         return getMatchingElementFromXmlFiles(ScreenFile.class, "getScreens", "getName", name)
+    }
+
+    Menu getMenu(String name) {
+        return getMatchingElementFromXmlFiles(MenuFile.class, "getMenus", "getName", name)
     }
 
     PsiDirectory getComponentDir(String name) {

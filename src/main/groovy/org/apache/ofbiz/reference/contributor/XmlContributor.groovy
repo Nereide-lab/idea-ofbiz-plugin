@@ -10,6 +10,7 @@ import org.apache.ofbiz.reference.xml.ControllerViewReferenceProvider
 import org.apache.ofbiz.reference.xml.EntityReferenceProvider
 import org.apache.ofbiz.reference.xml.FileReferenceProvider
 import org.apache.ofbiz.reference.xml.FormReferenceProvider
+import org.apache.ofbiz.reference.xml.MenuReferenceProvider
 import org.apache.ofbiz.reference.xml.ScreenReferenceProvider
 import org.apache.ofbiz.reference.xml.ServiceReferenceProvider
 import org.apache.ofbiz.reference.xml.UiLabelReferenceProvider
@@ -42,6 +43,9 @@ class XmlContributor extends PsiReferenceContributor {
         )
         registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
                 .withParent(SCREEN_ATTR_PATTERN), new ScreenReferenceProvider()
+        )
+        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
+                .withParent(MENU_LOCATION_PATTERN), new MenuReferenceProvider()
         )
 
     }
@@ -95,6 +99,16 @@ class XmlContributor extends PsiReferenceContributor {
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("grid"))
                     .withName("extends")
+    )
+
+    public static final XmlAttributePattern MENU_LOCATION_PATTERN = XmlPatterns.xmlAttribute().andOr(
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("screenlet"))
+                    .withName("navigation-menu-name"),
+
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("include-menu"))
+                    .withName("name")
     )
 
     public static final XmlAttributePattern FILE_LOCATION_ATTR_PATTERN =

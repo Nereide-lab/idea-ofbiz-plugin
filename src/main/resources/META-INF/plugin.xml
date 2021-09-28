@@ -34,6 +34,7 @@
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.ServiceDefFileDescription" rootTagName="services"/>
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.UiLabelFileDescription" rootTagName="resource"/>
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.FormFileDescription" rootTagName="forms"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.dom.MenuFileDescription" rootTagName="menus"/>
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.ScreenFileDescription" rootTagName="screens"/>
 
     </extensions>

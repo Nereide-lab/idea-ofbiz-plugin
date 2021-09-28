@@ -7,6 +7,7 @@ import org.apache.ofbiz.dom.EntityModelFile.Entity
 import org.apache.ofbiz.dom.EntityModelFile.ViewEntity
 import org.apache.ofbiz.dom.FormFile.Grid
 import org.apache.ofbiz.dom.FormFile.Form
+import org.apache.ofbiz.dom.MenuFile.Menu
 import org.apache.ofbiz.dom.ScreenFile.Screen
 import org.apache.ofbiz.dom.ServiceDefFile.Service
 import org.apache.ofbiz.dom.UiLabelFile.Property
@@ -30,6 +31,8 @@ interface ProjectServiceInterface {
     Property getProperty(String name)
 
     Screen getScreen(String name)
+
+    Menu getMenu(String name)
 
     PsiDirectory getComponentDir(String name)
 
