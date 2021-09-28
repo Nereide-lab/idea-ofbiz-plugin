@@ -91,12 +91,12 @@ class XmlContributor extends PsiReferenceContributor {
     public static final XmlAttributePattern SCREEN_ATTR_PATTERN = XmlPatterns.xmlAttribute().andOr(
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("include-screen"))
-                    .withName("name")/*,
+                    .withName("name"),
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("view-map")
-                        .withChild( XmlPatterns.xmlAttribute().withName("type").withValue(
-                                XmlPatterns.string().equalTo("screen"))))
-                    .withName("page")*/
+                            .withChild(XmlPatterns.xmlAttribute().withName("type").withValue(
+                                    XmlPatterns.string().equalTo("screen"))))
+                    .withName("page")
     )
 
 
