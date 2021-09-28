@@ -7,8 +7,8 @@ import com.intellij.util.xml.DomElement
 import org.apache.ofbiz.project.ProjectServiceInterface
 import org.jetbrains.annotations.Nullable
 
-class ControllerReference extends PsiReferenceBase<XmlAttributeValue> {
-    ControllerReference(XmlAttributeValue element, boolean soft) {
+class ControllerRequestReference extends PsiReferenceBase<XmlAttributeValue> {
+    ControllerRequestReference(XmlAttributeValue element, boolean soft) {
         super(element, soft)
     }
 

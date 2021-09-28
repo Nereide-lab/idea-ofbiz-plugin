@@ -8,6 +8,7 @@ import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomService
 import org.apache.ofbiz.dom.ComponentFile
 import org.apache.ofbiz.dom.ControllerFile
+import org.apache.ofbiz.dom.ControllerFile.ViewMap
 import org.apache.ofbiz.dom.ControllerFile.RequestMap
 import org.apache.ofbiz.dom.EntityModelFile
 import org.apache.ofbiz.dom.EntityModelFile.Entity
@@ -32,6 +33,10 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     RequestMap getControllerUri(String name) {
         return getMatchingElementFromXmlFiles(ControllerFile.class, "getRequestMap", "getUri", name)
+    }
+
+    ViewMap getControllerViewName(String name) {
+        return getMatchingElementFromXmlFiles(ControllerFile.class, "getViewMap", "getName", name)
     }
 
     Entity getEntity(String name) {

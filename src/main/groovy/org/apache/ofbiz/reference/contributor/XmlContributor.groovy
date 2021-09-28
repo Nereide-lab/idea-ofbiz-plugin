@@ -5,7 +5,8 @@ import com.intellij.patterns.XmlNamedElementPattern.XmlAttributePattern
 import com.intellij.patterns.XmlPatterns
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
-import org.apache.ofbiz.reference.xml.ControllerReferenceProvider
+import org.apache.ofbiz.reference.xml.ControllerRequestReferenceProvider
+import org.apache.ofbiz.reference.xml.ControllerViewReferenceProvider
 import org.apache.ofbiz.reference.xml.EntityReferenceProvider
 import org.apache.ofbiz.reference.xml.FileReferenceProvider
 import org.apache.ofbiz.reference.xml.FormReferenceProvider
@@ -19,7 +20,10 @@ class XmlContributor extends PsiReferenceContributor {
 
     void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
         registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(FORM_TARGET_PATTERN), new ControllerReferenceProvider()
+                .withParent(FORM_TARGET_PATTERN), new ControllerRequestReferenceProvider()
+        )
+        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
+                .withParent(RESPONSE_ATTR_PATTERN), new ControllerViewReferenceProvider()
         )
         registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
                 .withParent(ENTITY_NAME_ATTR_PATTERN), new EntityReferenceProvider()
@@ -50,6 +54,11 @@ class XmlContributor extends PsiReferenceContributor {
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("form"))
                     .withName("target")
+
+    public static final XmlAttributePattern RESPONSE_ATTR_PATTERN =
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("response"))
+                    .withName("value")
 
     public static final XmlAttributePattern ENTITY_NAME_ATTR_PATTERN =
             XmlPatterns.xmlAttribute()

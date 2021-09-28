@@ -1,6 +1,7 @@
 package org.apache.ofbiz.project
 
 import com.intellij.psi.PsiDirectory
+import org.apache.ofbiz.dom.ControllerFile.ViewMap
 import org.apache.ofbiz.dom.ControllerFile.RequestMap
 import org.apache.ofbiz.dom.EntityModelFile.Entity
 import org.apache.ofbiz.dom.EntityModelFile.ViewEntity
@@ -13,6 +14,8 @@ import org.apache.ofbiz.dom.UiLabelFile.Property
 interface ProjectServiceInterface {
 
     RequestMap getControllerUri(String name)
+
+    ViewMap getControllerViewName(String name)
 
     Entity getEntity(String name)
 

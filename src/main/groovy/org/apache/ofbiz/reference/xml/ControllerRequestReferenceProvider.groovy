@@ -8,14 +8,14 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
 import org.jetbrains.annotations.NotNull
 
-class ControllerReferenceProvider extends PsiReferenceProvider {
-    ControllerReferenceProvider() {}
+class ControllerRequestReferenceProvider extends PsiReferenceProvider {
+    ControllerRequestReferenceProvider() {}
 
-    private static final Logger LOG = Logger.getInstance(ControllerReferenceProvider.class)
+    private static final Logger LOG = Logger.getInstance(ControllerRequestReferenceProvider.class)
 
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (element instanceof XmlAttributeValue) {
-            ControllerReference controller = new ControllerReference((XmlAttributeValue) element, true)
+            ControllerRequestReference controller = new ControllerRequestReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) controller
             return reference
         }
