@@ -15,10 +15,11 @@ import java.util.regex.Pattern
 
 class ScreenReference extends GenericXmlReference {
 
-    ScreenReference(XmlAttributeValue formName, String elementName, boolean soft) {
-        super(formName, soft, elementName,
+    ScreenReference(XmlAttributeValue screenName, boolean soft) {
+        super(screenName, soft,
                 "getScreens",
                 "getName",
+                "getScreen",
                 ScreenFile.class)
     }
 
