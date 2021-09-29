@@ -10,6 +10,7 @@ Next steps to implement
 [] références vers les écrans
 [X] références vers les formulaires
 [X] références vers les labels
+[X] références optimisées vers les fichiers qui vont bien (location://...)
 [] références vers les events
 [] références vers les simple-methods
 
