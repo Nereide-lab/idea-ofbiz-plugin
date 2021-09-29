@@ -7,6 +7,9 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
 import org.jetbrains.annotations.NotNull
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 class ScreenReferenceProvider extends PsiReferenceProvider {
     ScreenReferenceProvider() {}
 

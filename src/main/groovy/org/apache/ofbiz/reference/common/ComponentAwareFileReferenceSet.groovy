@@ -14,7 +14,7 @@ import java.util.regex.Pattern
 class ComponentAwareFileReferenceSet extends FileReferenceSet {
 
     //regex retournant le nom du composant
-    private static final Pattern COMPONENT_NAME_PATTERN = Pattern.compile("component://([^/]*)/")
+    public static final Pattern COMPONENT_NAME_PATTERN = Pattern.compile("component://([^/]*)/")
 
     ComponentAwareFileReferenceSet(@NotNull String str, @NotNull PsiElement element,
                                    int startInElement, @Nullable PsiReferenceProvider provider,
