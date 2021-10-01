@@ -49,7 +49,7 @@ class XmlContributor extends PsiReferenceContributor {
                 .withParent(MENU_LOCATION_PATTERN), new MenuReferenceProvider()
         )
         registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(EVENT_JAVA_ATTR_PATTERN), new JavaMethodReferenceProvider()
+                .withParent(JAVA_METHOD_ATTR_PATTERN), new JavaMethodReferenceProvider()
         )
 
     }
@@ -83,10 +83,16 @@ class XmlContributor extends PsiReferenceContributor {
                     .withName("invoke")
     )
 
-    public static final XmlAttributePattern EVENT_JAVA_ATTR_PATTERN = XmlPatterns.xmlAttribute().andOr(
+    public static final XmlAttributePattern JAVA_METHOD_ATTR_PATTERN = XmlPatterns.xmlAttribute().andOr(
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("event")
                             .withChild( XmlPatterns.xmlAttribute().withName("type")
+                                    .withValue(XmlPatterns.string().equalTo("java")))
+                    )
+                    .withName("invoke"),
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("service")
+                            .withChild( XmlPatterns.xmlAttribute().withName("engine")
                                     .withValue(XmlPatterns.string().equalTo("java")))
                     )
                     .withName("invoke")

@@ -29,9 +29,8 @@ class JavaMethodReferenceProvider extends PsiReferenceProvider {
                 return PsiReference.EMPTY_ARRAY;
             }
 
-            Project project = element.getProject()
-            PsiClass currentClass = JavaPsiFacade.getInstance(project)
-                    .findClass(className, GlobalSearchScope.allScope(project))
+            PsiClass currentClass = JavaPsiFacade.getInstance(element.getProject())
+                    .findClass(className, GlobalSearchScope.allScope(element.getProject()))
 
             if (currentClass != null) {
                 PsiMethod[] currentClassMethods = currentClass.getAllMethods()
