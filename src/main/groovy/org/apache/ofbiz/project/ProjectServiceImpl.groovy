@@ -19,6 +19,7 @@ package org.apache.ofbiz.project
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiMethod
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
@@ -91,6 +92,19 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     PsiDirectory getComponentDir(String name) {
+        List<DomFileElement> componentFiles = DomService.getInstance()
+                .getFileElements(ComponentFile.class, project, GlobalSearchScope.allScope(project))
+
+        for (DomFileElement component : componentFiles) {
+            if (component.getRootElement().getName().getValue().equalsIgnoreCase(name)) {
+                component = (DomFileElement) component
+                return component.getFile().getContainingDirectory()
+            }
+        }
+        return null
+    }
+
+    PsiMethod getMethod(String name) {
         List<DomFileElement> componentFiles = DomService.getInstance()
                 .getFileElements(ComponentFile.class, project, GlobalSearchScope.allScope(project))
 

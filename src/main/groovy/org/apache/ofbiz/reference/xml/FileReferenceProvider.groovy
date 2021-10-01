@@ -47,6 +47,11 @@ class FileReferenceProvider extends PsiReferenceProvider {
                     .equalsIgnoreCase("java")) {
                 return true
             }
+            if (parent.getParent().getAttributeValue("type") != null && parent.getParent()
+                    .getAttributeValue("type")
+                    .equalsIgnoreCase("java")) {
+                return true
+            }
         }
         return false
     }

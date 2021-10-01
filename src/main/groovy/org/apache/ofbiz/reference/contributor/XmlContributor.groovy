@@ -27,6 +27,7 @@ import org.apache.ofbiz.reference.xml.ControllerViewReferenceProvider
 import org.apache.ofbiz.reference.xml.EntityReferenceProvider
 import org.apache.ofbiz.reference.xml.FileReferenceProvider
 import org.apache.ofbiz.reference.xml.FormReferenceProvider
+import org.apache.ofbiz.reference.xml.JavaMethodReferenceProvider
 import org.apache.ofbiz.reference.xml.MenuReferenceProvider
 import org.apache.ofbiz.reference.xml.ScreenReferenceProvider
 import org.apache.ofbiz.reference.xml.ServiceReferenceProvider
@@ -64,6 +65,9 @@ class XmlContributor extends PsiReferenceContributor {
         registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
                 .withParent(MENU_LOCATION_PATTERN), new MenuReferenceProvider()
         )
+        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
+                .withParent(JAVA_METHOD_ATTR_PATTERN), new JavaMethodReferenceProvider()
+        )
 
     }
 
@@ -92,6 +96,21 @@ class XmlContributor extends PsiReferenceContributor {
                     .withParent(XmlPatterns.xmlTag().withName("event")
                             .withChild(XmlPatterns.xmlAttribute().withName("type")
                                     .withValue(XmlPatterns.string().contains("service")))
+                    )
+                    .withName("invoke")
+    )
+
+    public static final XmlAttributePattern JAVA_METHOD_ATTR_PATTERN = XmlPatterns.xmlAttribute().andOr(
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("event")
+                            .withChild( XmlPatterns.xmlAttribute().withName("type")
+                                    .withValue(XmlPatterns.string().equalTo("java")))
+                    )
+                    .withName("invoke"),
+            XmlPatterns.xmlAttribute()
+                    .withParent(XmlPatterns.xmlTag().withName("service")
+                            .withChild( XmlPatterns.xmlAttribute().withName("engine")
+                                    .withValue(XmlPatterns.string().equalTo("java")))
                     )
                     .withName("invoke")
     )
