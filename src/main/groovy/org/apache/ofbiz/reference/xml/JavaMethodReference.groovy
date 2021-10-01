@@ -19,11 +19,6 @@ class JavaMethodReference extends PsiReferenceBase<XmlElement> {
 
     @Nullable
     PsiElement resolve() {
-        /*
-        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = structureService.getMethod(this.getValue())
-        return definition != null ? definition.getXmlElement() : null
-                 */
         PsiMethod[] methods = this.currentClass.getMethods();
         String val = this.getValue();
 

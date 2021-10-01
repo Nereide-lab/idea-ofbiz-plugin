@@ -19,23 +19,16 @@ class JavaMethodReferenceProvider extends PsiReferenceProvider {
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        /*if (element instanceof XmlAttributeValue) {
-            JavaMethodReference method = new JavaMethodReference((XmlAttributeValue) element, true)
-            PsiReference[] reference = (PsiReference) method
-            return reference
-        }
-        return PsiReference.EMPTY_ARRAY
-
-         */
-        PsiReference[] results = null;
-        if (OfbizReferenceUtils.isJavaService(element)) {
+        if (FileReferenceProvider.isJavaService(element)) {
             XmlAttribute parent = (XmlAttribute) element.getParent();
-            if (parent.getParent().getAttributeValue("location") == null) {
-                LOG.debug("Error in JavaMethodReferenceProvider, parent element has no location")
-                return null;
+            String className = parent.getParent().getAttributeValue("location")
+            if (!className) {
+                className = parent.getParent().getAttributeValue("path")
+            }
+            if (!className) {
+                return PsiReference.EMPTY_ARRAY;
             }
 
-            String className = parent.getParent().getAttributeValue("location")
             Project project = element.getProject()
             PsiClass currentClass = JavaPsiFacade.getInstance(project)
                     .findClass(className, GlobalSearchScope.allScope(project))
@@ -43,15 +36,12 @@ class JavaMethodReferenceProvider extends PsiReferenceProvider {
             if (currentClass != null) {
                 PsiMethod[] currentClassMethods = currentClass.getAllMethods()
                 for (PsiMethod method : currentClassMethods) {
-                    if (method.getName().equals(((XmlAttributeValueImpl) element).getValue())) {
-                        results = (PsiReference) new JavaMethodReference((XmlAttributeValue) element, true)
+                    if (method.getName() == element.getValue()) {
+                        return (PsiReference) new JavaMethodReference((XmlAttributeValue) element, currentClass, true)
                     }
                 }
-                return results;
             }
         }
-
-        return results = PsiReference.EMPTY_ARRAY;
-
+        return PsiReference.EMPTY_ARRAY;
     }
 }
