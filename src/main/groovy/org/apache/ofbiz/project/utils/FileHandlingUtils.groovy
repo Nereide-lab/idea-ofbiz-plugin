@@ -1,3 +1,20 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License") you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ */
+
 package org.apache.ofbiz.project.utils
 
 import com.intellij.openapi.diagnostic.Logger
@@ -8,7 +25,6 @@ import com.intellij.psi.xml.XmlFile
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomManager
-import org.apache.ofbiz.dom.ScreenFile
 import org.apache.ofbiz.project.ProjectServiceInterface
 import org.apache.ofbiz.reference.common.ComponentAwareFileReferenceSet
 
@@ -16,7 +32,7 @@ import java.util.regex.Matcher
 import java.util.stream.Collectors
 
 class FileHandlingUtils {
-    FileHandlingUtils(){}
+    FileHandlingUtils() {}
     private static final Logger LOG = Logger.getInstance(FileHandlingUtils.class)
 
     /**
@@ -31,7 +47,7 @@ class FileHandlingUtils {
      * @return
      */
     static PsiElement getElementFromSpecificFile(PsiFile file, DomManager dm, String elementName, Class FILE_TYPE,
-                                                String elementGetterMethod, String listGetterMethod){
+                                                 String elementGetterMethod, String listGetterMethod) {
         if (file instanceof XmlFile) {
             DomFileElement domFile = dm.getFileElement(file, FILE_TYPE)
             List<DomElement> elementsInFile = domFile.getRootElement()."$listGetterMethod"()
@@ -41,7 +57,7 @@ class FileHandlingUtils {
                 }
             }
         } else {
-            LOG.warn("File was not of right type or something happend with file : " +file.getContainingDirectory())
+            LOG.warn("File was not of right type or something happend with file : " + file.getContainingDirectory())
         }
         return null
     }

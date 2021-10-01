@@ -1,10 +1,28 @@
+<!--
+  ~  Licensed to the Apache Software Foundation (ASF) under one
+  ~  or more contributor license agreements.  See the NOTICE file
+  ~  distributed with this work for additional information
+  ~  regarding copyright ownership.  The ASF licenses this file
+  ~  to you under the Apache License, Version 2.0 (the
+  ~  "License") you may not use this file except in compliance
+  ~  with the License.  You may obtain a copy of the License at
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+
 <idea-plugin>
-    <id>org.apache.ofbiz.pluginIntellijNereide</id>
+    <id>org.apache.ofbiz.OFBizIDEAInteg</id>
     <name>OFBiz IDEA Integration</name>
     <vendor email="" url="">OFBiz</vendor>
 
     <description><![CDATA[
-    &lt;p&gt;&lt;strong&gt;OFBiz&lt;/strong&gt; is the APACHE fundation free ERP. Strong and resilient, it is completely free to use and expand.
+    &lt;p&gt;&lt;strong&gt;OFBiz&lt;/strong&gt; is the APACHE fundation free ERP.
+    Strong and resilient, it is completely free to use and expand.
     This plugin aims to help you expand OFBiz for your needs.&lt;/p&gt;
     ]]></description>
 
@@ -14,20 +32,20 @@
 
     <extensions defaultExtensionNs="com.intellij">
 
-        <!-- Utilitaires de projet / récupération de fichiers pour recherches -->
+        <!-- Project MiscUtils for file and DomElement recuperations -->
         <projectService serviceInterface="org.apache.ofbiz.project.ProjectServiceInterface"
                         serviceImplementation="org.apache.ofbiz.project.ProjectServiceImpl"/>
 
-        <!-- Support des reférences XML -->
+        <!-- XML reference support -->
         <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.reference.contributor.XmlContributor"/>
 
-        <!-- Support des références Java -->
+        <!-- Java reference support -->
         <psi.referenceContributor language="JAVA" implementation="org.apache.ofbiz.reference.contributor.JavaContributor"/>
 
-        <!-- Support des références Groovy -->
+        <!-- Groovy reference support -->
         <psi.referenceContributor language="Groovy" implementation="org.apache.ofbiz.reference.contributor.GroovyContributor"/>
 
-        <!-- Descriptions de fichier XML -->
+        <!-- XML file description -->
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.ComponentFileDescription" rootTagName="ofbiz-component"/>
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.ControllerFileDescription" rootTagName="site-conf"/>
         <dom.fileMetaData implementation="org.apache.ofbiz.dom.EntityModelFileDescription" rootTagName="entitymodel"/>

@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'nereide.fr'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 repositories {
     mavenCentral()
@@ -23,9 +23,14 @@ intellij {
     plugins = ['java', 'com.intellij.java', 'org.intellij.groovy']
 }
 patchPluginXml {
+    /**
+     * You may use HTML tags in changenotes
+     * <h1></h1> | <strong></strong> | <ul></ul> | <li></li>
+     */
     changeNotes = """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+      <h1>INITIAL RELEASE</h1> <br/>
+      Vastly functional references towars entity, services, and labels, from xml, java, and groovy files.
+      """
 }
 test {
     useJUnitPlatform()
