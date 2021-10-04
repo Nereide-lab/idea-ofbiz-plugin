@@ -7,7 +7,7 @@ Next steps to implement
 [X] références vers les définitions de services
 [X] références vers les implémentations de services
 [X] références vers les emplacements de scripts ou de ftl
-[] références vers les écrans
+[X] références vers les écrans
 [X] références vers les formulaires
 [X] références vers les labels
 [X] références optimisées vers les fichiers qui vont bien (location://...)
@@ -29,3 +29,5 @@ Next steps to implement
 |############################|
 [] Doc rapide au survol
 [] Rajouter une sorte de validation de la liste des champs disponibles dans une entité qui valide ce qu'on est en train de faire
+[] référence vers les entitées qui sont définies dans un field="entityName"
+<field-map field-name="entityName" value="ExtractQuantityOrderedDppSupplierTP"/>
