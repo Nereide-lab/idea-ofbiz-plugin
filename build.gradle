@@ -1,11 +1,13 @@
+def property(String key){ return project.findProperty(key).toString()}
+
 plugins {
     id 'org.jetbrains.intellij' version '1.1.4'
     id 'groovy'
     id 'java'
+    id 'org.jetbrains.changelog' version '1.2.1'
 }
 
-group 'nereide.fr'
-version '1.0'
+apply plugin: 'org.jetbrains.changelog'
 
 repositories {
     mavenCentral()
@@ -22,16 +24,16 @@ intellij {
     version = '2021.2'
     plugins = ['java', 'com.intellij.java', 'org.intellij.groovy']
 }
+
+/**
+ * Refreshes the plugin.xml file for deployment
+ */
+String pluginVersion = property("version")
 patchPluginXml {
-    /**
-     * You may use HTML tags in changenotes
-     * <h1></h1> | <strong></strong> | <ul></ul> | <li></li>
-     */
-    changeNotes = """
-      <h1>INITIAL RELEASE</h1> <br/>
-      Vastly functional references towars entity, services, and labels, from xml, java, and groovy files.
-      """
+    changeNotes = changelog.get(pluginVersion).toHTML()
+    version = pluginVersion
 }
+
 test {
     useJUnitPlatform()
 }
@@ -40,4 +42,14 @@ tasks {
     runIde {
         jvmArgs("-Xmx2048m")
     }
+}
+
+/**
+ * Config for changelog Plugin
+ */
+changelog {
+    itemPrefix = "-"
+    keepUnreleasedSection = false
+    unreleasedTerm = "[Unreleased]"
+    groups = ["Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"]
 }
