@@ -1,4 +1,6 @@
-def property(String key){ return project.findProperty(key).toString()}
+import groovy.xml.*
+
+def property(String key) { return project.findProperty(key).toString() }
 
 plugins {
     id 'org.jetbrains.intellij' version '1.1.4'
@@ -52,4 +54,41 @@ changelog {
     keepUnreleasedSection = false
     unreleasedTerm = "[Unreleased]"
     groups = ["Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"]
+}
+
+/**
+ * Generates the updatePlugin.xml files used for the repo.
+ */
+task generateUpdatePluginXml {
+    doLast {
+        // clean file if already exists
+        if (file('updatePlugins.xml')) {
+            task cleanPluginsFile(type: Delete) {
+                logger.log(LogLevel.WARN, "ON EFFACE")
+                delete 'updatePlugins.xml'
+            }
+        }
+        file("updatePlugins.xml").withWriter { writer ->
+            // Create MarkupBuilder with 4 space indent
+            def xml = new MarkupBuilder(writer)
+
+            // Leave file comment
+            xml.doubleQuotes = true
+            xml.mkp.xmlDeclaration(version: '1.0', encoding: 'utf-8')
+
+            xml.plugins {
+                mkp.yield('\n  ')
+                mkp.comment("AUTO-GENERATED FILE")
+
+                // TODO : url
+                plugin('id': property("pluginId"), 'url': 'TODO', 'version': property("version")) {
+                    'name'(property("pluginName"))
+                    // TODO : description
+                    xml.'description'('trololololololololololo')
+                    'change-notes'( changelog.get(pluginVersion).toHTML() )
+                    'idea-version'('since-build': property("ideaMinVersion"), 'until-build': property("ideaMaxVersion"))
+                }
+            }
+        }
+    }
 }
