@@ -1,6 +1,14 @@
-import groovy.xml.*
+import groovy.xml.XmlParser
+import groovy.xml.XmlSlurper
+import groovy.xml.MarkupBuilder
 
 def property(String key) { return project.findProperty(key).toString() }
+
+static def definedInPluginXml(String key) {
+    File pluginXmlFile = new File('src/main/resources/META-INF/plugin.xml')
+    def idea = new XmlSlurper().parse(pluginXmlFile)
+    return idea."$key"
+}
 
 plugins {
     id 'org.jetbrains.intellij' version '1.1.4'
@@ -64,14 +72,11 @@ task generateUpdatePluginXml {
         // clean file if already exists
         if (file('updatePlugins.xml')) {
             task cleanPluginsFile(type: Delete) {
-                logger.log(LogLevel.WARN, "ON EFFACE")
                 delete 'updatePlugins.xml'
             }
         }
         file("updatePlugins.xml").withWriter { writer ->
-            // Create MarkupBuilder with 4 space indent
             def xml = new MarkupBuilder(writer)
-
             // Leave file comment
             xml.doubleQuotes = true
             xml.mkp.xmlDeclaration(version: '1.0', encoding: 'utf-8')
@@ -79,15 +84,14 @@ task generateUpdatePluginXml {
             xml.plugins {
                 mkp.yield('\n  ')
                 mkp.comment("AUTO-GENERATED FILE")
-
-                // TODO : url
-                plugin('id': property("pluginId"), 'url': 'TODO', 'version': property("version")) {
-                    'name'(property("pluginName"))
-                    // TODO : description
-                    xml.'description'('trololololololololololo')
-                    'change-notes'( changelog.get(pluginVersion).toHTML() )
-                    'idea-version'('since-build': property("ideaMinVersion"), 'until-build': property("ideaMaxVersion"))
-                }
+                mkp.yieldUnescaped("""
+    <plugin id="${definedInPluginXml('id')}" url="${property("downloadUrl")}" version="${property("version")}">
+        <idea-version since-build="${property("ideaMinVersion")}" until-build="${property("ideaMaxVersion")}"/>
+        <name>${definedInPluginXml('name')}</name>
+        <description>${definedInPluginXml('description')}</description>
+        <change-notes>${changelog.get(pluginVersion).toHTML()}</change-notes>
+    </plugin>""")
+                mkp.yield('\n  ')
             }
         }
     }
