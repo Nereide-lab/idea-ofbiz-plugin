@@ -44,7 +44,10 @@ patchPluginXml {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnit()
+    filter{
+        includeTestsMatching "org.apache.ofbiz.*"
+    }
 }
 
 tasks {
@@ -92,4 +95,13 @@ task generateUpdatePluginXml {
             mkp.yield('\n  ')
         }
     }
+}
+
+/**
+ * Adds tests on build
+ */
+buildPlugin {
+    dependsOn 'test'
+    dependsOn 'generateUpdatePluginXml'
+    tasks.findByName('generateUpdatePluginXml').mustRunAfter 'patchPluginXml'
 }
