@@ -86,7 +86,7 @@ task generateUpdatePluginXml {
             mkp.yield('\n  ')
             mkp.comment("AUTO-GENERATED FILE")
             mkp.yieldUnescaped("""
-    <plugin id="${definedInPluginXml('id')}" url="${property("downloadUrl")}${definedInPluginXml('name')}-${property("version")}.zip" version="${property("version")}">
+    <plugin id="${definedInPluginXml('id')}" url="${property("downloadUrl")}${property('name')}-${property("version")}.zip" version="${property("version")}">
         <idea-version since-build="${property("ideaMinVersion")}" until-build="${property("ideaMaxVersion")}"/>
         <name>${definedInPluginXml('name')}</name>
         <description>${definedInPluginXml('description')}</description>
