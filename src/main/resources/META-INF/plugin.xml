@@ -17,7 +17,7 @@
 
 <idea-plugin>
     <id>org.apache.ofbiz.OFBizIDEAInteg</id>
-    <name>OFBiz IDEA Integration</name>
+    <name>OFBiz-IDEA-Integration</name>
     <vendor email="" url="">OFBiz</vendor>
 
     <description><![CDATA[
