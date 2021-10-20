@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-## [1.0.0] - 2021-10-08
+## [1.0.0] - 2021-10-20
 
 ### Added
 - references from xml towards entity, view-entity, and services definitions, as well as labels, screens, forms and menus.

@@ -46,7 +46,7 @@ patchPluginXml {
 test {
     useJUnit()
     filter{
-        includeTestsMatching "org.apache.ofbiz.*"
+        includeTestsMatching "fr.nereide.*"
     }
 }
 

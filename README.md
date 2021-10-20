@@ -1,5 +1,4 @@
 # Intellij plugin for OFBiz
-
 This plugin was made from scratch to use for APACHE free ERP : OFBiz
 This is still work in progress.
 At this point, we've worked mostly on references, to ease navigation toward services, labels, and entity definition.
@@ -14,3 +13,8 @@ Then go to the plugin market place, and search OFBiz. Plugin should appear.
 All you have to do now is install, enjoy, and give us some feedback !
 
 Feel free to contribute !
+
+## CONTRIBUTE
+Clone this repo, and you can get started here : [DOCS](https://plugins.jetbrains.com/docs/intellij/basics.html)
+
+*Made by Nereide*

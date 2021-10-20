@@ -18,12 +18,15 @@
 <idea-plugin>
     <id>org.apache.ofbiz.OFBizIDEAInteg</id>
     <name>OFBiz IDEA Integration</name>
-    <vendor email="" url="">OFBiz</vendor>
+    <vendor email="github@nereide.fr" url="https://www.nereide.fr/">OFBiz</vendor>
 
     <description><![CDATA[
     &lt;p&gt;&lt;strong&gt;OFBiz&lt;/strong&gt; is the APACHE fundation free ERP.
     Strong and resilient, it is completely free to use and expand.
-    This plugin aims to help you expand OFBiz for your needs.&lt;/p&gt;
+    This plugin aims to help you expand OFBiz for your needs.&lt;/p&gt; &lt;br/&gt;
+    Please report any bug &lt;a href="https://github.com/Nereide-lab/idea-ofbiz-plugin/issues/new"&gt here &lt;/a&gt &lt;br/&gt;
+    And of curse, feel free to contribute !&lt;br/&gt;
+    Made by Nereide
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
@@ -33,27 +36,27 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <!-- Project MiscUtils for file and DomElement recuperations -->
-        <projectService serviceInterface="org.apache.ofbiz.project.ProjectServiceInterface"
-                        serviceImplementation="org.apache.ofbiz.project.ProjectServiceImpl"/>
+        <projectService serviceInterface="fr.nereide.project.ProjectServiceInterface"
+                        serviceImplementation="fr.nereide.project.ProjectServiceImpl"/>
 
         <!-- XML reference support -->
-        <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.reference.contributor.XmlContributor"/>
+        <psi.referenceContributor language="XML" implementation="fr.nereide.reference.contributor.XmlContributor"/>
 
         <!-- Java reference support -->
-        <psi.referenceContributor language="JAVA" implementation="org.apache.ofbiz.reference.contributor.JavaContributor"/>
+        <psi.referenceContributor language="JAVA" implementation="fr.nereide.reference.contributor.JavaContributor"/>
 
         <!-- Groovy reference support -->
-        <psi.referenceContributor language="Groovy" implementation="org.apache.ofbiz.reference.contributor.GroovyContributor"/>
+        <psi.referenceContributor language="Groovy" implementation="fr.nereide.reference.contributor.GroovyContributor"/>
 
         <!-- XML file description -->
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.ComponentFileDescription" rootTagName="ofbiz-component"/>
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.ControllerFileDescription" rootTagName="site-conf"/>
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.EntityModelFileDescription" rootTagName="entitymodel"/>
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.ServiceDefFileDescription" rootTagName="services"/>
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.UiLabelFileDescription" rootTagName="resource"/>
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.FormFileDescription" rootTagName="forms"/>
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.MenuFileDescription" rootTagName="menus"/>
-        <dom.fileMetaData implementation="org.apache.ofbiz.dom.ScreenFileDescription" rootTagName="screens"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.ComponentFileDescription" rootTagName="ofbiz-component"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.ControllerFileDescription" rootTagName="site-conf"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.EntityModelFileDescription" rootTagName="entitymodel"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.ServiceDefFileDescription" rootTagName="services"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.UiLabelFileDescription" rootTagName="resource"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.FormFileDescription" rootTagName="forms"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.MenuFileDescription" rootTagName="menus"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.ScreenFileDescription" rootTagName="screens"/>
 
     </extensions>
 </idea-plugin>
