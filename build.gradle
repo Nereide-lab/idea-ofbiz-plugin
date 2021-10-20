@@ -83,14 +83,14 @@ task generateUpdatePluginXml {
         xml.mkp.xmlDeclaration(version: '1.0', encoding: 'utf-8')
 
         xml.plugins {
-            mkp.yield('\n  ')
-            mkp.comment("AUTO-GENERATED FILE")
+            //mkp.yield('\n  ')
+            // mkp.comment("AUTO-GENERATED FILE")
             mkp.yieldUnescaped("""
     <plugin id="${definedInPluginXml('id')}" url="${property("downloadUrl")}${property('name')}-${property("version")}.zip" version="${property("version")}">
         <idea-version since-build="${property("ideaMinVersion")}" until-build="${property("ideaMaxVersion")}"/>
         <name>${definedInPluginXml('name')}</name>
         <description>${definedInPluginXml('description')}</description>
-        <change-notes>${changelog.get(pluginVersion).toHTML()}</change-notes>
+        <change-notes>${changelog.get(pluginVersion)}</change-notes>
     </plugin>""")
             mkp.yield('\n  ')
         }
