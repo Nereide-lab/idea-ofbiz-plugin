@@ -73,27 +73,27 @@ class GroovyContributor extends PsiReferenceContributor {
             GroovyPatterns.groovyLiteralExpression()
                     .methodCallParameter(0,
                             GroovyPatterns.psiMethod().withName("runSync")
-                                    .definedInClass("fr.nereide.service.LocalDispatcher")),
+                                    .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
             GroovyPatterns.groovyLiteralExpression()
                     .methodCallParameter(0,
                             GroovyPatterns.psiMethod().withName("runAsync")
-                                    .definedInClass("fr.nereide.service.LocalDispatcher")),
+                                    .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
             GroovyPatterns.groovyLiteralExpression()
                     .methodCallParameter(0,
                             GroovyPatterns.psiMethod().withName("runAsyncWait")
-                                    .definedInClass("fr.nereide.service.LocalDispatcher")),
+                                    .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
             GroovyPatterns.groovyLiteralExpression()
                     .methodCallParameter(0,
                             GroovyPatterns.psiMethod().withName("runSyncIgnore")
-                                    .definedInClass("fr.nereide.service.LocalDispatcher")),
+                                    .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
             GroovyPatterns.groovyLiteralExpression()
                     .methodCallParameter(0,
                             GroovyPatterns.psiMethod().withName("runSyncNewTrans")
-                                    .definedInClass("fr.nereide.service.LocalDispatcher")),
+                                    .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
             GroovyPatterns.groovyLiteralExpression()
                     .methodCallParameter(0,
@@ -107,7 +107,7 @@ class GroovyContributor extends PsiReferenceContributor {
             GroovyPatterns.groovyLiteralExpression()
                     .methodCallParameter(0,
                             GroovyPatterns.psiMethod().withName("run")
-                                    .definedInClass("fr.nereide.service.engine.GroovyBaseScript"))
+                                    .definedInClass("org.apache.ofbiz.service.engine.GroovyBaseScript"))
     )
 
 
@@ -115,33 +115,33 @@ class GroovyContributor extends PsiReferenceContributor {
 
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
                     GroovyPatterns.psiMethod().withName("find")
-                            .definedInClass("fr.nereide.entity.Delegator")),
+                            .definedInClass("org.apache.ofbiz.entity.Delegator")),
 
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
                     GroovyPatterns.psiMethod().withName("findOne")
-                            .definedInClass("fr.nereide.entity.Delegator")),
+                            .definedInClass("org.apache.ofbiz.entity.Delegator")),
 
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
                     GroovyPatterns.psiMethod().withName("findAll")
-                            .definedInClass("fr.nereide.entity.Delegator")),
+                            .definedInClass("org.apache.ofbiz.entity.Delegator")),
 
             // TODO : Marche pas
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
                     GroovyPatterns.psiMethod().withName("findCountByCondition")
-                            .definedInClass("fr.nereide.entity.Delegator")),
+                            .definedInClass("org.apache.ofbiz.entity.Delegator")),
 
             // TODO : Marche pas
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
                     GroovyPatterns.psiMethod().withName("findList")
-                            .definedInClass("fr.nereide.entity.Delegator")),
+                            .definedInClass("org.apache.ofbiz.entity.Delegator")),
 
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(1,
                     GroovyPatterns.psiMethod().withName("addMemberEntity")
-                            .definedInClass("fr.nereide.entity.model.DynamicViewEntity")),
+                            .definedInClass("org.apache.ofbiz.entity.model.DynamicViewEntity")),
 
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(1,
                     GroovyPatterns.psiMethod().withName("makeGenericValue")
-                            .definedInClass("fr.nereide.entityext.data.EntityDataServices")),
+                            .definedInClass("org.apache.ofbiz.entityext.data.EntityDataServices")),
 
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
                     GroovyPatterns.psiMethod().withName("from")),
@@ -149,7 +149,7 @@ class GroovyContributor extends PsiReferenceContributor {
             // TODO : Marche pas
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
                     GroovyPatterns.psiMethod().withName("makeValue")
-                            .definedInClass("fr.nereide.service.engine.GroovyBaseScript")),
+                            .definedInClass("org.apache.ofbiz.service.engine.GroovyBaseScript")),
 
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
                     GroovyPatterns.psiMethod().withName("findOne"))
@@ -159,7 +159,7 @@ class GroovyContributor extends PsiReferenceContributor {
 
             GroovyPatterns.groovyLiteralExpression().methodCallParameter(1,
                     GroovyPatterns.psiMethod().withName("getMessage")
-                            .definedInClass("fr.nereide.base.util.UtilProperties"))
+                            .definedInClass("org.apache.ofbiz.base.util.UtilProperties"))
     )
 
 }

@@ -78,143 +78,143 @@ class JavaContributor extends PsiReferenceContributor {
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("makeValidContext")
-                            .definedInClass("fr.nereide.service.DispatchContext"))),
+                            .definedInClass("org.apache.ofbiz.service.DispatchContext"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runSync")
-                            .definedInClass("fr.nereide.service.LocalDispatcher"))),
+                            .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runAsync")
-                            .definedInClass("fr.nereide.service.LocalDispatcher"))),
+                            .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runAsyncWait")
-                            .definedInClass("fr.nereide.service.LocalDispatcher"))),
+                            .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runSyncIgnore")
-                            .definedInClass("fr.nereide.service.LocalDispatcher"))),
+                            .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runSyncNewTrans")
-                            .definedInClass("fr.nereide.service.LocalDispatcher"))),
+                            .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runService")
-                            .definedInClass("fr.nereide.base.util.ScriptHelper"))),
+                            .definedInClass("org.apache.ofbiz.base.util.ScriptHelper"))),
 
             PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("makeValidContext")
-                            .definedInClass("fr.nereide.service.DispatchContext")),
+                            .definedInClass("org.apache.ofbiz.service.DispatchContext")),
 
             PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runSync")
-                            .definedInClass("fr.nereide.service.LocalDispatcher")),
+                            .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
             PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runAsync")
-                            .definedInClass("fr.nereide.service.LocalDispatcher")),
+                            .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
             PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runAsyncWait")
-                            .definedInClass("fr.nereide.service.LocalDispatcher")),
+                            .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
             PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runSyncIgnore")
-                            .definedInClass("fr.nereide.service.LocalDispatcher")),
+                            .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
             PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runSyncNewTrans")
-                            .definedInClass("fr.nereide.service.LocalDispatcher")),
+                            .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
             PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("runService")
-                            .definedInClass("fr.nereide.base.util.ScriptHelper"))
+                            .definedInClass("org.apache.ofbiz.base.util.ScriptHelper"))
     )
 
     public static final PsiElementPattern ENTITY_CALL = PlatformPatterns.psiElement().andOr(
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("find")
-                            .definedInClass("fr.nereide.entity.Delegator"))),
+                            .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("findOne")
-                            .definedInClass("fr.nereide.entity.Delegator"))),
+                            .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("findAll")
-                            .definedInClass("fr.nereide.entity.Delegator"))),
+                            .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("findCountByCondition")
-                            .definedInClass("fr.nereide.entity.Delegator"))),
+                            .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("findList")
-                            .definedInClass("fr.nereide.entity.Delegator"))),
+                            .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(1, PsiJavaPatterns.psiMethod()
                             .withName("addMemberEntity")
-                            .definedInClass("fr.nereide.entity.model.DynamicViewEntity"))),
+                            .definedInClass("org.apache.ofbiz.entity.model.DynamicViewEntity"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(1, PsiJavaPatterns.psiMethod()
                             .withName("makeGenericValue")
-                            .definedInClass("fr.nereide.entityext.data.EntityDataServices"))),
+                            .definedInClass("org.apache.ofbiz.entityext.data.EntityDataServices"))),
 
             PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
                     .methodCallParameter(0, PsiJavaPatterns.psiMethod()
                             .withName("from")
-                            .definedInClass("fr.nereide.entity.util.EntityQuery"))),
+                            .definedInClass("org.apache.ofbiz.entity.util.EntityQuery"))),
 
             PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                    .withName("find").definedInClass("fr.nereide.entity.Delegator")),
+                    .withName("find").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
             PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                    .withName("findOne").definedInClass("fr.nereide.entity.Delegator")),
+                    .withName("findOne").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
             PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                    .withName("findAll").definedInClass("fr.nereide.entity.Delegator")),
+                    .withName("findAll").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
             PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                    .withName("findCountByCondition").definedInClass("fr.nereide.entity.Delegator")),
+                    .withName("findCountByCondition").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
             PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                    .withName("findList").definedInClass("fr.nereide.entity.Delegator")),
+                    .withName("findList").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
             PsiJavaPatterns.literalExpression().methodCallParameter(1, PsiJavaPatterns.psiMethod()
-                    .withName("addMemberEntity").definedInClass("fr.nereide.entity.model.DynamicViewEntity")),
+                    .withName("addMemberEntity").definedInClass("org.apache.ofbiz.entity.model.DynamicViewEntity")),
 
             PsiJavaPatterns.literalExpression().methodCallParameter(1, PsiJavaPatterns.psiMethod().
-                    withName("makeGenericValue").definedInClass("fr.nereide.entityext.data.EntityDataServices")),
+                    withName("makeGenericValue").definedInClass("org.apache.ofbiz.entityext.data.EntityDataServices")),
 
             PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                    .withName("from").definedInClass("fr.nereide.entity.util.EntityQuery"))
+                    .withName("from").definedInClass("org.apache.ofbiz.entity.util.EntityQuery"))
     )
 
     public static final PsiElementPattern LABEL_REFERENCE = PlatformPatterns.psiElement().andOr(
             PsiJavaPatterns.literalExpression().methodCallParameter(1, PsiJavaPatterns.psiMethod()
-                    .withName("getMessage").definedInClass("fr.nereide.base.util.UtilProperties"))
+                    .withName("getMessage").definedInClass("org.apache.ofbiz.base.util.UtilProperties"))
     )
 
 }
