@@ -13,4 +13,4 @@ https://lib.nereide.fr/idea-plugins/apache-ofbiz/updatePlugins.xml
 Then go to the plugin market place, and search OFBiz. Plugin should appear.
 All you have to do now is install, enjoy, and give us some feedback !
 
-Feel free to contribute.
+Feel free to contribute !
