@@ -14,14 +14,14 @@ class TestScreenReference extends LightJavaCodeInsightFixtureTestCase {
     void testScreenInCurrentFileReference() {
         myFixture.copyDirectoryToProject('ScreenInCurrentFileReference', '')
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion("testDataRefScreenInCurrentFile.xml")
-        assertEquals(ref.getElement().getName(), 'FindFacility')
+        assertEquals('FindFacility', ref.getElement().getName() as String)
         assertNotNull(ref.resolve())
     }
 
     void testScreenInDistantFileReference() {
         myFixture.copyDirectoryToProject('ScreenInDistantFileReference', '')
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion("commonext/widget/ofbizsetup/SetupScreens.xml")
-        assertEquals(ref.getElement().getName(), 'viewprofile')
+        assertEquals('viewprofile', ref.getElement().getName() as String)
         assertNotNull(ref.resolve())
     }
 

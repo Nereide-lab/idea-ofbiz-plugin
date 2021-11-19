@@ -17,9 +17,33 @@
 
 package fr.nereide
 
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiReference
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
+import fr.nereide.reference.java.EntityJavaReference
 
 class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
     TestEntityReference() {}
 
+    @Override
+    protected String getTestDataPath() {
+        return "src/test/resources/testData/EntityReference"
+    }
+
+    @Override
+    void setUp() {
+        super.setUp()
+        myFixture.addClass("package org.apache.ofbiz.entity; public interface Delegator { static void find(){ return null;}}")
+    }
+
+    void testEntityReferenceWithFindMethodFromDelegator() {
+        myFixture.copyDirectoryToProject('EntityReferenceWithFindMethodFromDelegator', '')
+        myFixture.configureByFile("EntityReferenceWithFindMethodFromDelegator/MyTestClass1.java")
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(
+                "EntityReferenceWithFindMethodFromDelegator/MyTestClass1.java")
+        assertTrue ref instanceof EntityJavaReference
+        EntityJavaReference entityRef = (EntityJavaReference) ref
+        assertEquals('MyTestEntity', entityRef.getValue() as String)
+        assertNotNull(ref.resolve())
+    }
 }
