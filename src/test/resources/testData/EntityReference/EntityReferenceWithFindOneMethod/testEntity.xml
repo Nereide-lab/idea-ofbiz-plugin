@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <title>Entity</title>
+    <entity entity-name="PiltoverData">
+        <field name="cityId" type="id"/>
+    </entity>
+</entitymodel>
