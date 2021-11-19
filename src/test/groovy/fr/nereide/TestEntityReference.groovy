@@ -33,17 +33,86 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
     @Override
     void setUp() {
         super.setUp()
-        myFixture.addClass("package org.apache.ofbiz.entity; public interface Delegator { static void find(){ return null;}}")
+        myFixture.addClass("package org.apache.ofbiz.entity;" +
+                " public interface Delegator {" +
+                " static void find(){ return null;}" +
+                " static void findOne(){ return null;}" +
+                " static void findList(){ return null;}" +
+                " static void findAll(){ return null;}" +
+                "}")
+        myFixture.addClass("package org.apache.ofbiz.entity.model.DynamicViewEntity;" +
+                " public class DynamicViewEntity {" +
+                " static void addMemberEntity(){ return null;}" +
+                "}")
+        myFixture.addClass("package org.apache.ofbiz.entity.util.EntityQuery;" +
+                " public class EntityQuery {" +
+                " static void from(){ return null;}" +
+                "}")
     }
 
-    void testEntityReferenceWithFindMethodFromDelegator() {
-        myFixture.copyDirectoryToProject('EntityReferenceWithFindMethodFromDelegator', '')
-        myFixture.configureByFile("EntityReferenceWithFindMethodFromDelegator/MyTestClass1.java")
+    /**
+     * Test for find method() from delegator
+     */
+    void testEntityReferenceWithFindMethod() {
+        myFixture.copyDirectoryToProject('EntityReferenceWithFindMethod', '')
+        myFixture.configureByFile("EntityReferenceWithFindMethod/MyTestClass.java")
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(
-                "EntityReferenceWithFindMethodFromDelegator/MyTestClass1.java")
+                "EntityReferenceWithFindMethod/MyTestClass.java")
+
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
-        assertEquals('MyTestEntity', entityRef.getValue() as String)
-        assertNotNull(ref.resolve())
+        assertEquals 'HyruleCastle', entityRef.getValue() as String
+        assertNotNull ref.resolve()
+    }
+
+    /**
+     * Test for findOne() method from delegator
+     */
+    void testEntityReferenceWithFindOneMethod() {
+        myFixture.copyDirectoryToProject('EntityReferenceWithFindOneMethod', '')
+        myFixture.configureByFile('EntityReferenceWithFindOneMethod/MyTestClass.java')
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(
+                'EntityReferenceWithFindOneMethod/MyTestClass.java')
+
+        assertTrue ref instanceof EntityJavaReference
+        EntityJavaReference entityRef = (EntityJavaReference) ref
+        assertEquals 'PiltoverData', entityRef.getValue() as String
+        assertNotNull ref.resolve()
+    }
+
+    /**
+     * Test for findList() method from delegator
+     */
+    void testEntityReferenceWithFindListMethod() {
+        myFixture.copyDirectoryToProject('EntityReferenceWithFindListMethod', '')
+        myFixture.configureByFile('EntityReferenceWithFindListMethod/MyTestClass.java')
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(
+                'EntityReferenceWithFindListMethod/MyTestClass.java')
+
+        assertTrue ref instanceof EntityJavaReference
+        EntityJavaReference entityRef = (EntityJavaReference) ref
+        assertEquals 'Enderman', entityRef.getValue() as String
+        assertNotNull ref.resolve()
+    }
+
+    /**
+     * Test for findAll() method from delegator
+     */
+    void testEntityReferenceWithFindAllMethod() {
+        assert true
+    }
+
+    /**
+     * Test for addMemberEntity() method from DynamicViewEntity
+     */
+    void testEntityReferenceWithAddMemberEntityMethod() {
+        assert true
+    }
+
+    /**
+     * Test for from() method from EntityQuery
+     */
+    void testEntityReferenceWithFromMethod() {
+        assert true
     }
 }
