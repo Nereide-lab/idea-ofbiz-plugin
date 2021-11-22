@@ -46,6 +46,7 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
                 "}")
         myFixture.addClass("package org.apache.ofbiz.entity.util;" +
                 " public class EntityQuery {" +
+                " static void use(){ return null;}" +
                 " static void from(){ return null;}" +
                 "}")
     }
@@ -116,6 +117,10 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
      * Test for from() method from EntityQuery
      */
     void testEntityReferenceWithFromMethod() {
-        assert true
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFromMethod')
+        assertTrue ref instanceof EntityJavaReference
+        EntityJavaReference entityRef = (EntityJavaReference) ref
+        assertEquals 'Rick', entityRef.getValue() as String
+        assertNotNull ref.resolve()
     }
 }
