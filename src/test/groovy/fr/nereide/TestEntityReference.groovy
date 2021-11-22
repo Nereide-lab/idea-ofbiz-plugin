@@ -99,7 +99,15 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
      * Test for findAll() method from delegator
      */
     void testEntityReferenceWithFindAllMethod() {
-        assert true
+        myFixture.copyDirectoryToProject('EntityReferenceWithFindAllMethod', '')
+        myFixture.configureByFile('EntityReferenceWithFindAllMethod/MyTestClass.java')
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(
+                'EntityReferenceWithFindAllMethod/MyTestClass.java')
+
+        assertTrue ref instanceof EntityJavaReference
+        EntityJavaReference entityRef = (EntityJavaReference) ref
+        assertEquals 'TwoFlowers', entityRef.getValue() as String
+        assertNotNull ref.resolve()
     }
 
     /**
