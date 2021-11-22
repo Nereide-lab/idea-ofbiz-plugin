@@ -17,7 +17,7 @@
 
 package fr.nereide
 
-import com.intellij.psi.PsiElement
+
 import com.intellij.psi.PsiReference
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import fr.nereide.reference.java.EntityJavaReference
@@ -50,15 +50,18 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
                 "}")
     }
 
+    private PsiReference setupFixtureForTestAndGetRef(String testFolder) {
+        myFixture.copyDirectoryToProject(testFolder, '')
+        myFixture.configureByFile("${testFolder}/MyTestClass.java")
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion("${testFolder}/MyTestClass.java")
+        return ref
+    }
+
     /**
      * Test for find method() from delegator
      */
     void testEntityReferenceWithFindMethod() {
-        myFixture.copyDirectoryToProject('EntityReferenceWithFindMethod', '')
-        myFixture.configureByFile("EntityReferenceWithFindMethod/MyTestClass.java")
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(
-                "EntityReferenceWithFindMethod/MyTestClass.java")
-
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindMethod')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'HyruleCastle', entityRef.getValue() as String
@@ -69,11 +72,7 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
      * Test for findOne() method from delegator
      */
     void testEntityReferenceWithFindOneMethod() {
-        myFixture.copyDirectoryToProject('EntityReferenceWithFindOneMethod', '')
-        myFixture.configureByFile('EntityReferenceWithFindOneMethod/MyTestClass.java')
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(
-                'EntityReferenceWithFindOneMethod/MyTestClass.java')
-
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindOneMethod')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'PiltoverData', entityRef.getValue() as String
@@ -84,11 +83,7 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
      * Test for findList() method from delegator
      */
     void testEntityReferenceWithFindListMethod() {
-        myFixture.copyDirectoryToProject('EntityReferenceWithFindListMethod', '')
-        myFixture.configureByFile('EntityReferenceWithFindListMethod/MyTestClass.java')
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(
-                'EntityReferenceWithFindListMethod/MyTestClass.java')
-
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindListMethod')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'Enderman', entityRef.getValue() as String
@@ -99,11 +94,7 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
      * Test for findAll() method from delegator
      */
     void testEntityReferenceWithFindAllMethod() {
-        myFixture.copyDirectoryToProject('EntityReferenceWithFindAllMethod', '')
-        myFixture.configureByFile('EntityReferenceWithFindAllMethod/MyTestClass.java')
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(
-                'EntityReferenceWithFindAllMethod/MyTestClass.java')
-
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindAllMethod')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'TwoFlowers', entityRef.getValue() as String
