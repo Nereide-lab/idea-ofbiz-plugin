@@ -40,11 +40,11 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
                 " static void findList(){ return null;}" +
                 " static void findAll(){ return null;}" +
                 "}")
-        myFixture.addClass("package org.apache.ofbiz.entity.model.DynamicViewEntity;" +
+        myFixture.addClass("package org.apache.ofbiz.entity.model;" +
                 " public class DynamicViewEntity {" +
                 " static void addMemberEntity(){ return null;}" +
                 "}")
-        myFixture.addClass("package org.apache.ofbiz.entity.util.EntityQuery;" +
+        myFixture.addClass("package org.apache.ofbiz.entity.util;" +
                 " public class EntityQuery {" +
                 " static void from(){ return null;}" +
                 "}")
@@ -105,7 +105,11 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
      * Test for addMemberEntity() method from DynamicViewEntity
      */
     void testEntityReferenceWithAddMemberEntityMethod() {
-        assert true
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithAddMemberEntityMethod')
+        assertTrue ref instanceof EntityJavaReference
+        EntityJavaReference entityRef = (EntityJavaReference) ref
+        assertEquals 'WeWereOnABreak', entityRef.getValue() as String
+        assertNotNull ref.resolve()
     }
 
     /**
