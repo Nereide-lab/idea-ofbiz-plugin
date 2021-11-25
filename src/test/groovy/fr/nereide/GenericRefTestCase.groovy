@@ -17,11 +17,13 @@
 
 package fr.nereide
 
+import com.intellij.lang.properties.references.PropertyReference
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiReference
+import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 
-class GenericJavaRefTestCase extends LightJavaCodeInsightFixtureTestCase {
+class GenericRefTestCase extends LightJavaCodeInsightFixtureTestCase {
 
     PsiClass addEntityQuery() {
         myFixture.addClass("package org.apache.ofbiz.entity.util;" +
@@ -48,10 +50,25 @@ class GenericJavaRefTestCase extends LightJavaCodeInsightFixtureTestCase {
                 "}")
     }
 
-    PsiReference setupFixtureForTestAndGetRef(String testFolder) {
+    PsiReference setupFixtureForTestAndGetRef(String testFolder, String type) {
         myFixture.copyDirectoryToProject(testFolder, '')
-        myFixture.configureByFile("${testFolder}/MyTestClass.java")
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion("${testFolder}/MyTestClass.java")
+        myFixture.configureByFile("${testFolder}/MyTestClass.${type}")
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion("${testFolder}/MyTestClass.${type}")
+        if(ref instanceof PsiMultiReference){
+            def multi = ref as PsiMultiReference
+            for(PsiReference curRef : multi.getReferences()){
+                if(!(curRef instanceof PropertyReference)){
+                    return curRef
+                }
+            }
+        }
         return ref
+    }
+
+    /**
+     * Temporary workaround for tests to stay green
+     */
+    void testDummy(){
+        assert true
     }
 }

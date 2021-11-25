@@ -17,12 +17,11 @@
 
 package fr.nereide
 
-import com.intellij.psi.PsiClass
+
 import com.intellij.psi.PsiReference
-import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import fr.nereide.reference.java.EntityJavaReference
 
-class TestEntityReferenceInJava extends GenericJavaRefTestCase {
+class TestEntityReferenceInJava extends GenericRefTestCase {
     TestEntityReferenceInJava() {}
 
     @Override
@@ -35,7 +34,7 @@ class TestEntityReferenceInJava extends GenericJavaRefTestCase {
      */
     void testEntityReferenceWithFindMethod() {
         addDelegator()
-        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindMethod')
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'HyruleCastle', entityRef.getValue() as String
@@ -47,7 +46,7 @@ class TestEntityReferenceInJava extends GenericJavaRefTestCase {
      */
     void testEntityReferenceWithFindOneMethod() {
         addDelegator()
-        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindOneMethod')
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindOneMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'PiltoverData', entityRef.getValue() as String
@@ -59,7 +58,7 @@ class TestEntityReferenceInJava extends GenericJavaRefTestCase {
      */
     void testEntityReferenceWithFindListMethod() {
         addDelegator()
-        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindListMethod')
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindListMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'Enderman', entityRef.getValue() as String
@@ -71,7 +70,7 @@ class TestEntityReferenceInJava extends GenericJavaRefTestCase {
      */
     void testEntityReferenceWithFindAllMethod() {
         addDelegator()
-        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindAllMethod')
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindAllMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'TwoFlowers', entityRef.getValue() as String
@@ -83,7 +82,7 @@ class TestEntityReferenceInJava extends GenericJavaRefTestCase {
      */
     void testEntityReferenceWithAddMemberEntityMethod() {
         addDynamicEntity()
-        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithAddMemberEntityMethod')
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithAddMemberEntityMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'WeWereOnABreak', entityRef.getValue() as String
@@ -95,7 +94,7 @@ class TestEntityReferenceInJava extends GenericJavaRefTestCase {
      */
     void testEntityReferenceWithFromMethod() {
         addEntityQuery()
-        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFromMethod')
+        PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFromMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'Rick', entityRef.getValue() as String
