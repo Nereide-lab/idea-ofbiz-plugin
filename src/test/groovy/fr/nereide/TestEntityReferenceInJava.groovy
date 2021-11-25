@@ -22,8 +22,13 @@ import com.intellij.psi.PsiReference
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import fr.nereide.reference.java.EntityJavaReference
 
-class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
-    TestEntityReference() {}
+class TestEntityReferenceInJava extends GenericJavaRefTestCase {
+    TestEntityReferenceInJava() {}
+
+    @Override
+    protected String getTestDataPath() {
+        return "src/test/resources/testData/JavaEntityReference"
+    }
 
     /**
      * Test for find method() from delegator
@@ -95,42 +100,5 @@ class TestEntityReference extends LightJavaCodeInsightFixtureTestCase {
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'Rick', entityRef.getValue() as String
         assertNotNull ref.resolve()
-    }
-
-    private PsiClass addEntityQuery() {
-        myFixture.addClass("package org.apache.ofbiz.entity.util;" +
-                " public class EntityQuery {" +
-                " static void use(){ return null;}" +
-                " static void from(){ return null;}" +
-                "}")
-    }
-
-    private PsiClass addDynamicEntity() {
-        myFixture.addClass("package org.apache.ofbiz.entity.model;" +
-                " public class DynamicViewEntity {" +
-                " static void addMemberEntity(){ return null;}" +
-                "}")
-    }
-
-    private PsiClass addDelegator() {
-        myFixture.addClass("package org.apache.ofbiz.entity;" +
-                " public interface Delegator {" +
-                " static void find(){ return null;}" +
-                " static void findOne(){ return null;}" +
-                " static void findList(){ return null;}" +
-                " static void findAll(){ return null;}" +
-                "}")
-    }
-
-    @Override
-    protected String getTestDataPath() {
-        return "src/test/resources/testData/EntityReference"
-    }
-
-    private PsiReference setupFixtureForTestAndGetRef(String testFolder) {
-        myFixture.copyDirectoryToProject(testFolder, '')
-        myFixture.configureByFile("${testFolder}/MyTestClass.java")
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion("${testFolder}/MyTestClass.java")
-        return ref
     }
 }
