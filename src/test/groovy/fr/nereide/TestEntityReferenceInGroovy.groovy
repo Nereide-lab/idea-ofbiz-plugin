@@ -17,6 +17,23 @@
 
 package fr.nereide
 
-class TestEntityReferenceInGroovy extends GenericJavaRefTestCase{
+import com.intellij.psi.PsiReference
+import fr.nereide.reference.groovy.EntityGroovyReference
 
+class TestEntityReferenceInGroovy extends GenericRefTestCase {
+    TestEntityReferenceInGroovy() {}
+
+    @Override
+    protected String getTestDataPath() {
+        return "src/test/resources/testData/GroovyEntityReference"
+    }
+
+    void testGroovyEntityReferenceWithFindMethod() {
+        addDelegator()
+        PsiReference ref = setupFixtureForTestAndGetRef('GroovyEntityReferenceWithFindMethod', 'groovy')
+        assertTrue ref instanceof EntityGroovyReference
+        EntityGroovyReference entityRef = (EntityGroovyReference) ref
+        assertEquals 'Lobster', entityRef.getValue() as String
+        assertNotNull ref.resolve()
+    }
 }
