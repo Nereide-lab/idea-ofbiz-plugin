@@ -36,4 +36,15 @@ class TestEntityReferenceInGroovy extends GenericRefTestCase {
         assertEquals 'Lobster', entityRef.getValue() as String
         assertNotNull ref.resolve()
     }
+
+    void testGroovyEntityReferenceWithFromMethod() {
+        addEntityQuery()
+        addDelegator()
+        addDynamicEntity()
+        PsiReference ref = setupFixtureForTestAndGetRef('GroovyEntityReferenceWithFromMethod', 'groovy')
+        assertTrue ref instanceof EntityGroovyReference
+        EntityGroovyReference entityRef = (EntityGroovyReference) ref
+        assertEquals 'Hobbit', entityRef.getValue() as String
+        assertNotNull ref.resolve()
+    }
 }
