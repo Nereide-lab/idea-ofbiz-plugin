@@ -37,10 +37,14 @@ intellij {
 /**
  * Refreshes the plugin.xml file for deployment
  */
+String ideaMinVersion = property("ideaMinVersion")
+String ideaMaxVersion = property("ideaMaxVersion")
 String pluginVersion = property("version")
 patchPluginXml {
     changeNotes = changelog.get(pluginVersion).toHTML()
     version = pluginVersion
+    sinceBuild = ideaMinVersion
+    untilBuild = ideaMaxVersion
 }
 
 test {
