@@ -54,10 +54,10 @@ class GenericRefTestCase extends LightJavaCodeInsightFixtureTestCase {
         myFixture.copyDirectoryToProject(testFolder, '')
         myFixture.configureByFile("${testFolder}/MyTestClass.${type}")
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion("${testFolder}/MyTestClass.${type}")
-        if(ref instanceof PsiMultiReference){
+        if (ref instanceof PsiMultiReference) {
             def multi = ref as PsiMultiReference
-            for(PsiReference curRef : multi.getReferences()){
-                if(!(curRef instanceof PropertyReference)){
+            for (PsiReference curRef : multi.getReferences()) {
+                if (!(curRef instanceof PropertyReference)) {
                     return curRef
                 }
             }
@@ -68,7 +68,7 @@ class GenericRefTestCase extends LightJavaCodeInsightFixtureTestCase {
     /**
      * Temporary workaround for tests to stay green
      */
-    void testDummy(){
+    void testDummy() {
         assert true
     }
 }
