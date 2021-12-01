@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.0.1] 2021-10-20
+
+### Added
+- Added support fort Intellij version 2021-3
+
+### Changed
+
+### Fixed
+
 ## [1.0.0] - 2021-10-20
 
 ### Added
