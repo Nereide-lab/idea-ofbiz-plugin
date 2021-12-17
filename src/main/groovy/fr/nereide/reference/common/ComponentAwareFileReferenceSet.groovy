@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import java.util.stream.Collectors
 
 class ComponentAwareFileReferenceSet extends FileReferenceSet {
 
@@ -71,28 +72,41 @@ class ComponentAwareFileReferenceSet extends FileReferenceSet {
         if (componentMatcher.find() && componentMatcher.groupCount() != 0) {
             List<FileReference> referencesList = new ArrayList<>()
             String component = componentMatcher.group(1)
-            int i = 0
+            int i = 0 // Position index in path reference string
 
-            FileReference componentBaseReference =
-                    createComponentBaseDirReference(this, componentMatcher.start(1), componentMatcher.end(1), i++, component)
+            FileReference componentBaseReference = createComponentBaseDirReference(this,
+                    componentMatcher.start(1), componentMatcher.end(1), i++, component)
             if (componentBaseReference != null) {
                 referencesList.add(componentBaseReference)
             }
-            List<String> pathPieces = Arrays.asList(str.split("\\s*/\\s*"))
-            for (String pathPiece : pathPieces) {
-                if (pathPiece != "" && !pathPiece.contains("component:") && pathPiece != component) {
-                    TextRange pathPosition = new TextRange(str.indexOf(pathPiece) + 1,
-                            str.indexOf(pathPiece) + pathPiece.length() + 1)
-                    FileReference reference = this.createFileReference(pathPosition, i++, pathPiece)
-                    if (reference != null) {
-                        referencesList.add(reference)
-                    }
+            List<String> pathPieces = Arrays.asList(
+                    str.split("\\s*/\\s*")).stream()
+                    .filter { !it.equalsIgnoreCase("") && !it.equalsIgnoreCase("component:") }
+                    .collect(Collectors.toList())
+
+            while (i < pathPieces.size()) {
+                String pathPiece = pathPieces[i]
+                TextRange pathPosition = pathPiece.equals(component)
+                        ? getRangeForSecondOccurrenceOfString(str, pathPiece) : getRangeForUniqueString(str, pathPiece)
+                FileReference reference = this.createFileReference(pathPosition, i++, pathPiece)
+                if (reference != null) {
+                    referencesList.add(reference)
                 }
             }
             return referencesList
         } else {
             return super.reparse(str, startInElement)
         }
+    }
+
+    private static TextRange getRangeForUniqueString(String str, String pathPiece) {
+        new TextRange(str.indexOf(pathPiece) + 1, str.indexOf(pathPiece) + pathPiece.length() + 1)
+    }
+
+    private static TextRange getRangeForSecondOccurrenceOfString(String str, String pathPiece) {
+        new TextRange(
+            str.indexOf(pathPiece, str.indexOf(pathPiece) + 1) + 1,
+            str.indexOf(pathPiece, str.indexOf(pathPiece) + 1) + pathPiece.length() + 1)
     }
 
     protected static FileReference createComponentBaseDirReference(FileReferenceSet set, int textRangeStart, int textRangeEnd,
