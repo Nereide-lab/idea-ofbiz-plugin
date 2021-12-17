@@ -7,15 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
-- [] Quick info on mouse hover
-- [] Reference towards entity defined in `field="entityName"`
-- [] ref like `<field-map field-name="entityName" value="ExtractQuantityOrdered"/>`
 
 ### Changed
 
 ### Fixed
 - Wrong screen reference returned in case of two screens that wear the same name in different components inside a controller file
-- 
+- Fixed a bug that couldn't find a file when the path contained the component name
 
 ## [1.0.1] 2021-10-20
 
