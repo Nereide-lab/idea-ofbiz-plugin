@@ -36,7 +36,7 @@ class FileHandlingUtils {
     private static final Logger LOG = Logger.getInstance(FileHandlingUtils.class)
 
     /**
-     * retrieves a specified DomElemeent from a psi file
+     * retrieves a specified DomElement from a psi file
      * The dom implementation of the file MUST exist.
      * @param file the file to search the element in
      * @param dm A DomManager
@@ -56,8 +56,6 @@ class FileHandlingUtils {
                     return element.getXmlElement()
                 }
             }
-        } else {
-            LOG.warn("File was not of right type or something happend with file : " + file.getContainingDirectory())
         }
         return null
     }
