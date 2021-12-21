@@ -40,13 +40,14 @@
                         serviceImplementation="fr.nereide.project.ProjectServiceImpl"/>
 
         <!-- XML reference support -->
-        <psi.referenceContributor language="XML" implementation="fr.nereide.reference.contributor.XmlContributor"/>
+        <psi.referenceContributor language="XML" implementation="fr.nereide.reference.contributor.XmlReferenceContributor"/>
 
         <!-- Java reference support -->
-        <psi.referenceContributor language="JAVA" implementation="fr.nereide.reference.contributor.JavaContributor"/>
+        <psi.referenceContributor language="JAVA" implementation="fr.nereide.reference.contributor.JavaReferenceContributor"/>
 
         <!-- Groovy reference support -->
-        <psi.referenceContributor language="Groovy" implementation="fr.nereide.reference.contributor.GroovyContributor"/>
+        <psi.referenceContributor language="Groovy" implementation="fr.nereide.reference.contributor.GroovyReferenceContributor"/>
+        <completion.contributor order="first" language="Groovy" implementationClass="fr.nereide.completion.GroovyCompletionContributor"/>
 
         <!-- XML file description -->
         <dom.fileMetaData implementation="fr.nereide.dom.ComponentFileDescription" rootTagName="ofbiz-component"/>
