@@ -15,21 +15,17 @@
  * under the License.
  */
 
-package fr.nereide.completion.provider
+package fr.nereide.completion
 
-import com.intellij.codeInsight.completion.CompletionParameters
-import com.intellij.codeInsight.completion.CompletionProvider
-import com.intellij.codeInsight.completion.CompletionResultSet
-import com.intellij.openapi.diagnostic.Logger
-import com.intellij.util.ProcessingContext
-import org.jetbrains.annotations.NotNull
+import com.intellij.codeInsight.completion.CompletionContributor
+import com.intellij.codeInsight.completion.CompletionType
+import fr.nereide.completion.provider.common.EntityNameCompletionProvider
+import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
+import fr.nereide.project.OfbizPatterns
 
-class GroovyEntityCompletionProvider extends CompletionProvider<CompletionParameters>{
-    private static final Logger LOG = Logger.getInstance(CompletionProvider.class)
-
-    @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
-                                  @NotNull CompletionResultSet result) {
-        LOG.info('trololo')
+class XmlCompletionContributor extends CompletionContributor{
+    XmlCompletionContributor(){
+        this.extend(CompletionType.BASIC, OfbizPatterns.ENTITY_NAME_ATTR_PATTERN, new EntityNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizPatterns.SERVICE_NAME_ATTR_PATTERN, new ServiceNameCompletionProvider())
     }
 }

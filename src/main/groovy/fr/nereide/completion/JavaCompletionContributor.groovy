@@ -23,14 +23,9 @@ import fr.nereide.completion.provider.common.EntityNameCompletionProvider
 import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
 import fr.nereide.project.OfbizPatterns
 
-
-/**
- * Pour l'instant, seules les complétions Java fonctionnent. C'est très étrange mais pourquoi pas
- */
-
-class GroovyCompletionContributor extends CompletionContributor{
-    GroovyCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_ENTITY_CALL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_SERVICE_CALL, new ServiceNameCompletionProvider())
+class JavaCompletionContributor extends CompletionContributor{
+    JavaCompletionContributor(){
+        this.extend(CompletionType.BASIC, OfbizPatterns.JAVA_ENTITY_CALL, new EntityNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizPatterns.JAVA_SERVICE_CALL, new ServiceNameCompletionProvider())
     }
 }

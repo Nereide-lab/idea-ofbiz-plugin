@@ -41,9 +41,11 @@
 
         <!-- XML reference support -->
         <psi.referenceContributor language="XML" implementation="fr.nereide.reference.contributor.XmlReferenceContributor"/>
+        <completion.contributor order="first" language="XML" implementationClass="fr.nereide.completion.XmlCompletionContributor"/>
 
         <!-- Java reference support -->
         <psi.referenceContributor language="JAVA" implementation="fr.nereide.reference.contributor.JavaReferenceContributor"/>
+        <completion.contributor order="first" language="JAVA" implementationClass="fr.nereide.completion.JavaCompletionContributor"/>
 
         <!-- Groovy reference support -->
         <psi.referenceContributor language="Groovy" implementation="fr.nereide.reference.contributor.GroovyReferenceContributor"/>
