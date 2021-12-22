@@ -63,12 +63,24 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getMatchingElementFromXmlFiles(EntityModelFile.class, "getEntities", "getEntityName", name)
     }
 
+    List<Entity> getAllEntities() {
+        return getAllElementOfSpecificType(EntityModelFile.class, "getEntities", "getEntityName")
+    }
+
     ViewEntity getViewEntity(String name) {
         return getMatchingElementFromXmlFiles(EntityModelFile.class, "getViewEntities", "getEntityName", name)
     }
 
+    List<ViewEntity> getAllViewEntities() {
+        return getAllElementOfSpecificType(EntityModelFile.class, "getViewEntities", "getEntityName")
+    }
+
     Service getService(String name) {
         return getMatchingElementFromXmlFiles(ServiceDefFile.class, "getServices", "getName", name)
+    }
+
+    List<Service> getAllServices(){
+        return getAllElementOfSpecificType(ServiceDefFile.class, "getServices", "getName")
     }
 
     Property getProperty(String name) {
@@ -130,6 +142,20 @@ class ProjectServiceImpl implements ProjectServiceInterface {
             }
         }
         return null
+    }
+
+    private List<DomElement> getAllElementOfSpecificType(Class classFile,
+                                                         String fileElementGetterName,
+                                                         String elementValueGetterName) {
+        List resultSet = []
+        List<DomFileElement<?>> projectFiles = getClassMatchingProjectFiles(classFile, this.project)
+        for (DomFileElement<?> projectFile : projectFiles) {
+            List<DomElement> elements = projectFile.getRootElement()."$fileElementGetterName"()
+            for (DomElement element : elements) {
+                resultSet << element
+            }
+        }
+        return resultSet
     }
 
     private static List<DomFileElement<?>> getClassMatchingProjectFiles(Class classFile, Project project) {
