@@ -38,9 +38,15 @@ interface ProjectServiceInterface {
 
     Entity getEntity(String name)
 
+    List<Entity> getAllEntities()
+
     ViewEntity getViewEntity(String name)
 
+    List<ViewEntity> getAllViewEntities()
+
     Service getService(String name)
+
+    List<Service> getAllServices()
 
     Grid getGrid(String name)
 
