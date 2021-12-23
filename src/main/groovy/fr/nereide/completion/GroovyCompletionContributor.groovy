@@ -30,7 +30,7 @@ import fr.nereide.project.OfbizPatterns
 
 class GroovyCompletionContributor extends CompletionContributor{
     GroovyCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_ENTITY_CALL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_SERVICE_CALL, new ServiceNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
     }
 }

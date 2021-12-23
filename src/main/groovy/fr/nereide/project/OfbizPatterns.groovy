@@ -22,6 +22,7 @@ import com.intellij.patterns.PsiElementPattern
 import com.intellij.patterns.PsiJavaPatterns
 import com.intellij.patterns.XmlNamedElementPattern
 import com.intellij.patterns.XmlPatterns
+import com.intellij.psi.PsiElement
 import org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns
 
 class OfbizPatterns {
@@ -176,7 +177,6 @@ class OfbizPatterns {
     //                      GROOVY
     // =============================================================
     public static final PsiElementPattern GROOVY_SERVICE_CALL = PlatformPatterns.psiElement().andOr(
-
             GroovyPatterns.groovyLiteralExpression()
                     .methodCallParameter(0,
                             GroovyPatterns.psiMethod().withName("runSync")
@@ -266,24 +266,30 @@ class OfbizPatterns {
                             .definedInClass("org.apache.ofbiz.base.util.UtilProperties"))
     )
 
+
+    public static final PsiElementPattern GROOVY_SERVICE_CALL_COMPL = PlatformPatterns.psiElement()
+            .inside(GROOVY_SERVICE_CALL)
+    public static final PsiElementPattern GROOVY_ENTITY_CALL_COMPL = PlatformPatterns.psiElement()
+            .inside(GROOVY_ENTITY_CALL)
+
     // =============================================================
     //                      XML
     // =============================================================
-    public static final XmlNamedElementPattern.XmlAttributePattern FORM_TARGET_PATTERN =
+    public static final XmlNamedElementPattern.XmlAttributePattern XML_URI_CALL =
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("form"))
                     .withName("target")
 
-    public static final XmlNamedElementPattern.XmlAttributePattern RESPONSE_ATTR_PATTERN =
+    public static final XmlNamedElementPattern.XmlAttributePattern XML_RESPONSE_CALL =
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("response"))
                     .withName("value")
 
-    public static final XmlNamedElementPattern.XmlAttributePattern ENTITY_NAME_ATTR_PATTERN =
+    public static final XmlNamedElementPattern.XmlAttributePattern XML_ENTITY_CALL =
             XmlPatterns.xmlAttribute()
                     .withName("entity", "entity-name", "default-entity-name", "rel-entity-name")
 
-    public static final XmlNamedElementPattern.XmlAttributePattern SERVICE_NAME_ATTR_PATTERN = XmlPatterns.xmlAttribute().andOr(
+    public static final XmlNamedElementPattern.XmlAttributePattern XML_SERVICE_DEF_CALL = XmlPatterns.xmlAttribute().andOr(
             XmlPatterns.xmlAttribute()
                     .withName("service", "service-name"),
             XmlPatterns.xmlAttribute()
@@ -294,7 +300,7 @@ class OfbizPatterns {
                     .withName("invoke")
     )
 
-    public static final XmlNamedElementPattern.XmlAttributePattern JAVA_METHOD_ATTR_PATTERN = XmlPatterns.xmlAttribute().andOr(
+    public static final XmlNamedElementPattern.XmlAttributePattern XML_JAVA_EVENT_CALL = XmlPatterns.xmlAttribute().andOr(
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("event")
                             .withChild(XmlPatterns.xmlAttribute().withName("type")
@@ -309,11 +315,11 @@ class OfbizPatterns {
                     .withName("invoke")
     )
     
-    public static final XmlNamedElementPattern.XmlAttributePattern PROPERTY_ATTR_PATTERN =
+    public static final XmlNamedElementPattern.XmlAttributePattern XML_LABEL_CALL =
             XmlPatterns.xmlAttribute().withValue(
                     XmlPatterns.string().startsWith('${uiLabelMap.'))
 
-    public static final XmlNamedElementPattern.XmlAttributePattern FORM_LOCATION_PATTERN = XmlPatterns.xmlAttribute().andOr(
+    public static final XmlNamedElementPattern.XmlAttributePattern XML_FORM_CALL = XmlPatterns.xmlAttribute().andOr(
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("include-form"))
                     .withName("name"),
@@ -328,7 +334,7 @@ class OfbizPatterns {
                     .withName("extends")
     )
 
-    public static final XmlNamedElementPattern.XmlAttributePattern MENU_LOCATION_PATTERN = XmlPatterns.xmlAttribute().andOr(
+    public static final XmlNamedElementPattern.XmlAttributePattern XML_MENU_CALL = XmlPatterns.xmlAttribute().andOr(
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("screenlet"))
                     .withName("navigation-menu-name"),
@@ -337,14 +343,14 @@ class OfbizPatterns {
                     .withName("name")
     )
 
-    public static final XmlNamedElementPattern.XmlAttributePattern FILE_LOCATION_ATTR_PATTERN =
+    public static final XmlNamedElementPattern.XmlAttributePattern XML_FILE_CALL =
             XmlPatterns.xmlAttribute()
                     .withName("entity-xml-url", "xml-resource", "extends-resource",
                             "resourceValue", "resource", "template", "page", "location", "image-location",
                             "component-location", "fallback-location", "default-fallback-location",
                             "default-location", "path")
 
-    public static final XmlNamedElementPattern.XmlAttributePattern SCREEN_ATTR_PATTERN = XmlPatterns.xmlAttribute().andOr(
+    public static final XmlNamedElementPattern.XmlAttributePattern XML_SCREEN_CALL = XmlPatterns.xmlAttribute().andOr(
             XmlPatterns.xmlAttribute()
                     .withParent(XmlPatterns.xmlTag().withName("include-screen"))
                     .withName("name"),
@@ -354,4 +360,9 @@ class OfbizPatterns {
                                     XmlPatterns.string().equalTo("screen"))))
                     .withName("page")
     )
+
+    public static final PsiElementPattern XML_ENTITY_CALL_COMPL = PlatformPatterns.psiElement()
+            .inside(XML_ENTITY_CALL)
+    public static final PsiElementPattern XML_SERVICE_DEF_CALL_COMPL = PlatformPatterns.psiElement()
+            .inside(XML_SERVICE_DEF_CALL)
 }
