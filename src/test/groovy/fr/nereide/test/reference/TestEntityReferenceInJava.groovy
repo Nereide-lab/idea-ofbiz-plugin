@@ -15,7 +15,7 @@
  * under the License.
  */
 
-package fr.nereide
+package fr.nereide.test.reference
 
 
 import com.intellij.psi.PsiReference

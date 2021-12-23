@@ -15,7 +15,7 @@
  * under the License.
  */
 
-package fr.nereide
+package fr.nereide.test.reference
 
 import com.intellij.lang.properties.references.PropertyReference
 import com.intellij.psi.PsiClass
@@ -25,7 +25,7 @@ import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 
 class GenericRefTestCase extends LightJavaCodeInsightFixtureTestCase {
 
-    PsiClass addEntityQuery() {
+    void addEntityQuery() {
         myFixture.addClass("package org.apache.ofbiz.entity.util;" +
                 " public class EntityQuery {" +
                 " static void use(){ return null;}" +
@@ -33,14 +33,14 @@ class GenericRefTestCase extends LightJavaCodeInsightFixtureTestCase {
                 "}")
     }
 
-    PsiClass addDynamicEntity() {
+    void addDynamicEntity() {
         myFixture.addClass("package org.apache.ofbiz.entity.model;" +
                 " public class DynamicViewEntity {" +
                 " static void addMemberEntity(){ return null;}" +
                 "}")
     }
 
-    PsiClass addDelegator() {
+    void addDelegator() {
         myFixture.addClass("package org.apache.ofbiz.entity;" +
                 " public interface Delegator {" +
                 " static void find(){ return null;}" +
