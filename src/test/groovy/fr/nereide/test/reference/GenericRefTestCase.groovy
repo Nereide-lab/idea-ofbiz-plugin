@@ -22,34 +22,17 @@ import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
+import fr.nereide.test.GenericOfbizPluginTestCase
 
-class GenericRefTestCase extends LightJavaCodeInsightFixtureTestCase {
+class GenericRefTestCase extends GenericOfbizPluginTestCase {
 
-    void addEntityQuery() {
-        myFixture.addClass("package org.apache.ofbiz.entity.util;" +
-                " public class EntityQuery {" +
-                " static void use(){ return null;}" +
-                " static void from(){ return null;}" +
-                "}")
-    }
-
-    void addDynamicEntity() {
-        myFixture.addClass("package org.apache.ofbiz.entity.model;" +
-                " public class DynamicViewEntity {" +
-                " static void addMemberEntity(){ return null;}" +
-                "}")
-    }
-
-    void addDelegator() {
-        myFixture.addClass("package org.apache.ofbiz.entity;" +
-                " public interface Delegator {" +
-                " static void find(){ return null;}" +
-                " static void findOne(){ return null;}" +
-                " static void findList(){ return null;}" +
-                " static void findAll(){ return null;}" +
-                "}")
-    }
-
+    /**
+     * Workaround for groovy refs, which brings back a multi ref object.
+     * We don't want that
+     * @param testFolder
+     * @param type
+     * @return
+     */
     PsiReference setupFixtureForTestAndGetRef(String testFolder, String type) {
         myFixture.copyDirectoryToProject(testFolder, '')
         myFixture.configureByFile("${testFolder}/MyTestClass.${type}")
