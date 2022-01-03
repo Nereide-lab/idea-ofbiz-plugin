@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added completion for service and entity name in groovy, java, and xml files
-- Added some tests for entity reference and screen reference (not exhaustive though)
+- Added tests for completion
+- Added some tests for entity reference and screen reference (not extensive though)
 
 ### Changed
 

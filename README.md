@@ -25,6 +25,8 @@ Navigate by `CTRL`+`CLICK` (default)
 - References in controller.xml file
   -You van navigate towards a view map definition, a service or java method in an event
 
+#### COMPLETION 
+Auto-completion by `CTRL`+`SPACE` for entity and view names as well as service names in java, xml, and groovy
 
 **Feel free to contribute !**
 ## CONTRIBUTE
