@@ -16,10 +16,10 @@ package org.apache.ofbiz
  * under the License.
  */
 
-import org.apache.ofbiz.entity.util.EntityQuery;
+import org.apache.ofbiz.entity.util.EntityQuery
 
 class EntityCompletionInGroovyFile {
     void myTestFunction() {
-        def provider = EntityQuery.from('<caret>')
+        def myVar = EntityQuery.from('<caret>')
     }
 }
