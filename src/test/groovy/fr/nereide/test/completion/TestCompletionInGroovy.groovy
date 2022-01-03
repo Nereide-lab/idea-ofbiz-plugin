@@ -31,4 +31,14 @@ class TestCompletionInGroovy extends GenericComplTestCase {
         assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
 
+    void testServiceCompletionInGroovyFile() {
+        addDispatcher()
+        myFixture.copyDirectoryToProject('assets', '')
+        myFixture.configureByFile('ServiceCompletionInGroovyFile.groovy')
+        myFixture.complete(CompletionType.BASIC)
+        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
+        assertNotNull(lookupElementStrings)
+        assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
+    }
+
 }
