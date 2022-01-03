@@ -17,25 +17,15 @@
 
 package fr.nereide.test.completion
 
-import com.intellij.codeInsight.completion.CompletionType
-
 class TestCompletionInXml extends GenericComplTestCase {
 
     void testEntityCompletionInXmlFile() {
-        myFixture.copyDirectoryToProject('assets', '')
-        myFixture.configureByFile('EntityCompletionInXmlFile.xml')
-        myFixture.complete(CompletionType.BASIC)
-        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
-        assertNotNull(lookupElementStrings)
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('EntityCompletionInXmlFile.xml')
         assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
 
     void testServiceCompletionInXmlFile() {
-        myFixture.copyDirectoryToProject('assets', '')
-        myFixture.configureByFile('ServiceCompletionInXmlFile.xml')
-        myFixture.complete(CompletionType.BASIC)
-        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
-        assertNotNull(lookupElementStrings)
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('ServiceCompletionInXmlFile.xml')
         assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
     }
 }

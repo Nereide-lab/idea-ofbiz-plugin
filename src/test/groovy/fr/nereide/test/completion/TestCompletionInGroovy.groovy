@@ -17,27 +17,17 @@
 
 package fr.nereide.test.completion
 
-import com.intellij.codeInsight.completion.CompletionType
-
 class TestCompletionInGroovy extends GenericComplTestCase {
 
     void testEntityCompletionInGroovyFile() {
         addEntityQuery()
-        myFixture.copyDirectoryToProject('assets', '')
-        myFixture.configureByFile('EntityCompletionInGroovyFile.groovy')
-        myFixture.complete(CompletionType.BASIC)
-        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
-        assertNotNull(lookupElementStrings)
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('EntityCompletionInGroovyFile.groovy')
         assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
 
     void testServiceCompletionInGroovyFile() {
         addDispatcher()
-        myFixture.copyDirectoryToProject('assets', '')
-        myFixture.configureByFile('ServiceCompletionInGroovyFile.groovy')
-        myFixture.complete(CompletionType.BASIC)
-        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
-        assertNotNull(lookupElementStrings)
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('ServiceCompletionInGroovyFile.groovy')
         assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
     }
 

@@ -17,13 +17,26 @@
 
 package fr.nereide.test.completion
 
+import com.intellij.codeInsight.completion.CompletionType
 import fr.nereide.test.GenericOfbizPluginTestCase
 
 class GenericComplTestCase extends GenericOfbizPluginTestCase {
 
     @Override
+    protected void setUp() {
+        super.setUp()
+        myFixture.copyDirectoryToProject('assets', '')
+    }
+
+    @Override
     protected String getTestDataPath() {
         return "src/test/resources/testData/completion"
+    }
+
+    protected List<String> configureByFileAndGetLookupsElements(String file) {
+        myFixture.configureByFile(file)
+        myFixture.complete(CompletionType.BASIC)
+        return myFixture.getLookupElementStrings()
     }
 
     /**

@@ -17,28 +17,18 @@
 
 package fr.nereide.test.completion
 
-import com.intellij.codeInsight.completion.CompletionType
-
 class TestCompletionInJava extends GenericComplTestCase {
     TestCompletionInJava() {}
 
     void testEntityCompletionInJavaFile() {
         addEntityQuery()
-        myFixture.copyDirectoryToProject('assets', '')
-        myFixture.configureByFile('EntityCompletionInJavaFile.java')
-        myFixture.complete(CompletionType.BASIC)
-        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
-        assertNotNull(lookupElementStrings)
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('EntityCompletionInJavaFile.java')
         assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
 
     void testServiceCompletionInJavaFile() {
         addDispatcher()
-        myFixture.copyDirectoryToProject('assets', '')
-        myFixture.configureByFile('ServiceCompletionInJavaFile.java')
-        myFixture.complete(CompletionType.BASIC)
-        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
-        assertNotNull(lookupElementStrings)
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('ServiceCompletionInJavaFile.java')
         assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
     }
 }
