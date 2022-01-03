@@ -15,17 +15,13 @@
  * under the License.
  */
 
-package fr.nereide.completion
+package org.apache.ofbiz;
 
-import com.intellij.codeInsight.completion.CompletionContributor
-import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.common.EntityNameCompletionProvider
-import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
-import fr.nereide.project.OfbizPatterns
+import org.apache.ofbiz.service.LocalDispatcher;
 
-class GroovyCompletionContributor extends CompletionContributor{
-    GroovyCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
+public class EntityCompletionInJavaFile {
+    public void myTestFunction() {
+        LocalDispatcher dispatcher = new LocalDispatcher();
+        var result = dispatcher.runSync('<caret>');
     }
 }

@@ -25,7 +25,7 @@ import fr.nereide.project.OfbizPatterns
 
 class JavaCompletionContributor extends CompletionContributor{
     JavaCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizPatterns.JAVA_ENTITY_CALL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizPatterns.JAVA_SERVICE_CALL, new ServiceNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizPatterns.JAVA_ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizPatterns.JAVA_SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
     }
 }

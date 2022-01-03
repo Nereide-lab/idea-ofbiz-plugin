@@ -173,6 +173,11 @@ class OfbizPatterns {
                     .withName("getMessage").definedInClass("org.apache.ofbiz.base.util.UtilProperties"))
     )
 
+    public static final PsiElementPattern JAVA_SERVICE_CALL_COMPL = PlatformPatterns.psiElement()
+            .inside(JAVA_SERVICE_CALL)
+    public static final PsiElementPattern JAVA_ENTITY_CALL_COMPL = PlatformPatterns.psiElement()
+            .inside(JAVA_ENTITY_CALL)
+
     // =============================================================
     //                      GROOVY
     // =============================================================

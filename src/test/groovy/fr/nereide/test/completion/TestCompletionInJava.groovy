@@ -15,17 +15,20 @@
  * under the License.
  */
 
-package fr.nereide.completion
+package fr.nereide.test.completion
 
-import com.intellij.codeInsight.completion.CompletionContributor
-import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.common.EntityNameCompletionProvider
-import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
-import fr.nereide.project.OfbizPatterns
+class TestCompletionInJava extends GenericComplTestCase {
+    TestCompletionInJava() {}
 
-class GroovyCompletionContributor extends CompletionContributor{
-    GroovyCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
+    void testEntityCompletionInJavaFile() {
+        addEntityQuery()
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('EntityCompletionInJavaFile.java')
+        assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
+    }
+
+    void testServiceCompletionInJavaFile() {
+        addDispatcher()
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('ServiceCompletionInJavaFile.java')
+        assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
     }
 }

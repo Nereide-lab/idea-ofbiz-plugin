@@ -15,17 +15,34 @@
  * under the License.
  */
 
-package fr.nereide.completion
+package fr.nereide.test.completion
 
-import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.common.EntityNameCompletionProvider
-import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
-import fr.nereide.project.OfbizPatterns
+import fr.nereide.test.GenericOfbizPluginTestCase
 
-class GroovyCompletionContributor extends CompletionContributor{
-    GroovyCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
+class GenericComplTestCase extends GenericOfbizPluginTestCase {
+
+    @Override
+    protected void setUp() {
+        super.setUp()
+        myFixture.copyDirectoryToProject('assets', '')
+    }
+
+    @Override
+    protected String getTestDataPath() {
+        return "src/test/resources/testData/completion"
+    }
+
+    protected List<String> configureByFileAndGetLookupsElements(String file) {
+        myFixture.configureByFile(file)
+        myFixture.complete(CompletionType.BASIC)
+        return myFixture.getLookupElementStrings()
+    }
+
+    /**
+     * Temporary workaround for tests to stay green
+     */
+    void testDummy() {
+        assert true
     }
 }
