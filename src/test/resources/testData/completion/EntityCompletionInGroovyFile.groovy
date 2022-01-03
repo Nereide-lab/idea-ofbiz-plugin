@@ -1,3 +1,4 @@
+package org.apache.ofbiz
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -15,17 +16,10 @@
  * under the License.
  */
 
-package fr.nereide.completion
+import org.apache.ofbiz.entity.util.EntityQuery;
 
-import com.intellij.codeInsight.completion.CompletionContributor
-import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.common.EntityNameCompletionProvider
-import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
-import fr.nereide.project.OfbizPatterns
-
-class GroovyCompletionContributor extends CompletionContributor{
-    GroovyCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY_SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
+class EntityCompletionInGroovyFile {
+    void myTestFunction() {
+        def provider = EntityQuery.from('<caret>')
     }
 }

@@ -19,7 +19,7 @@ package fr.nereide.test.completion
 
 import fr.nereide.test.GenericOfbizPluginTestCase
 
-class GenericComplTestCase extends GenericOfbizPluginTestCase{
+class GenericComplTestCase extends GenericOfbizPluginTestCase {
 
     @Override
     protected String getTestDataPath() {

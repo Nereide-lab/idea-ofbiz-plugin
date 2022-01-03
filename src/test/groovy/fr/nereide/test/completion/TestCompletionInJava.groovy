@@ -18,13 +18,11 @@
 package fr.nereide.test.completion
 
 import com.intellij.codeInsight.completion.CompletionType
-import com.intellij.psi.PsiElement
 
-class TestCompletionInJava extends GenericComplTestCase{
-    TestCompletionInJava(){}
+class TestCompletionInJava extends GenericComplTestCase {
+    TestCompletionInJava() {}
 
-    void testEntityCompletionInJavaFile(){
-        addDelegator()
+    void testEntityCompletionInJavaFile() {
         addEntityQuery()
         myFixture.copyDirectoryToProject('assets', '')
         myFixture.configureByFile('EntityCompletionInJavaFile.java')

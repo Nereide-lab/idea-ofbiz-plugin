@@ -19,9 +19,9 @@ package fr.nereide.test.completion
 
 import com.intellij.codeInsight.completion.CompletionType
 
-class TestCompletionInXml extends GenericComplTestCase{
+class TestCompletionInXml extends GenericComplTestCase {
 
-    void testEntityCompletionInXmlFile(){
+    void testEntityCompletionInXmlFile() {
         myFixture.copyDirectoryToProject('assets', '')
         myFixture.configureByFile('EntityCompletionInXmlFile.xml')
         myFixture.complete(CompletionType.BASIC)
