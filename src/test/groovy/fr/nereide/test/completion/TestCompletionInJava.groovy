@@ -24,15 +24,13 @@ class TestCompletionInJava extends GenericComplTestCase{
     TestCompletionInJava(){}
 
     void testEntityCompletionInJavaFile(){
-//        addDelegator()
-//        addEntityQuery()
-//        myFixture.copyDirectoryToProject('assets', '')
-//        myFixture.configureByFile('EntityCompletionInJavaFile.java')
-//        PsiElement element = myFixture.getElementAtCaret()
-//        myFixture.complete(CompletionType.BASIC)
-//        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
-//        assertNotNull(lookupElementStrings)
-//        assertSameElements(lookupElementStrings, "Yenefer")
-        assert true
+        addDelegator()
+        addEntityQuery()
+        myFixture.copyDirectoryToProject('assets', '')
+        myFixture.configureByFile('EntityCompletionInJavaFile.java')
+        myFixture.complete(CompletionType.BASIC)
+        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
+        assertNotNull(lookupElementStrings)
+        assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
 }
