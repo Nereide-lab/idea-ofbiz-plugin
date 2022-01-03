@@ -31,4 +31,14 @@ class TestCompletionInJava extends GenericComplTestCase {
         assertNotNull(lookupElementStrings)
         assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
+
+    void testServiceCompletionInJavaFile() {
+        addDispatcher()
+        myFixture.copyDirectoryToProject('assets', '')
+        myFixture.configureByFile('ServiceCompletionInJavaFile.java')
+        myFixture.complete(CompletionType.BASIC)
+        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
+        assertNotNull(lookupElementStrings)
+        assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
+    }
 }

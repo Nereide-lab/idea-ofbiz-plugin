@@ -22,28 +22,38 @@ import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 class GenericOfbizPluginTestCase extends LightJavaCodeInsightFixtureTestCase {
 
     void addEntityQuery() {
-        myFixture.addClass("package org.apache.ofbiz.entity.util;" +
-                " public class EntityQuery {" +
-                " static void use(){ return null;}" +
-                " static void from(){ return null;}" +
-                "}")
+        myFixture.addClass('package org.apache.ofbiz.entity.util;' +
+                ' public class EntityQuery {' +
+                ' static void use(){ return null;}' +
+                ' static void from(){ return null;}' +
+                '}')
     }
 
     void addDynamicEntity() {
-        myFixture.addClass("package org.apache.ofbiz.entity.model;" +
-                " public class DynamicViewEntity {" +
-                " static void addMemberEntity(){ return null;}" +
-                "}")
+        myFixture.addClass('package org.apache.ofbiz.entity.model;' +
+                ' public class DynamicViewEntity {' +
+                ' static void addMemberEntity(){ return null;}' +
+                '}')
     }
 
     void addDelegator() {
-        myFixture.addClass("package org.apache.ofbiz.entity;" +
-                " public interface Delegator {" +
-                " static void find(){ return null;}" +
-                " static void findOne(){ return null;}" +
-                " static void findList(){ return null;}" +
-                " static void findAll(){ return null;}" +
-                "}")
+        myFixture.addClass('package org.apache.ofbiz.entity;' +
+                ' public interface Delegator {' +
+                ' static void find(){ return null;}' +
+                ' static void findOne(){ return null;}' +
+                ' static void findList(){ return null;}' +
+                ' static void findAll(){ return null;}' +
+                '}')
+    }
+
+    void addDispatcher() {
+        myFixture.addClass('package org.apache.ofbiz.service;' +
+                'public interface LocalDispatcher {' +
+                'void runSync(){ return null;}' +
+                'void runAsync(){ return null;}' +
+                'void runSyncIgnore(){ return null;}' +
+                'void runSyncNewTrans(){ return null;}' +
+                '}')
     }
 
     /**
