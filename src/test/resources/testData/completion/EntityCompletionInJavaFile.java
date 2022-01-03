@@ -5,6 +5,6 @@ import org.apache.ofbiz.entity.Delegator;
 
 public class EntityCompletionInJavaFile {
     public void myTestFunction() {
-        var testData = EntityQuery.from("Yen");
+        var testData = EntityQuery.from("<caret>");
     }
 }

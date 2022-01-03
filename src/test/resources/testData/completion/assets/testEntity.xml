@@ -5,4 +5,7 @@
     <entity entity-name="Yenefer">
         <field name="mageId" type="id"/>
     </entity>
+    <entity entity-name="Roach">
+        <field name="horseId" type="id"/>
+    </entity>
 </entitymodel>

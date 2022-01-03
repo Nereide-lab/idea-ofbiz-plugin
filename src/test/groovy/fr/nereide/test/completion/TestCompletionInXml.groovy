@@ -15,17 +15,18 @@
  * under the License.
  */
 
-package fr.nereide.completion
+package fr.nereide.test.completion
 
-import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.common.EntityNameCompletionProvider
-import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
-import fr.nereide.project.OfbizPatterns
 
-class JavaCompletionContributor extends CompletionContributor{
-    JavaCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizPatterns.JAVA_ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizPatterns.JAVA_SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
+class TestCompletionInXml extends GenericComplTestCase{
+
+    void testEntityCompletionInXmlFile(){
+        myFixture.copyDirectoryToProject('assets', '')
+        myFixture.configureByFile('EntityCompletionInXmlFile.xml')
+        myFixture.complete(CompletionType.BASIC)
+        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
+        assertNotNull(lookupElementStrings)
+        assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
 }
