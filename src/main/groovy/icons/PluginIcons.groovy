@@ -17,7 +17,6 @@
 
 package icons
 
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.LayeredIcon
 
