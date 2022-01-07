@@ -19,11 +19,20 @@ package fr.nereide.dom
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileDescription
+import icons.PluginIcons
+import org.jetbrains.annotations.Nullable
+
+import javax.swing.Icon
 
 class ServiceDefFileDescription<S extends DomElement> extends DomFileDescription {
     private static final String rootTagName = "services"
 
     ServiceDefFileDescription() {
         super(ServiceDefFile.class, rootTagName)
+    }
+
+    @Nullable
+    Icon getFileIcon(int flags) {
+        return PluginIcons.SERVICE_FILE_ICON
     }
 }

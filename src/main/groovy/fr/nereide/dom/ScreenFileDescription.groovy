@@ -19,11 +19,20 @@ package fr.nereide.dom
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileDescription
+import icons.PluginIcons
+import org.jetbrains.annotations.Nullable
+
+import javax.swing.Icon
 
 class ScreenFileDescription<S extends DomElement> extends DomFileDescription {
     private static final String rootTagName = "screens"
 
     ScreenFileDescription() {
         super(ScreenFile.class, rootTagName)
+    }
+
+    @Nullable
+    Icon getFileIcon(int flags) {
+        return PluginIcons.SCREEN_FILE_ICON
     }
 }
