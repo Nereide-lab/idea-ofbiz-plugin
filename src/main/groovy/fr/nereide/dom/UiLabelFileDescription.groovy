@@ -19,11 +19,20 @@ package fr.nereide.dom
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileDescription
+import icons.PluginIcons
+import org.jetbrains.annotations.Nullable
+
+import javax.swing.Icon
 
 class UiLabelFileDescription<S extends DomElement> extends DomFileDescription {
     private static final String rootTagName = "resource"
 
     UiLabelFileDescription() {
         super(UiLabelFile.class, rootTagName)
+    }
+
+    @Nullable
+    Icon getFileIcon(int flags) {
+        return PluginIcons.LABEL_FILE_ICON
     }
 }

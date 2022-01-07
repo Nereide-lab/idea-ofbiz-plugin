@@ -19,6 +19,10 @@ package fr.nereide.dom
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileDescription
+import icons.PluginIcons
+import org.jetbrains.annotations.Nullable
+
+import javax.swing.Icon
 
 class EntityModelFileDescription<S extends DomElement> extends DomFileDescription {
     private static final String rootTagName = "entitymodel"
@@ -27,4 +31,8 @@ class EntityModelFileDescription<S extends DomElement> extends DomFileDescriptio
         super(EntityModelFile.class, rootTagName)
     }
 
+    @Nullable
+    Icon getFileIcon(int flags) {
+        return PluginIcons.ENTITY_FILE_ICON
+    }
 }
