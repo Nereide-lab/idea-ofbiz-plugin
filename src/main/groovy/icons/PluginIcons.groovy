@@ -17,6 +17,7 @@
 
 package icons
 
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.LayeredIcon
 
@@ -29,6 +30,7 @@ class PluginIcons {
     static final int TOTAL_HEIGHT = 16
     static final int LABEL_WIDTH = 15
     static final int LABEL_HEIGHT = 7
+    static final int MIDDLE = 8
     static final int LABEL_X_OFFSET = TOTAL_WIDTH - LABEL_WIDTH
     static final int LABEL_Y_OFFSET = TOTAL_HEIGHT - LABEL_HEIGHT
 
@@ -38,6 +40,10 @@ class PluginIcons {
     static final Icon FORM_FILE_ICON = new LayeredIcon(2)
     static final Icon CONTROLLER_FILE_ICON = new LayeredIcon(2)
     static final Icon LABEL_FILE_ICON = new LayeredIcon(2)
+
+    static final Icon ENTITY_ICON = new LayeredIcon(2)
+    static final Icon VIEW_ENTITY_ICON = new LayeredIcon(2)
+    static final Icon SERVICE_ICON = new LayeredIcon(2)
 
     static {
         ENTITY_FILE_ICON.setIcon(BASE_LOGO, 0)
@@ -64,5 +70,16 @@ class PluginIcons {
         LABEL_FILE_ICON.setIcon(IconLoader.getIcon('/icons/LBL.svg', PluginIcons.class),
                 1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
 
+        ENTITY_ICON.setIcon(BASE_LOGO, 0)
+        ENTITY_ICON.setIcon(IconLoader.getIcon('/icons/BDD_Entity.svg', PluginIcons.class),
+                1, MIDDLE, MIDDLE)
+
+        VIEW_ENTITY_ICON.setIcon(BASE_LOGO, 0)
+        VIEW_ENTITY_ICON.setIcon(IconLoader.getIcon('/icons/BDD_View.svg', PluginIcons.class),
+                1, MIDDLE, MIDDLE)
+
+        SERVICE_ICON.setIcon(BASE_LOGO, 0)
+        SERVICE_ICON.setIcon(IconLoader.getIcon('/icons/Gear.svg', PluginIcons.class),
+                1, MIDDLE, MIDDLE)
     }
 }

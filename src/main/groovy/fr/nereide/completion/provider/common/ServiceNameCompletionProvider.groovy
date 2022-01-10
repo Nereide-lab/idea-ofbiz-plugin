@@ -27,10 +27,11 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.util.ProcessingContext
 import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.utils.MiscUtils
+import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
 
 class ServiceNameCompletionProvider extends CompletionProvider<CompletionParameters> {
-    private static final Logger LOG = Logger.getInstance(ServiceNameCompletionProvider.class)
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
@@ -41,7 +42,9 @@ class ServiceNameCompletionProvider extends CompletionProvider<CompletionParamet
 
         for (Service service : servicesNames) {
             LookupElement lookupElement = LookupElementBuilder.create(service.getName())
-            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 1000))
+                    .withIcon(PluginIcons.SERVICE_ICON)
+                    .withTailText(" Component:${MiscUtils.getComponentName(service)}" as String, true)
+            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
         }
     }
 }

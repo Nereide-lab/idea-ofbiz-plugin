@@ -23,15 +23,15 @@ import com.intellij.codeInsight.completion.CompletionResultSet
 import com.intellij.codeInsight.completion.PrioritizedLookupElement
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.util.ProcessingContext
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.ViewEntity
 import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.utils.MiscUtils
+import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
 
 class EntityNameCompletionProvider extends CompletionProvider<CompletionParameters> {
-    private static final Logger LOG = Logger.getInstance(CompletionProvider.class)
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
@@ -40,13 +40,18 @@ class EntityNameCompletionProvider extends CompletionProvider<CompletionParamete
         ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
         List entities = structureService.getAllEntities()
         List viewEntities = structureService.getAllViewEntities()
+
         for (Entity entity : entities) {
             LookupElement lookupElement = LookupElementBuilder.create(entity.getEntityName())
-            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 1000))
+                    .withIcon(PluginIcons.ENTITY_ICON)
+                    .withTailText(" Component:${MiscUtils.getComponentName(entity)}" as String, true)
+            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
         }
         for (ViewEntity view : viewEntities) {
             LookupElement lookupElement = LookupElementBuilder.create(view.getEntityName())
-            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 1000))
+                    .withIcon(PluginIcons.VIEW_ENTITY_ICON)
+                    .withTailText(" Component:${MiscUtils.getComponentName(view)}" as String, true)
+            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
         }
     }
 }
