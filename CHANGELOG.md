@@ -7,9 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
-- Added completion for service and entity name in groovy, java, and xml files
+
+### Changed
+
+### Fixed
+
+## [1.1.0]
+
+### Added
+- Added (pretty) completion for service and entity name in groovy, java, and xml files
 - Added tests for completion
 - Added some tests for entity reference and screen reference (not extensive though)
+- Added a plugin main logo
+- Added some custom icons for some files as a test, more to come later.
 
 ### Changed
 
