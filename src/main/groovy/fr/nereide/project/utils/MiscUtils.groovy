@@ -33,18 +33,18 @@ class MiscUtils {
         PsiFile file = element.getXmlElement().getContainingFile()
         PsiDirectory dir = file.getParent()
 
-        for (def i = 0; i < 10; i++) {
-            XmlFile compoFile = dir.findFile('ofbiz-component.xml') as XmlFile
-            if (!compoFile) {
-                try {
+        try {
+            for (def i = 0; i < 10; i++) {
+                XmlFile compoFile = dir.findFile('ofbiz-component.xml') as XmlFile
+                if (!compoFile) {
                     dir = dir.getParent()
-                } catch (NullPointerException ignored) {
-                    return null
+                } else {
+                    return dir.getName()
                 }
-            } else {
-                return dir.getName()
             }
+            return null
+        } catch (NullPointerException ignored) {
+            return null
         }
-        return null
     }
 }
