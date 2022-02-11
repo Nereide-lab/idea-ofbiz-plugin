@@ -19,6 +19,7 @@ package fr.nereide.completion
 
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
+import fr.nereide.completion.provider.common.EntityFieldNameCompletionProvider
 import fr.nereide.completion.provider.common.EntityNameCompletionProvider
 import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
 import fr.nereide.project.OfbizPatterns
@@ -27,5 +28,6 @@ class GroovyCompletionContributor extends CompletionContributor{
     GroovyCompletionContributor(){
         this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
         this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY.SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizPatterns.GROOVY.GENERIC_VALUE_ATTRIBUTE_COMPL, new EntityFieldNameCompletionProvider())
     }
 }
