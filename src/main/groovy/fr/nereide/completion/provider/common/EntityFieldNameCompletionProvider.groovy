@@ -23,6 +23,7 @@ import com.intellij.codeInsight.completion.CompletionResultSet
 import com.intellij.codeInsight.completion.PrioritizedLookupElement
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
+import com.intellij.psi.PsiElement
 import com.intellij.util.ProcessingContext
 import org.jetbrains.annotations.NotNull
 
@@ -30,6 +31,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
+        PsiElement element = parameters.getPosition()
         LookupElement el = LookupElementBuilder.create('GENERIC_VALUE_ATTRIBUTE_TROLO')
         result.addElement(PrioritizedLookupElement.withPriority(el, 3000))
     }

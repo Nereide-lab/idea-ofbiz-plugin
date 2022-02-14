@@ -3,12 +3,10 @@ package fr.nereide.project.pattern
 import com.intellij.patterns.PatternCondition
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiType
-import com.intellij.psi.PsiVariable
-import com.intellij.psi.util.TypeConversionUtil
 import com.intellij.util.ProcessingContext
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
-import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElement
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
 class FieldTypeCondition extends PatternCondition<PsiElement> {
     String expectedType
@@ -19,12 +17,11 @@ class FieldTypeCondition extends PatternCondition<PsiElement> {
     }
 
     @Override
-    boolean accepts(@NotNull PsiElement psiElement, ProcessingContext context) {
+    boolean accepts(@NotNull PsiElement element, ProcessingContext context) {
         boolean isMatch = false
-        GroovyPsiElement
-        if (psiElement instanceof PsiVariable) {
-            PsiType elType = TypeConversionUtil.erasure((psiElement as PsiVariable).getType())
-            isMatch = elType.getCanonicalText() == expectedType
+        if (element instanceof GrReferenceExpression) {
+            PsiType myType = (element as GrReferenceExpression).getType()
+            isMatch = myType.getCanonicalText() == expectedType
         }
         return isMatch
     }

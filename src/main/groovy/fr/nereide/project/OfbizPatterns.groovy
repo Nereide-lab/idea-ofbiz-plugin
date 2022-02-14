@@ -23,6 +23,7 @@ import com.intellij.patterns.PsiJavaPatterns
 import com.intellij.patterns.XmlNamedElementPattern
 import com.intellij.patterns.XmlPatterns
 import fr.nereide.project.pattern.FieldTypeCondition
+import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElement
 import org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns
 
 class OfbizPatterns {
@@ -275,31 +276,16 @@ class OfbizPatterns {
         )
 
         public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE = PlatformPatterns.psiElement().andOr(
-                GroovyPatterns.groovyElement().afterLeafSkipping(
-                        GroovyPatterns.groovyElement().withText("."),
-                        GroovyPatterns.psiReferenceExpression().with(new FieldTypeCondition(
-                                "GenericValueTypePattern",
-                                "org.apache.ofbiz.entity.GenericValue"))
-                ),
-                GroovyPatterns.groovyElement().afterLeafSkipping(
-                        GroovyPatterns.groovyElement().withText("."),
-                        GroovyPatterns.psiReferenceExpression().with(new FieldTypeCondition(
-                                "GenericValueTypePattern",
-                                "GenericValue"))
-                ),
                 PlatformPatterns.psiElement().afterLeafSkipping(
                         PlatformPatterns.psiElement().withText("."),
-                        PlatformPatterns.psiElement().with(new FieldTypeCondition(
-                                "GenericValueTypePattern",
-                                "org.apache.ofbiz.entity.GenericValue"))
-                ),
-                PlatformPatterns.psiElement().afterLeafSkipping(
-                        PlatformPatterns.psiElement().withText("."),
-                        PlatformPatterns.psiElement().with(new FieldTypeCondition(
-                                "GenericValueTypePattern",
-                                "GenericValue"))
+                        PlatformPatterns.psiElement().withParent(
+                                PlatformPatterns.psiElement().with( new FieldTypeCondition(
+                                    "GenericValueTypePattern",
+                                    "org.apache.ofbiz.entity.GenericValue"))
+                        )
                 )
         )
+
         public static final PsiElementPattern SERVICE_CALL_COMPL = PlatformPatterns.psiElement()
                 .inside(SERVICE_CALL)
         public static final PsiElementPattern ENTITY_CALL_COMPL = PlatformPatterns.psiElement()
