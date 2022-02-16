@@ -19,7 +19,7 @@ package fr.nereide.completion
 
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.common.EntityFieldNameCompletionProvider
+import fr.nereide.completion.provider.groovy.EntityFieldNameCompletionProvider
 import fr.nereide.completion.provider.common.EntityNameCompletionProvider
 import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
 import fr.nereide.project.OfbizPatterns

@@ -55,7 +55,7 @@ interface EntityModelFile extends DomElement {
         GenericAttributeValue<String> getPackageName()
 
         @SubTagList("field")
-        List<DomElement> getFields()
+        List<EntityField> getFields()
 
         @SubTagList("prim-key")
         List<DomElement> getPrimKeys()
@@ -101,5 +101,15 @@ interface EntityModelFile extends DomElement {
 
         @SubTagList("key-map")
         List<DomElement> getKeyMaps()
+    }
+
+    interface EntityField extends DomElement {
+        @NameValue
+        @XmlValue
+        @Attribute("name")
+        GenericAttributeValue<String> getName()
+
+        @Attribute("type")
+        GenericAttributeValue<String> getType()
     }
 }

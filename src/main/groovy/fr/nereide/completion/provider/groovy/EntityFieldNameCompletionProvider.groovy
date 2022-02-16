@@ -15,7 +15,7 @@
  * under the License.
  */
 
-package fr.nereide.completion.provider.common
+package fr.nereide.completion.provider.groovy
 
 import com.intellij.codeInsight.completion.CompletionParameters
 import com.intellij.codeInsight.completion.CompletionProvider
@@ -26,6 +26,10 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.util.ProcessingContext
+import fr.nereide.dom.EntityModelFile.ViewEntity
+import fr.nereide.dom.EntityModelFile.Entity
+import fr.nereide.dom.EntityModelFile.EntityField
+import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
@@ -35,10 +39,12 @@ import java.util.regex.Pattern
 
 class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionParameters> {
     private static final Logger LOG = Logger.getInstance(EntityFieldNameCompletionProvider.class)
-
+    private static final Pattern ENTITY_NAME_PATTERN = Pattern.compile("(['\"](.*?)['\"])")
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
+        ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
+
         PsiElement element = parameters.getPosition()
         try {
             PsiElement genericValueRef = element.getParent().getFirstChild()
@@ -49,16 +55,39 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
 
             String declarationExpr = initialVariable.getInitializerGroovy().getText()
 
-            final Pattern ENTITY_NAME_PATTERN = Pattern.compile("(['\"](.*?)['\"])")
             Matcher matcher = ENTITY_NAME_PATTERN.matcher(declarationExpr)
-
             String entityName = matcher.find() ? matcher.group(0) : null
+            entityName = entityName.substring(1, entityName.length() - 1)
 
-            String str = 'trolo'
+            Entity entity = structureService.getEntity(entityName)
+            ViewEntity view = structureService.getViewEntity(entityName)
+
+            if (entity) {
+                generateLookupWithEntity(entity, result)
+            } else if (view) {
+
+            } else {
+
+            }
+
         } catch (Exception e) {
             LOG.info(e)
         }
         LookupElement el = LookupElementBuilder.create('GENERIC_VALUE_ATTRIBUTE_TROLO')
         result.addElement(PrioritizedLookupElement.withPriority(el, 3000))
+    }
+
+    private static void generateLookupWithEntity(Entity entity, result) {
+        List<EntityField> fields = entity.getFields()
+        fields.forEach {
+            String fieldName = it.getName()
+            if (fieldName) createFieldLookupElementWithEntity(entity.getEntityName().getRawText(), fieldName, result)
+        }
+    }
+
+    private static void createFieldLookupElementWithEntity(String elementName, String fieldName, CompletionResultSet result) {
+        LookupElement el = LookupElementBuilder.create(fieldName)
+            .withTailText("(from entity ${elementName})", true)
+        result.addElement(PrioritizedLookupElement.withPriority(el, 1000))
     }
 }
