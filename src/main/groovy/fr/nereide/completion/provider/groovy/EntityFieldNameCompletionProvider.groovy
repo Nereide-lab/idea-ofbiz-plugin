@@ -17,6 +17,8 @@
 
 package fr.nereide.completion.provider.groovy
 
+import fr.nereide.dom.EntityModelFile
+
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import java.util.stream.Collectors
@@ -32,6 +34,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.util.ProcessingContext
 import fr.nereide.dom.EntityModelFile.AliasAllExclude
 import fr.nereide.dom.EntityModelFile.AliasAll
+import fr.nereide.dom.EntityModelFile.Alias
 import fr.nereide.dom.EntityModelFile.ViewEntity
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.EntityField
@@ -67,6 +70,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                 String viewName = view.getEntityName()
                 List<EntityAliasObject> memberEntities = getMemberEntities(view, structureService)
                 List<AliasAll> aliasAlls = view.getAliasAllList()
+                List<Alias> aliases = view.getAliases()
                 if (aliasAlls.size() > 0) {
                     aliasAlls.forEach { aliasAllEl ->
                         String prefix = aliasAllEl.getPrefix()
@@ -83,7 +87,15 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                         }
                     }
                 }
-                // TODO : reste à faire les champs selectionnés au compte goute
+                if(aliases.size() > 0) {
+                    aliases.forEach { alias ->
+                        String presentedName = alias.getName()
+                        String originEntityName = memberEntities.find { it.entityAlias == alias.getEntityAlias() as String }
+                                .getEntity()
+                                .getEntityName()
+                        createFieldLookupElement("${viewName}.${originEntityName}", presentedName, result)
+                    }
+                }
             }
         } catch (ProcessCanceledException e) {
             LOG.info(e)

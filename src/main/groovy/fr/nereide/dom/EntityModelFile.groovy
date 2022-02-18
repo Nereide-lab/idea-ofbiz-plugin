@@ -87,7 +87,7 @@ interface EntityModelFile extends DomElement {
         List<AliasAll> getAliasAllList()
 
         @SubTagList("alias")
-        List<DomElement> getAliases()
+        List<Alias> getAliases()
 
         @SubTagList("view-link")
         List<RelationsTag> getViewLinks()
@@ -138,5 +138,16 @@ interface EntityModelFile extends DomElement {
     interface AliasAllExclude extends DomElement {
         @Attribute("field")
         GenericAttributeValue<String> getExcludedField()
+    }
+
+    interface Alias extends DomElement {
+        @Attribute("name")
+        GenericAttributeValue<String> getName()
+
+        @Attribute("entity-alias")
+        GenericAttributeValue<String> getEntityAlias()
+
+        @SubTagList("field")
+        GenericAttributeValue<String> getField()
     }
 }
