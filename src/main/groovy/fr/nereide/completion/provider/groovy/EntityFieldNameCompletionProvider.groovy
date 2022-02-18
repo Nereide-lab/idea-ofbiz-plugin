@@ -102,10 +102,6 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         } catch (Exception e) {
             LOG.error(e)
         }
-
-        // TODO : penser à virer cet ajout
-        LookupElement el = LookupElementBuilder.create('GENERIC_VALUE_ATTRIBUTE_TROLO')
-        result.addElement(PrioritizedLookupElement.withPriority(el, 3000))
     }
 
     private List<EntityAliasObject> getMemberEntities(ViewEntity view, ProjectServiceInterface structureService) {
