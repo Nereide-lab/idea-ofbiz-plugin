@@ -81,7 +81,10 @@ interface EntityModelFile extends DomElement {
         GenericAttributeValue<String> getPackageName()
 
         @SubTagList("member-entity")
-        List<DomElement> getMemberEntities()
+        List<ViewEntityMember> getMemberEntities()
+
+        @SubTagList("alias-all")
+        List<AliasAll> getAliasAllList()
 
         @SubTagList("alias")
         List<DomElement> getAliases()
@@ -111,5 +114,29 @@ interface EntityModelFile extends DomElement {
 
         @Attribute("type")
         GenericAttributeValue<String> getType()
+    }
+
+    interface ViewEntityMember extends DomElement {
+        @Attribute("entity-alias")
+        GenericAttributeValue<String> getEntityAlias()
+
+        @Attribute("entity-name")
+        GenericAttributeValue<String> getEntityName()
+    }
+
+    interface AliasAll extends DomElement {
+        @Attribute("entity-alias")
+        GenericAttributeValue<String> getEntityAlias()
+
+        @Attribute("prefix")
+        GenericAttributeValue<String> getPrefix()
+
+        @SubTagList("exclude")
+        List<AliasAllExclude> getAliasAllExcludes()
+    }
+
+    interface AliasAllExclude extends DomElement {
+        @Attribute("field")
+        GenericAttributeValue<String> getExcludedField()
     }
 }
