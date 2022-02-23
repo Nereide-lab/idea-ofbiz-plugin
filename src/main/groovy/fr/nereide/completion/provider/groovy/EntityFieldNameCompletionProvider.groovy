@@ -65,48 +65,32 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
 
             if (entity) {
                 generateLookupWithEntity(entity, result)
-            } else if (view) {
-                // TODO : gérer le cas de vue d'entité de vue d'entité
-                /** TODO : NPE, gérer le cas des vues plus bas.
-                 * Exporter ce bloc dans une fonction, avec contrôle de la présence de vues dans les alias ?
-                 * Ca permettrait de gérer la récursivité normalement, sur le papier et dans mon cerveau.
-                 * List<> getNestedView (view)
-                 * if(list > 0) {
-                 *  fait l'algo pour chaque vue nested
-                 * }
-                 */
-                boolean hasNested = view.getMemberEntities().stream().anyMatch {
-                    structureService.getViewEntity(it.getEntityName().getValue()) != null
-                }
-
+            } else if (view) { // TODO : gérer le cas de vue d'entité de vue d'entité dans l'objet
                 String viewName = view.getEntityName()
-                List<EntityAliasObject> memberEntities = getMemberEntities(view, structureService)
-                List<AliasAll> aliasAlls = view.getAliasAllList()
                 List<Alias> aliases = view.getAliases()
-                if (aliasAlls.size() > 0) {
-                    aliasAlls.forEach { aliasAllEl ->
-                        String prefix = aliasAllEl.getPrefix()
-                        String curentALias = aliasAllEl.getEntityAlias()
-                        if (!hasExcludes(aliasAllEl)) {
-                            Entity currentEntity = memberEntities.find { it.entityAlias == curentALias }.getEntity()
-                            if (prefix) generateLookupFromViewWithEntityAndPrefix(currentEntity, viewName, prefix, result)
-                            else generateLookupFromViewWithEntity(currentEntity, viewName, result)
-                        } else {
-                            List<AliasAllExclude> excludedFields = aliasAllEl.getAliasAllExcludes()
-                            Entity currentEntity = memberEntities.find { it.entityAlias == curentALias }.getEntity()
-                            if (prefix) generateLookupFromViewWithEntityAndExcludesAndPrefix(currentEntity, viewName, prefix, excludedFields, result)
-                            else generateLookupFromViewWithEntityAndExcludes(currentEntity, viewName, excludedFields, result)
-                        }
+                List<AliasAll> aliasAlls = view.getAliasAllList()
+
+                List<EntityAliasObject> memberEntities = getMemberEntities(view, structureService)
+                aliasAlls.forEach { aliasAllEl ->
+                    String prefix = aliasAllEl.getPrefix()
+                    String curentALias = aliasAllEl.getEntityAlias()
+                    if (!hasExcludes(aliasAllEl)) {
+                        Entity currentEntity = memberEntities.find { it.entityAlias == curentALias }.getEntity()
+                        if (prefix) generateLookupFromViewWithEntityAndPrefix(currentEntity, viewName, prefix, result)
+                        else generateLookupFromViewWithEntity(currentEntity, viewName, result)
+                    } else {
+                        List<AliasAllExclude> excludedFields = aliasAllEl.getAliasAllExcludes()
+                        Entity currentEntity = memberEntities.find { it.entityAlias == curentALias }.getEntity()
+                        if (prefix) generateLookupFromViewWithEntityAndExcludesAndPrefix(currentEntity, viewName, prefix, excludedFields, result)
+                        else generateLookupFromViewWithEntityAndExcludes(currentEntity, viewName, excludedFields, result)
                     }
                 }
-                if(aliases.size() > 0) {
-                    aliases.forEach { alias ->
-                        String presentedName = alias.getName()
-                        String originEntityName = memberEntities.find { it.entityAlias == alias.getEntityAlias() as String }
-                                .getEntity()
-                                .getEntityName()
-                        createFieldLookupElement("${viewName}.${originEntityName}", presentedName, result)
-                    }
+                aliases.forEach { alias ->
+                    String presentedName = alias.getName()
+                    String originEntityName = memberEntities.find { it.entityAlias == alias.getEntityAlias() as String }
+                            .getEntity()
+                            .getEntityName()
+                    createFieldLookupElement("${viewName}.${originEntityName}", presentedName, result)
                 }
             }
         } catch (ProcessCanceledException e) {
