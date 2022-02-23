@@ -76,7 +76,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                  * }
                  */
                 boolean hasNested = view.getMemberEntities().stream().anyMatch {
-                    structureService.getViewEntity(it.getEntityName().value)
+                    structureService.getViewEntity(it.getEntityName().getValue()) != null
                 }
 
                 String viewName = view.getEntityName()

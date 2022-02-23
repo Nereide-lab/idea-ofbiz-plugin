@@ -5,6 +5,7 @@
     <entity entity-name="Yenefer">
         <field name="mageId" type="id"/>
     </entity>
+
     <entity entity-name="Roach">
         <field name="horseId" type="id"/>
     </entity>
@@ -12,5 +13,17 @@
     <entity entity-name="DunderMifflin">
         <field name="michael" type="id"/>
     </entity>
+
+    <entity entity-name="Sabre">
+        <field name="gabriel" type="id"/>
+        <field name="jo" type="string"/>
+    </entity>
+
+    <view-entity entity-name="PaperCompany">
+        <member-entity entity-alias="DM" entity-name="DunderMifflin"/>
+        <member-entity entity-alias="SB" entity-name="Sabre"/>
+        <alias-all entity-alias="SB"/>
+        <alias entity-alias="DM" name="michael"/>
+    </view-entity>
 
 </entitymodel>
