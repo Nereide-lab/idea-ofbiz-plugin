@@ -67,6 +67,18 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                 generateLookupWithEntity(entity, result)
             } else if (view) {
                 // TODO : gérer le cas de vue d'entité de vue d'entité
+                /** TODO : NPE, gérer le cas des vues plus bas.
+                 * Exporter ce bloc dans une fonction, avec contrôle de la présence de vues dans les alias ?
+                 * Ca permettrait de gérer la récursivité normalement, sur le papier et dans mon cerveau.
+                 * List<> getNestedView (view)
+                 * if(list > 0) {
+                 *  fait l'algo pour chaque vue nested
+                 * }
+                 */
+                boolean hasNested = view.getMemberEntities().stream().anyMatch {
+                    structureService.getViewEntity(it.getEntityName().value)
+                }
+
                 String viewName = view.getEntityName()
                 List<EntityAliasObject> memberEntities = getMemberEntities(view, structureService)
                 List<AliasAll> aliasAlls = view.getAliasAllList()

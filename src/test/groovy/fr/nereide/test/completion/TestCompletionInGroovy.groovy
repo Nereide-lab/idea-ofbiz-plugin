@@ -17,6 +17,7 @@
 
 package fr.nereide.test.completion
 
+
 class TestCompletionInGroovy extends GenericComplTestCase {
 
     void testEntityCompletionInGroovyFile() {
@@ -30,5 +31,11 @@ class TestCompletionInGroovy extends GenericComplTestCase {
         List<String> lookupElementStrings = configureByFileAndGetLookupsElements('ServiceCompletionInGroovyFile.groovy')
         assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
     }
+
+    void testEntityFieldCompletionInGroovyFile(){
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('EntityFieldCompletionInGroovyFile.groovy')
+        assertContainsElements(lookupElementStrings, 'michael')
+    }
+
 
 }

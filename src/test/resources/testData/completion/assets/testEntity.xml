@@ -8,4 +8,9 @@
     <entity entity-name="Roach">
         <field name="horseId" type="id"/>
     </entity>
+
+    <entity entity-name="DunderMifflin">
+        <field name="michael" type="id"/>
+    </entity>
+
 </entitymodel>
