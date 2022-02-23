@@ -32,10 +32,9 @@ class TestCompletionInGroovy extends GenericComplTestCase {
         assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
     }
 
-    void testEntityFieldCompletionInGroovyFile(){
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('EntityFieldCompletionInGroovyFile.groovy')
+    void testEntityFieldCompletionInGroovyFileWithSimpleEntity(){
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('EntityFieldCompletionInGroovyFileWithSimpleEntity.groovy')
         assertContainsElements(lookupElementStrings, 'michael')
     }
-
 
 }
