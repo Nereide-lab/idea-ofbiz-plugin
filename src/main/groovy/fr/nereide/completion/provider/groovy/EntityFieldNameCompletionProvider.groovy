@@ -77,12 +77,16 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
     static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, CompletionResultSet result) {
         List<Alias> aliases = view.getAliases()
         List<AliasAll> aliasAllList = view.getAliasAllList()
-        List<ViewEntityMember> members = view.getMemberEntities()
-        for (it in aliasAllList) {
-            String alias = it.getEntityAlias()
-            String entityName = members.find { it.getEntityAlias().getValue() == alias }.getEntityName()
-            Entity currentEntity = structureService.getEntity(entityName)
-            generateLookupsWithEntity(currentEntity, result)
+        if (aliasAllList) {
+            List<ViewEntityMember> members = view.getMemberEntities()
+            aliasAllList.each { aliasAllElmt ->
+                String alias = aliasAllElmt.getEntityAlias()
+                String entityName = members.find { it.getEntityAlias().getValue() == alias }?.getEntityName()
+                if (entityName) {
+                    Entity currentEntity = structureService.getEntity(entityName)
+                    generateLookupsWithEntity(currentEntity, result)
+                }
+            }
         }
         generateLookupElementsFromName(aliases, view, result)
     }
