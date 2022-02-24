@@ -83,10 +83,9 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         if (aliasAllList) {
             List<ViewEntityMember> members = view.getMemberEntities()
             aliasAllList.each { aliasAllElmt ->
-                String alias = aliasAllElmt.getEntityAlias()
-                List<AliasAllExclude> excludedFields = aliasAllElmt.getAliasAllExcludes()
-                String entityName = members.find { it.getEntityAlias().getValue() == alias }?.getEntityName()
+                String entityName = getEntityNameFromAlias(aliasAllElmt, members)
                 if (entityName) {
+                    List<String> excludedFields = getListOfExcludedFieldNames(aliasAllElmt)
                     Entity currentEntity = structureService.getEntity(entityName)
                     if (currentEntity) {
                         generateLookupsWithEntity(currentEntity, excludedFields, result)
@@ -100,14 +99,22 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         generateLookupElementsFromName(aliases, view, result)
     }
 
+    private static String getEntityNameFromAlias(AliasAll aliasAllElmt, List<ViewEntityMember> members) {
+        String alias = aliasAllElmt.getEntityAlias()
+        return members.find { it.getEntityAlias().getValue() == alias }?.getEntityName()
+    }
+
+    private static List<String> getListOfExcludedFieldNames(AliasAll aliasAllElmt) {
+        return aliasAllElmt.getAliasAllExcludes().collect { it.getField().getValue() }
+    }
+
     private static void generateLookupsWithEntity(Entity entity, result) {
         generateLookupsWithEntity(entity, [], result)
     }
 
-    private static void generateLookupsWithEntity(Entity entity, List<AliasAllExclude> excludedFields, result) {
-        List excludedFieldsName = excludedFields.collect { it.getField().getValue() }
+    private static void generateLookupsWithEntity(Entity entity, List<String> excludedFields, result) {
         List<EntityField> fields = entity.getFields().findAll { entityField ->
-            !excludedFieldsName.contains(entityField.getName().getValue())
+            !excludedFields.contains(entityField.getName().getValue())
         }
         generateLookupElementsFromName(fields, entity, result)
     }
