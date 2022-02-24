@@ -28,7 +28,6 @@ import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.DomElement
-import fr.nereide.dom.EntityModelFile.AliasAllExclude
 import fr.nereide.dom.EntityModelFile.ViewEntityMember
 import fr.nereide.dom.EntityModelFile.Alias
 import fr.nereide.dom.EntityModelFile.AliasAll
@@ -80,20 +79,21 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
     }
 
     static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, List<String> excludedFields,
-                                                                                                CompletionResultSet result, index) {
+                                        CompletionResultSet result, index) {
         if (index >= 10) return // infinite loop workaround
         List<Alias> aliases = view.getAliases()
         List<AliasAll> aliasAllList = view.getAliasAllList()
         if (aliasAllList) {
             List<ViewEntityMember> members = view.getMemberEntities()
             aliasAllList.each { aliasAllElmt ->
+                String currentPrefix = aliasAllElmt.getPrefix().getValue()
                 String entityName = getEntityNameFromAlias(aliasAllElmt, members)
                 if (entityName) {
                     List<String> currentExcludedFields = getListOfExcludedFieldNames(aliasAllElmt)
                     if (currentExcludedFields) currentExcludedFields.addAll(excludedFields)
                     Entity currentEntity = structureService.getEntity(entityName)
                     if (currentEntity) {
-                        generateLookupsWithEntity(currentEntity, currentExcludedFields, result)
+                        generateLookupsWithEntity(currentEntity, currentPrefix, currentExcludedFields, result)
                     } else {
                         ViewEntity currentView = structureService.getViewEntity(entityName)
                         generateLookupsWithView(currentView, structureService, currentExcludedFields, result, index + 1)
@@ -114,19 +114,23 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
     }
 
     private static void generateLookupsWithEntity(Entity entity, result) {
-        generateLookupsWithEntity(entity, [], result)
+        generateLookupsWithEntity(entity, null, [], result)
     }
 
-    private static void generateLookupsWithEntity(Entity entity, List<String> excludedFields, result) {
+    private static void generateLookupsWithEntity(Entity entity, String prefix, List<String> excludedFields, result) {
         List<EntityField> fields = entity.getFields().findAll { entityField ->
             !excludedFields.contains(entityField.getName().getValue())
         }
-        generateLookupElementsFromName(fields, entity, result)
+        generateLookupElementsFromName(fields, prefix, entity, result)
     }
 
-    private static generateLookupElementsFromName(List<DomElement> fields, DomElement entity, CompletionResultSet result) {
+    private static generateLookupElementsFromName(aliases, view, result) {
+        generateLookupElementsFromName(aliases, null, view, result)
+    }
+
+    private static generateLookupElementsFromName(List<DomElement> fields, String prefix, DomElement entity, CompletionResultSet result) {
         fields.forEach {
-            String fieldName = it.getName()
+            String fieldName = "${prefix?:''}${it.getName()}"
             if (fieldName) createFieldLookupElement(entity.getEntityName().getRawText(), fieldName, result)
         }
     }

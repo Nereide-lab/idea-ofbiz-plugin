@@ -65,6 +65,17 @@
         </alias-all>
     </view-entity>
 
+    <entity entity-name="Malcolm">
+        <field name="reese" type="id"/>
+        <field name="francis" type="String"/>
+        <field name="lois" type="String"/>
+    </entity>
 
+    <view-entity entity-name="InTheMiddle">
+        <member-entity entity-alias="MA" entity-name="Malcolm"/>
+        <member-entity entity-alias="ML" entity-name="Malcolm"/>
+        <alias-all entity-alias="MA" prefix="bigshovel"/>
+        <alias-all entity-alias="ML"/>
+    </view-entity>
 
 </entitymodel>
