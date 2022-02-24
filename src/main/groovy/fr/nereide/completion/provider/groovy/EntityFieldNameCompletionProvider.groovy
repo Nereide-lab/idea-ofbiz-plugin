@@ -65,7 +65,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                 generateLookupsWithEntity(entity, result)
             } else {
                 ViewEntity view = structureService.getViewEntity(entityName)
-                generateLookupsWithView(view, structureService, result)
+                generateLookupsWithView(view, structureService, result, 0)
             }
         } catch (ProcessCanceledException e) {
             LOG.info(e)
@@ -74,7 +74,9 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         }
     }
 
-    static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, CompletionResultSet result) {
+    static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, CompletionResultSet result,
+                                        index) {
+        if (index >= 10) return // infinite loop workaround
         List<Alias> aliases = view.getAliases()
         List<AliasAll> aliasAllList = view.getAliasAllList()
         if (aliasAllList) {
@@ -86,7 +88,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                     Entity currentEntity = structureService.getEntity(entityName)
                     if (!currentEntity) {
                         ViewEntity currentView = structureService.getViewEntity(entityName)
-                        generateLookupsWithView(currentView, structureService, result)
+                        generateLookupsWithView(currentView, structureService, result, index + 1)
                     } else {
                         generateLookupsWithEntity(currentEntity, result)
                     }

@@ -38,4 +38,11 @@
         <alias-all entity-alias="DC"/>
     </view-entity>
 
+    <view-entity entity-name="RecursiveView">
+        <member-entity entity-alias="RC" entity-name="RecursiveView"/>
+        <member-entity entity-alias="DC" entity-name="DunderCorporate"/>
+        <alias-all entity-alias="RC"/>
+        <alias-all entity-alias="DC"/>
+    </view-entity>
+
 </entitymodel>
