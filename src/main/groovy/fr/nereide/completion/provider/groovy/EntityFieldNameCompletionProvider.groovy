@@ -27,6 +27,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
 import com.intellij.util.ProcessingContext
+import com.intellij.util.xml.DomElement
 import fr.nereide.dom.EntityModelFile.Alias
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.EntityField
@@ -59,10 +60,10 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             Entity entity = structureService.getEntity(entityName)
 
             if (entity) {
-                generateLookupWithEntity(entity, result)
+                generateLookupsWithEntity(entity, result)
             } else {
                 ViewEntity view = structureService.getViewEntity(entityName)
-                generateLookuspWithView(view, result)
+                generateLookupsWithView(view, result)
             }
         } catch (ProcessCanceledException e) {
             LOG.info(e)
@@ -71,16 +72,17 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         }
     }
 
-    static void generateLookuspWithView(ViewEntity view, CompletionResultSet result) {
+    static void generateLookupsWithView(ViewEntity view, CompletionResultSet result) {
         List<Alias> aliases = view.getAliases()
-        aliases.forEach {
-            String fieldName = it.getName()
-            if (fieldName) createFieldLookupElement(view.getEntityName().getRawText(), fieldName, result)
-        }
+        generateLookupElementsFromName(aliases, view, result)
     }
 
-    private static void generateLookupWithEntity(Entity entity, result) {
+    private static void generateLookupsWithEntity(Entity entity, result) {
         List<EntityField> fields = entity.getFields()
+        generateLookupElementsFromName(fields, entity, result)
+    }
+
+    private static generateLookupElementsFromName(List<DomElement> fields, DomElement entity, CompletionResultSet result) {
         fields.forEach {
             String fieldName = it.getName()
             if (fieldName) createFieldLookupElement(entity.getEntityName().getRawText(), fieldName, result)
