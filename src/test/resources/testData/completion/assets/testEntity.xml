@@ -78,4 +78,9 @@
         <alias-all entity-alias="ML"/>
     </view-entity>
 
+    <view-entity entity-name="LifeIsUnfair">
+        <member-entity entity-alias="ITM" entity-name="InTheMiddle"/>
+        <alias-all entity-alias="ITM" prefix="genius"/>
+    </view-entity>
+
 </entitymodel>

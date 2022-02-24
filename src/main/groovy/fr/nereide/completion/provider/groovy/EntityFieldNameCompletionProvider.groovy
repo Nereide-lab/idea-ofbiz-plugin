@@ -75,10 +75,10 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
     }
 
     static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, CompletionResultSet result, index) {
-        generateLookupsWithView(view, structureService, [], result, index)
+        generateLookupsWithView(view, null, structureService, [], result, index)
     }
 
-    static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, List<String> excludedFields,
+    static void generateLookupsWithView(ViewEntity view, String prefix, ProjectServiceInterface structureService, List<String> excludedFields,
                                         CompletionResultSet result, index) {
         if (index >= 10) return // infinite loop workaround
         List<Alias> aliases = view.getAliases()
@@ -86,7 +86,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         if (aliasAllList) {
             List<ViewEntityMember> members = view.getMemberEntities()
             aliasAllList.each { aliasAllElmt ->
-                String currentPrefix = aliasAllElmt.getPrefix().getValue()
+                String currentPrefix = "${prefix ?: ''}${aliasAllElmt.getPrefix().getValue() ?: ''}" as String
                 String entityName = getEntityNameFromAlias(aliasAllElmt, members)
                 if (entityName) {
                     List<String> currentExcludedFields = getListOfExcludedFieldNames(aliasAllElmt)
@@ -96,7 +96,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                         generateLookupsWithEntity(currentEntity, currentPrefix, currentExcludedFields, result)
                     } else {
                         ViewEntity currentView = structureService.getViewEntity(entityName)
-                        generateLookupsWithView(currentView, structureService, currentExcludedFields, result, index + 1)
+                        generateLookupsWithView(currentView, currentPrefix, structureService, currentExcludedFields, result, index + 1)
                     }
                 }
             }
@@ -130,7 +130,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
 
     private static generateLookupElementsFromName(List<DomElement> fields, String prefix, DomElement entity, CompletionResultSet result) {
         fields.forEach {
-            String fieldName = "${prefix?:''}${it.getName()}"
+            String fieldName = "${prefix ?: ''}${it.getName()}"
             if (fieldName) createFieldLookupElement(entity.getEntityName().getRawText(), fieldName, result)
         }
     }
