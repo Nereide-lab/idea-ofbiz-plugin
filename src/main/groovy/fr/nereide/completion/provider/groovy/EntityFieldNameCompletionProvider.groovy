@@ -101,7 +101,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                 }
             }
         }
-        generateLookupElementsFromName(aliases, view, result)
+        generateLookupElementsFromName(aliases, result)
     }
 
     private static String getEntityNameFromAlias(AliasAll aliasAllElmt, List<ViewEntityMember> members) {
@@ -121,17 +121,17 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         List<EntityField> fields = entity.getFields().findAll { entityField ->
             !excludedFields.contains(entityField.getName().getValue())
         }
-        generateLookupElementsFromName(fields, prefix, entity, result)
+        generateLookupElementsFromName(fields, prefix, result)
     }
 
-    private static generateLookupElementsFromName(aliases, view, result) {
-        generateLookupElementsFromName(aliases, null, view, result)
+    private static generateLookupElementsFromName(aliases, result) {
+        generateLookupElementsFromName(aliases, null, result)
     }
 
-    private static generateLookupElementsFromName(List<DomElement> fields, String prefix, DomElement entity, CompletionResultSet result) {
+    private static generateLookupElementsFromName(List<DomElement> fields, String prefix, CompletionResultSet result) {
         fields.forEach {
             String fieldName = "${prefix ?: ''}${it.getName()}"
-            if (fieldName) createFieldLookupElement(entity.getEntityName().getRawText(), fieldName, result)
+            if (fieldName) createFieldLookupElement(fieldName, result)
         }
     }
 
@@ -141,9 +141,8 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         return entityName ? entityName.substring(1, entityName.length() - 1) : null
     }
 
-    private static void createFieldLookupElement(String elementName, String fieldName, CompletionResultSet result) {
+    private static void createFieldLookupElement(String fieldName, CompletionResultSet result) {
         LookupElement el = LookupElementBuilder.create(fieldName)
-                .withTailText("(from entity ${elementName})", true)
         result.addElement(PrioritizedLookupElement.withPriority(el, 1000))
     }
 }
