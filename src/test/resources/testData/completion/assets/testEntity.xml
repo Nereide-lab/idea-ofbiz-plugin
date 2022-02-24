@@ -45,4 +45,16 @@
         <alias-all entity-alias="DC"/>
     </view-entity>
 
+    <entity entity-name="CobraKai">
+        <field name="johnny" type="id"/>
+        <field name="daniel" type="String"/>
+    </entity>
+
+    <view-entity entity-name="CobraKaiNeverDie">
+        <member-entity entity-alias="CK" entity-name="CobraKai"/>
+        <alias-all entity-alias="CK">
+            <exclude field="daniel"/>
+        </alias-all>
+    </view-entity>
+
 </entitymodel>

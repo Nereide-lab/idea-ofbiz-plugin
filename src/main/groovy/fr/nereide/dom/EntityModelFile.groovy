@@ -137,7 +137,7 @@ interface EntityModelFile extends DomElement {
 
     interface AliasAllExclude extends DomElement {
         @Attribute("field")
-        GenericAttributeValue<String> getExcludedField()
+        GenericAttributeValue<String> getField()
     }
 
     interface Alias extends DomElement {
@@ -147,7 +147,7 @@ interface EntityModelFile extends DomElement {
         @Attribute("entity-alias")
         GenericAttributeValue<String> getEntityAlias()
 
-        @SubTagList("field")
+        @Attribute("field")
         GenericAttributeValue<String> getField()
     }
 }

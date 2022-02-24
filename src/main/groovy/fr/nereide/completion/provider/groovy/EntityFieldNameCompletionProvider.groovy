@@ -28,6 +28,7 @@ import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.DomElement
+import fr.nereide.dom.EntityModelFile.AliasAllExclude
 import fr.nereide.dom.EntityModelFile.ViewEntityMember
 import fr.nereide.dom.EntityModelFile.Alias
 import fr.nereide.dom.EntityModelFile.AliasAll
@@ -83,11 +84,12 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             List<ViewEntityMember> members = view.getMemberEntities()
             aliasAllList.each { aliasAllElmt ->
                 String alias = aliasAllElmt.getEntityAlias()
+                List<AliasAllExclude> excludedFields = aliasAllElmt.getAliasAllExcludes()
                 String entityName = members.find { it.getEntityAlias().getValue() == alias }?.getEntityName()
                 if (entityName) {
                     Entity currentEntity = structureService.getEntity(entityName)
                     if (currentEntity) {
-                        generateLookupsWithEntity(currentEntity, result)
+                        generateLookupsWithEntity(currentEntity, excludedFields, result)
                     } else {
                         ViewEntity currentView = structureService.getViewEntity(entityName)
                         generateLookupsWithView(currentView, structureService, result, index + 1)
@@ -99,7 +101,14 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
     }
 
     private static void generateLookupsWithEntity(Entity entity, result) {
-        List<EntityField> fields = entity.getFields()
+        generateLookupsWithEntity(entity, [], result)
+    }
+
+    private static void generateLookupsWithEntity(Entity entity, List<AliasAllExclude> excludedFields, result) {
+        List excludedFieldsName = excludedFields.collect { it.getField().getValue() }
+        List<EntityField> fields = entity.getFields().findAll { entityField ->
+            !excludedFieldsName.contains(entityField.getName().getValue())
+        }
         generateLookupElementsFromName(fields, entity, result)
     }
 
