@@ -28,7 +28,9 @@ import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.DomElement
+import fr.nereide.dom.EntityModelFile.ViewEntityMember
 import fr.nereide.dom.EntityModelFile.Alias
+import fr.nereide.dom.EntityModelFile.AliasAll
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.EntityField
 import fr.nereide.dom.EntityModelFile.ViewEntity
@@ -63,7 +65,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                 generateLookupsWithEntity(entity, result)
             } else {
                 ViewEntity view = structureService.getViewEntity(entityName)
-                generateLookupsWithView(view, result)
+                generateLookupsWithView(view, structureService, result)
             }
         } catch (ProcessCanceledException e) {
             LOG.info(e)
@@ -72,8 +74,16 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         }
     }
 
-    static void generateLookupsWithView(ViewEntity view, CompletionResultSet result) {
+    static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, CompletionResultSet result) {
         List<Alias> aliases = view.getAliases()
+        List<AliasAll> aliasAllList = view.getAliasAllList()
+        List<ViewEntityMember> members = view.getMemberEntities()
+        for (it in aliasAllList) {
+            String alias = it.getEntityAlias()
+            String entityName = members.find { it.getEntityAlias().getValue() == alias }.getEntityName()
+            Entity currentEntity = structureService.getEntity(entityName)
+            generateLookupsWithEntity(currentEntity, result)
+        }
         generateLookupElementsFromName(aliases, view, result)
     }
 
