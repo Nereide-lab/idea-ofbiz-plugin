@@ -17,11 +17,6 @@
 
 package fr.nereide.completion.provider.groovy
 
-import fr.nereide.dom.EntityModelFile
-
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-import java.util.stream.Collectors
 import com.intellij.codeInsight.completion.CompletionParameters
 import com.intellij.codeInsight.completion.CompletionProvider
 import com.intellij.codeInsight.completion.CompletionResultSet
@@ -32,16 +27,17 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
 import com.intellij.util.ProcessingContext
-import fr.nereide.dom.EntityModelFile.AliasAllExclude
-import fr.nereide.dom.EntityModelFile.AliasAll
 import fr.nereide.dom.EntityModelFile.Alias
-import fr.nereide.dom.EntityModelFile.ViewEntity
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.EntityField
+import fr.nereide.dom.EntityModelFile.ViewEntity
 import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.NotNull
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
+
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionParameters> {
     private static final Logger LOG = Logger.getInstance(EntityFieldNameCompletionProvider.class)
@@ -61,37 +57,12 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
 
             String entityName = retrieveEntityOrViewName(initialVariable.getInitializerGroovy().getText())
             Entity entity = structureService.getEntity(entityName)
-            ViewEntity view = structureService.getViewEntity(entityName)
 
             if (entity) {
                 generateLookupWithEntity(entity, result)
-            } else if (view) { // TODO : gérer le cas de vue d'entité de vue d'entité dans l'objet
-                String viewName = view.getEntityName()
-                List<Alias> aliases = view.getAliases()
-                List<AliasAll> aliasAlls = view.getAliasAllList()
-
-                List<EntityAliasObject> memberEntities = getMemberEntities(view, structureService)
-                aliasAlls.forEach { aliasAllEl ->
-                    String prefix = aliasAllEl.getPrefix()
-                    String curentALias = aliasAllEl.getEntityAlias()
-                    if (!hasExcludes(aliasAllEl)) {
-                        Entity currentEntity = memberEntities.find { it.entityAlias == curentALias }.getEntity()
-                        if (prefix) generateLookupFromViewWithEntityAndPrefix(currentEntity, viewName, prefix, result)
-                        else generateLookupFromViewWithEntity(currentEntity, viewName, result)
-                    } else {
-                        List<AliasAllExclude> excludedFields = aliasAllEl.getAliasAllExcludes()
-                        Entity currentEntity = memberEntities.find { it.entityAlias == curentALias }.getEntity()
-                        if (prefix) generateLookupFromViewWithEntityAndExcludesAndPrefix(currentEntity, viewName, prefix, excludedFields, result)
-                        else generateLookupFromViewWithEntityAndExcludes(currentEntity, viewName, excludedFields, result)
-                    }
-                }
-                aliases.forEach { alias ->
-                    String presentedName = alias.getName()
-                    String originEntityName = memberEntities.find { it.entityAlias == alias.getEntityAlias() as String }
-                            .getEntity()
-                            .getEntityName()
-                    createFieldLookupElement("${viewName}.${originEntityName}", presentedName, result)
-                }
+            } else {
+                ViewEntity view = structureService.getViewEntity(entityName)
+                generateLookuspWithView(view, result)
             }
         } catch (ProcessCanceledException e) {
             LOG.info(e)
@@ -100,18 +71,12 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         }
     }
 
-    private List<EntityAliasObject> getMemberEntities(ViewEntity view, ProjectServiceInterface structureService) {
-        List<EntityAliasObject> memberEntities = []
-        view.getMemberEntities().forEach {
-            String currentEntityName = it.getEntityName().getRawText()
-            String currentEntityAlias = it.getEntityAlias().getRawText()
-            if (currentEntityName) {
-                memberEntities << (new EntityAliasObject(currentEntityName,
-                        currentEntityAlias, structureService.getEntity(currentEntityName))
-                )
-            }
+    static void generateLookuspWithView(ViewEntity view, CompletionResultSet result) {
+        List<Alias> aliases = view.getAliases()
+        aliases.forEach {
+            String fieldName = it.getName()
+            if (fieldName) createFieldLookupElement(view.getEntityName().getRawText(), fieldName, result)
         }
-        return memberEntities
     }
 
     private static void generateLookupWithEntity(Entity entity, result) {
@@ -120,59 +85,6 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             String fieldName = it.getName()
             if (fieldName) createFieldLookupElement(entity.getEntityName().getRawText(), fieldName, result)
         }
-    }
-
-    private static void generateLookupFromViewWithEntity(Entity entity, String viewName, result) {
-        List<EntityField> fields = entity.getFields()
-        fields.forEach {
-            String fieldName = it.getName()
-            if (fieldName) createFieldLookupElement("${viewName}.${entity.getEntityName()}", fieldName, result)
-        }
-    }
-
-    static void generateLookupFromViewWithEntityAndExcludesAndPrefix(Entity entity, String viewName, String prefix,
-                                                                     List<AliasAllExclude> aliasAllExcludes, CompletionResultSet result) {
-        List<String> excludedFields = aliasAllExcludes.stream().map {
-            it.getExcludedField()
-        }.collect(Collectors.toList())
-
-        List<EntityField> fields = entity.getFields()
-        fields.forEach {
-            String fieldName = it.getName()
-            if (fieldName && !isExcluded(excludedFields, fieldName)) {
-                createFieldLookupElement("${viewName}.${entity.getEntityName()}", prefix + fieldName, result)
-            }
-        }
-    }
-
-    static void generateLookupFromViewWithEntityAndExcludes(Entity entity, String viewName,
-                                                            List<AliasAllExclude> aliasAllExcludes, CompletionResultSet resultSet) {
-        List<String> excludedFields = aliasAllExcludes.stream().map { it.getExcludedField() }
-                .collect(Collectors.toList())
-
-        List<EntityField> fields = entity.getFields()
-        fields.forEach {
-            String fieldName = it.getName()
-            if (fieldName && !isExcluded(excludedFields, fieldName)) {
-                createFieldLookupElement("${viewName}.${entity.getEntityName()}", fieldName, resultSet)
-            }
-        }
-    }
-
-    static void generateLookupFromViewWithEntityAndPrefix(Entity entity, String viewName, String prefix, CompletionResultSet result) {
-        List<EntityField> fields = entity.getFields()
-        fields.forEach {
-            String fieldName = it.getName()
-            if (fieldName) createFieldLookupElement("${viewName}.${entity.getEntityName()}", prefix + fieldName, result)
-        }
-    }
-
-    private static boolean isExcluded(List<String> excludedFields, String fieldName) {
-        excludedFields.contains(fieldName)
-    }
-
-    private static boolean hasExcludes(AliasAll alias) {
-        alias.getAliasAllExcludes()
     }
 
     private static String retrieveEntityOrViewName(String declarationExpr) {
@@ -185,27 +97,5 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         LookupElement el = LookupElementBuilder.create(fieldName)
                 .withTailText("(from entity ${elementName})", true)
         result.addElement(PrioritizedLookupElement.withPriority(el, 1000))
-    }
-
-
-    /**
-     * Small utility object
-     */
-    class EntityAliasObject {
-        private final String entityName
-        private final String entityAlias
-        private final Entity entityElement
-
-        EntityAliasObject(String entityName, String entityAlias, Entity entityElement) {
-            this.entityName = entityName
-            this.entityAlias = entityAlias
-            this.entityElement = entityElement
-        }
-
-        String getName() { return entityName }
-
-        String getAlias() { return entityAlias }
-
-        Entity getEntity() { return entityElement }
     }
 }
