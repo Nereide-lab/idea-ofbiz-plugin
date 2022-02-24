@@ -75,8 +75,12 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         }
     }
 
-    static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, CompletionResultSet result,
-                                        index) {
+    static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, CompletionResultSet result, index) {
+        generateLookupsWithView(view, structureService, [], result, index)
+    }
+
+    static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, List<String> excludedFields,
+                                                                                                CompletionResultSet result, index) {
         if (index >= 10) return // infinite loop workaround
         List<Alias> aliases = view.getAliases()
         List<AliasAll> aliasAllList = view.getAliasAllList()
@@ -85,13 +89,14 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             aliasAllList.each { aliasAllElmt ->
                 String entityName = getEntityNameFromAlias(aliasAllElmt, members)
                 if (entityName) {
-                    List<String> excludedFields = getListOfExcludedFieldNames(aliasAllElmt)
+                    List<String> currentExcludedFields = getListOfExcludedFieldNames(aliasAllElmt)
+                    if (currentExcludedFields) currentExcludedFields.addAll(excludedFields)
                     Entity currentEntity = structureService.getEntity(entityName)
                     if (currentEntity) {
-                        generateLookupsWithEntity(currentEntity, excludedFields, result)
+                        generateLookupsWithEntity(currentEntity, currentExcludedFields, result)
                     } else {
                         ViewEntity currentView = structureService.getViewEntity(entityName)
-                        generateLookupsWithView(currentView, structureService, result, index + 1)
+                        generateLookupsWithView(currentView, structureService, currentExcludedFields, result, index + 1)
                     }
                 }
             }
