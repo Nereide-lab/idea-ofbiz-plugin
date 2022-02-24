@@ -12,6 +12,7 @@
 
     <entity entity-name="DunderMifflin">
         <field name="michael" type="id"/>
+        <field name="maline" type="id"/>
     </entity>
 
     <entity entity-name="Sabre">
