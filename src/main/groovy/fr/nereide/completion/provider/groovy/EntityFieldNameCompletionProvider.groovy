@@ -84,7 +84,12 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                 String entityName = members.find { it.getEntityAlias().getValue() == alias }?.getEntityName()
                 if (entityName) {
                     Entity currentEntity = structureService.getEntity(entityName)
-                    generateLookupsWithEntity(currentEntity, result)
+                    if(!currentEntity){
+                        ViewEntity currentView = structureService.getViewEntity(entityName)
+                        generateLookupsWithView(currentView, structureService, result)
+                    } else {
+                        generateLookupsWithEntity(currentEntity, result)
+                    }
                 }
             }
         }

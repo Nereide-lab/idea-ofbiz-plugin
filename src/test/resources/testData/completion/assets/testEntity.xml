@@ -35,7 +35,7 @@
         <member-entity entity-alias="PC" entity-name="PaperCompany"/>
         <member-entity entity-alias="DC" entity-name="DunderCorporate"/>
         <alias-all entity-alias="PC"/>
-        <alias-all entity-alias="DC" prefix="corpo"/>
+        <alias-all entity-alias="DC"/>
     </view-entity>
 
 </entitymodel>
