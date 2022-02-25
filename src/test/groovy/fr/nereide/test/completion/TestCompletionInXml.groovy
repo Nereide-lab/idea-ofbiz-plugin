@@ -20,12 +20,12 @@ package fr.nereide.test.completion
 class TestCompletionInXml extends GenericComplTestCase {
 
     void testEntityCompletionInXmlFile() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('EntityCompletionInXmlFile.xml')
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('xml/EntityCompletionInXmlFile.xml')
         assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
 
     void testServiceCompletionInXmlFile() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('ServiceCompletionInXmlFile.xml')
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('xml/ServiceCompletionInXmlFile.xml')
         assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
     }
 }
