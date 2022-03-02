@@ -292,6 +292,10 @@ class OfbizPatterns {
                 .inside(ENTITY_CALL)
         public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE_COMPL = PlatformPatterns.psiElement()
                 .inside(GENERIC_VALUE_ATTRIBUTE)
+
+        public static final PsiElementPattern GROOVY_LOOP_PATTERN = PlatformPatterns.psiElement().andOr(
+                PlatformPatterns.psiElement().withText(PlatformPatterns.string().endsWith('forEach'))
+        )
     }
 
     // =============================================================

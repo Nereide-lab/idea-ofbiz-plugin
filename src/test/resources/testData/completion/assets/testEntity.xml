@@ -83,4 +83,8 @@
         <alias-all entity-alias="ITM" prefix="genius"/>
     </view-entity>
 
+    <entity entity-name="Mordor">
+        <field name="sauron" type="id"/>
+    </entity>
+
 </entitymodel>

@@ -25,18 +25,24 @@ import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProcessCanceledException
+import com.intellij.patterns.PlatformPatterns
+import com.intellij.patterns.PsiElementPattern
 import com.intellij.psi.PsiElement
+import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.DomElement
-import fr.nereide.dom.EntityModelFile.ViewEntityMember
 import fr.nereide.dom.EntityModelFile.Alias
 import fr.nereide.dom.EntityModelFile.AliasAll
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.EntityField
 import fr.nereide.dom.EntityModelFile.ViewEntity
+import fr.nereide.dom.EntityModelFile.ViewEntityMember
+import fr.nereide.project.OfbizPatterns
 import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlock
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
 import java.util.regex.Matcher
@@ -58,7 +64,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             PsiElement initialVariable = genericValueRef.resolve()
             assert initialVariable instanceof GrVariable
 
-            String entityName = retrieveEntityOrViewName(initialVariable.getInitializerGroovy().getText())
+            String entityName = retrieveEntityOrViewNameFromGrVariable(initialVariable, true)
             Entity entity = structureService.getEntity(entityName)
 
             if (entity) {
@@ -135,10 +141,35 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         }
     }
 
-    private static String retrieveEntityOrViewName(String declarationExpr) {
-        Matcher matcher = ENTITY_NAME_PATTERN.matcher(declarationExpr)
-        String entityName = matcher.find() ? matcher.group(0) : null
-        return entityName ? entityName.substring(1, entityName.length() - 1) : null
+    private static String retrieveEntityOrViewNameFromGrVariable(GrVariable initialElement, boolean isFirst) {
+        GrExpression declarationExpr = initialElement.getInitializerGroovy()
+        String declarationString = declarationExpr ? declarationExpr.getText() : null
+        if (declarationString) {
+            Matcher matcher = ENTITY_NAME_PATTERN.matcher(declarationString)
+            String entityName = matcher.find() ? matcher.group(0) : null
+            return entityName ? entityName.substring(1, entityName.length() - 1) : null
+        } else if (isFirst) {
+            try {
+                GrReferenceExpression potentialLoop = getPotentialLoop(initialElement)
+                if (potentialLoop && OfbizPatterns.GROOVY.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
+                    PsiElement psiGvList = potentialLoop.getChildren()[0]
+                    assert psiGvList instanceof GrReferenceExpression
+                    PsiElement gvList = psiGvList.resolve()
+                    assert gvList instanceof GrVariable
+                    return retrieveEntityOrViewNameFromGrVariable(gvList, false)
+                }
+            } catch (ProcessCanceledException e) {
+                LOG.info(e)
+            } catch (Exception e) {
+                LOG.warn(e)
+            }
+        }
+    }
+
+    private static GrReferenceExpression getPotentialLoop(GrVariable initialElement) {
+        PsiElement containingBlock = PsiTreeUtil.getParentOfType(initialElement, GrClosableBlock.class)
+        PsiElement potentialLoop = PsiTreeUtil.getChildOfType(containingBlock.getParent(), GrReferenceExpression.class) ?: null
+        return potentialLoop
     }
 
     private static void createFieldLookupElement(String fieldName, CompletionResultSet result) {
