@@ -64,6 +64,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             assert initialVariable instanceof GrVariable
 
             String entityName = retrieveEntityOrViewNameFromGrVariable(initialVariable, true)
+            if (!entityName) return
             Entity entity = structureService.getEntity(entityName)
 
             if (entity) {
