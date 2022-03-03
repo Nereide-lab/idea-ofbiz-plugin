@@ -25,8 +25,6 @@ import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProcessCanceledException
-import com.intellij.patterns.PlatformPatterns
-import com.intellij.patterns.PsiElementPattern
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.ProcessingContext
@@ -43,6 +41,7 @@ import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlock
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
 import java.util.regex.Matcher
@@ -152,9 +151,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             try {
                 GrReferenceExpression potentialLoop = getPotentialLoop(initialElement)
                 if (potentialLoop && OfbizPatterns.GROOVY.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
-                    PsiElement psiGvList = potentialLoop.getChildren()[0]
-                    assert psiGvList instanceof GrReferenceExpression
-                    PsiElement gvList = psiGvList.resolve()
+                    PsiElement gvList = getGVListVariablefromLoopInstruction(potentialLoop, 0)
                     assert gvList instanceof GrVariable
                     return retrieveEntityOrViewNameFromGrVariable(gvList, false)
                 }
@@ -166,10 +163,21 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         }
     }
 
+    private static PsiElement getGVListVariablefromLoopInstruction(GrReferenceExpression potentialLoop, int index) {
+        if (index > 10) return null
+        GrReferenceExpression expression = PsiTreeUtil.findChildOfType(potentialLoop, GrReferenceExpression.class, true)
+        PsiElement gvList = expression.resolve()
+        if (!gvList) { // on regarde au niveau du dessous
+            return getGVListVariablefromLoopInstruction(expression, index++)
+        }
+        return gvList
+    }
+
     private static GrReferenceExpression getPotentialLoop(GrVariable initialElement) {
-        PsiElement containingBlock = PsiTreeUtil.getParentOfType(initialElement, GrClosableBlock.class)
-        PsiElement potentialLoop = PsiTreeUtil.getChildOfType(containingBlock.getParent(), GrReferenceExpression.class) ?: null
-        return potentialLoop
+        PsiElement bracketsBlock = PsiTreeUtil.getParentOfType(initialElement, GrClosableBlock.class)
+        PsiElement fullCallBlock = PsiTreeUtil.getParentOfType(bracketsBlock, GrMethodCall.class)
+        PsiElement potentialLoopCall = PsiTreeUtil.getChildOfType(fullCallBlock, GrReferenceExpression.class) ?: null
+        return potentialLoopCall
     }
 
     private static void createFieldLookupElement(String fieldName, CompletionResultSet result) {

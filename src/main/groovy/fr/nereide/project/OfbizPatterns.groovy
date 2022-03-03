@@ -279,9 +279,9 @@ class OfbizPatterns {
                 PlatformPatterns.psiElement().afterLeafSkipping(
                         PlatformPatterns.psiElement().withText("."),
                         PlatformPatterns.psiElement().withParent(
-                                PlatformPatterns.psiElement().with( new FieldTypeCondition(
-                                    "GenericValueTypePattern",
-                                    "org.apache.ofbiz.entity.GenericValue"))
+                                PlatformPatterns.psiElement().with(new FieldTypeCondition(
+                                        "GenericValueTypePattern",
+                                        "org.apache.ofbiz.entity.GenericValue"))
                         )
                 )
         )
@@ -294,7 +294,8 @@ class OfbizPatterns {
                 .inside(GENERIC_VALUE_ATTRIBUTE)
 
         public static final PsiElementPattern GROOVY_LOOP_PATTERN = PlatformPatterns.psiElement().andOr(
-                PlatformPatterns.psiElement().withText(PlatformPatterns.string().endsWith('forEach'))
+                PlatformPatterns.psiElement().withText(PlatformPatterns.string().contains('forEach')),
+                PlatformPatterns.psiElement().withText(PlatformPatterns.string().contains('stream'))
         )
     }
 
