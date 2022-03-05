@@ -95,7 +95,7 @@ class TestCompletionInGroovy extends GenericComplTestCase {
         assertContainsElements(lookupElementStrings, 'sauron')
     }
 
-    void testEntityFieldCompletionInGroovyFileInGVListStreamWithoutExplicitType() {
+    void testEntityFieldCompletionInGroovyFileInGVListStreamWithExplicitType() {
         List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
                 'groovy/EntityFieldCompletionInGroovyFileInGVListStreamWithExplicitType.groovy')
         assertContainsElements(lookupElementStrings, 'sauron')
