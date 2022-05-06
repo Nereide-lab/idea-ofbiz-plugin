@@ -10,7 +10,7 @@ static def definedInPluginXml(String key) {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '1.1.4'
+    id 'org.jetbrains.intellij' version '1.5.3'
     id 'groovy'
     id 'java'
     id 'org.jetbrains.changelog' version '1.2.1'
@@ -23,14 +23,15 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:2.5.14'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation 'org.codehaus.groovy:groovy-all:3.0.9'
+    testImplementation platform('org.junit:junit-bom:5.8.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = '2021.2'
+    version = '2022.1'
     plugins = ['java', 'com.intellij.java', 'org.intellij.groovy']
 }
 
@@ -48,8 +49,8 @@ patchPluginXml {
 }
 
 test {
-    useJUnit()
-    filter{
+    useJUnitPlatform()
+    filter {
         includeTestsMatching "fr.nereide.*"
     }
 }
