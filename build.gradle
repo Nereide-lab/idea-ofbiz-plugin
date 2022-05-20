@@ -10,7 +10,7 @@ static def definedInPluginXml(String key) {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '1.5.3'
+    id 'org.jetbrains.intellij' version '1.4.0'
     id 'groovy'
     id 'java'
     id 'org.jetbrains.changelog' version '1.2.1'
@@ -35,6 +35,8 @@ intellij {
     plugins = ['java', 'com.intellij.java', 'org.intellij.groovy']
 }
 
+project.gradle.startParameter.excludedTaskNames.add('buildSearchableOptions')
+
 /**
  * Refreshes the plugin.xml file for deployment
  */
@@ -49,6 +51,7 @@ patchPluginXml {
 }
 
 test {
+    systemProperty("idea.home.path", new File("${projectDir}/../").absolutePath)
     useJUnitPlatform()
     filter {
         includeTestsMatching "fr.nereide.*"
@@ -106,6 +109,7 @@ task generateUpdatePluginXml {
  * Adds tests on build
  */
 buildPlugin {
+    exclude('buildSearchableOptions')
     dependsOn 'test'
     dependsOn 'generateUpdatePluginXml'
     tasks.findByName('generateUpdatePluginXml').mustRunAfter 'patchPluginXml'
