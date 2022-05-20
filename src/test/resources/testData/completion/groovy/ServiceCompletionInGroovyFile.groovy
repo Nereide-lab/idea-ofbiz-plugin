@@ -16,11 +16,11 @@ package org.apache.ofbiz
  * under the License.
  */
 
-import org.apache.ofbiz.service.LocalDispatcher;
+import org.apache.ofbiz.service.LocalDispatcher
 
 class ServiceCompletionInGroovyFile {
     void myTestFunction() {
         LocalDispatcher dispatcher = new LocalDispatcher()
-        var result = dispatcher.runSync('<caret>')
+        var result = dispatcher.runSync('<caret>', null)
     }
 }

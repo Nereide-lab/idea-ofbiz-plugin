@@ -21,13 +21,11 @@ package fr.nereide.test.completion
 class TestCompletionInGroovy extends GenericComplTestCase {
 
     void testEntityCompletionInGroovyFile() {
-        addEntityQuery()
         List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityCompletionInGroovyFile.groovy')
         assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
 
     void testServiceCompletionInGroovyFile() {
-        addDispatcher()
         List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/ServiceCompletionInGroovyFile.groovy')
         assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
     }

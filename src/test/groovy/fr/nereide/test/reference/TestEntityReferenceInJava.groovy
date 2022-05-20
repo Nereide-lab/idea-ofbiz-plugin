@@ -33,7 +33,6 @@ class TestEntityReferenceInJava extends GenericRefTestCase {
      * Test for find method() from delegator
      */
     void testEntityReferenceWithFindMethod() {
-        addDelegator()
         PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
@@ -45,7 +44,6 @@ class TestEntityReferenceInJava extends GenericRefTestCase {
      * Test for findOne() method from delegator
      */
     void testEntityReferenceWithFindOneMethod() {
-        addDelegator()
         PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindOneMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
@@ -57,7 +55,6 @@ class TestEntityReferenceInJava extends GenericRefTestCase {
      * Test for findList() method from delegator
      */
     void testEntityReferenceWithFindListMethod() {
-        addDelegator()
         PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindListMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
@@ -69,7 +66,6 @@ class TestEntityReferenceInJava extends GenericRefTestCase {
      * Test for findAll() method from delegator
      */
     void testEntityReferenceWithFindAllMethod() {
-        addDelegator()
         PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFindAllMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
@@ -81,7 +77,6 @@ class TestEntityReferenceInJava extends GenericRefTestCase {
      * Test for addMemberEntity() method from DynamicViewEntity
      */
     void testEntityReferenceWithAddMemberEntityMethod() {
-        addDynamicEntity()
         PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithAddMemberEntityMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
@@ -93,7 +88,6 @@ class TestEntityReferenceInJava extends GenericRefTestCase {
      * Test for from() method from EntityQuery
      */
     void testEntityReferenceWithFromMethod() {
-        addEntityQuery()
         PsiReference ref = setupFixtureForTestAndGetRef('EntityReferenceWithFromMethod', 'java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref

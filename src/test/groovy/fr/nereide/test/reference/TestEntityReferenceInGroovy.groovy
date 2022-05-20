@@ -29,7 +29,6 @@ class TestEntityReferenceInGroovy extends GenericRefTestCase {
     }
 
     void testGroovyEntityReferenceWithFindMethod() {
-        addDelegator()
         PsiReference ref = setupFixtureForTestAndGetRef('GroovyEntityReferenceWithFindMethod', 'groovy')
         assertTrue ref instanceof EntityGroovyReference
         EntityGroovyReference entityRef = (EntityGroovyReference) ref

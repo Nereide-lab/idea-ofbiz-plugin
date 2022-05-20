@@ -4,6 +4,6 @@ import org.apache.ofbiz.entity.Delegator;
 
 public class MyTestClass {
     public void myTestFunction() {
-        var testData = Delegator.findOne("Piltov<caret>erData");
+        var testData = Delegator.findOne("Piltov<caret>erData", null, null);
     }
 }

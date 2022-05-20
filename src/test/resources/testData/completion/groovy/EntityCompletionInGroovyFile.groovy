@@ -17,9 +17,11 @@ package org.apache.ofbiz
  */
 
 import org.apache.ofbiz.entity.util.EntityQuery
+import org.apache.ofbiz.entity.Delegator
 
 class EntityCompletionInGroovyFile {
     void myTestFunction() {
-        def myVar = EntityQuery.from('<caret>')
+        var delegator = new Delegator()
+        def myVar = EntityQuery.use(delegator).from('<caret>').queryFirst()
     }
 }

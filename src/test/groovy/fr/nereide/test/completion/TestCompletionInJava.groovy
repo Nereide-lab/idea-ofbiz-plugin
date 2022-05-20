@@ -21,13 +21,11 @@ class TestCompletionInJava extends GenericComplTestCase {
     TestCompletionInJava() {}
 
     void testEntityCompletionInJavaFile() {
-        addEntityQuery()
         List<String> lookupElementStrings = configureByFileAndGetLookupsElements('java/EntityCompletionInJavaFile.java')
         assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
 
     void testServiceCompletionInJavaFile() {
-        addDispatcher()
         List<String> lookupElementStrings = configureByFileAndGetLookupsElements('java/ServiceCompletionInJavaFile.java')
         assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
     }
