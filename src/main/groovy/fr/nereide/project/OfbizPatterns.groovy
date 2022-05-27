@@ -281,7 +281,7 @@ class OfbizPatterns {
                         PlatformPatterns.psiElement().withParent(
                                 PlatformPatterns.psiElement().with(new FieldTypeCondition(
                                         "GenericValueTypePattern",
-                                        "org.apache.ofbiz.entity.GenericValue"))
+                                        'org.apache.ofbiz.entity.GenericValue','GenericValue'))
                         )
                 )
         )

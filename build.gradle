@@ -10,7 +10,7 @@ static def definedInPluginXml(String key) {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '1.4.0'
+    id 'org.jetbrains.intellij' version '1.6.0'
     id 'groovy'
     id 'java'
     id 'org.jetbrains.changelog' version '1.2.1'
@@ -34,8 +34,6 @@ intellij {
     version = '2022.1'
     plugins = ['java', 'com.intellij.java', 'org.intellij.groovy']
 }
-
-project.gradle.startParameter.excludedTaskNames.add('buildSearchableOptions')
 
 /**
  * Refreshes the plugin.xml file for deployment
@@ -109,7 +107,6 @@ task generateUpdatePluginXml {
  * Adds tests on build
  */
 buildPlugin {
-    exclude('buildSearchableOptions')
     dependsOn 'test'
     dependsOn 'generateUpdatePluginXml'
     tasks.findByName('generateUpdatePluginXml').mustRunAfter 'patchPluginXml'

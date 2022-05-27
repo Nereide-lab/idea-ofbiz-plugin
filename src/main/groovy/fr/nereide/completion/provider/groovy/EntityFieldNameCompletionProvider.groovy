@@ -63,7 +63,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             PsiElement initialVariable = genericValueRef.resolve()
             assert initialVariable instanceof GrVariable
 
-            String entityName = retrieveEntityOrViewNameFromGrVariable(initialVariable, true)
+            String entityName = retrieveEntityOrViewNameFromGrVariable(initialVariable)
             if (!entityName) return
             Entity entity = structureService.getEntity(entityName)
 
@@ -141,20 +141,20 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         }
     }
 
-    private static String retrieveEntityOrViewNameFromGrVariable(GrVariable initialElement, boolean isFirst) {
+    private static String retrieveEntityOrViewNameFromGrVariable(GrVariable initialElement) {
         GrExpression declarationExpr = initialElement.getInitializerGroovy()
         String declarationString = declarationExpr ? declarationExpr.getText() : null
         if (declarationString) {
             Matcher matcher = ENTITY_NAME_PATTERN.matcher(declarationString)
             String entityName = matcher.find() ? matcher.group(0) : null
             return entityName ? entityName.substring(1, entityName.length() - 1) : null
-        } else if (isFirst) {
+        } else {
             try {
                 GrReferenceExpression potentialLoop = getPotentialLoop(initialElement)
                 if (potentialLoop && OfbizPatterns.GROOVY.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
                     PsiElement gvList = getGVListVariablefromLoopInstruction(potentialLoop, 0)
                     assert gvList instanceof GrVariable
-                    return retrieveEntityOrViewNameFromGrVariable(gvList, false)
+                    return retrieveEntityOrViewNameFromGrVariable(gvList)
                 }
             } catch (ProcessCanceledException e) {
                 LOG.info(e)

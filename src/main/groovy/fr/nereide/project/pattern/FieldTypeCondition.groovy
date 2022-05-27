@@ -9,9 +9,9 @@ import org.jetbrains.annotations.Nullable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
 class FieldTypeCondition extends PatternCondition<PsiElement> {
-    String expectedType
+    String[] expectedType
 
-    FieldTypeCondition(@Nullable String debugMethodName, String expectedType) {
+    FieldTypeCondition(@Nullable String debugMethodName, String[] expectedType) {
         super(debugMethodName)
         this.expectedType = expectedType
     }
@@ -22,7 +22,7 @@ class FieldTypeCondition extends PatternCondition<PsiElement> {
         if (element instanceof GrReferenceExpression) {
             PsiType myType = (element as GrReferenceExpression).getType()
             // TODO : get InferredType (TypeInferenceHelper ?)
-            isMatch = myType.getCanonicalText() == expectedType
+            isMatch = expectedType.contains(myType.getCanonicalText())
         }
         return isMatch
     }
