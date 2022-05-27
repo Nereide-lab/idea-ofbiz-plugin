@@ -26,6 +26,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiLoopStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.DomElement
@@ -38,8 +39,11 @@ import fr.nereide.dom.EntityModelFile.ViewEntityMember
 import fr.nereide.project.OfbizPatterns
 import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrForStatement
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrLoopStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlock
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.clauses.GrForInClause
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
@@ -150,6 +154,10 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             return entityName ? entityName.substring(1, entityName.length() - 1) : null
         } else {
             try {
+                def oldFashionedLoop = PsiTreeUtil.getParentOfType(initialElement, GrLoopStatement.class)
+                if (oldFashionedLoop) {
+                    return retrieveEntityOfViewNameFromOldFashionedLoop(oldFashionedLoop)
+                }
                 GrReferenceExpression potentialLoop = getPotentialLoop(initialElement)
                 if (potentialLoop && OfbizPatterns.GROOVY.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
                     PsiElement gvList = getGVListVariablefromLoopInstruction(potentialLoop, 0)
@@ -162,6 +170,15 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                 LOG.warn(e)
             }
         }
+    }
+
+    private static String retrieveEntityOfViewNameFromOldFashionedLoop(GrLoopStatement oldFashionedLoop) {
+        GrVariable iteratedList = null
+        if (oldFashionedLoop instanceof GrForStatement) {
+            def forDeclaration = (oldFashionedLoop as GrForStatement).getClause()
+            if (forDeclaration instanceof GrForInClause) iteratedList = forDeclaration.getIteratedExpression().resolve()
+        }
+        return retrieveEntityOrViewNameFromGrVariable(iteratedList)
     }
 
     private static PsiElement getGVListVariablefromLoopInstruction(GrReferenceExpression potentialLoop, int index) {
