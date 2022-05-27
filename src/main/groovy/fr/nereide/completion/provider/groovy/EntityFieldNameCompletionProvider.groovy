@@ -178,7 +178,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             def forDeclaration = (oldFashionedLoop as GrForStatement).getClause()
             if (forDeclaration instanceof GrForInClause) iteratedList = forDeclaration.getIteratedExpression().resolve()
         }
-        return retrieveEntityOrViewNameFromGrVariable(iteratedList)
+        return iteratedList ? retrieveEntityOrViewNameFromGrVariable(iteratedList) : null
     }
 
     private static PsiElement getGVListVariablefromLoopInstruction(GrReferenceExpression potentialLoop, int index) {
