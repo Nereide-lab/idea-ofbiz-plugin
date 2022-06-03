@@ -30,8 +30,19 @@ class TestReferenceInGroovy extends GenericRefTestCase {
         assertNotNull ref.resolve()
     }
 
-    // TODO
+    void testGroovyViewEntityReferenceWithFindMethod() {
+        PsiReference ref = setupFixtureForTestAndGetRef('groovy/GroovyViewEntityReferenceWithFindMethod.groovy')
+        assertTrue ref instanceof EntityGroovyReference
+        EntityGroovyReference entityRef = (EntityGroovyReference) ref
+        assertEquals 'Zaun', entityRef.getValue() as String
+        assertNotNull ref.resolve()
+    }
+
     void testGroovyEntityReferenceWithFromMethod() {
-        assert true
+        PsiReference ref = setupFixtureForTestAndGetRef('groovy/GroovyEntityReferenceWithFromMethod.groovy')
+        assertTrue ref instanceof EntityGroovyReference
+        EntityGroovyReference entityRef = (EntityGroovyReference) ref
+        assertEquals 'PickleRick', entityRef.getValue() as String
+        assertNotNull ref.resolve()
     }
 }

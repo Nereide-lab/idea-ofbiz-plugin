@@ -29,4 +29,11 @@
     <entity entity-name="Rick">
         <field name="universeId" type="id"/>
     </entity>
+    <entity entity-name="PickleRick">
+        <field name="universeId" type="id"/>
+    </entity>
+
+    <view-entity entity-name="Zaun">
+    </view-entity>
+
 </entitymodel>
