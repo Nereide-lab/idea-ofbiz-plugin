@@ -215,15 +215,10 @@ class OfbizPatterns {
                         .methodCallParameter(0,
                                 GroovyPatterns.psiMethod().withName("runService")),
 
-                /**
-                 * TODO
-                 * Ce pattern ne fonctionne pas encore, à creuser dans les
-                 * GroovyPatterns.groovyScript()
-                 */
-                GroovyPatterns.groovyLiteralExpression()
-                        .methodCallParameter(0,
-                                GroovyPatterns.psiMethod().withName("run")
-                                        .definedInClass("org.apache.ofbiz.service.engine.GroovyBaseScript"))
+                GroovyPatterns.groovyLiteralExpression().withParent(
+                        GroovyPatterns.namedArgument().withLabel('service')
+                        //TODO : bétonner un peu pour éviter les soucis de référence non trouvée ?
+                )
         )
 
         public static final PsiElementPattern ENTITY_CALL = PlatformPatterns.psiElement().andOr(

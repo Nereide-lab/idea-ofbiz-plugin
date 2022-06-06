@@ -21,5 +21,7 @@
     <service name="makeWitcher" default-entity-name="Witcher" engine="entity-auto">
         <attribute name="mutagene" type="String" mode="IN"/>
     </service>
+    <service name="pivot" default-entity-name="Ross" engine="entity-auto">
+    </service>
 
 </services>
