@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added completion for a Generic Value to a certain extend (still heavily beta)
 - Added some tests, still a lot of tests to add
+- Added reference in groovy towards services in run instruction
+  - Ex : `run service: "createProductPromo"`
 
 ### Changed
-- Changed firsts test architecture
+- Updated test architecture
 - Updated Intellij and groovy dependencies
 
 ### Fixed

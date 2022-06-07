@@ -29,7 +29,7 @@ Navigate by `CTRL`+`CLICK` (default)
 Auto-completion by `CTRL`+`SPACE` for entity and view names as well as service names in java, xml, and groovy
 Auto-completion for fields of GenericValue in groovy.
 => Still heavily BETA. Please report errors to this github project.
-At this point, for the completion to work, the Generic Valur or GV list needs to be explicitly declared, so the plugin can
+At this point, for the completion to work, the Generic Value or GV list needs to be explicitly declared, so the plugin can
 find the declaration instruction. 
 Completion will not work for a list or GV that is not declared in the file.
 
