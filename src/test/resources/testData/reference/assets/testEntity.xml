@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <title>Entity</title>
+    <entity entity-name="Lobster">
+        <field name="lobsterId" type="id"/>
+    </entity>
+
+    <entity entity-name="WeWereOnABreak">
+        <field name="birdId" type="id"/>
+    </entity>
+
+    <entity entity-name="TwoFlowers">
+        <field name="luggageId" type="id"/>
+    </entity>
+
+    <entity entity-name="Enderman">
+        <field name="mobId" type="id"/>
+    </entity>
+
+    <entity entity-name="HyruleCastle">
+        <field name="forceId" type="id"/>
+    </entity>
+
+    <entity entity-name="PiltoverData">
+        <field name="cityId" type="id"/>
+    </entity>
+
+    <entity entity-name="Rick">
+        <field name="universeId" type="id"/>
+    </entity>
+    <entity entity-name="PickleRick">
+        <field name="universeId" type="id"/>
+    </entity>
+
+    <view-entity entity-name="Zaun">
+    </view-entity>
+
+</entitymodel>

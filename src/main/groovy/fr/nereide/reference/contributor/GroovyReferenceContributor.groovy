@@ -35,7 +35,7 @@ class GroovyReferenceContributor extends PsiReferenceContributor {
     GroovyReferenceContributor() {}
 
     void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(OfbizPatterns.GROOVY_SERVICE_CALL, new PsiReferenceProvider() {
+        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.SERVICE_CALL, new PsiReferenceProvider() {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
                 GrLiteral el = (GrLiteral) element
@@ -44,7 +44,7 @@ class GroovyReferenceContributor extends PsiReferenceContributor {
                 return reference
             }
         })
-        registrar.registerReferenceProvider(OfbizPatterns.GROOVY_ENTITY_CALL, new PsiReferenceProvider() {
+        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.ENTITY_CALL, new PsiReferenceProvider() {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
                 GrLiteral el = (GrLiteral) element
@@ -53,7 +53,7 @@ class GroovyReferenceContributor extends PsiReferenceContributor {
                 return reference
             }
         })
-        registrar.registerReferenceProvider(OfbizPatterns.GROOVY_LABEL_CALL, new PsiReferenceProvider() {
+        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.LABEL_CALL, new PsiReferenceProvider() {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
                 GrLiteral el = (GrLiteral) element

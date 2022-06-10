@@ -17,18 +17,91 @@
 
 package fr.nereide.test.completion
 
+
 class TestCompletionInGroovy extends GenericComplTestCase {
 
     void testEntityCompletionInGroovyFile() {
-        addEntityQuery()
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('EntityCompletionInGroovyFile.groovy')
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityCompletionInGroovyFile.groovy')
         assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
     }
 
     void testServiceCompletionInGroovyFile() {
-        addDispatcher()
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('ServiceCompletionInGroovyFile.groovy')
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/ServiceCompletionInGroovyFile.groovy')
         assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
     }
 
+    void testEntityFieldCompletionInGroovyFileWithSimpleEntity() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithSimpleEntity.groovy')
+        assertContainsElements(lookupElementStrings, 'michael')
+    }
+
+    void testEntityFieldCompletionInGroovyFileWithViewByAlias() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewNoNested.groovy')
+        assertContainsElements(lookupElementStrings, 'michael')
+        assertDoesntContain(lookupElementStrings, 'maline')
+    }
+
+    void testEntityFieldCompletionInGroovyFileWithViewByAliasAll() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewNoNested.groovy')
+        assertContainsElements(lookupElementStrings, 'jo', 'gabriel')
+    }
+
+    void testEntityFieldCompletionInGroovyFileWithSimpleView() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewNoNested.groovy')
+        assertContainsElements(lookupElementStrings, 'jo', 'gabriel', 'michael')
+    }
+
+    void testEntityFieldCompletionInGroovyFileWithViewAndNested() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewAndNested.groovy')
+        assertContainsElements(lookupElementStrings, 'michael', 'jo', 'gabriel', 'david')
+    }
+
+    void testEntityFieldCompletionInGroovyFileWithRecursiveView() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithRecursiveView.groovy')
+        assertContainsElements(lookupElementStrings, 'david')
+    }
+
+    void testEntityFieldCompletionInGroovyFileWithViewAndExclude() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewAndExclude.groovy')
+        assertContainsElements(lookupElementStrings, 'johnny', 'johnkreese')
+        assertDoesntContain(lookupElementStrings, 'daniel')
+    }
+
+    void testEntityFieldCompletionInGroovyFileWithViewAndExcludeViewField() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewAndExcludeViewField.groovy')
+        assertContainsElements(lookupElementStrings, 'johnny')
+        assertDoesntContain(lookupElementStrings, 'daniel', 'johnkreese')
+    }
+
+    void testEntityFieldCompletionInGroovyFileWithSimpleViewAndPrefix() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
+                'groovy/EntityFieldCompletionInGroovyFileWithSimpleViewAndPrefix.groovy')
+        assertContainsElements(lookupElementStrings, 'bigshovelreese', 'bigshovelfrancis', 'bigshovellois',
+                'reese', 'francis', 'lois')
+    }
+
+    void testEntityFieldCompletionInGroovyFileWithComplexViewAndPrefix() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
+                'groovy/EntityFieldCompletionInGroovyFileWithComplexViewAndPrefix.groovy')
+        assertContainsElements(lookupElementStrings, 'geniusbigshovelreese', 'geniusbigshovelfrancis',
+                'geniusbigshovellois', 'geniusreese', 'geniusfrancis', 'geniuslois')
+    }
+
+    void testEntityFieldCompletionInGroovyFileInLoopOfListWithExplicitTypeAndForeachLoop() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
+                'groovy/EntityFieldCompletionInGroovyFileInLoopOfListWithExplicitTypeAndForeachLoop.groovy')
+        assertContainsElements(lookupElementStrings, 'sauron')
+    }
+
+    void testEntityFieldCompletionInGroovyFileInGVListStreamWithExplicitType() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
+                'groovy/EntityFieldCompletionInGroovyFileInGVListStreamWithExplicitType.groovy')
+        assertContainsElements(lookupElementStrings, 'sauron')
+    }
+
+    void testEntityFieldCompletionInGroovyFileInForLoop() {
+        List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
+                'groovy/EntityFieldCompletionInGroovyFileInForLoop.groovy')
+        assertContainsElements(lookupElementStrings, 'sauron')
+    }
 }

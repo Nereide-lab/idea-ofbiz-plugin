@@ -25,7 +25,7 @@ import fr.nereide.project.OfbizPatterns
 
 class XmlCompletionContributor extends CompletionContributor{
     XmlCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizPatterns.XML_ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizPatterns.XML_SERVICE_DEF_CALL_COMPL, new ServiceNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizPatterns.XML.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizPatterns.XML.SERVICE_DEF_CALL_COMPL, new ServiceNameCompletionProvider())
     }
 }

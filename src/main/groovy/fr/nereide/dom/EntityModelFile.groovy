@@ -55,7 +55,7 @@ interface EntityModelFile extends DomElement {
         GenericAttributeValue<String> getPackageName()
 
         @SubTagList("field")
-        List<DomElement> getFields()
+        List<EntityField> getFields()
 
         @SubTagList("prim-key")
         List<DomElement> getPrimKeys()
@@ -81,10 +81,13 @@ interface EntityModelFile extends DomElement {
         GenericAttributeValue<String> getPackageName()
 
         @SubTagList("member-entity")
-        List<DomElement> getMemberEntities()
+        List<ViewEntityMember> getMemberEntities()
+
+        @SubTagList("alias-all")
+        List<AliasAll> getAliasAllList()
 
         @SubTagList("alias")
-        List<DomElement> getAliases()
+        List<Alias> getAliases()
 
         @SubTagList("view-link")
         List<RelationsTag> getViewLinks()
@@ -101,5 +104,50 @@ interface EntityModelFile extends DomElement {
 
         @SubTagList("key-map")
         List<DomElement> getKeyMaps()
+    }
+
+    interface EntityField extends DomElement {
+        @NameValue
+        @XmlValue
+        @Attribute("name")
+        GenericAttributeValue<String> getName()
+
+        @Attribute("type")
+        GenericAttributeValue<String> getType()
+    }
+
+    interface ViewEntityMember extends DomElement {
+        @Attribute("entity-alias")
+        GenericAttributeValue<String> getEntityAlias()
+
+        @Attribute("entity-name")
+        GenericAttributeValue<String> getEntityName()
+    }
+
+    interface AliasAll extends DomElement {
+        @Attribute("entity-alias")
+        GenericAttributeValue<String> getEntityAlias()
+
+        @Attribute("prefix")
+        GenericAttributeValue<String> getPrefix()
+
+        @SubTagList("exclude")
+        List<AliasAllExclude> getAliasAllExcludes()
+    }
+
+    interface AliasAllExclude extends DomElement {
+        @Attribute("field")
+        GenericAttributeValue<String> getField()
+    }
+
+    interface Alias extends DomElement {
+        @Attribute("name")
+        GenericAttributeValue<String> getName()
+
+        @Attribute("entity-alias")
+        GenericAttributeValue<String> getEntityAlias()
+
+        @Attribute("field")
+        GenericAttributeValue<String> getField()
     }
 }

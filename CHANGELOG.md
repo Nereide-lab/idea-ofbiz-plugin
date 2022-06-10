@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.0]
+
+### Added
+- Added completion for a Generic Value to a certain extend (still heavily beta)
+- Added some tests, still a lot of tests to add
+- Added reference in groovy towards services in run instruction
+  - Ex : `run service: "createProductPromo"`
+
+### Changed
+- Updated test architecture
+- Updated Intellij and groovy dependencies
+
+### Fixed
+- Fixed a broken reference to View Entities in groovy
+
 ## [1.1.1]
 
 ### Added

@@ -5,7 +5,86 @@
     <entity entity-name="Yenefer">
         <field name="mageId" type="id"/>
     </entity>
+
     <entity entity-name="Roach">
         <field name="horseId" type="id"/>
     </entity>
+
+    <entity entity-name="DunderMifflin">
+        <field name="michael" type="id"/>
+        <field name="maline" type="id"/>
+    </entity>
+
+    <entity entity-name="Sabre">
+        <field name="gabriel" type="id"/>
+        <field name="jo" type="string"/>
+    </entity>
+
+    <view-entity entity-name="PaperCompany">
+        <member-entity entity-alias="DM" entity-name="DunderMifflin"/>
+        <member-entity entity-alias="SB" entity-name="Sabre"/>
+        <alias-all entity-alias="SB"/>
+        <alias entity-alias="DM" name="michael"/>
+    </view-entity>
+
+    <entity entity-name="DunderCorporate">
+        <field name="david" type="id"/>
+    </entity>
+
+    <view-entity entity-name="WholePaperCompany">
+        <member-entity entity-alias="PC" entity-name="PaperCompany"/>
+        <member-entity entity-alias="DC" entity-name="DunderCorporate"/>
+        <alias-all entity-alias="PC"/>
+        <alias-all entity-alias="DC"/>
+    </view-entity>
+
+    <view-entity entity-name="RecursiveView">
+        <member-entity entity-alias="RC" entity-name="RecursiveView"/>
+        <member-entity entity-alias="DC" entity-name="DunderCorporate"/>
+        <alias-all entity-alias="RC"/>
+        <alias-all entity-alias="DC"/>
+    </view-entity>
+
+    <entity entity-name="CobraKai">
+        <field name="johnny" type="id"/>
+        <field name="daniel" type="String"/>
+        <field name="johnkreese" type="String"/>
+    </entity>
+
+    <view-entity entity-name="CobraKaiNeverDie">
+        <member-entity entity-alias="CK" entity-name="CobraKai"/>
+        <alias-all entity-alias="CK">
+            <exclude field="daniel"/>
+        </alias-all>
+    </view-entity>
+
+    <view-entity entity-name="Miyagido">
+        <member-entity entity-alias="CKNV" entity-name="CobraKaiNeverDie"/>
+        <alias-all entity-alias="CKNV">
+            <exclude field="johnkreese"/>
+        </alias-all>
+    </view-entity>
+
+    <entity entity-name="Malcolm">
+        <field name="reese" type="id"/>
+        <field name="francis" type="String"/>
+        <field name="lois" type="String"/>
+    </entity>
+
+    <view-entity entity-name="InTheMiddle">
+        <member-entity entity-alias="MA" entity-name="Malcolm"/>
+        <member-entity entity-alias="ML" entity-name="Malcolm"/>
+        <alias-all entity-alias="MA" prefix="bigshovel"/>
+        <alias-all entity-alias="ML"/>
+    </view-entity>
+
+    <view-entity entity-name="LifeIsUnfair">
+        <member-entity entity-alias="ITM" entity-name="InTheMiddle"/>
+        <alias-all entity-alias="ITM" prefix="genius"/>
+    </view-entity>
+
+    <entity entity-name="Mordor">
+        <field name="sauron" type="id"/>
+    </entity>
+
 </entitymodel>

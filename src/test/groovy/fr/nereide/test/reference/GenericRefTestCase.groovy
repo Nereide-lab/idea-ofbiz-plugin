@@ -26,6 +26,17 @@ import fr.nereide.test.GenericOfbizPluginTestCase
 
 class GenericRefTestCase extends GenericOfbizPluginTestCase {
 
+    @Override
+    protected void setUp() {
+        super.setUp()
+        myFixture.copyDirectoryToProject('assets', '')
+    }
+
+    @Override
+    protected String getTestDataPath() {
+        return "src/test/resources/testData/reference"
+    }
+
     /**
      * Workaround for groovy refs, which brings back a multi ref object.
      * We don't want that
@@ -33,10 +44,9 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
      * @param type
      * @return
      */
-    PsiReference setupFixtureForTestAndGetRef(String testFolder, String type) {
-        myFixture.copyDirectoryToProject(testFolder, '')
-        myFixture.configureByFile("${testFolder}/MyTestClass.${type}")
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion("${testFolder}/MyTestClass.${type}")
+    PsiReference setupFixtureForTestAndGetRef(String file) {
+        myFixture.configureByFile(file)
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(file)
         if (ref instanceof PsiMultiReference) {
             def multi = ref as PsiMultiReference
             for (PsiReference curRef : multi.getReferences()) {

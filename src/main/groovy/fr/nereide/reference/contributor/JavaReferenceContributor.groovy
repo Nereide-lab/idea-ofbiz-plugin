@@ -35,7 +35,7 @@ class JavaReferenceContributor extends PsiReferenceContributor {
     JavaReferenceContributor() {}
 
     void registerReferenceProviders(PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(OfbizPatterns.JAVA_SERVICE_CALL, new PsiReferenceProvider() {
+        registrar.registerReferenceProvider(OfbizPatterns.JAVA.SERVICE_CALL, new PsiReferenceProvider() {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
                 PsiLiteralExpression el = (PsiLiteralExpression) element
@@ -44,7 +44,7 @@ class JavaReferenceContributor extends PsiReferenceContributor {
                 return reference
             }
         })
-        registrar.registerReferenceProvider(OfbizPatterns.JAVA_ENTITY_CALL, new PsiReferenceProvider() {
+        registrar.registerReferenceProvider(OfbizPatterns.JAVA.ENTITY_CALL, new PsiReferenceProvider() {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
                 PsiLiteralExpression el = (PsiLiteralExpression) element
@@ -53,7 +53,7 @@ class JavaReferenceContributor extends PsiReferenceContributor {
                 return reference
             }
         })
-        registrar.registerReferenceProvider(OfbizPatterns.JAVA_LABEL_CALL, new PsiReferenceProvider() {
+        registrar.registerReferenceProvider(OfbizPatterns.JAVA.LABEL_CALL, new PsiReferenceProvider() {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
                 PsiLiteralExpression el = (PsiLiteralExpression) element

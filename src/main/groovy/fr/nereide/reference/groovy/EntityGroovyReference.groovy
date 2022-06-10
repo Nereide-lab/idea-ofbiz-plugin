@@ -33,6 +33,9 @@ class EntityGroovyReference extends PsiReferenceBase<GrLiteral> {
     PsiElement resolve() {
         ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
         DomElement definition = structureService.getEntity(this.getValue())
+        if (!definition) {
+            definition = structureService.getViewEntity(this.getValue())
+        }
         return definition != null ? definition.getXmlElement() : null
     }
 }
