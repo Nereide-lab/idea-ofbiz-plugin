@@ -35,6 +35,8 @@ intellij {
     plugins = ['java', 'com.intellij.java', 'org.intellij.groovy']
 }
 
+project.gradle.startParameter.excludedTaskNames.add('buildSearchableOptions')
+
 /**
  * Refreshes the plugin.xml file for deployment
  */
