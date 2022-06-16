@@ -19,7 +19,7 @@ package fr.nereide.test.documentation
 
 import com.intellij.codeInsight.documentation.DocumentationManager
 import com.intellij.psi.PsiElement
-import com.intellij.psi.xml.XmlAttribute
+import com.intellij.psi.xml.XmlAttributeValue
 
 class TestDocumentationInXml extends GenericDocTestCase {
 
@@ -29,7 +29,7 @@ class TestDocumentationInXml extends GenericDocTestCase {
         // Targeted Element (Definition)
         final PsiElement element = myFixture.getElementAtCaret()
         // Actual element with caret on
-        final PsiElement originalElement = myFixture.findElementByText("Vi", XmlAttribute.class)
+        final PsiElement originalElement = myFixture.findElementByText("Vi", XmlAttributeValue.class)
 
         final String generatedDoc = DocumentationManager.getProviderFromElement(element).getQuickNavigateInfo(element, originalElement)
         assertNotNull(generatedDoc)

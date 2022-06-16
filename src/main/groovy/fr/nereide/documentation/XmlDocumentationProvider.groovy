@@ -20,8 +20,8 @@ package fr.nereide.documentation
 import com.intellij.lang.documentation.AbstractDocumentationProvider
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
-import com.intellij.psi.xml.XmlAttribute
-import fr.nereide.project.OfbizPatterns
+import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlTag
 import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
@@ -31,9 +31,15 @@ class XmlDocumentationProvider extends AbstractDocumentationProvider {
 
     @Override
     String getQuickNavigateInfo(PsiElement element, PsiElement originalElement) {
+        if (!element instanceof XmlTag) return null
         ProjectServiceInterface structureService = element.getProject().getService(ProjectServiceInterface.class)
-        if (!originalElement instanceof XmlAttribute || !OfbizPatterns.XML.ENTITY_CALL.accepts(originalElement)) return null
-        return structureService.getEntity((originalElement as XmlAttribute).getValue()).getDescription().getValue()
+        XmlTag tag = element as XmlTag
+        String elementName = (originalElement as XmlAttributeValue).getValue()
+
+        switch (tag.getLocalName()) {
+            case 'entity':
+                return structureService.getEntity(elementName).getDescription().getValue()
+        }
     }
 
     @Override
