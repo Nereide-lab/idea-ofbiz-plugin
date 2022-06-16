@@ -21,7 +21,7 @@ class FieldTypeCondition extends PatternCondition<PsiElement> {
         boolean isMatch = false
         if (element instanceof GrReferenceExpression) {
             PsiType myType = (element as GrReferenceExpression).getType()
-            isMatch = expectedType.contains(myType.getCanonicalText())
+            isMatch = myType && expectedType.contains(myType.getCanonicalText())
         }
         return isMatch
     }

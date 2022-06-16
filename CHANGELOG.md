@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.2.1]
+
+### Fixed
+- Fixed NPE error in groovy completion when Inferred type is not found
+
 ## [1.2.0]
 
 ### Added
