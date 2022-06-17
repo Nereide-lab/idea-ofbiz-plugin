@@ -59,4 +59,15 @@ class TestDocumentationInXml extends GenericDocTestCase {
 //        assertEquals() TODO
     }
 
+    void testQuickNavigateInfoOnPropertyInXml() {
+        myFixture.configureByFile('xml/QuickNavigateInfoOnPropertyInXml.xml')
+        final PsiElement element = myFixture.getElementAtCaret()
+        final PsiElement originalElement = myFixture.findElementByText('${uiLabelMap.TestPivooot}', XmlAttributeValue.class)
+
+        final String generatedDoc = DocumentationManager.getProviderFromElement(element)
+                .getQuickNavigateInfo(element, originalElement)
+        assertNotNull(generatedDoc)
+//        assertEquals() TODO
+    }
+
 }

@@ -43,6 +43,11 @@ class XmlDocumentationProvider extends AbstractDocumentationProvider {
                 return structureService.getViewEntity(elementName).getDescription().getValue()
             case 'service':
                 return structureService.getService(elementName).getDescription().getValue()
+            case 'property':
+                if(elementName.startsWith('${')) {
+                    elementName = elementName.substring(13, elementName.length() - 1)
+                }
+                return structureService.getProperty(elementName).getValues()
             default : return null
         }
     }
