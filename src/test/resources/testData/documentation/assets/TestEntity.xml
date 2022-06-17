@@ -6,4 +6,9 @@
         <description>On peut faire ça à la dure ou… Attends, non, il n'y a qu'à la dure.</description>
         <field name="foo" type="bar"/>
     </entity>
+
+    <view-entity entity-name="RandomView">
+        <description>This is a random view</description>
+        <field name="foo" type="bar"/>
+    </view-entity>
 </entitymodel>

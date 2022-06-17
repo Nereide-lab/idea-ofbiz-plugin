@@ -39,6 +39,8 @@ class XmlDocumentationProvider extends AbstractDocumentationProvider {
         switch (tag.getLocalName()) {
             case 'entity':
                 return structureService.getEntity(elementName).getDescription().getValue()
+            case 'view-entity':
+                return structureService.getViewEntity(elementName).getDescription().getValue()
         }
     }
 
