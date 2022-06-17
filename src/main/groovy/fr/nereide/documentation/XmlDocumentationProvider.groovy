@@ -41,6 +41,9 @@ class XmlDocumentationProvider extends AbstractDocumentationProvider {
                 return structureService.getEntity(elementName).getDescription().getValue()
             case 'view-entity':
                 return structureService.getViewEntity(elementName).getDescription().getValue()
+            case 'service':
+                return structureService.getService(elementName).getDescription().getValue()
+            default : return null
         }
     }
 

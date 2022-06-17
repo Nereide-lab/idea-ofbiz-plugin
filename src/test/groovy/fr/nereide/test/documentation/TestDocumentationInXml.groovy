@@ -48,4 +48,15 @@ class TestDocumentationInXml extends GenericDocTestCase {
 //        assertEquals('This is a random view', generatedDoc)
     }
 
+    void testQuickNavigateInfoOnServiceInXml() {
+        myFixture.configureByFile('xml/QuickNavigateInfoOnServiceInXml.xml')
+        final PsiElement element = myFixture.getElementAtCaret()
+        final PsiElement originalElement = myFixture.findElementByText("HelloWorld", XmlAttributeValue.class)
+
+        final String generatedDoc = DocumentationManager.getProviderFromElement(element)
+                .getQuickNavigateInfo(element, originalElement)
+        assertNotNull(generatedDoc)
+//        assertEquals() TODO
+    }
+
 }
