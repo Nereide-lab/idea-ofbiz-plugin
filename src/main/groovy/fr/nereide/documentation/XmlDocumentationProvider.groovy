@@ -17,7 +17,7 @@
 
 package fr.nereide.documentation
 
-import com.intellij.lang.documentation.AbstractDocumentationProvider
+
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
@@ -26,7 +26,7 @@ import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
-class XmlDocumentationProvider extends AbstractDocumentationProvider {
+class XmlDocumentationProvider extends OfbizDocumentationProvider {
     private static final Logger LOG = Logger.getInstance(XmlDocumentationProvider.class)
 
     @Override
@@ -44,7 +44,7 @@ class XmlDocumentationProvider extends AbstractDocumentationProvider {
             case 'service':
                 return structureService.getService(elementName).getDescription().getValue()
             case 'property':
-                if(elementName.startsWith('${')) {
+                if (elementName.startsWith('${')) {
                     elementName = elementName.substring(13, elementName.length() - 1)
                 }
                 return structureService.getProperty(elementName).getValues()
@@ -54,6 +54,16 @@ class XmlDocumentationProvider extends AbstractDocumentationProvider {
 
     @Override
     String generateHoverDoc(@NotNull PsiElement element, @Nullable PsiElement originalElement) {
-        return null
+        if (!element instanceof XmlTag) return null
+        ProjectServiceInterface structureService = element.getProject().getService(ProjectServiceInterface.class)
+        XmlTag tag = element as XmlTag
+        String elementName = (originalElement as XmlAttributeValue).getValue()
+
+        switch (tag.getLocalName()) {
+            case 'service':
+                String serviceName = structureService.getService(elementName).getName().getValue()
+                return serviceName ? generateServiceHoverDoc(serviceName, structureService) : 'Service not found'
+            default: return null
+        }
     }
 }

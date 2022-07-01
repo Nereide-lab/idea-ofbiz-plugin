@@ -41,6 +41,9 @@ interface ServiceDefFile extends DomElement {
         @Attribute("invoke")
         GenericAttributeValue<String> getInvoke()
 
+        @Attribute("auth")
+        GenericAttributeValue<String> getAuth()
+
         @SubTagList("implements")
         List<GenericAttributeValue<String>> getImplements()
 

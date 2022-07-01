@@ -52,7 +52,9 @@
         <completion.contributor order="first" language="Groovy" implementationClass="fr.nereide.completion.GroovyCompletionContributor"/>
 
         <!-- Documentation -->
-        <lang.documentationProvider language="XML" implementationClass="fr.nereide.documentation.XmlDocumentationProvider"/>
+        <lang.documentationProvider language="XML" implementationClass="fr.nereide.documentation.XmlDocumentationProvider"
+                                    order="first, before dom"/>
+<!--        <documentationProvider implementation="fr.nereide.documentation.MiscDocumentationProvider" order="first"/>-->
 
         <!-- XML file description -->
         <dom.fileMetaData implementation="fr.nereide.dom.ComponentFileDescription" rootTagName="ofbiz-component"/>
