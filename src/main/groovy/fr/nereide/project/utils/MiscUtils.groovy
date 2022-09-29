@@ -18,6 +18,7 @@
 package fr.nereide.project.utils
 
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlFile
 import com.intellij.util.xml.DomElement
@@ -46,5 +47,25 @@ class MiscUtils {
         } catch (NullPointerException ignored) {
             return null
         }
+    }
+
+    /**
+     * Return safe uiLabelName
+     * @return
+     */
+    static String getUiLabelSafeValue(String text) {
+        if (text.startsWith('${')) {
+            return text.substring(13, text.length() - 1)
+        }
+        return text
+    }
+
+    /**
+     * return the textx of a PsiElement without the surrouding quotes
+     * @param originalElement
+     * @return
+     */
+    static String getSafeTextValue(PsiElement originalElement) {
+        originalElement.getText().replaceAll('"', '').replaceAll('\'', '')
     }
 }

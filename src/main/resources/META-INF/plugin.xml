@@ -51,6 +51,11 @@
         <psi.referenceContributor language="Groovy" implementation="fr.nereide.reference.contributor.GroovyReferenceContributor"/>
         <completion.contributor order="first" language="Groovy" implementationClass="fr.nereide.completion.GroovyCompletionContributor"/>
 
+        <!-- Documentation -->
+        <documentationProvider implementation="fr.nereide.documentation.OfbizElementResolverForDocumentationProvider" order="first"/>
+        <lang.documentationProvider language="XML" implementationClass="fr.nereide.documentation.OfbizXmlDocumentationProvider"/>
+        <lang.documentationProvider language="JAVA" implementationClass="fr.nereide.documentation.OfbizJavaDocumentationProvider"/>
+
         <!-- XML file description -->
         <dom.fileMetaData implementation="fr.nereide.dom.ComponentFileDescription" rootTagName="ofbiz-component"/>
         <dom.fileMetaData implementation="fr.nereide.dom.ControllerFileDescription" rootTagName="site-conf"/>

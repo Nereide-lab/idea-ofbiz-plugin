@@ -31,6 +31,7 @@ import fr.nereide.dom.ControllerFile.RequestMap
 import fr.nereide.dom.EntityModelFile
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.ViewEntity
+import fr.nereide.dom.EntityModelFile.ExtendEntity
 import fr.nereide.dom.FormFile
 import fr.nereide.dom.FormFile.Form
 import fr.nereide.dom.FormFile.Grid
@@ -79,7 +80,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getMatchingElementFromXmlFiles(ServiceDefFile.class, "getServices", "getName", name)
     }
 
-    List<Service> getAllServices(){
+    List<Service> getAllServices() {
         return getAllElementOfSpecificType(ServiceDefFile.class, "getServices", "getName")
     }
 
@@ -129,6 +130,18 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return null
     }
 
+    @Override
+    List<ExtendEntity> getExtendEntityListForEntity(String entityName) {
+        List<DomElement> extendList = getAllElementOfSpecificType(EntityModelFile.class, "getExtendEntities", null)
+        return extendList.stream().filter {
+            it.getEntityName().getValue() == entityName
+        }.collect() as List<ExtendEntity>
+    }
+
+    @Override
+    List<ExtendEntity> getAllExtendsEntity() {
+        return getAllElementOfSpecificType(EntityModelFile.class, "getExtendEntities", "getEntityName")
+    }
 
     private DomElement getMatchingElementFromXmlFiles(Class classFile,
                                                       String fileElementGetterName,

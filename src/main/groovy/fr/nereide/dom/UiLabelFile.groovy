@@ -17,8 +17,15 @@
 
 package fr.nereide.dom
 
-import com.intellij.util.xml.*
+import com.intellij.util.xml.DomElement
+import com.intellij.util.xml.GenericAttributeValue
+import com.intellij.util.xml.GenericDomValue
+import com.intellij.util.xml.NameValue
+import com.intellij.util.xml.Namespace
+import com.intellij.util.xml.SubTagList
+import com.intellij.util.xml.TagValue
 import com.intellij.util.xmlb.annotations.Attribute
+import com.intellij.util.xmlb.annotations.Text
 
 interface UiLabelFile extends DomElement {
 
@@ -31,6 +38,17 @@ interface UiLabelFile extends DomElement {
         GenericAttributeValue<String> getKey()
 
         @SubTagList("value")
-        List<GenericDomValue<String>> getValues()
+        List<PropertyValue> getPropertyValues()
     }
+
+    interface PropertyValue extends DomElement {
+        @Attribute('lang')
+        XmlOfbizAttrValue<String> getLang()
+
+        @TagValue
+        String getTagValue()
+    }
+
+    @Namespace(UiLabelFileDescription.XML_LANG_NS_NAME)
+    interface XmlOfbizAttrValue<T> extends GenericAttributeValue<T> {}
 }
