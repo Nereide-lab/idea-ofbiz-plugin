@@ -26,6 +26,8 @@ import javax.swing.Icon
 
 class UiLabelFileDescription<S extends DomElement> extends DomFileDescription {
     private static final String rootTagName = "resource"
+    public static final String XML_LANG_NS = 'http://www.w3.org/XML/1998/namespace'
+    public static final String XML_LANG_NS_NAME = 'xml'
 
     UiLabelFileDescription() {
         super(UiLabelFile.class, rootTagName)
@@ -34,5 +36,10 @@ class UiLabelFileDescription<S extends DomElement> extends DomFileDescription {
     @Nullable
     Icon getFileIcon(int flags) {
         return PluginIcons.LABEL_FILE_ICON
+    }
+
+    @Override
+    protected void initializeFileDescription() {
+        registerNamespacePolicy(XML_LANG_NS_NAME, XML_LANG_NS)
     }
 }

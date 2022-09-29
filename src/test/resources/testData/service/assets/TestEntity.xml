@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <title>Entity</title>
+
+    <entity entity-name="Navezgane">
+        <field name="rifle"/>
+        <field name="knife"/>
+        <field name="mapId"/>
+        <prim-key field="mapId"/>
+    </entity>
+
+    <entity entity-name="Dracula">
+        <field name="tooth"/>
+        <field name="blood"/>
+        <field name="magic"/>
+        <field name="slaves"/>
+        <field name="nemesis"/>
+        <prim-key field="slaves"/>
+        <prim-key field="nemesis"/>
+    </entity>
+
+
+</entitymodel>

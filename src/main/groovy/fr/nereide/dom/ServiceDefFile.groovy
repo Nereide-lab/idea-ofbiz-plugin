@@ -41,8 +41,14 @@ interface ServiceDefFile extends DomElement {
         @Attribute("invoke")
         GenericAttributeValue<String> getInvoke()
 
+        @Attribute("auth")
+        GenericAttributeValue<String> getAuth()
+
+        @Attribute("default-entity-name")
+        GenericAttributeValue<String> getDefaultEntityName()
+
         @SubTagList("implements")
-        List<GenericAttributeValue<String>> getImplements()
+        List<ServiceImplements> getImplements()
 
         @SubTag("description")
         GenericDomValue<String> getDescription()
@@ -51,10 +57,35 @@ interface ServiceDefFile extends DomElement {
         List<ServiceAttribute> getAttributes()
 
         @SubTagList("auto-attributes")
-        List<ServiceAttribute> getAutoAttributes()
+        List<ServiceAutoAttribute> getAutoAttributes()
+
+        @SubTag("group")
+        ServiceGroup getGroup()
+    }
+
+    interface ServiceGroup extends DomElement {
+
+        @SubTagList("invoke")
+        List<ServiceGroupInvoke> getInvokes()
+    }
+
+    interface ServiceAutoAttribute extends DomElement {
+
+        @Attribute('mode')
+        GenericAttributeValue<String> getMode()
+
+        @Attribute('include')
+        GenericAttributeValue<String> getInclude()
+
+        @Attribute('optional')
+        GenericAttributeValue<String> getOptional()
+
+//        @Attribute('entity-name')
+//        GenericDomValue<String> getEntityName()
     }
 
     interface ServiceAttribute extends DomElement {
+
         @NameValue
         @Stubbed
         @Attribute("name")
@@ -62,6 +93,42 @@ interface ServiceDefFile extends DomElement {
 
         @Attribute("type")
         GenericAttributeValue<String> getType()
+
+        @Attribute("optional")
+        GenericAttributeValue<String> getOptional()
+
+        @Attribute("mode")
+        GenericAttributeValue<String> getMode()
+
+        @Attribute("default-value")
+        GenericAttributeValue<String> getDefaultValue()
     }
 
+    interface ServiceImplements extends DomElement {
+
+        @NameValue
+        @Stubbed
+        @Attribute("service")
+        GenericAttributeValue<String> getService()
+
+        @Attribute("optional")
+        GenericAttributeValue<String> getOptional()
+    }
+
+    interface ServiceGroupInvoke extends DomElement {
+
+        @NameValue
+        @Stubbed
+        @Attribute("name")
+        GenericAttributeValue<String> getName()
+
+        @Attribute("parameters")
+        GenericAttributeValue<String> getParameters()
+
+        @Attribute("result-to-context")
+        GenericAttributeValue<String> getResultToContext()
+
+        @Attribute("mode")
+        GenericAttributeValue<String> getMode()
+    }
 }

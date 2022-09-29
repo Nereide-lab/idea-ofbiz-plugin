@@ -21,6 +21,7 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiMethod
 import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.ControllerFile.RequestMap
+import fr.nereide.dom.EntityModelFile.ExtendEntity
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.ViewEntity
 import fr.nereide.dom.FormFile.Grid
@@ -61,4 +62,8 @@ interface ProjectServiceInterface {
     PsiDirectory getComponentDir(String name)
 
     PsiMethod getMethod(String name)
+
+    List<ExtendEntity> getExtendEntityListForEntity(String entityName)
+
+    List<ExtendEntity> getAllExtendsEntity()
 }

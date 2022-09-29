@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <title>Entity</title>
+    <entity entity-name="Vi">
+        <description>On peut faire ça à la dure ou… Attends, non, il n'y a qu'à la dure.</description>
+        <field name="foo" type="bar"/>
+    </entity>
+
+    <view-entity entity-name="RandomView">
+        <description>This is a random view</description>
+        <field name="foo" type="bar"/>
+    </view-entity>
+</entitymodel>

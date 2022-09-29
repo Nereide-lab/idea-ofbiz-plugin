@@ -17,13 +17,7 @@
 
 package fr.nereide.dom
 
-import com.intellij.util.xml.DomElement
-import com.intellij.util.xml.GenericAttributeValue
-import com.intellij.util.xml.GenericDomValue
-import com.intellij.util.xml.NameValue
-import com.intellij.util.xml.Stubbed
-import com.intellij.util.xml.SubTag
-import com.intellij.util.xml.SubTagList
+import com.intellij.util.xml.*
 import com.intellij.util.xmlb.annotations.Attribute
 
 import javax.xml.bind.annotation.XmlValue
@@ -35,8 +29,8 @@ interface EntityModelFile extends DomElement {
     @SubTagList("view-entity")
     List<ViewEntity> getViewEntities()
 
-//    @SubTagList("extend-entity")
-//    List<ExtendEntity> getExtendEntities()
+    @SubTagList("extend-entity")
+    List<ExtendEntity> getExtendEntities()
 
     interface Entity extends DomElement {
         @Attribute("title")
@@ -58,10 +52,10 @@ interface EntityModelFile extends DomElement {
         List<EntityField> getFields()
 
         @SubTagList("prim-key")
-        List<DomElement> getPrimKeys()
+        List<EntityPrimKey> getPrimKeys()
 
         @SubTagList("relation")
-        List<RelationsTag> getRelations()
+        List<RelationTag> getRelations()
     }
 
     interface ViewEntity extends DomElement {
@@ -90,20 +84,31 @@ interface EntityModelFile extends DomElement {
         List<Alias> getAliases()
 
         @SubTagList("view-link")
-        List<RelationsTag> getViewLinks()
+        List<RelationTag> getViewLinks()
     }
 
-    interface RelationsTag extends DomElement {
+    interface RelationTag extends DomElement {
         @NameValue
         @Attribute("fk-name")
         GenericAttributeValue<String> getFkName()
+
+        @Attribute("type")
+        GenericAttributeValue<String> getType()
 
         @NameValue
         @Attribute("rel-entity-name")
         GenericAttributeValue<String> getRelEntityName()
 
         @SubTagList("key-map")
-        List<DomElement> getKeyMaps()
+        List<RelationKeyMap> getKeyMaps()
+    }
+
+    interface RelationKeyMap extends DomElement {
+        @Attribute("field-name")
+        GenericAttributeValue<String> getFieldName()
+
+        @Attribute("rel-field-name")
+        GenericAttributeValue<String> getRelFieldName()
     }
 
     interface EntityField extends DomElement {
@@ -149,5 +154,19 @@ interface EntityModelFile extends DomElement {
 
         @Attribute("field")
         GenericAttributeValue<String> getField()
+    }
+
+    interface EntityPrimKey extends DomElement {
+        @Attribute('field')
+        GenericAttributeValue<String> getField()
+    }
+
+    interface ExtendEntity extends DomElement {
+        @NameValue
+        @Attribute("entity-name")
+        GenericAttributeValue<String> getEntityName()
+
+        @SubTagList("field")
+        List<EntityField> getFields()
     }
 }

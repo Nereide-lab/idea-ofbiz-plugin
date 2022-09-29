@@ -21,6 +21,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.util.xml.DomElement
 import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.Nullable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
 
@@ -32,15 +33,7 @@ class UiLabelGroovyReference extends PsiReferenceBase<GrLiteral> {
     @Nullable
     PsiElement resolve() {
         ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = structureService.getProperty(this.getUiLabelAwareValue())
+        DomElement definition = structureService.getProperty(MiscUtils.getUiLabelSafeValue(this.getValue()))
         return definition != null ? definition.getXmlElement() : null
-    }
-
-    String getUiLabelAwareValue() {
-        String text = this.getValue()
-        if (text.startsWith('${')) {
-            return text.substring(13, text.length() - 1)
-        }
-        return text
     }
 }
