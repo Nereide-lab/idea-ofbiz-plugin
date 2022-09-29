@@ -33,6 +33,12 @@ At this point, for the completion to work, the Generic Value or GV list needs to
 find the declaration instruction. 
 Completion will not work for a list or GV that is not declared in the file.
 
+#### QUICK DOCUMENTATION (BETA)
+The plugins adds hover documentation for the following ofbiz elements, in javan groovy and xml :
+- Services
+- View and entities
+For OFBiz properties (AKA UiLabels), the english message in the property will be display instead.
+
 **Feel free to contribute !**
 ## CONTRIBUTE
 Clone this repo, and you can get started here : [DOCS](https://plugins.jetbrains.com/docs/intellij/basics.html)
