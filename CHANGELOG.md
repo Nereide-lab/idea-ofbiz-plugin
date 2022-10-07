@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.1]
+
+### Added
+- Added some tests for xml references
+
+### Fixed
+- Fixed a small typo in CHANGELOG
+
 ## [1.3.0]
 
 ### Added
@@ -17,7 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Added support for Intellij 2022.2
-- Upgraded intellij gradle plugin to 1.7
+- Upgraded intellij gradle plugin to 1.9
 
 ## [1.2.1]
 

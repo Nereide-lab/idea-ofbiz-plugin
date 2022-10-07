@@ -18,6 +18,12 @@
 package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
+import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
+import fr.nereide.reference.xml.ControllerRequestReference
+import fr.nereide.reference.xml.ControllerViewReference
+import fr.nereide.reference.xml.FormReference
+import fr.nereide.reference.xml.MenuReference
+import fr.nereide.reference.xml.ScreenReference
 
 class TestReferenceInXml extends GenericRefTestCase {
 
@@ -49,5 +55,48 @@ class TestReferenceInXml extends GenericRefTestCase {
         myFixture.configureByFile(file)
         PsiReference ref = myFixture.getReferenceAtCaretPosition(file)
         assertNull ref.resolve()
+    }
+
+    void testScreenReferenceFromViewMap() {
+        String file = "xml/ScreenReferenceFromViewMap.xml"
+        myFixture.configureByFile(file)
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(file)
+        assert ref.getElement().getText().contains('viewprofile')
+        // this one is a pain..
+        assertNotNull((ref as PsiMultiReference).getReferences().find { it instanceof ScreenReference })
+        assertNotNull ref.resolve()
+    }
+
+    void testFormReferenceFromScreen() {
+        String file = "xml/FormReferenceFromScreen.xml"
+        configureAndAssertRefAndRefType(file, 'FooForm', FormReference.class)
+    }
+
+    void testFormReferenceFromForm() {
+        String file = "xml/FormReferenceFromForm.xml"
+        configureAndAssertRefAndRefType(file, 'FooForm', FormReference.class)
+    }
+
+    void testRequestMapReferenceFromForm() {
+        String file = "xml/RequestMapReferenceFromForm.xml"
+        configureAndAssertRefAndRefType(file, 'fooRequest', ControllerRequestReference.class)
+    }
+
+    void testViewMapReferenceFromRequestMap() {
+        String file = "xml/ViewMapReferenceFromRequestMap.xml"
+        configureAndAssertRefAndRefType(file, 'MyHome', ControllerViewReference.class)
+    }
+
+    void testMenuReferenceFromScreen() {
+        String file = "xml/MenuReferenceFromScreen.xml"
+        configureAndAssertRefAndRefType(file, 'FooMenu', MenuReference.class)
+    }
+
+    private void configureAndAssertRefAndRefType(String file, String elementName, Class refClass) {
+        myFixture.configureByFile(file)
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(file)
+        assertEquals elementName, ref.getElement().getName() as String
+        assert refClass.isAssignableFrom(refClass) // instanceof like
+        assertNotNull ref.resolve()
     }
 }
