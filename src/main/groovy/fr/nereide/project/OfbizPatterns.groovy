@@ -29,6 +29,7 @@ import static com.intellij.patterns.StandardPatterns.string
 import static com.intellij.patterns.XmlPatterns.xmlAttribute
 import static com.intellij.patterns.XmlPatterns.xmlAttributeValue
 import static com.intellij.patterns.XmlPatterns.xmlTag
+import static fr.nereide.dom.CompoundFileDescription.*
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.groovyLiteralExpression
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.namedArgument
 
@@ -322,6 +323,14 @@ class OfbizPatterns {
                         xmlAttribute()
                                 .inside(xmlTag().withName("grid"))
                                 .withName("extends"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${SCREEN_NS}:include-form")
+                                        .withNamespace(SCREEN_NS_URL)
+                                ),
                 )
         )
 
