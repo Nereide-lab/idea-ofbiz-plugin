@@ -19,14 +19,15 @@ package fr.nereide.project
 
 
 import com.intellij.patterns.PsiElementPattern
+import com.intellij.patterns.XmlAttributeValuePattern
 import fr.nereide.project.pattern.FieldTypeCondition
 
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.PsiJavaPatterns.literalExpression
 import static com.intellij.patterns.PsiJavaPatterns.psiMethod
 import static com.intellij.patterns.StandardPatterns.string
-import static com.intellij.patterns.XmlNamedElementPattern.XmlAttributePattern
 import static com.intellij.patterns.XmlPatterns.xmlAttribute
+import static com.intellij.patterns.XmlPatterns.xmlAttributeValue
 import static com.intellij.patterns.XmlPatterns.xmlTag
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.groovyLiteralExpression
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.namedArgument
@@ -253,86 +254,113 @@ class OfbizPatterns {
     //                      XML
     // =============================================================
     class XML {
-        public static final XmlAttributePattern URI_CALL = xmlAttribute()
-                .withParent(xmlTag().withName("form"))
-                .withName("target")
+        public static final XmlAttributeValuePattern URI_CALL = xmlAttributeValue()
+                .inside(xmlAttribute()
+                        .withName("target")
+                        .inside(xmlTag().withName("form")))
 
-        public static final XmlAttributePattern RESPONSE_CALL = xmlAttribute()
-                .withParent(xmlTag().withName("response"))
-                .withName("value")
+        public static final XmlAttributeValuePattern RESPONSE_CALL = xmlAttributeValue()
+                .inside(xmlAttribute()
+                        .inside(xmlTag().withName("response"))
+                        .withName("value"))
 
-        public static final XmlAttributePattern ENTITY_CALL = xmlAttribute()
-                .withName("entity", "entity-name", "default-entity-name", "rel-entity-name")
+        public static final XmlAttributeValuePattern ENTITY_CALL = xmlAttributeValue()
+                .inside(xmlAttribute()
+                        .withName("entity", "entity-name", "default-entity-name", "rel-entity-name"))
 
-        public static final XmlAttributePattern SERVICE_DEF_CALL = xmlAttribute().andOr(
-                xmlAttribute()
-                        .withName("service", "service-name"),
-                xmlAttribute()
-                        .withParent(xmlTag().withName("event")
-                                .withChild(xmlAttribute().withName("type")
-                                        .withValue(string().contains("service")))
-                        )
-                        .withName("invoke")
+        public static final XmlAttributeValuePattern SERVICE_DEF_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("service", "service-name")),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag()
+                                        .withName("event")
+                                        .withChild(xmlAttribute().withName("type").withValue(string().contains("service"))))
+                                .withName("invoke")
+                )
         )
 
-        public static final XmlAttributePattern JAVA_EVENT_CALL = xmlAttribute().andOr(
-                xmlAttribute()
-                        .withParent(xmlTag().withName("event")
-                                .withChild(xmlAttribute().withName("type")
-                                        .withValue(string().equalTo("java")))
-                        )
-                        .withName("invoke"),
-                xmlAttribute()
-                        .withParent(xmlTag().withName("service")
-                                .withChild(xmlAttribute().withName("engine")
-                                        .withValue(string().equalTo("java")))
-                        )
-                        .withName("invoke")
+        public static final XmlAttributeValuePattern JAVA_EVENT_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("event")
+                                        .withChild(xmlAttribute().withName("type")
+                                                .withValue(string().equalTo("java")))
+                                )
+                                .withName("invoke")),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("service")
+                                        .withChild(xmlAttribute().withName("engine")
+                                                .withValue(string().equalTo("java")))
+                                )
+                                .withName("invoke"))
         )
 
-        public static final XmlAttributePattern LABEL_CALL =
+        public static final XmlAttributeValuePattern LABEL_CALL = xmlAttributeValue().inside(
                 xmlAttribute().withValue(string().startsWith('${uiLabelMap.'))
-
-        public static final XmlAttributePattern FORM_CALL = xmlAttribute().andOr(
-                xmlAttribute()
-                        .withParent(xmlTag().withName("include-form"))
-                        .withName("name"),
-                xmlAttribute()
-                        .withParent(xmlTag().withName("include-grid"))
-                        .withName("name"),
-                xmlAttribute()
-                        .withParent(xmlTag().withName("form"))
-                        .withName("extends"),
-                xmlAttribute()
-                        .withParent(xmlTag().withName("grid"))
-                        .withName("extends")
         )
 
-        public static final XmlAttributePattern MENU_CALL = xmlAttribute().andOr(
-                xmlAttribute()
-                        .withParent(xmlTag().withName("screenlet"))
-                        .withName("navigation-menu-name"),
-                xmlAttribute()
-                        .withParent(xmlTag().withName("include-menu"))
-                        .withName("name")
+        public static final XmlAttributeValuePattern FORM_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("include-form"))
+                                .withName("name"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("include-grid"))
+                                .withName("name"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("form"))
+                                .withName("extends"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("grid"))
+                                .withName("extends"),
+                )
         )
 
-        public static final XmlAttributePattern FILE_CALL =
-                xmlAttribute()
+        public static final XmlAttributeValuePattern MENU_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("screenlet"))
+                                .withName("navigation-menu-name"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("include-menu"))
+                                .withName("name")
+                )
+        )
+
+        public static final XmlAttributeValuePattern FILE_CALL = xmlAttributeValue()
+                .inside(xmlAttribute()
                         .withName("entity-xml-url", "xml-resource", "extends-resource",
                                 "resourceValue", "resource", "template", "page", "location", "image-location",
                                 "component-location", "fallback-location", "default-fallback-location",
                                 "default-location", "path")
+                )
 
-        public static final XmlAttributePattern SCREEN_CALL = xmlAttribute().andOr(
-                xmlAttribute()
-                        .withParent(xmlTag().withName("include-screen"))
-                        .withName("name"),
-                xmlAttribute()
-                        .withParent(xmlTag().withName("view-map")
-                                .withChild(xmlAttribute().withName("type").withValue(
-                                        string().equalTo("screen"))))
-                        .withName("page")
+        public static final XmlAttributeValuePattern SCREEN_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("include-screen"))
+                                .withName("name"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag()
+                                        .withName("view-map")
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
+                                                .withValue(string().equalTo("screen"))))
+                                .withName("page")
+                )
         )
 
         public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement()
