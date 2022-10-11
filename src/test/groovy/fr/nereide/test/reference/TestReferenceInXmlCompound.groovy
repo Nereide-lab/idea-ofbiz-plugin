@@ -29,10 +29,12 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
      */
 
     void testCpdFormReferenceFromCpdScreen() {
+        String moveTo = "FooComponent/widget"
         String file = 'CpdFormReferenceFromCpdScreen.xml'
+        myFixture.moveFile(file, moveTo)
         myFixture.configureByFile(file)
         PsiReference[] refs = myFixture.getElementAtCaret().getReferences()
-        PsiReference ref = refs.find {it instanceof FormReference }
+        PsiReference ref = refs.find { it instanceof FormReference }
         assertEquals 'FooForm', ref.getElement().getName() as String
         assertNotNull ref
         assertNotNull ref.resolve()

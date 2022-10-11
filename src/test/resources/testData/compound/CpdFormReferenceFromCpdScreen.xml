@@ -27,7 +27,7 @@ under the License.
         <ws:screen name="FooScreen">
             <ws:section>
                 <ws:widgets>
-                    <ws:include-form name="Foo<caret>Form" location="component://foo/bar/CpdFormReferenceFromCpdScreen.xml"/>
+                    <ws:include-form name="Foo<caret>Form" location="component://FooComponent/widget/CpdFormReferenceFromCpdScreen.xml"/>
                 </ws:widgets>
             </ws:section>
         </ws:screen>
