@@ -41,20 +41,27 @@ class FileHandlingUtils {
      * The dom implementation of the file MUST exist.
      * @param file the file to search the element in
      * @param dm A DomManager
-     * @param elementName the name of the element to look for
+     * @param wantedElementName the name of the element to look for
      * @param FILE_TYPE the DomFileElement of the file to search in
      * @param elementNameGetter the name of the method to get a particuliar element
      * @param listGetterMethod the name of the method that gets all the elements
      * @return
      */
-    static PsiElement getElementFromSpecificFile(PsiFile file, DomManager dm, String elementName, Class FILE_TYPE,
+    static PsiElement getElementFromSpecificFile(PsiFile file, DomManager dm, String wantedElementName, Class FILE_TYPE,
                                                  String elementNameGetter, String listGetterMethod) {
         if (file instanceof XmlFile) {
             DomFileElement domFile = dm.getFileElement(file, FILE_TYPE)
-            if(!domFile) domFile = dm.getFileElement(file, CompoundFile.class)
-            List<DomElement> elementsInFile = domFile.getRootElement()."$listGetterMethod"()
+            boolean isCpd = false
+            if (!domFile) {
+                domFile = dm.getFileElement(file, CompoundFile.class)
+                if(!domFile) return null
+                isCpd = true
+            }
+            // TODO : There is certainly a better way to do that..
+            List<DomElement> elementsInFile = isCpd ? domFile.getRootElement()."$listGetterMethod"()."$listGetterMethod"()
+                    : domFile.getRootElement()."$listGetterMethod"()
             for (DomElement element : elementsInFile) {
-                if (element."$elementNameGetter"().getValue().equalsIgnoreCase(elementName)) {
+                if (element."$elementNameGetter"().getValue().equalsIgnoreCase(wantedElementName)) {
                     return element.getXmlElement()
                 }
             }

@@ -1,6 +1,8 @@
 package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
+import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
+import com.intellij.psi.impl.source.xml.TagNameReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.test.GenericOfbizPluginTestCase
 
@@ -33,10 +35,11 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
         String file = 'CpdFormReferenceFromCpdScreen.xml'
         myFixture.moveFile(file, moveTo)
         myFixture.configureByFile(file)
-        PsiReference[] refs = myFixture.getElementAtCaret().getReferences()
-        PsiReference ref = refs.find { it instanceof FormReference }
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
+        if (ref instanceof PsiMultiReference) {
+            ref = ref.getReferences().find { it instanceof FormReference}
+        }
         assertEquals 'FooForm', ref.getElement().getName() as String
-        assertNotNull ref
         assertNotNull ref.resolve()
     }
 }

@@ -2,36 +2,31 @@ package fr.nereide.dom
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.Namespace
-import com.intellij.util.xml.SubTagList
-
-import static fr.nereide.dom.FormFile.*
-import static fr.nereide.dom.MenuFile.*
-import static fr.nereide.dom.ScreenFile.*
+import com.intellij.util.xml.SubTag
 
 interface CompoundFile extends DomElement {
 
-
     @Namespace(CompoundFileDescription.FORM_NS)
-    interface FormInCpd extends Form {}
+    interface FormBlocInCpd extends FormFile {}
 
     @Namespace(CompoundFileDescription.SITE_CONF_NS)
-    interface ControlerInCpd extends ControllerFile {}
+    interface ControlerBlocInCpd extends ControllerFile {}
 
     @Namespace(CompoundFileDescription.MENU_NS)
-    interface MenuInCpd extends Menu {}
+    interface MenuBlocInCpd extends MenuFile {}
 
     @Namespace(CompoundFileDescription.SCREEN_NS)
-    interface ScreenInCpd extends Screen {}
+    interface ScreenBlocInCpd extends ScreenFile {}
 
-    @SubTagList('menus')
-    List<MenuInCpd> getMenus()
+    @SubTag('forms')
+    FormBlocInCpd getForms()
 
-    @SubTagList('screens')
-    List<ScreenInCpd> getScreens()
+    @SubTag('site-conf')
+    ControlerBlocInCpd getSiteConf()
 
-    @SubTagList('forms')
-    List<FormInCpd> getForms()
+    @SubTag('menus')
+    MenuBlocInCpd getMenus()
 
-    @SubTagList('site-conf')
-    ControlerInCpd getSiteConf()
+    @SubTag('screens')
+    ScreenBlocInCpd getScreens()
 }
