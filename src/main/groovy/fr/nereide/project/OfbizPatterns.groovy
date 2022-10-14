@@ -337,13 +337,21 @@ class OfbizPatterns {
         public static final XmlAttributeValuePattern MENU_CALL = xmlAttributeValue().andOr(
                 xmlAttributeValue().inside(
                         xmlAttribute()
+                                .withName("navigation-menu-name")
                                 .inside(xmlTag().withName("screenlet"))
-                                .withName("navigation-menu-name"),
                 ),
                 xmlAttributeValue().inside(
                         xmlAttribute()
-                                .inside(xmlTag().withName("include-menu"))
                                 .withName("name")
+                                .inside(xmlTag().withName("include-menu"))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${SCREEN_NS_PREFIX}include-menu")
+                                        .withNamespace(SCREEN_NS_URL)
+                                )
                 )
         )
 

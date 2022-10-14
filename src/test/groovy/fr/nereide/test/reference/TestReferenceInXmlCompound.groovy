@@ -3,6 +3,7 @@ package fr.nereide.test.reference
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import fr.nereide.reference.xml.FormReference
+import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.ScreenReference
 import fr.nereide.test.GenericOfbizPluginTestCase
 
@@ -75,9 +76,9 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
         configureAndTestRefTypeAndValue(file, ScreenReference.class, 'MundaneScreen')
     }
 
-    //TODO
     void testCpdMenuRefFromCpdScreen() {
-        assert true
+        String file = 'CpdMenuRefFromCpdScreen.xml'
+        configureAndTestRefTypeAndValue(file, MenuReference.class, 'FooMenu')
     }
 
     //TODO
