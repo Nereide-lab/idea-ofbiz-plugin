@@ -81,9 +81,9 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
         configureAndTestRefTypeAndValue(file, MenuReference.class, 'FooMenu')
     }
 
-    //TODO
     void testExternalMenuRefFromCpdScreen() {
-        assert true
+        String file = 'ExternalMenuRefFromCpdScreen.xml'
+        configureAndTestRefTypeAndValue(file, MenuReference.class, 'BarMenu')
     }
 
     // TODO same patterns than in standard xml
