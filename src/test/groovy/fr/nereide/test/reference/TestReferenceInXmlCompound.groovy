@@ -45,7 +45,6 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
     //=====================================
     //              SCREEN TESTS
     //=====================================
-
     void testCpdFormReferenceFromCpdScreen() {
         String file = 'CpdFormReferenceFromCpdScreen.xml'
         configureAndTestRefTypeAndValue(file, FormReference.class, 'FooForm')
@@ -66,15 +65,14 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
         configureAndTestRefTypeAndValue(file, ScreenReference.class, 'FooDecoratorScreen')
     }
 
-
-    //TODO form et grid
     void testExternalFormRefFromCpdScreen() {
-        assert true
+        String file = 'ExternalFormRefFromCpdScreen.xml'
+        configureAndTestRefTypeAndValue(file, FormReference.class, 'OneFormAmongOthers')
     }
 
-    //TODO screen + decorator
     void testExternalScreenRefFromCpdScreen() {
-        assert true
+        String file = 'ExternalScreenRefFromCpdScreen.xml'
+        configureAndTestRefTypeAndValue(file, ScreenReference.class, 'MundaneScreen')
     }
 
     //TODO
