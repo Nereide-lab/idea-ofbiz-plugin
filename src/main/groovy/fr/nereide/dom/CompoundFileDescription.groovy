@@ -17,6 +17,7 @@ class CompoundFileDescription<S extends DomElement> extends DomFileDescription<C
 
     public static final String SCREEN_NS_URL = 'http://ofbiz.apache.org/Widget-Screen'
     public static final String SCREEN_NS = 'ws'
+    public static final String SCREEN_NS_PREFIX = 'ws:'
 
     CompoundFileDescription() { super(CompoundFile.class, rootTagName) }
 

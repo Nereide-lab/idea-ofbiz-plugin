@@ -3,6 +3,7 @@ package fr.nereide.test.reference
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import fr.nereide.reference.xml.FormReference
+import fr.nereide.reference.xml.ScreenReference
 import fr.nereide.test.GenericOfbizPluginTestCase
 
 class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
@@ -60,9 +61,32 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
         assertNotNull ref.resolve()
     }
 
-    //TODO screen + decorator
     void testCpdScreenReferenceFromCpdScreen() {
-        assert true
+        String file = 'CpdScreenReferenceFromCpdScreen.xml'
+        String moveTo = "FooComponent/widget"
+        myFixture.moveFile(file, moveTo)
+        myFixture.configureByFile(file)
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
+        if (ref instanceof PsiMultiReference) {
+            ref = ref.getReferences().find { it instanceof ScreenReference }
+        }
+        assert ref instanceof ScreenReference
+        assertEquals 'BarScreen', ref.getElement().getName() as String
+        assertNotNull ref.resolve()
+    }
+
+    void testCpdScreenDecoratorReferenceFromCpdScreen() {
+        String file = 'CpdScreenDecoratorReferenceFromCpdScreen.xml'
+        String moveTo = "FooComponent/widget"
+        myFixture.moveFile(file, moveTo)
+        myFixture.configureByFile(file)
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
+        if (ref instanceof PsiMultiReference) {
+            ref = ref.getReferences().find { it instanceof ScreenReference }
+        }
+        assert ref instanceof ScreenReference
+        assertEquals 'FooDecoratorScreen', ref.getElement().getName() as String
+        assertNotNull ref.resolve()
     }
 
     //TODO form et grid

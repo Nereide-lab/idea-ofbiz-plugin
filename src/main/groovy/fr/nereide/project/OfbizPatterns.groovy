@@ -328,7 +328,7 @@ class OfbizPatterns {
                         xmlAttribute()
                                 .withName("name")
                                 .inside(xmlTag()
-                                        .withName("${SCREEN_NS}:include-form")
+                                        .withName("${SCREEN_NS_PREFIX}include-form")
                                         .withNamespace(SCREEN_NS_URL)
                                 ),
                 )
@@ -358,8 +358,8 @@ class OfbizPatterns {
         public static final XmlAttributeValuePattern SCREEN_CALL = xmlAttributeValue().andOr(
                 xmlAttributeValue().inside(
                         xmlAttribute()
+                                .withName("name")
                                 .inside(xmlTag().withName("include-screen"))
-                                .withName("name"),
                 ),
                 xmlAttributeValue().inside(
                         xmlAttribute()
@@ -369,6 +369,27 @@ class OfbizPatterns {
                                                 .withName("type")
                                                 .withValue(string().equalTo("screen"))))
                                 .withName("page")
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${SCREEN_NS_PREFIX}include-screen")
+                                        .withNamespace(SCREEN_NS_URL)
+                                )
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag().withName("decorator-screen"))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${SCREEN_NS_PREFIX}decorator-screen")
+                                        .withNamespace(SCREEN_NS_URL)
+                                )
                 )
         )
 
