@@ -2,6 +2,7 @@ package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
+import fr.nereide.reference.xml.EntityReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.ScreenReference
@@ -86,13 +87,43 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
         configureAndTestRefTypeAndValue(file, MenuReference.class, 'BarMenu')
     }
 
-    // TODO same patterns than in standard xml
     void testEntityRefFromCpdScreen() {
+        String file = 'EntityRefFromCpdScreen.xml'
+        configureAndTestRefTypeAndValue(file, EntityReference.class, 'Entito')
+    }
+
+    // TODO
+    void testEntityRefFromCpdForm() {
+        assert true
+    }
+
+    // TODO
+    void testCpdRequestMapRefFromCpdForm() {
         assert true
     }
 
     // TODO
     void testFileRefFromCpdScreen() {
+        assert true
+    }
+
+    // TODO
+    void testCpdViewMapRefFromCpdRequestMap() {
+        assert true
+    }
+
+    // TODO
+    void testServiceRefFromCpdRequestMap() {
+        assert true
+    }
+
+    // TODO
+    void testJavaEventRefFromCpdRequestMap() {
+        assert true
+    }
+
+    // TODO identique à location ?
+    void testGroovyEventRefFromCpdRequestMap() {
         assert true
     }
 }
