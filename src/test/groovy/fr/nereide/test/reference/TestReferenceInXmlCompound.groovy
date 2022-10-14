@@ -19,6 +19,19 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
         return "src/test/resources/testData/compound"
     }
 
+    private void configureAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName) {
+        String moveTo = "FooComponent/widget"
+        myFixture.moveFile(file, moveTo)
+        myFixture.configureByFile(file)
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
+        if (ref instanceof PsiMultiReference) {
+            ref = ref.getReferences().find { expectedRefType.isAssignableFrom(it.getClass()) }
+        }
+        assert expectedRefType.isAssignableFrom(ref.getClass())
+        assertEquals expectedRefValueName, ref.getElement().getName() as String
+        assertNotNull ref.resolve()
+    }
+
     /**
      * Gestion des références dans les compounds :
      * Dans l'idéal, il faut à chaque fois que les références soient à double sens :
@@ -34,60 +47,25 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
     //=====================================
 
     void testCpdFormReferenceFromCpdScreen() {
-        String moveTo = "FooComponent/widget"
         String file = 'CpdFormReferenceFromCpdScreen.xml'
-        myFixture.moveFile(file, moveTo)
-        myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
-        if (ref instanceof PsiMultiReference) {
-            ref = ref.getReferences().find { it instanceof FormReference }
-        }
-        assert ref instanceof FormReference
-        assertEquals 'FooForm', ref.getElement().getName() as String
-        assertNotNull ref.resolve()
+        configureAndTestRefTypeAndValue(file, FormReference.class, 'FooForm')
     }
 
     void testCpdGridReferenceFromCpdScreen() {
         String file = 'CpdGridReferenceFromCpdScreen.xml'
-        String moveTo = "FooComponent/widget"
-        myFixture.moveFile(file, moveTo)
-        myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
-        if (ref instanceof PsiMultiReference) {
-            ref = ref.getReferences().find { it instanceof FormReference }
-        }
-        assert ref instanceof FormReference
-        assertEquals 'FooGrid', ref.getElement().getName() as String
-        assertNotNull ref.resolve()
+        configureAndTestRefTypeAndValue(file, FormReference.class, 'FooGrid')
     }
 
     void testCpdScreenReferenceFromCpdScreen() {
         String file = 'CpdScreenReferenceFromCpdScreen.xml'
-        String moveTo = "FooComponent/widget"
-        myFixture.moveFile(file, moveTo)
-        myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
-        if (ref instanceof PsiMultiReference) {
-            ref = ref.getReferences().find { it instanceof ScreenReference }
-        }
-        assert ref instanceof ScreenReference
-        assertEquals 'BarScreen', ref.getElement().getName() as String
-        assertNotNull ref.resolve()
+        configureAndTestRefTypeAndValue(file, ScreenReference.class, 'BarScreen')
     }
 
     void testCpdScreenDecoratorReferenceFromCpdScreen() {
         String file = 'CpdScreenDecoratorReferenceFromCpdScreen.xml'
-        String moveTo = "FooComponent/widget"
-        myFixture.moveFile(file, moveTo)
-        myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
-        if (ref instanceof PsiMultiReference) {
-            ref = ref.getReferences().find { it instanceof ScreenReference }
-        }
-        assert ref instanceof ScreenReference
-        assertEquals 'FooDecoratorScreen', ref.getElement().getName() as String
-        assertNotNull ref.resolve()
+        configureAndTestRefTypeAndValue(file, ScreenReference.class, 'FooDecoratorScreen')
     }
+
 
     //TODO form et grid
     void testExternalFormRefFromCpdScreen() {
