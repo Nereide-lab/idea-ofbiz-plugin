@@ -255,10 +255,21 @@ class OfbizPatterns {
     //                      XML
     // =============================================================
     class XML {
-        public static final XmlAttributeValuePattern URI_CALL = xmlAttributeValue()
-                .inside(xmlAttribute()
-                        .withName("target")
-                        .inside(xmlTag().withName("form")))
+        public static final XmlAttributeValuePattern URI_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue()
+                        .inside(xmlAttribute()
+                                .withName("target")
+                                .inside(xmlTag().withName("form"))
+                        ),
+                xmlAttributeValue()
+                        .inside(xmlAttribute()
+                                .withName("target")
+                                .inside(xmlTag()
+                                        .withName("${FORM_NS_PREFIX}form")
+                                        .withNamespace(FORM_NS_URL)
+                                )
+                        )
+        )
 
         public static final XmlAttributeValuePattern RESPONSE_CALL = xmlAttributeValue()
                 .inside(xmlAttribute()

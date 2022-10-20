@@ -25,6 +25,7 @@ import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomService
 import fr.nereide.dom.ComponentFile
+import fr.nereide.dom.CompoundFile
 import fr.nereide.dom.ControllerFile
 import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.ControllerFile.RequestMap
@@ -44,6 +45,7 @@ import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.dom.UiLabelFile
 import fr.nereide.dom.UiLabelFile.Property
 
+import static java.util.stream.Collectors.*
 
 class ProjectServiceImpl implements ProjectServiceInterface {
     private final Project project
@@ -53,11 +55,11 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     RequestMap getControllerUri(String name) {
-        return getMatchingElementFromXmlFiles(ControllerFile.class, "getRequestMap", "getUri", name)
+        return getClassMatchingProjectDomElement(ControllerFile.class, project, name, "getRequestMaps", "getUri")
     }
 
     ViewMap getControllerViewName(String name) {
-        return getMatchingElementFromXmlFiles(ControllerFile.class, "getViewMap", "getName", name)
+        return getMatchingElementFromXmlFiles(ControllerFile.class, "getViewMaps", "getName", name)
     }
 
     Entity getEntity(String name) {
@@ -65,7 +67,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     List<Entity> getAllEntities() {
-        return getAllElementOfSpecificType(EntityModelFile.class, "getEntities", "getEntityName")
+        return getAllElementOfSpecificType(EntityModelFile.class, "getEntities")
     }
 
     ViewEntity getViewEntity(String name) {
@@ -73,7 +75,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     List<ViewEntity> getAllViewEntities() {
-        return getAllElementOfSpecificType(EntityModelFile.class, "getViewEntities", "getEntityName")
+        return getAllElementOfSpecificType(EntityModelFile.class, "getViewEntities")
     }
 
     Service getService(String name) {
@@ -81,7 +83,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     List<Service> getAllServices() {
-        return getAllElementOfSpecificType(ServiceDefFile.class, "getServices", "getName")
+        return getAllElementOfSpecificType(ServiceDefFile.class, "getServices")
     }
 
     Property getProperty(String name) {
@@ -132,7 +134,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     @Override
     List<ExtendEntity> getExtendEntityListForEntity(String entityName) {
-        List<DomElement> extendList = getAllElementOfSpecificType(EntityModelFile.class, "getExtendEntities", null)
+        List<DomElement> extendList = getAllElementOfSpecificType(EntityModelFile.class, "getExtendEntities")
         return extendList.stream().filter {
             it.getEntityName().getValue() == entityName
         }.collect() as List<ExtendEntity>
@@ -140,16 +142,16 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     @Override
     List<ExtendEntity> getAllExtendsEntity() {
-        return getAllElementOfSpecificType(EntityModelFile.class, "getExtendEntities", "getEntityName")
+        return getAllElementOfSpecificType(EntityModelFile.class, "getExtendEntities")
     }
 
     private DomElement getMatchingElementFromXmlFiles(Class classFile,
-                                                      String fileElementGetterName,
+                                                      String elementListGetterMethod,
                                                       String elementValueGetterName,
                                                       String matchingValue) {
-        List<DomFileElement<?>> projectFiles = getClassMatchingProjectFiles(classFile, this.project)
+        List<DomFileElement<?>> projectFiles = getClassMatchingProjectDomBlocs(classFile, this.project)
         for (DomFileElement<?> projectFile : projectFiles) {
-            List<DomElement> elements = projectFile.getRootElement()."$fileElementGetterName"()
+            List<DomElement> elements = projectFile.getRootElement()."$elementListGetterMethod"()
             for (DomElement element : elements) {
                 if (element."$elementValueGetterName"().getValue().equalsIgnoreCase(matchingValue)) return element
             }
@@ -157,13 +159,11 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return null
     }
 
-    private List<DomElement> getAllElementOfSpecificType(Class classFile,
-                                                         String fileElementGetterName,
-                                                         String elementValueGetterName) {
+    private List<DomElement> getAllElementOfSpecificType(Class classFile, String elementListGetterMethod) {
         List resultSet = []
-        List<DomFileElement<?>> projectFiles = getClassMatchingProjectFiles(classFile, this.project)
+        List<DomFileElement<?>> projectFiles = getClassMatchingProjectDomBlocs(classFile, this.project)
         for (DomFileElement<?> projectFile : projectFiles) {
-            List<DomElement> elements = projectFile.getRootElement()."$fileElementGetterName"()
+            List<DomElement> elements = projectFile.getRootElement()."$elementListGetterMethod"()
             for (DomElement element : elements) {
                 resultSet << element
             }
@@ -171,7 +171,35 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return resultSet
     }
 
-    private static List<DomFileElement<?>> getClassMatchingProjectFiles(Class classFile, Project project) {
+    private static List<DomFileElement> getClassMatchingProjectDomBlocs(Class classFile, Project project) {
         return DomService.getInstance().getFileElements(classFile, project, GlobalSearchScope.allScope(project))
+    }
+
+    private static List<DomElement> getClassMatchingProjectDomElementList(Class classFile, Project project, String elementListGetterMethod) {
+        List<DomFileElement> relevantFile = getClassMatchingProjectDomBlocs(classFile, project)
+        List<DomElement> relevantDomBlocs = []
+        relevantFile.forEach {
+            relevantDomBlocs << it.getRootElement()
+        }
+        List<CompoundFile> cpdFiles = DomService.getInstance().getFileElements(CompoundFile.class, project, GlobalSearchScope.allScope(project)) as List<CompoundFile>
+        cpdFiles.forEach {
+            relevantDomBlocs << it.getRootElement().getSiteConf()
+        }
+        List toReturn = []
+        relevantDomBlocs.forEach {
+            // TODO :How in the world is this returning an array ?
+            toReturn << it."$elementListGetterMethod"()[0]
+        }
+        return toReturn
+    }
+
+    private static DomElement getClassMatchingProjectDomElement(Class classFile, Project project, String wantedName,
+                                                                String elementListGetterMethod, String elementNameGetterMethod) {
+        List<DomElement> relevantDomBlocs = getClassMatchingProjectDomElementList(classFile, project, elementListGetterMethod)
+        List<DomElement> domEls = relevantDomBlocs.stream().filter { DomElement it ->
+            wantedName.equalsIgnoreCase(it."$elementNameGetterMethod"().getValue())
+        }.collect(toList())
+
+        return domEls.size() > 0 ? domEls[0] : null
     }
 }

@@ -2,6 +2,7 @@ package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
+import fr.nereide.reference.xml.ControllerRequestReference
 import fr.nereide.reference.xml.EntityReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
@@ -92,14 +93,9 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
         configureAndTestRefTypeAndValue(file, EntityReference.class, 'Entito')
     }
 
-    // TODO
-    void testEntityRefFromCpdForm() {
-        assert true
-    }
-
-    // TODO
     void testCpdRequestMapRefFromCpdForm() {
-        assert true
+        String file = 'CpdRequestMapRefFromCpdForm.xml'
+        configureAndTestRefTypeAndValue(file, ControllerRequestReference.class, 'MyFooRequest')
     }
 
     // TODO

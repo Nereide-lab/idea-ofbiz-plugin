@@ -11,6 +11,7 @@ class CompoundFileDescription<S extends DomElement> extends DomFileDescription<C
 
     public static final String FORM_NS_URL = 'http://ofbiz.apache.org/Widget-Form'
     public static final String FORM_NS = 'wf'
+    public static final String FORM_NS_PREFIX = 'wf:'
 
     public static final String MENU_NS_URL = 'http://ofbiz.apache.org/Widget-Menu'
     public static final String MENU_NS = 'wm'
