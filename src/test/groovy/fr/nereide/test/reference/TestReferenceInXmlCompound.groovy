@@ -1,6 +1,6 @@
 package fr.nereide.test.reference
 
-
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import fr.nereide.reference.xml.ControllerRequestReference
 import fr.nereide.reference.xml.EntityReference
 import fr.nereide.reference.xml.FormReference
@@ -17,10 +17,13 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
     }
 
     private void configureAndMoveFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName) {
-        myFixture.moveFile(file, MOVE_TO)
-        configureByFileAndTestRefTypeAndValueForXml(file, expectedRefType, expectedRefValueName)
+        configureAndMoveFileAndTestRefTypeAndValue(file, expectedRefType, expectedRefValueName, true)
     }
 
+    private void configureAndMoveFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName, boolean strict) {
+        myFixture.moveFile(file, MOVE_TO)
+        configureByFileAndTestRefTypeAndValueForXml(file, expectedRefType, expectedRefValueName, strict)
+    }
     /**
      * Gestion des références dans les compounds :
      * Dans l'idéal, il faut à chaque fois que les références soient à double sens :
@@ -79,14 +82,18 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
         configureAndMoveFileAndTestRefTypeAndValue(file, EntityReference.class, 'Entito')
     }
 
+    void testFileRefFromCpdScreen() {
+        String file = 'FileRefFromCpdScreen.xml'
+        configureAndMoveFileAndTestRefTypeAndValue(file, FileReference.class, 'footemplate', false)
+    }
+
+    //=====================================
+    //              FORMS TESTS
+    //=====================================
+
     void testCpdRequestMapRefFromCpdForm() {
         String file = 'CpdRequestMapRefFromCpdForm.xml'
         configureAndMoveFileAndTestRefTypeAndValue(file, ControllerRequestReference.class, 'MyFooRequest')
-    }
-
-    // TODO
-    void testFileRefFromCpdScreen() {
-        assert true
     }
 
     // TODO
