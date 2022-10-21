@@ -1,38 +1,24 @@
 package fr.nereide.test.reference
 
-import com.intellij.psi.PsiReference
-import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
+
 import fr.nereide.reference.xml.ControllerRequestReference
 import fr.nereide.reference.xml.EntityReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.ScreenReference
-import fr.nereide.test.GenericOfbizPluginTestCase
 
-class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
+class TestReferenceInXmlCompound extends GenericRefTestCase {
 
-    @Override
-    protected void setUp() {
-        super.setUp()
-        myFixture.copyDirectoryToProject('assets', '')
-    }
+    private static String MOVE_TO = "FooComponent/widget"
 
     @Override
     protected String getTestDataPath() {
         return "src/test/resources/testData/compound"
     }
 
-    private void configureAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName) {
-        String moveTo = "FooComponent/widget"
-        myFixture.moveFile(file, moveTo)
-        myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
-        if (ref instanceof PsiMultiReference) {
-            ref = ref.getReferences().find { expectedRefType.isAssignableFrom(it.getClass()) }
-        }
-        assert expectedRefType.isAssignableFrom(ref.getClass())
-        assertEquals expectedRefValueName, ref.getElement().getName() as String
-        assertNotNull ref.resolve()
+    private void configureAndMoveFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName) {
+        myFixture.moveFile(file, MOVE_TO)
+        configureByFileAndTestRefTypeAndValueForXml(file, expectedRefType, expectedRefValueName)
     }
 
     /**
@@ -50,52 +36,52 @@ class TestReferenceInXmlCompound extends GenericOfbizPluginTestCase {
     //=====================================
     void testCpdFormReferenceFromCpdScreen() {
         String file = 'CpdFormReferenceFromCpdScreen.xml'
-        configureAndTestRefTypeAndValue(file, FormReference.class, 'FooForm')
+        configureAndMoveFileAndTestRefTypeAndValue(file, FormReference.class, 'FooForm')
     }
 
     void testCpdGridReferenceFromCpdScreen() {
         String file = 'CpdGridReferenceFromCpdScreen.xml'
-        configureAndTestRefTypeAndValue(file, FormReference.class, 'FooGrid')
+        configureAndMoveFileAndTestRefTypeAndValue(file, FormReference.class, 'FooGrid')
     }
 
     void testCpdScreenReferenceFromCpdScreen() {
         String file = 'CpdScreenReferenceFromCpdScreen.xml'
-        configureAndTestRefTypeAndValue(file, ScreenReference.class, 'BarScreen')
+        configureAndMoveFileAndTestRefTypeAndValue(file, ScreenReference.class, 'BarScreen')
     }
 
     void testCpdScreenDecoratorReferenceFromCpdScreen() {
         String file = 'CpdScreenDecoratorReferenceFromCpdScreen.xml'
-        configureAndTestRefTypeAndValue(file, ScreenReference.class, 'FooDecoratorScreen')
+        configureAndMoveFileAndTestRefTypeAndValue(file, ScreenReference.class, 'FooDecoratorScreen')
     }
 
     void testExternalFormRefFromCpdScreen() {
         String file = 'ExternalFormRefFromCpdScreen.xml'
-        configureAndTestRefTypeAndValue(file, FormReference.class, 'OneFormAmongOthers')
+        configureAndMoveFileAndTestRefTypeAndValue(file, FormReference.class, 'OneFormAmongOthers')
     }
 
     void testExternalScreenRefFromCpdScreen() {
         String file = 'ExternalScreenRefFromCpdScreen.xml'
-        configureAndTestRefTypeAndValue(file, ScreenReference.class, 'MundaneScreen')
+        configureAndMoveFileAndTestRefTypeAndValue(file, ScreenReference.class, 'MundaneScreen')
     }
 
     void testCpdMenuRefFromCpdScreen() {
         String file = 'CpdMenuRefFromCpdScreen.xml'
-        configureAndTestRefTypeAndValue(file, MenuReference.class, 'FooMenu')
+        configureAndMoveFileAndTestRefTypeAndValue(file, MenuReference.class, 'FooMenu')
     }
 
     void testExternalMenuRefFromCpdScreen() {
         String file = 'ExternalMenuRefFromCpdScreen.xml'
-        configureAndTestRefTypeAndValue(file, MenuReference.class, 'BarMenu')
+        configureAndMoveFileAndTestRefTypeAndValue(file, MenuReference.class, 'BarMenu')
     }
 
     void testEntityRefFromCpdScreen() {
         String file = 'EntityRefFromCpdScreen.xml'
-        configureAndTestRefTypeAndValue(file, EntityReference.class, 'Entito')
+        configureAndMoveFileAndTestRefTypeAndValue(file, EntityReference.class, 'Entito')
     }
 
     void testCpdRequestMapRefFromCpdForm() {
         String file = 'CpdRequestMapRefFromCpdForm.xml'
-        configureAndTestRefTypeAndValue(file, ControllerRequestReference.class, 'MyFooRequest')
+        configureAndMoveFileAndTestRefTypeAndValue(file, ControllerRequestReference.class, 'MyFooRequest')
     }
 
     // TODO

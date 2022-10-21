@@ -24,7 +24,7 @@ import fr.nereide.reference.groovy.ServiceGroovyReference
 class TestReferenceInGroovy extends GenericRefTestCase {
 
     void testGroovyEntityReferenceWithFindMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRef('groovy/GroovyEntityReferenceWithFindMethod.groovy')
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyEntityReferenceWithFindMethod.groovy')
         assertTrue ref instanceof EntityGroovyReference
         EntityGroovyReference entityRef = (EntityGroovyReference) ref
         assertEquals 'Lobster', entityRef.getValue() as String
@@ -32,7 +32,7 @@ class TestReferenceInGroovy extends GenericRefTestCase {
     }
 
     void testGroovyViewEntityReferenceWithFindMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRef('groovy/GroovyViewEntityReferenceWithFindMethod.groovy')
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyViewEntityReferenceWithFindMethod.groovy')
         assertTrue ref instanceof EntityGroovyReference
         EntityGroovyReference entityRef = (EntityGroovyReference) ref
         assertEquals 'Zaun', entityRef.getValue() as String
@@ -40,7 +40,7 @@ class TestReferenceInGroovy extends GenericRefTestCase {
     }
 
     void testGroovyEntityReferenceWithFromMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRef('groovy/GroovyEntityReferenceWithFromMethod.groovy')
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyEntityReferenceWithFromMethod.groovy')
         assertTrue ref instanceof EntityGroovyReference
         EntityGroovyReference entityRef = (EntityGroovyReference) ref
         assertEquals 'PickleRick', entityRef.getValue() as String
@@ -48,7 +48,7 @@ class TestReferenceInGroovy extends GenericRefTestCase {
     }
 
     void testGroovyServiceReferenceWithRunCall() {
-        PsiReference ref = setupFixtureForTestAndGetRef('groovy/GroovyServiceReferenceWithRunCall.groovy')
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyServiceReferenceWithRunCall.groovy')
         assertTrue ref instanceof ServiceGroovyReference
         ServiceGroovyReference serviceRef = (ServiceGroovyReference) ref
         assertEquals 'pivot', serviceRef.getValue() as String
