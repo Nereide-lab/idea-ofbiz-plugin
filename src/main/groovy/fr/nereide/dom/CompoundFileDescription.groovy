@@ -8,6 +8,7 @@ class CompoundFileDescription<S extends DomElement> extends DomFileDescription<C
 
     public static final String SITE_CONF_NS_URL = 'http://ofbiz.apache.org/Site-Conf'
     public static final String SITE_CONF_NS = 'sc'
+    public static final String SITE_CONF_NS_PREFIX = 'sc:'
 
     public static final String FORM_NS_URL = 'http://ofbiz.apache.org/Widget-Form'
     public static final String FORM_NS = 'wf'

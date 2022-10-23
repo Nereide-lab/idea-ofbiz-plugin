@@ -54,12 +54,12 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         this.project = project
     }
 
-    RequestMap getControllerUri(String name) {
+    RequestMap getRequestMap(String name) {
         return getClassMatchingProjectDomElement(ControllerFile.class, project, name, "getRequestMaps", "getUri")
     }
 
-    ViewMap getControllerViewName(String name) {
-        return getMatchingElementFromXmlFiles(ControllerFile.class, "getViewMaps", "getName", name)
+    ViewMap getViewMap(String name) {
+        return getClassMatchingProjectDomElement(ControllerFile.class, project, name, "getViewMaps", "getName")
     }
 
     Entity getEntity(String name) {
@@ -188,7 +188,9 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         List toReturn = []
         relevantDomBlocs.forEach {
             // TODO :How in the world is this returning an array ?
-            toReturn << it."$elementListGetterMethod"()[0]
+            if (it."$elementListGetterMethod"()[0] != null) {
+                toReturn << it."$elementListGetterMethod"()[0]
+            }
         }
         return toReturn
     }
@@ -199,7 +201,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         List<DomElement> domEls = relevantDomBlocs.stream().filter { DomElement it ->
             wantedName.equalsIgnoreCase(it."$elementNameGetterMethod"().getValue())
         }.collect(toList())
-
+        // TODO : Right now we only return the first element found. We'll have to add control for the right component
         return domEls.size() > 0 ? domEls[0] : null
     }
 }

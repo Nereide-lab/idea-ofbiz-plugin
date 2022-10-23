@@ -271,10 +271,20 @@ class OfbizPatterns {
                         )
         )
 
-        public static final XmlAttributeValuePattern RESPONSE_CALL = xmlAttributeValue()
-                .inside(xmlAttribute()
-                        .inside(xmlTag().withName("response"))
-                        .withName("value"))
+        public static final XmlAttributeValuePattern RESPONSE_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("value")
+                                .inside(xmlTag()
+                                        .withName("${SITE_CONF_NS_PREFIX}response")
+                                        .withNamespace(SITE_CONF_NS_URL))),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("value")
+                                .inside(xmlTag()
+                                        .withName("response"))
+                )
+        )
 
         public static final XmlAttributeValuePattern ENTITY_CALL = xmlAttributeValue()
                 .inside(xmlAttribute()

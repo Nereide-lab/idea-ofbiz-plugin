@@ -1,7 +1,8 @@
 package fr.nereide.test.reference
 
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
-import fr.nereide.reference.xml.ControllerRequestReference
+import fr.nereide.reference.xml.RequestMapReference
+import fr.nereide.reference.xml.ViewMapReference
 import fr.nereide.reference.xml.EntityReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
@@ -93,12 +94,12 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
 
     void testCpdRequestMapRefFromCpdForm() {
         String file = 'CpdRequestMapRefFromCpdForm.xml'
-        configureAndMoveFileAndTestRefTypeAndValue(file, ControllerRequestReference.class, 'MyFooRequest')
+        configureAndMoveFileAndTestRefTypeAndValue(file, RequestMapReference.class, 'MyFooRequest')
     }
 
-    // TODO
     void testCpdViewMapRefFromCpdRequestMap() {
-        assert true
+        String file = 'CpdViewMapRefFromCpdRequestMap.xml'
+        configureAndMoveFileAndTestRefTypeAndValue(file, ViewMapReference.class, 'myFooResponseInCpd')
     }
 
     // TODO

@@ -18,8 +18,9 @@
 package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
-import fr.nereide.reference.xml.ControllerRequestReference
-import fr.nereide.reference.xml.ControllerViewReference
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import fr.nereide.reference.xml.RequestMapReference
+import fr.nereide.reference.xml.ViewMapReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.ScreenReference
@@ -78,12 +79,12 @@ class TestReferenceInXml extends GenericRefTestCase {
 
     void testRequestMapReferenceFromForm() {
         String file = "xml/RequestMapReferenceFromForm.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, ControllerRequestReference.class, 'fooRequest')
+        configureByFileAndTestRefTypeAndValueForXml(file, RequestMapReference.class, 'fooRequest')
     }
 
     void testViewMapReferenceFromRequestMap() {
         String file = "xml/ViewMapReferenceFromRequestMap.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, ControllerViewReference.class, 'MyHome')
+        configureByFileAndTestRefTypeAndValueForXml(file, ViewMapReference.class, 'MyHome')
     }
 
     void testMenuReferenceFromScreen() {

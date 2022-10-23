@@ -18,12 +18,11 @@
 package fr.nereide.reference.contributor
 
 
-import com.intellij.patterns.XmlPatterns
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
 import fr.nereide.project.OfbizPatterns
-import fr.nereide.reference.xml.ControllerRequestReferenceProvider
-import fr.nereide.reference.xml.ControllerViewReferenceProvider
+import fr.nereide.reference.xml.RequestMapReferenceProvider
+import fr.nereide.reference.xml.ViewMapReferenceProvider
 import fr.nereide.reference.xml.EntityReferenceProvider
 import fr.nereide.reference.xml.FileReferenceProvider
 import fr.nereide.reference.xml.FormReferenceProvider
@@ -38,8 +37,8 @@ class XmlReferenceContributor extends PsiReferenceContributor {
     XmlReferenceContributor() {}
 
     void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(OfbizPatterns.XML.URI_CALL, new ControllerRequestReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.RESPONSE_CALL, new ControllerViewReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.URI_CALL, new RequestMapReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.RESPONSE_CALL, new ViewMapReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.ENTITY_CALL, new EntityReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.SERVICE_DEF_CALL, new ServiceReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.LABEL_CALL, new UiLabelReferenceProvider())

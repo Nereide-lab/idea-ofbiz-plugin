@@ -33,9 +33,9 @@ import fr.nereide.dom.UiLabelFile.Property
 
 interface ProjectServiceInterface {
 
-    RequestMap getControllerUri(String name)
+    RequestMap getRequestMap(String name)
 
-    ViewMap getControllerViewName(String name)
+    ViewMap getViewMap(String name)
 
     Entity getEntity(String name)
 
