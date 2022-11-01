@@ -296,10 +296,23 @@ class OfbizPatterns {
                                 .withName("service", "service-name")),
                 xmlAttributeValue().inside(
                         xmlAttribute()
+                                .withName("invoke")
                                 .inside(xmlTag()
                                         .withName("event")
-                                        .withChild(xmlAttribute().withName("type").withValue(string().contains("service"))))
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
+                                                .withValue(string().contains("service"))))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
                                 .withName("invoke")
+                                .inside(xmlTag()
+                                        .withName("${SITE_CONF_NS_PREFIX}event")
+                                        .withNamespace(SITE_CONF_NS_URL)
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
+                                                .withValue(string().contains("service")))
+                                )
                 )
         )
 

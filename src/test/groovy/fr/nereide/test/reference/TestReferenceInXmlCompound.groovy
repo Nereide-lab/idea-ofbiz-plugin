@@ -2,6 +2,7 @@ package fr.nereide.test.reference
 
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import fr.nereide.reference.xml.RequestMapReference
+import fr.nereide.reference.xml.ServiceReference
 import fr.nereide.reference.xml.ViewMapReference
 import fr.nereide.reference.xml.EntityReference
 import fr.nereide.reference.xml.FormReference
@@ -102,9 +103,9 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
         configureAndMoveFileAndTestRefTypeAndValue(file, ViewMapReference.class, 'myFooResponseInCpd')
     }
 
-    // TODO
     void testServiceRefFromCpdRequestMap() {
-        assert true
+        String file = 'ServiceRefFromCpdRequestMap.xml'
+        configureAndMoveFileAndTestRefTypeAndValue(file, ServiceReference.class, 'DonateToQuadratureDuNet')
     }
 
     // TODO
