@@ -118,8 +118,12 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
         configureAndMoveFileAndTestRefTypeAndValue(file, JavaMethodReference.class, 'login')
     }
 
-    // TODO identique à location ?
-    void testGroovyEventRefFromCpdRequestMap() {
-        assert true
+    //=====================================
+    //         REQUEST MAP TESTS
+    //=====================================
+
+    void testCpdScreenRefFromCpdViewMap() {
+        String file = 'CpdScreenRefFromCpdViewMap.xml'
+        configureAndMoveFileAndTestRefTypeAndValue(file, ScreenReference.class, 'MyFooScreenInCpd', false)
     }
 }

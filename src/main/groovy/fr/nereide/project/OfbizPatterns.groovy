@@ -419,12 +419,22 @@ class OfbizPatterns {
                 ),
                 xmlAttributeValue().inside(
                         xmlAttribute()
+                                .withName("page")
                                 .inside(xmlTag()
                                         .withName("view-map")
                                         .withChild(xmlAttribute()
                                                 .withName("type")
                                                 .withValue(string().equalTo("screen"))))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
                                 .withName("page")
+                                .inside(xmlTag()
+                                        .withName("${SITE_CONF_NS_PREFIX}view-map")
+                                        .withNamespace(SITE_CONF_NS_URL)
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
+                                                .withValue(string().equalTo("screen"))))
                 ),
                 xmlAttributeValue().inside(
                         xmlAttribute()
