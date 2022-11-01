@@ -7,6 +7,7 @@
         <response name="success" type="view" value="My<caret>Home"/>
     </request-map>
 
+    <view-map name="MyHomeToto"/>
     <view-map name="MyHome"/>
 
 </site-conf>

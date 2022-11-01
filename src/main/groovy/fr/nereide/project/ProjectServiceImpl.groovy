@@ -174,9 +174,8 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         }
         List toReturn = []
         relevantDomBlocs.forEach {
-            // TODO :How in the world is this returning an array ?
-            if (it."$elementListGetterMethod"()[0] != null) {
-                toReturn << it."$elementListGetterMethod"()[0]
+            if (it."$elementListGetterMethod"()) {
+                toReturn.addAll(it."$elementListGetterMethod"())
             }
         }
         return toReturn

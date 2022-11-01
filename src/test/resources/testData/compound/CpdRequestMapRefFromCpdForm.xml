@@ -24,6 +24,7 @@ under the License.
                   xsi:noNamespaceSchemaLocation="../../../../framework/widget/dtd/compound-widgets.xsd">
 
     <sc:site-conf>
+        <sc:request-map uri="MyFooRequ"></sc:request-map>
         <sc:request-map uri="MyFooRequest"></sc:request-map>
     </sc:site-conf>
 
