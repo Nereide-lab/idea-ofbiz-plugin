@@ -319,18 +319,32 @@ class OfbizPatterns {
         public static final XmlAttributeValuePattern JAVA_EVENT_CALL = xmlAttributeValue().andOr(
                 xmlAttributeValue().inside(
                         xmlAttribute()
-                                .inside(xmlTag().withName("event")
-                                        .withChild(xmlAttribute().withName("type")
+                                .withName("invoke")
+                                .inside(xmlTag()
+                                        .withName("event")
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
                                                 .withValue(string().equalTo("java")))
-                                )
-                                .withName("invoke")),
+                                )),
                 xmlAttributeValue().inside(
                         xmlAttribute()
-                                .inside(xmlTag().withName("service")
-                                        .withChild(xmlAttribute().withName("engine")
+                                .withName("invoke")
+                                .inside(xmlTag()
+                                        .withName("${SITE_CONF_NS_PREFIX}event")
+                                        .withNamespace(SITE_CONF_NS_URL)
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
                                                 .withValue(string().equalTo("java")))
-                                )
-                                .withName("invoke"))
+                                )),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("invoke")
+                                .inside(xmlTag()
+                                        .withName("service")
+                                        .withChild(xmlAttribute()
+                                                .withName("engine")
+                                                .withValue(string().equalTo("java")))
+                                ))
         )
 
         public static final XmlAttributeValuePattern LABEL_CALL = xmlAttributeValue().inside(

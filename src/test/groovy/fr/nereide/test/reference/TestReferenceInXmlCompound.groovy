@@ -1,6 +1,7 @@
 package fr.nereide.test.reference
 
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import fr.nereide.reference.xml.JavaMethodReference
 import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.reference.xml.ServiceReference
 import fr.nereide.reference.xml.ViewMapReference
@@ -98,6 +99,10 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
         configureAndMoveFileAndTestRefTypeAndValue(file, RequestMapReference.class, 'MyFooRequest')
     }
 
+    //=====================================
+    //         REQUEST MAP TESTS
+    //=====================================
+
     void testCpdViewMapRefFromCpdRequestMap() {
         String file = 'CpdViewMapRefFromCpdRequestMap.xml'
         configureAndMoveFileAndTestRefTypeAndValue(file, ViewMapReference.class, 'myFooResponseInCpd')
@@ -108,9 +113,9 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
         configureAndMoveFileAndTestRefTypeAndValue(file, ServiceReference.class, 'DonateToQuadratureDuNet')
     }
 
-    // TODO
     void testJavaEventRefFromCpdRequestMap() {
-        assert true
+        String file = 'JavaEventRefFromCpdRequestMap.xml'
+        configureAndMoveFileAndTestRefTypeAndValue(file, JavaMethodReference.class, 'login')
     }
 
     // TODO identique à location ?
