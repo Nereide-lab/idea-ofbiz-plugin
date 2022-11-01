@@ -18,13 +18,13 @@ class JavaMethodReference extends PsiReferenceBase<XmlElement> {
     @Nullable
     PsiElement resolve() {
         PsiMethod[] methods = this.currentClass.getMethods();
-        String val = this.getValue();
+        String val = this.getValue()
 
         for (PsiMethod method : methods) {
             if (method.getName().equals(val)) {
-                return method;
+                return method
             }
         }
-        return null;
+        return null
     }
 }

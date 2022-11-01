@@ -119,19 +119,6 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return null
     }
 
-    PsiMethod getMethod(String name) {
-        List<DomFileElement> componentFiles = DomService.getInstance()
-                .getFileElements(ComponentFile.class, project, GlobalSearchScope.allScope(project))
-
-        for (DomFileElement component : componentFiles) {
-            if (component.getRootElement().getName().getValue().equalsIgnoreCase(name)) {
-                component = (DomFileElement) component
-                return component.getFile().getContainingDirectory()
-            }
-        }
-        return null
-    }
-
     @Override
     List<ExtendEntity> getExtendEntityListForEntity(String entityName) {
         List<DomElement> extendList = getAllElementOfSpecificType(EntityModelFile.class, "getExtendEntities")

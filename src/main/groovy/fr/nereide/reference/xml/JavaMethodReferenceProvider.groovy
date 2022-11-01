@@ -1,13 +1,11 @@
 package fr.nereide.reference.xml
 
-import com.intellij.openapi.project.Project
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
-import com.intellij.psi.impl.source.xml.XmlAttributeValueImpl
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
@@ -26,7 +24,7 @@ class JavaMethodReferenceProvider extends PsiReferenceProvider {
                 className = parent.getParent().getAttributeValue("path")
             }
             if (!className) {
-                return PsiReference.EMPTY_ARRAY;
+                return PsiReference.EMPTY_ARRAY
             }
 
             PsiClass currentClass = JavaPsiFacade.getInstance(element.getProject())
@@ -41,6 +39,6 @@ class JavaMethodReferenceProvider extends PsiReferenceProvider {
                 }
             }
         }
-        return PsiReference.EMPTY_ARRAY;
+        return PsiReference.EMPTY_ARRAY
     }
 }

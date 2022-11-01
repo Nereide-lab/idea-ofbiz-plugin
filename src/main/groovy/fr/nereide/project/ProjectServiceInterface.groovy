@@ -61,8 +61,6 @@ interface ProjectServiceInterface {
 
     PsiDirectory getComponentDir(String name)
 
-    PsiMethod getMethod(String name)
-
     List<ExtendEntity> getExtendEntityListForEntity(String entityName)
 
     List<ExtendEntity> getAllExtendsEntity()
