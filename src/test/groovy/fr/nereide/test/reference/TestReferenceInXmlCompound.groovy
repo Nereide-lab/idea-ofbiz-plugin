@@ -27,19 +27,11 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
         myFixture.moveFile(file, MOVE_TO)
         configureByFileAndTestRefTypeAndValueForXml(file, expectedRefType, expectedRefValueName, strict)
     }
-    /**
-     * Gestion des références dans les compounds :
-     * Dans l'idéal, il faut à chaque fois que les références soient à double sens :
-     *      Si j'inclut un écran extérieur dans un compound alors l'écran extérieur doit trouver l'écran du compound.
-     * Dans un compound on peut avoir :
-     *  - Des controlleurs (Request et View)
-     *  - Des forms
-     *  - Des menus
-     *  - Des screens
-     */
+
     //=====================================
     //              SCREEN TESTS
     //=====================================
+
     void testCpdFormReferenceFromCpdScreen() {
         String file = 'CpdFormReferenceFromCpdScreen.xml'
         configureAndMoveFileAndTestRefTypeAndValue(file, FormReference.class, 'FooForm')
@@ -90,6 +82,15 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
         configureAndMoveFileAndTestRefTypeAndValue(file, FileReference.class, 'footemplate', false)
     }
 
+    void testCpdScreenRefFromExtScreen() {
+        String file = 'CpdScreenRefFromExtScreen.xml'
+        configureAndMoveFileAndTestRefTypeAndValue(file, ScreenReference.class, 'MyScreenInCpd', false)
+    }
+
+    void testCpdFormRefFromExtScreen() {
+        String file = 'CpdFormRefFromExtScreen.xml'
+        configureAndMoveFileAndTestRefTypeAndValue(file, FormReference.class, 'MyFormInCpd', false)
+    }
     //=====================================
     //              FORMS TESTS
     //=====================================
