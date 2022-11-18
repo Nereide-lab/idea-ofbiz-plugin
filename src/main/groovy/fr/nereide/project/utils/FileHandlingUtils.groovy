@@ -25,7 +25,9 @@ import com.intellij.psi.xml.XmlFile
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomManager
+import fr.nereide.dom.CompoundFile
 import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.worker.CompoundWorker
 import fr.nereide.reference.common.ComponentAwareFileReferenceSet
 
 import java.util.regex.Matcher
@@ -40,19 +42,27 @@ class FileHandlingUtils {
      * The dom implementation of the file MUST exist.
      * @param file the file to search the element in
      * @param dm A DomManager
-     * @param elementName the name of the element to look for
-     * @param FILE_TYPE the DomFileElement of the file to search in
-     * @param elementGetterMethod the name of the method to get a particuliar element
+     * @param wantedElementName the name of the element to look for
+     * @param fileType the DomFileElement of the file to search in
+     * @param elementNameGetter the name of the method to get a particuliar element
      * @param listGetterMethod the name of the method that gets all the elements
      * @return
      */
-    static PsiElement getElementFromSpecificFile(PsiFile file, DomManager dm, String elementName, Class FILE_TYPE,
-                                                 String elementGetterMethod, String listGetterMethod) {
+    static PsiElement getElementFromSpecificFile(PsiFile file, DomManager dm, String wantedElementName, Class fileType,
+                                                 String elementNameGetter, String listGetterMethod) {
         if (file instanceof XmlFile) {
-            DomFileElement domFile = dm.getFileElement(file, FILE_TYPE)
-            List<DomElement> elementsInFile = domFile.getRootElement()."$listGetterMethod"()
+            DomFileElement domFile = dm.getFileElement(file, fileType)
+            boolean isCpd = false
+            if (!domFile) {
+                domFile = dm.getFileElement(file, CompoundFile.class)
+                if (!domFile) return null
+                isCpd = true
+            }
+            // TODO : There is certainly a better way to do that..
+            List<DomElement> elementsInFile = isCpd ? CompoundWorker.getDomElementListFromCompound(domFile, listGetterMethod, fileType)
+                    : domFile.getRootElement()."$listGetterMethod"()
             for (DomElement element : elementsInFile) {
-                if (element."$elementGetterMethod"().getValue().equalsIgnoreCase(elementName)) {
+                if (element."$elementNameGetter"().getValue().equalsIgnoreCase(wantedElementName)) {
                     return element.getXmlElement()
                 }
             }

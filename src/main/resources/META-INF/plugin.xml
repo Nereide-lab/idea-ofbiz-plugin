@@ -65,6 +65,7 @@
         <dom.fileMetaData implementation="fr.nereide.dom.FormFileDescription" rootTagName="forms"/>
         <dom.fileMetaData implementation="fr.nereide.dom.MenuFileDescription" rootTagName="menus"/>
         <dom.fileMetaData implementation="fr.nereide.dom.ScreenFileDescription" rootTagName="screens"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.CompoundFileDescription" rootTagName="compound-widgets"/>
 
     </extensions>
 </idea-plugin>

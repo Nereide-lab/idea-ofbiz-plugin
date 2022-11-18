@@ -26,7 +26,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      * Test for find method() from delegator
      */
     void testEntityReferenceWithFindMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRef('java/EntityReferenceWithFindMethod.java')
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithFindMethod.java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'HyruleCastle', entityRef.getValue() as String
@@ -37,7 +37,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      * Test for findOne() method from delegator
      */
     void testEntityReferenceWithFindOneMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRef('java/EntityReferenceWithFindOneMethod.java')
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithFindOneMethod.java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'PiltoverData', entityRef.getValue() as String
@@ -48,7 +48,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      * Test for findList() method from delegator
      */
     void testEntityReferenceWithFindListMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRef('java/EntityReferenceWithFindListMethod.java')
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithFindListMethod.java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'Enderman', entityRef.getValue() as String
@@ -59,7 +59,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      * Test for findAll() method from delegator
      */
     void testEntityReferenceWithFindAllMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRef('java/EntityReferenceWithFindAllMethod.java')
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithFindAllMethod.java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'TwoFlowers', entityRef.getValue() as String
@@ -70,7 +70,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      * Test for addMemberEntity() method from DynamicViewEntity
      */
     void testEntityReferenceWithAddMemberEntityMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRef('java/EntityReferenceWithAddMemberEntityMethod.java')
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithAddMemberEntityMethod.java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'WeWereOnABreak', entityRef.getValue() as String
@@ -81,7 +81,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      * Test for from() method from EntityQuery
      */
     void testEntityReferenceWithFromMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRef('java/EntityReferenceWithFromMethod.java')
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithFromMethod.java')
         assertTrue ref instanceof EntityJavaReference
         EntityJavaReference entityRef = (EntityJavaReference) ref
         assertEquals 'Rick', entityRef.getValue() as String

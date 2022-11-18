@@ -18,12 +18,11 @@
 package fr.nereide.reference.contributor
 
 
-import com.intellij.patterns.XmlPatterns
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
 import fr.nereide.project.OfbizPatterns
-import fr.nereide.reference.xml.ControllerRequestReferenceProvider
-import fr.nereide.reference.xml.ControllerViewReferenceProvider
+import fr.nereide.reference.xml.RequestMapReferenceProvider
+import fr.nereide.reference.xml.ViewMapReferenceProvider
 import fr.nereide.reference.xml.EntityReferenceProvider
 import fr.nereide.reference.xml.FileReferenceProvider
 import fr.nereide.reference.xml.FormReferenceProvider
@@ -38,35 +37,15 @@ class XmlReferenceContributor extends PsiReferenceContributor {
     XmlReferenceContributor() {}
 
     void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(OfbizPatterns.XML.URI_CALL), new ControllerRequestReferenceProvider()
-        )
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(OfbizPatterns.XML.RESPONSE_CALL), new ControllerViewReferenceProvider()
-        )
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(OfbizPatterns.XML.ENTITY_CALL), new EntityReferenceProvider()
-        )
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(OfbizPatterns.XML.SERVICE_DEF_CALL), new ServiceReferenceProvider()
-        )
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(OfbizPatterns.XML.LABEL_CALL), new UiLabelReferenceProvider()
-        )
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(OfbizPatterns.XML.FORM_CALL), new FormReferenceProvider()
-        )
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(OfbizPatterns.XML.FILE_CALL), new FileReferenceProvider()
-        )
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(OfbizPatterns.XML.SCREEN_CALL), new ScreenReferenceProvider()
-        )
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(OfbizPatterns.XML.MENU_CALL), new MenuReferenceProvider()
-        )
-        registrar.registerReferenceProvider(XmlPatterns.xmlAttributeValue()
-                .withParent(OfbizPatterns.XML.JAVA_EVENT_CALL), new JavaMethodReferenceProvider()
-        )
+        registrar.registerReferenceProvider(OfbizPatterns.XML.URI_CALL, new RequestMapReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.RESPONSE_CALL, new ViewMapReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.ENTITY_CALL, new EntityReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.SERVICE_DEF_CALL, new ServiceReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.LABEL_CALL, new UiLabelReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.FORM_CALL, new FormReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.FILE_CALL, new FileReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.SCREEN_CALL, new ScreenReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.MENU_CALL, new MenuReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.JAVA_EVENT_CALL, new JavaMethodReferenceProvider())
     }
 }

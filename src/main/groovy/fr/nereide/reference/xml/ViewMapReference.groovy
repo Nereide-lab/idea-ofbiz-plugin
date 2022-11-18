@@ -17,25 +17,22 @@
 
 package fr.nereide.reference.xml
 
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiReference
-import com.intellij.psi.PsiReferenceProvider
+import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.xml.XmlAttributeValue
-import com.intellij.util.ProcessingContext
-import org.jetbrains.annotations.NotNull
+import com.intellij.util.xml.DomElement
+import fr.nereide.project.ProjectServiceInterface
+import org.jetbrains.annotations.Nullable
 
-class ControllerViewReferenceProvider extends PsiReferenceProvider {
-    ControllerViewReferenceProvider() {}
+class ViewMapReference extends PsiReferenceBase<XmlAttributeValue> {
+    ViewMapReference(XmlAttributeValue element, boolean soft) {
+        super(element, soft)
+    }
 
-    private static final Logger LOG = Logger.getInstance(ControllerViewReferenceProvider.class)
-
-    PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (element instanceof XmlAttributeValue) {
-            ControllerViewReference controller = new ControllerViewReference((XmlAttributeValue) element, true)
-            PsiReference[] reference = (PsiReference) controller
-            return reference
-        }
-        return PsiReference.EMPTY_ARRAY
+    @Nullable
+    PsiElement resolve() {
+        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
+        DomElement definition = structureService.getViewMap(this.getValue())
+        return definition != null ? definition.getXmlElement() : null
     }
 }

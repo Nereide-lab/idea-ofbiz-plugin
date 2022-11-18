@@ -44,7 +44,7 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
      * @param type
      * @return
      */
-    PsiReference setupFixtureForTestAndGetRef(String file) {
+    PsiReference setupFixtureForTestAndGetRefForGroovy(String file) {
         myFixture.configureByFile(file)
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(file)
         if (ref instanceof PsiMultiReference) {
@@ -56,6 +56,26 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
             }
         }
         return ref
+    }
+
+    protected void configureByFileAndTestRefTypeAndValueForXml(String file, Class expectedRefType, String expectedRefValueName,
+                                                               boolean strict) {
+        myFixture.configureByFile(file)
+        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
+        if (ref instanceof PsiMultiReference) {
+            ref = ref.getReferences().find { expectedRefType.isAssignableFrom(it.getClass()) }
+        }
+        assert expectedRefType.isAssignableFrom(ref.getClass())
+        if (strict) {
+            assertEquals expectedRefValueName, ref.getElement().getName() as String
+        } else {
+            assert ref.getElement().getText().contains(expectedRefValueName)
+        }
+        assertNotNull ref.resolve()
+    }
+
+    protected void configureByFileAndTestRefTypeAndValueForXml(String file, Class expectedRefType, String expectedRefValueName) {
+        configureByFileAndTestRefTypeAndValueForXml(file, expectedRefType, expectedRefValueName, true)
     }
 
     /**

@@ -17,14 +17,21 @@
 
 package fr.nereide.project
 
-import com.intellij.patterns.PlatformPatterns
+
 import com.intellij.patterns.PsiElementPattern
-import com.intellij.patterns.PsiJavaPatterns
-import com.intellij.patterns.XmlNamedElementPattern
-import com.intellij.patterns.XmlPatterns
+import com.intellij.patterns.XmlAttributeValuePattern
 import fr.nereide.project.pattern.FieldTypeCondition
-import org.jetbrains.plugins.groovy.lang.psi.GroovyPsiElement
-import org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns
+
+import static com.intellij.patterns.PlatformPatterns.psiElement
+import static com.intellij.patterns.PsiJavaPatterns.literalExpression
+import static com.intellij.patterns.PsiJavaPatterns.psiMethod
+import static com.intellij.patterns.StandardPatterns.string
+import static com.intellij.patterns.XmlPatterns.xmlAttribute
+import static com.intellij.patterns.XmlPatterns.xmlAttributeValue
+import static com.intellij.patterns.XmlPatterns.xmlTag
+import static fr.nereide.dom.CompoundFileDescription.*
+import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.groovyLiteralExpression
+import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.namedArgument
 
 class OfbizPatterns {
 
@@ -32,152 +39,130 @@ class OfbizPatterns {
     //                      JAVA
     // =============================================================
     class JAVA {
-        public static final PsiElementPattern SERVICE_CALL = PlatformPatterns.psiElement().andOr(
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("makeValidContext")
-                                .definedInClass("org.apache.ofbiz.service.DispatchContext"))),
+        public static final PsiElementPattern SERVICE_CALL = psiElement().andOr(
+                psiElement().withTreeParent(literalExpression().methodCallParameter(0, psiMethod()
+                        .withName("makeValidContext")
+                        .definedInClass("org.apache.ofbiz.service.DispatchContext"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runSync")
+                psiElement().withTreeParent(literalExpression().methodCallParameter(0, psiMethod()
+                        .withName("runSync")
+                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
+
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runAsync")
                                 .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runAsync")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runAsyncWait")
                                 .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runAsyncWait")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runSyncIgnore")
                                 .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runSyncIgnore")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runSyncNewTrans")
                                 .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runSyncNewTrans")
-                                .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
-
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runService")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runService")
                                 .definedInClass("org.apache.ofbiz.base.util.ScriptHelper"))),
 
-                PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("makeValidContext")
+                literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("makeValidContext")
                                 .definedInClass("org.apache.ofbiz.service.DispatchContext")),
 
-                PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runSync")
+                literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runSync")
                                 .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
-                PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runAsync")
+                literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runAsync")
                                 .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
-                PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runAsyncWait")
+                literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runAsyncWait")
                                 .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
-                PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runSyncIgnore")
+                literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runSyncIgnore")
                                 .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
-                PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runSyncNewTrans")
+                literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runSyncNewTrans")
                                 .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
-                PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("runService")
+                literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("runService")
                                 .definedInClass("org.apache.ofbiz.base.util.ScriptHelper"))
         )
 
-        public static final PsiElementPattern ENTITY_CALL = PlatformPatterns.psiElement().andOr(
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("find")
+        public static final PsiElementPattern ENTITY_CALL = psiElement().andOr(
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("find")
                                 .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("findOne")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("findOne")
                                 .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("findAll")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("findAll")
                                 .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("findCountByCondition")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("findCountByCondition")
                                 .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("findList")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("findList")
                                 .definedInClass("org.apache.ofbiz.entity.Delegator"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(1, PsiJavaPatterns.psiMethod()
-                                .withName("addMemberEntity")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(1, psiMethod().withName("addMemberEntity")
                                 .definedInClass("org.apache.ofbiz.entity.model.DynamicViewEntity"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(1, PsiJavaPatterns.psiMethod()
-                                .withName("makeGenericValue")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(1, psiMethod().withName("makeGenericValue")
                                 .definedInClass("org.apache.ofbiz.entityext.data.EntityDataServices"))),
 
-                PlatformPatterns.psiElement().withTreeParent(PsiJavaPatterns.literalExpression()
-                        .methodCallParameter(0, PsiJavaPatterns.psiMethod()
-                                .withName("from")
+                psiElement().withTreeParent(literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("from")
                                 .definedInClass("org.apache.ofbiz.entity.util.EntityQuery"))),
 
-                PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
+                literalExpression().methodCallParameter(0, psiMethod()
                         .withName("find").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
-                PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
+                literalExpression().methodCallParameter(0, psiMethod()
                         .withName("findOne").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
-                PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
+                literalExpression().methodCallParameter(0, psiMethod()
                         .withName("findAll").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
-                PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
+                literalExpression().methodCallParameter(0, psiMethod()
                         .withName("findCountByCondition").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
-                PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
+                literalExpression().methodCallParameter(0, psiMethod()
                         .withName("findList").definedInClass("org.apache.ofbiz.entity.Delegator")),
 
-                PsiJavaPatterns.literalExpression().methodCallParameter(1, PsiJavaPatterns.psiMethod()
+                literalExpression().methodCallParameter(1, psiMethod()
                         .withName("addMemberEntity").definedInClass("org.apache.ofbiz.entity.model.DynamicViewEntity")),
 
-                PsiJavaPatterns.literalExpression().methodCallParameter(1, PsiJavaPatterns.psiMethod().
+                literalExpression().methodCallParameter(1, psiMethod().
                         withName("makeGenericValue").definedInClass("org.apache.ofbiz.entityext.data.EntityDataServices")),
 
-                PsiJavaPatterns.literalExpression().methodCallParameter(0, PsiJavaPatterns.psiMethod()
+                literalExpression().methodCallParameter(0, psiMethod()
                         .withName("from").definedInClass("org.apache.ofbiz.entity.util.EntityQuery"))
         )
 
-        public static final PsiElementPattern LABEL_CALL = PlatformPatterns.psiElement().andOr(
-                PsiJavaPatterns.literalExpression().methodCallParameter(1, PsiJavaPatterns.psiMethod()
+        public static final PsiElementPattern LABEL_CALL = psiElement().andOr(
+                literalExpression().methodCallParameter(1, psiMethod()
                         .withName("getMessage").definedInClass("org.apache.ofbiz.base.util.UtilProperties"))
         )
 
-        public static final PsiElementPattern SERVICE_CALL_COMPL = PlatformPatterns.psiElement()
+        public static final PsiElementPattern SERVICE_CALL_COMPL = psiElement()
                 .inside(SERVICE_CALL)
-        public static final PsiElementPattern ENTITY_CALL_COMPL = PlatformPatterns.psiElement()
+        public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement()
                 .inside(ENTITY_CALL)
     }
 
@@ -185,112 +170,84 @@ class OfbizPatterns {
     //                      GROOVY
     // =============================================================
     class GROOVY {
-        public static final PsiElementPattern SERVICE_CALL = PlatformPatterns.psiElement().andOr(
-                GroovyPatterns.groovyLiteralExpression()
-                        .methodCallParameter(0,
-                                GroovyPatterns.psiMethod().withName("runSync")
-                                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
+        public static final PsiElementPattern SERVICE_CALL = psiElement().andOr(
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runSync")
+                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
-                GroovyPatterns.groovyLiteralExpression()
-                        .methodCallParameter(0,
-                                GroovyPatterns.psiMethod().withName("runAsync")
-                                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runAsync")
+                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
-                GroovyPatterns.groovyLiteralExpression()
-                        .methodCallParameter(0,
-                                GroovyPatterns.psiMethod().withName("runAsyncWait")
-                                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runAsyncWait")
+                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
-                GroovyPatterns.groovyLiteralExpression()
-                        .methodCallParameter(0,
-                                GroovyPatterns.psiMethod().withName("runSyncIgnore")
-                                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runSyncIgnore")
+                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
-                GroovyPatterns.groovyLiteralExpression()
-                        .methodCallParameter(0,
-                                GroovyPatterns.psiMethod().withName("runSyncNewTrans")
-                                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runSyncNewTrans")
+                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
 
-                GroovyPatterns.groovyLiteralExpression()
-                        .methodCallParameter(0,
-                                GroovyPatterns.psiMethod().withName("runService")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runService")),
 
-                GroovyPatterns.groovyLiteralExpression().withParent(
-                        GroovyPatterns.namedArgument().withLabel('service')
-                        //TODO : bétonner un peu pour éviter les soucis de référence non trouvée ?
+                //TODO : bétonner un peu pour éviter les soucis de référence non trouvée ?
+                groovyLiteralExpression().withParent(namedArgument().withLabel('service')
                 )
         )
 
-        public static final PsiElementPattern ENTITY_CALL = PlatformPatterns.psiElement().andOr(
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
-                        GroovyPatterns.psiMethod().withName("find")
-                                .definedInClass("org.apache.ofbiz.entity.Delegator")),
+        public static final PsiElementPattern ENTITY_CALL = psiElement().andOr(
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("find")
+                        .definedInClass("org.apache.ofbiz.entity.Delegator")),
 
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
-                        GroovyPatterns.psiMethod().withName("findOne")
-                                .definedInClass("org.apache.ofbiz.entity.Delegator")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findOne")
+                        .definedInClass("org.apache.ofbiz.entity.Delegator")),
 
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
-                        GroovyPatterns.psiMethod().withName("findAll")
-                                .definedInClass("org.apache.ofbiz.entity.Delegator")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findAll")
+                        .definedInClass("org.apache.ofbiz.entity.Delegator")),
 
                 // TODO : Marche pas
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
-                        GroovyPatterns.psiMethod().withName("findCountByCondition")
-                                .definedInClass("org.apache.ofbiz.entity.Delegator")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findCountByCondition")
+                        .definedInClass("org.apache.ofbiz.entity.Delegator")),
 
                 // TODO : Marche pas
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
-                        GroovyPatterns.psiMethod().withName("findList")
-                                .definedInClass("org.apache.ofbiz.entity.Delegator")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findList")
+                        .definedInClass("org.apache.ofbiz.entity.Delegator")),
 
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(1,
-                        GroovyPatterns.psiMethod().withName("addMemberEntity")
-                                .definedInClass("org.apache.ofbiz.entity.model.DynamicViewEntity")),
+                groovyLiteralExpression().methodCallParameter(1, psiMethod().withName("addMemberEntity")
+                        .definedInClass("org.apache.ofbiz.entity.model.DynamicViewEntity")),
 
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(1,
-                        GroovyPatterns.psiMethod().withName("makeGenericValue")
-                                .definedInClass("org.apache.ofbiz.entityext.data.EntityDataServices")),
+                groovyLiteralExpression().methodCallParameter(1, psiMethod().withName("makeGenericValue")
+                        .definedInClass("org.apache.ofbiz.entityext.data.EntityDataServices")),
 
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
-                        GroovyPatterns.psiMethod().withName("from")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("from")),
 
                 // TODO : Marche pas
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
-                        GroovyPatterns.psiMethod().withName("makeValue")
-                                .definedInClass("org.apache.ofbiz.service.engine.GroovyBaseScript")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("makeValue")
+                        .definedInClass("org.apache.ofbiz.service.engine.GroovyBaseScript")),
 
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(0,
-                        GroovyPatterns.psiMethod().withName("findOne"))
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findOne"))
         )
 
-        public static final PsiElementPattern LABEL_CALL = PlatformPatterns.psiElement().andOr(
-                GroovyPatterns.groovyLiteralExpression().methodCallParameter(1,
-                        GroovyPatterns.psiMethod().withName("getMessage")
-                                .definedInClass("org.apache.ofbiz.base.util.UtilProperties"))
+        public static final PsiElementPattern LABEL_CALL = psiElement().andOr(
+                groovyLiteralExpression().methodCallParameter(1, psiMethod().withName("getMessage")
+                        .definedInClass("org.apache.ofbiz.base.util.UtilProperties"))
         )
 
-        public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE = PlatformPatterns.psiElement().andOr(
-                PlatformPatterns.psiElement().afterLeafSkipping(
-                        PlatformPatterns.psiElement().withText("."),
-                        PlatformPatterns.psiElement().withParent(
-                                PlatformPatterns.psiElement().with(new FieldTypeCondition(
-                                        "GenericValueTypePattern",
-                                        'org.apache.ofbiz.entity.GenericValue','GenericValue'))
+        public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE = psiElement().andOr(
+                psiElement().afterLeafSkipping(
+                        psiElement().withText("."),
+                        psiElement().withParent(psiElement().with(new FieldTypeCondition(
+                                "GenericValueTypePattern",
+                                'org.apache.ofbiz.entity.GenericValue', 'GenericValue'))
                         )
                 )
         )
 
-        public static final PsiElementPattern SERVICE_CALL_COMPL = PlatformPatterns.psiElement()
-                .inside(SERVICE_CALL)
-        public static final PsiElementPattern ENTITY_CALL_COMPL = PlatformPatterns.psiElement()
-                .inside(ENTITY_CALL)
-        public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE_COMPL = PlatformPatterns.psiElement()
-                .inside(GENERIC_VALUE_ATTRIBUTE)
+        public static final PsiElementPattern SERVICE_CALL_COMPL = psiElement().inside(SERVICE_CALL)
+        public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_CALL)
+        public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE_COMPL = psiElement().inside(GENERIC_VALUE_ATTRIBUTE)
 
-        public static final PsiElementPattern GROOVY_LOOP_PATTERN = PlatformPatterns.psiElement().andOr(
-                PlatformPatterns.psiElement().withText(PlatformPatterns.string().contains('forEach')),
-                PlatformPatterns.psiElement().withText(PlatformPatterns.string().contains('stream'))
+        public static final PsiElementPattern GROOVY_LOOP_PATTERN = psiElement().andOr(
+                psiElement().withText(string().contains('forEach')),
+                psiElement().withText(string().contains('stream'))
         )
     }
 
@@ -298,95 +255,213 @@ class OfbizPatterns {
     //                      XML
     // =============================================================
     class XML {
-        public static final XmlNamedElementPattern.XmlAttributePattern URI_CALL =
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("form"))
-                        .withName("target")
-
-        public static final XmlNamedElementPattern.XmlAttributePattern RESPONSE_CALL =
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("response"))
-                        .withName("value")
-
-        public static final XmlNamedElementPattern.XmlAttributePattern ENTITY_CALL =
-                XmlPatterns.xmlAttribute()
-                        .withName("entity", "entity-name", "default-entity-name", "rel-entity-name")
-
-        public static final XmlNamedElementPattern.XmlAttributePattern SERVICE_DEF_CALL = XmlPatterns.xmlAttribute().andOr(
-                XmlPatterns.xmlAttribute()
-                        .withName("service", "service-name"),
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("event")
-                                .withChild(XmlPatterns.xmlAttribute().withName("type")
-                                        .withValue(XmlPatterns.string().contains("service")))
+        public static final XmlAttributeValuePattern URI_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue()
+                        .inside(xmlAttribute()
+                                .withName("target")
+                                .inside(xmlTag().withName("form"))
+                        ),
+                xmlAttributeValue()
+                        .inside(xmlAttribute()
+                                .withName("target")
+                                .inside(xmlTag()
+                                        .withName("${FORM_NS_PREFIX}form")
+                                        .withNamespace(FORM_NS_URL)
+                                )
                         )
-                        .withName("invoke")
         )
 
-        public static final XmlNamedElementPattern.XmlAttributePattern JAVA_EVENT_CALL = XmlPatterns.xmlAttribute().andOr(
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("event")
-                                .withChild(XmlPatterns.xmlAttribute().withName("type")
-                                        .withValue(XmlPatterns.string().equalTo("java")))
-                        )
-                        .withName("invoke"),
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("service")
-                                .withChild(XmlPatterns.xmlAttribute().withName("engine")
-                                        .withValue(XmlPatterns.string().equalTo("java")))
-                        )
-                        .withName("invoke")
+        public static final XmlAttributeValuePattern RESPONSE_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("value")
+                                .inside(xmlTag()
+                                        .withName("${SITE_CONF_NS_PREFIX}response")
+                                        .withNamespace(SITE_CONF_NS_URL))),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("value")
+                                .inside(xmlTag()
+                                        .withName("response"))
+                )
         )
 
-        public static final XmlNamedElementPattern.XmlAttributePattern LABEL_CALL =
-                XmlPatterns.xmlAttribute().withValue(
-                        XmlPatterns.string().startsWith('${uiLabelMap.'))
+        public static final XmlAttributeValuePattern ENTITY_CALL = xmlAttributeValue()
+                .inside(xmlAttribute()
+                        .withName("entity", "entity-name", "default-entity-name", "rel-entity-name"))
 
-        public static final XmlNamedElementPattern.XmlAttributePattern FORM_CALL = XmlPatterns.xmlAttribute().andOr(
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("include-form"))
-                        .withName("name"),
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("include-grid"))
-                        .withName("name"),
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("form"))
-                        .withName("extends"),
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("grid"))
-                        .withName("extends")
+        public static final XmlAttributeValuePattern SERVICE_DEF_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("service", "service-name")),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("invoke")
+                                .inside(xmlTag()
+                                        .withName("event")
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
+                                                .withValue(string().contains("service"))))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("invoke")
+                                .inside(xmlTag()
+                                        .withName("${SITE_CONF_NS_PREFIX}event")
+                                        .withNamespace(SITE_CONF_NS_URL)
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
+                                                .withValue(string().contains("service")))
+                                )
+                )
         )
 
-        public static final XmlNamedElementPattern.XmlAttributePattern MENU_CALL = XmlPatterns.xmlAttribute().andOr(
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("screenlet"))
-                        .withName("navigation-menu-name"),
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("include-menu"))
-                        .withName("name")
+        public static final XmlAttributeValuePattern JAVA_EVENT_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("invoke")
+                                .inside(xmlTag()
+                                        .withName("event")
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
+                                                .withValue(string().equalTo("java")))
+                                )),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("invoke")
+                                .inside(xmlTag()
+                                        .withName("${SITE_CONF_NS_PREFIX}event")
+                                        .withNamespace(SITE_CONF_NS_URL)
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
+                                                .withValue(string().equalTo("java")))
+                                )),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("invoke")
+                                .inside(xmlTag()
+                                        .withName("service")
+                                        .withChild(xmlAttribute()
+                                                .withName("engine")
+                                                .withValue(string().equalTo("java")))
+                                ))
         )
 
-        public static final XmlNamedElementPattern.XmlAttributePattern FILE_CALL =
-                XmlPatterns.xmlAttribute()
+        public static final XmlAttributeValuePattern LABEL_CALL = xmlAttributeValue().inside(
+                xmlAttribute().withValue(string().startsWith('${uiLabelMap.'))
+        )
+
+        public static final XmlAttributeValuePattern FORM_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("include-form"))
+                                .withName("name"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("include-grid"))
+                                .withName("name"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("form"))
+                                .withName("extends"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("grid"))
+                                .withName("extends"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${SCREEN_NS_PREFIX}include-form")
+                                        .withNamespace(SCREEN_NS_URL)
+                                ),
+                )
+        )
+
+        public static final XmlAttributeValuePattern MENU_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("navigation-menu-name")
+                                .inside(xmlTag().withName("screenlet"))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag().withName("include-menu"))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${SCREEN_NS_PREFIX}include-menu")
+                                        .withNamespace(SCREEN_NS_URL)
+                                )
+                )
+        )
+
+        public static final XmlAttributeValuePattern FILE_CALL = xmlAttributeValue()
+                .inside(xmlAttribute()
                         .withName("entity-xml-url", "xml-resource", "extends-resource",
                                 "resourceValue", "resource", "template", "page", "location", "image-location",
                                 "component-location", "fallback-location", "default-fallback-location",
                                 "default-location", "path")
+                )
 
-        public static final XmlNamedElementPattern.XmlAttributePattern SCREEN_CALL = XmlPatterns.xmlAttribute().andOr(
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("include-screen"))
-                        .withName("name"),
-                XmlPatterns.xmlAttribute()
-                        .withParent(XmlPatterns.xmlTag().withName("view-map")
-                                .withChild(XmlPatterns.xmlAttribute().withName("type").withValue(
-                                        XmlPatterns.string().equalTo("screen"))))
-                        .withName("page")
+        public static final XmlAttributeValuePattern SCREEN_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag().withName("include-screen"))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("page")
+                                .inside(xmlTag()
+                                        .withName("view-map")
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
+                                                .withValue(string().equalTo("screen"))))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("page")
+                                .inside(xmlTag()
+                                        .withName("${SITE_CONF_NS_PREFIX}view-map")
+                                        .withNamespace(SITE_CONF_NS_URL)
+                                        .withChild(xmlAttribute()
+                                                .withName("type")
+                                                .withValue(string().equalTo("screen"))))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${SCREEN_NS_PREFIX}include-screen")
+                                        .withNamespace(SCREEN_NS_URL)
+                                )
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag().withName("decorator-screen"))
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${SCREEN_NS_PREFIX}decorator-screen")
+                                        .withNamespace(SCREEN_NS_URL)
+                                )
+                )
         )
 
-        public static final PsiElementPattern ENTITY_CALL_COMPL = PlatformPatterns.psiElement()
+        public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement()
                 .inside(ENTITY_CALL)
-        public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = PlatformPatterns.psiElement()
+        public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement()
                 .inside(SERVICE_DEF_CALL)
     }
 }

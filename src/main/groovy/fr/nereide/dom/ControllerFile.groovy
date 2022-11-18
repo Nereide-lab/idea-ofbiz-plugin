@@ -28,7 +28,7 @@ interface ControllerFile extends DomElement {
     /* Request */
 
     @SubTagList("request-map")
-    List<RequestMap> getRequestMap()
+    List<RequestMap> getRequestMaps()
 
     interface RequestMap extends ControllerFile {
         @NameValue
@@ -39,7 +39,7 @@ interface ControllerFile extends DomElement {
     /* View Map */
 
     @SubTagList("view-map")
-    List<ViewMap> getViewMap()
+    List<ViewMap> getViewMaps()
 
     interface ViewMap extends ControllerFile {
         @NameValue
