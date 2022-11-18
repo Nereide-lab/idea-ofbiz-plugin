@@ -38,43 +38,55 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
 
     static String getQuickNavigateInfo(PsiElement element, String elementName) {
         if (!element || !element instanceof XmlTag) return null
-        ProjectServiceInterface structureService = element.getProject().getService(ProjectServiceInterface.class)
-        return getTag(element) ? getQuickNavigateDocForElement(getTag(element), structureService, elementName) : null
+        try {
+            ProjectServiceInterface structureService = element.getProject().getService(ProjectServiceInterface.class)
+            return getTag(element) ? getQuickNavigateDocForElement(getTag(element), structureService, elementName) : null
+        } catch (MissingMethodException ignored) {
+            return null
+        }
     }
 
     static String generateDoc(PsiElement element, String elementName) {
         if (!element instanceof XmlTag) return null
         ProjectServiceInterface structureService = element.getProject().getService(ProjectServiceInterface.class)
-        XmlTag tag = getTag(element)
-        if (!elementName || !tag) return null
-        switch (tag.getLocalName()) {
-            case 'service':
-                String serviceName = structureService.getService(elementName).getName().getValue()
-                return serviceName ? generateServiceDoc(serviceName, structureService) : 'Service not found'
-            case 'entity':
-                String entityName = structureService.getEntity(elementName).getEntityName().getValue()
-                return entityName ? generateEntityDoc(entityName, structureService) : 'Entity not found'
-            case 'view-entity':
-                String viewName = structureService.getViewEntity(elementName).getEntityName().getValue()
-                return viewName ? generateViewDoc(viewName, structureService) : 'View not found'
-            case 'property':
-                String propertyName = structureService.getProperty(MiscUtils.getUiLabelSafeValue(elementName)).getKey().getValue()
-                return propertyName ? generateUiLabelDoc(propertyName, structureService) : 'UiLabel not found'
-            default: return null
+        try {
+            XmlTag tag = getTag(element)
+            if (!elementName || !tag) return null
+            switch (tag.getLocalName()) {
+                case 'service':
+                    String serviceName = structureService.getService(elementName).getName().getValue()
+                    return serviceName ? generateServiceDoc(serviceName, structureService) : 'Service not found'
+                case 'entity':
+                    String entityName = structureService.getEntity(elementName).getEntityName().getValue()
+                    return entityName ? generateEntityDoc(entityName, structureService) : 'Entity not found'
+                case 'view-entity':
+                    String viewName = structureService.getViewEntity(elementName).getEntityName().getValue()
+                    return viewName ? generateViewDoc(viewName, structureService) : 'View not found'
+                case 'property':
+                    String propertyName = structureService.getProperty(MiscUtils.getUiLabelSafeValue(elementName)).getKey().getValue()
+                    return propertyName ? generateUiLabelDoc(propertyName, structureService) : 'UiLabel not found'
+                default: return null
+            }
+        } catch (MissingMethodException ignored) {
+            return null
         }
     }
 
     static String getQuickNavigateDocForElement(XmlTag tag, ProjectServiceInterface structureService, String elementName) {
-        switch (tag.getLocalName()) {
-            case 'entity':
-                return generateEntityQuickNavigateDoc(structureService, elementName)
-            case 'view-entity':
-                return generateViewQuickNavigateDoc(structureService, elementName)
-            case 'service':
-                return generateServiceQuickNavigateDoc(structureService, elementName)
-            case 'property':
-                return generatePropertyQuickNavigateDoc(MiscUtils.getUiLabelSafeValue(elementName), structureService)
-            default: return null
+        try {
+            switch (tag.getLocalName()) {
+                case 'entity':
+                    return generateEntityQuickNavigateDoc(structureService, elementName)
+                case 'view-entity':
+                    return generateViewQuickNavigateDoc(structureService, elementName)
+                case 'service':
+                    return generateServiceQuickNavigateDoc(structureService, elementName)
+                case 'property':
+                    return generatePropertyQuickNavigateDoc(MiscUtils.getUiLabelSafeValue(elementName), structureService)
+                default: return null
+            }
+        } catch (MissingMethodException ignored) {
+            return null
         }
     }
 
