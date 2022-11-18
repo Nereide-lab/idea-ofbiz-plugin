@@ -4,14 +4,13 @@
                   xmlns:wm="http://ofbiz.apache.org/Widget-Menu"
                   xmlns:ws="http://ofbiz.apache.org/Widget-Screen"
                   xsi:noNamespaceSchemaLocation="../../../../../framework/widget/dtd/compound-widgets.xsd">
-    <ws:screens>
-        <ws:screen name="MyPitaScreen">
-        </ws:screen>
-    </ws:screens>
 
     <wf:forms>
         <wf:form name="MiscForm">
-            <wf:field name="raw" title=" "> <wf:include-screen name="MyPitaS<caret>creen" location="component://FooComponent/widget/CpdScreenRefFromCpdFieldForm.xml"/> </wf:field>
+            <wf:field name="raw" title=" ">
+                <wf:include-form name="MyPitaF<caret>orm" location="component://FooComponent/widget/CpdFormRefFromCpdFieldForm.xml"/>
+            </wf:field>
         </wf:form>
+        <wf:form name="MyPitaForm"></wf:form>
     </wf:forms>
 </compound-widgets>
