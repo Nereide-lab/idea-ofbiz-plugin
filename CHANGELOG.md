@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [1.4.0]
+
+### Added
+- Added references and ability to ctrl-click in compound files
+- Added compound dom description
+- Added tests for most references
+
+### Changed
+- Massive refactor of patterns
+- Some general cleanup
+
 ## [1.3.1]
 
 ### Added
