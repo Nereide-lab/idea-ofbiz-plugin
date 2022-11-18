@@ -1,0 +1,18 @@
+<compound-widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:sc="http://ofbiz.apache.org/Site-Conf"
+                  xmlns:wf="http://ofbiz.apache.org/Widget-Form"
+                  xmlns:wm="http://ofbiz.apache.org/Widget-Menu"
+                  xmlns:ws="http://ofbiz.apache.org/Widget-Screen"
+                  xsi:noNamespaceSchemaLocation="../../../../../framework/widget/dtd/compound-widgets.xsd">
+    <ws:screens>
+        <ws:screen name="MyPitaScreen">
+        </ws:screen>
+    </ws:screens>
+
+    <wf:forms>
+        <wf:form name="MiscForm">
+            <wf:field name="raw" title=" "> <wf:include-screen name="MyPitaS<caret>creen" location="component://FooComponent/widget/CpdScreenRefFromCpdFieldForm.xml"/> </wf:field>
+        </wf:form>
+    </wf:forms>
+</compound-widgets>
+<!--<wf:field name="actions" title=" "> <wf:include-menu name="ListImageInLine" location="component://central/widget/cpd/config/AssociationCpd.xml"/> </wf:field>-->

@@ -447,6 +447,14 @@ class OfbizPatterns {
                 xmlAttributeValue().inside(
                         xmlAttribute()
                                 .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${FORM_NS_PREFIX}include-screen")
+                                        .withNamespace(FORM_NS_URL)
+                                )
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
                                 .inside(xmlTag().withName("decorator-screen"))
                 ),
                 xmlAttributeValue().inside(

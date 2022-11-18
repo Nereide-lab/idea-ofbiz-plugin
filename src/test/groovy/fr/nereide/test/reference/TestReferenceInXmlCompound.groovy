@@ -100,6 +100,11 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
         configureAndMoveFileAndTestRefTypeAndValue(file, RequestMapReference.class, 'MyFooRequest')
     }
 
+    void testCpdScreenRefFromCpdFieldForm() {
+        String file = 'CpdScreenRefFromCpdFieldForm.xml'
+        configureAndMoveFileAndTestRefTypeAndValue(file, ScreenReference.class, 'MyPitaScreen', false)
+    }
+
     //=====================================
     //         REQUEST MAP TESTS
     //=====================================
