@@ -1,0 +1,17 @@
+<compound-widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:sc="http://ofbiz.apache.org/Site-Conf"
+                  xmlns:wf="http://ofbiz.apache.org/Widget-Form"
+                  xmlns:wm="http://ofbiz.apache.org/Widget-Menu"
+                  xmlns:ws="http://ofbiz.apache.org/Widget-Screen"
+                  xsi:noNamespaceSchemaLocation="../../../../../framework/widget/dtd/compound-widgets.xsd">
+    <wm:menus>
+        <wm:menu name="MyPitaMenu">
+        </wm:menu>
+    </wm:menus>
+
+    <wf:forms>
+        <wf:form name="MiscForm">
+            <wf:field name="raw" title=" "> <wf:include-menu name="MyPitaM<caret>enu" location="component://FooComponent/widget/CpdMenuRefFromCpdFieldForm.xml"/> </wf:field>
+        </wf:form>
+    </wf:forms>
+</compound-widgets>

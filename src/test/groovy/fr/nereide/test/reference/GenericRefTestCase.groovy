@@ -71,7 +71,7 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
         } else {
             assert ref.getElement().getText().contains(expectedRefValueName)
         }
-        assertNotNull ref.resolve()
+        assertNotNull "Reference for $expectedRefValueName not found", ref.resolve()
     }
 
     protected void configureByFileAndTestRefTypeAndValueForXml(String file, Class expectedRefType, String expectedRefValueName) {

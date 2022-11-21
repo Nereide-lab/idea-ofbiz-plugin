@@ -376,6 +376,14 @@ class OfbizPatterns {
                         xmlAttribute()
                                 .withName("name")
                                 .inside(xmlTag()
+                                        .withName("${FORM_NS_PREFIX}include-form")
+                                        .withNamespace(FORM_NS_URL)
+                                ),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
                                         .withName("${SCREEN_NS_PREFIX}include-form")
                                         .withNamespace(SCREEN_NS_URL)
                                 ),
@@ -399,6 +407,14 @@ class OfbizPatterns {
                                 .inside(xmlTag()
                                         .withName("${SCREEN_NS_PREFIX}include-menu")
                                         .withNamespace(SCREEN_NS_URL)
+                                )
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${FORM_NS_PREFIX}include-menu")
+                                        .withNamespace(FORM_NS_URL)
                                 )
                 )
         )
@@ -442,6 +458,14 @@ class OfbizPatterns {
                                 .inside(xmlTag()
                                         .withName("${SCREEN_NS_PREFIX}include-screen")
                                         .withNamespace(SCREEN_NS_URL)
+                                )
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${FORM_NS_PREFIX}include-screen")
+                                        .withNamespace(FORM_NS_URL)
                                 )
                 ),
                 xmlAttributeValue().inside(
