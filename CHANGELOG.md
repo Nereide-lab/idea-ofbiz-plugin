@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.2]
+
+### Added
+- Added reference from xml service definition to groovy methode in script file
+
+### Changed
+- Refactor of Java and groovy references
+
 ## [1.4.1]
 
 ### Added

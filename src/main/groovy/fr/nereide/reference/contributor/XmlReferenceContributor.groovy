@@ -21,6 +21,7 @@ package fr.nereide.reference.contributor
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
 import fr.nereide.project.OfbizPatterns
+import fr.nereide.reference.xml.GroovyServiceMethodReferenceProvider
 import fr.nereide.reference.xml.RequestMapReferenceProvider
 import fr.nereide.reference.xml.ViewMapReferenceProvider
 import fr.nereide.reference.xml.EntityReferenceProvider
@@ -47,5 +48,6 @@ class XmlReferenceContributor extends PsiReferenceContributor {
         registrar.registerReferenceProvider(OfbizPatterns.XML.SCREEN_CALL, new ScreenReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.MENU_CALL, new MenuReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.JAVA_EVENT_CALL, new JavaMethodReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.GROOVY_SERVICE_METHOD, new GroovyServiceMethodReferenceProvider())
     }
 }

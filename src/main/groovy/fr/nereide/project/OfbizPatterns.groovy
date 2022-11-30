@@ -483,6 +483,18 @@ class OfbizPatterns {
                 )
         )
 
+        public static final XmlAttributeValuePattern GROOVY_SERVICE_METHOD = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("invoke")
+                                .inside(xmlTag()
+                                        .withName("service")
+                                        .withChild(
+                                                xmlAttribute().withName("engine").withValue(string().contains("groovy"))
+                                        )
+                                )
+                )
+        )
         public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement()
                 .inside(ENTITY_CALL)
         public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement()

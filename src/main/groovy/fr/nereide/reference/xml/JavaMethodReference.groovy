@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable
 
 class JavaMethodReference extends PsiReferenceBase<XmlElement> {
     private final PsiClass currentClass
+
     JavaMethodReference(XmlAttributeValue methodName, PsiClass currentClass, boolean soft) {
         super(methodName, soft)
         this.currentClass = currentClass
@@ -17,11 +18,11 @@ class JavaMethodReference extends PsiReferenceBase<XmlElement> {
 
     @Nullable
     PsiElement resolve() {
-        PsiMethod[] methods = this.currentClass.getMethods();
+        PsiMethod[] methods = this.currentClass.getMethods()
         String val = this.getValue()
 
         for (PsiMethod method : methods) {
-            if (method.getName().equals(val)) {
+            if (method.getName() == val) {
                 return method
             }
         }
