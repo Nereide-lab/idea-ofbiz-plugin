@@ -19,6 +19,8 @@ package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import fr.nereide.reference.xml.GroovyServiceDefReference
+import fr.nereide.reference.xml.JavaMethodReference
 import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.reference.xml.ViewMapReference
 import fr.nereide.reference.xml.FormReference
@@ -90,5 +92,15 @@ class TestReferenceInXml extends GenericRefTestCase {
     void testMenuReferenceFromScreen() {
         String file = "xml/MenuReferenceFromScreen.xml"
         configureByFileAndTestRefTypeAndValueForXml(file, MenuReference.class, 'FooMenu')
+    }
+
+    void testGroovyMethodReferenceFromServiceDef() {
+        String file = "xml/GroovyMethodReferenceFromServiceDef.xml"
+        configureByFileAndTestRefTypeAndValueForXml(file, GroovyServiceDefReference.class, 'fooGroovyService')
+    }
+
+    void testJavaMethodReferenceFromServiceDef() {
+        String file = "xml/JavaMethodReferenceFromServiceDef.xml"
+        configureByFileAndTestRefTypeAndValueForXml(file, JavaMethodReference.class, 'createNote')
     }
 }
