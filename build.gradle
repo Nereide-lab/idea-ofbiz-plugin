@@ -10,7 +10,7 @@ static def definedInPluginXml(String key) {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '1.10.0'
+    id 'org.jetbrains.intellij' version '1.10.1'
     id 'groovy'
     id 'java'
     id 'org.jetbrains.changelog' version '1.2.1'
@@ -23,15 +23,20 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:3.0.9'
+    implementation 'org.codehaus.groovy:groovy-all:3.0.13'
     testImplementation platform('org.junit:junit-bom:5.8.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = '2022.2.3'
+    version = '2022.3'
     plugins = ['java', 'com.intellij.java', 'org.intellij.groovy']
 }
 

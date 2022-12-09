@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.4]
+
+### Changed
+- Changed Groovy version from 3.0.9 to 3.0.13
+- Changed Intellig gradle plugin 1.10.0 to 1.10.1
+- Tests now run on 22.3 version
+- Updated gradle from 7.1 to 7.2
+
+### Fixed
+- Fixed java target and source version
+- Fixed broken plugin for 2022.3
+
 ## [1.4.3]
 
 ### Added
