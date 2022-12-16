@@ -18,7 +18,7 @@ class GroovyServiceMethodReferenceProvider extends JavaMethodReferenceProvider {
         String locationAttr = getClassLocation(element)
         if (!locationAttr) return null
         PsiFile targetedFile = FileHandlingUtils.getTargetFile(locationAttr, ps)
-        if (!targetedFile instanceof GroovyFile) return null
+        if (!targetedFile || !(targetedFile instanceof GroovyFile)) return null
         return new GroovyServiceDefReference(element as XmlAttributeValue,
                 (targetedFile as GroovyFile).getScriptClass(),
                 true)
