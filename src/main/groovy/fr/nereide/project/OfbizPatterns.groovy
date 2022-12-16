@@ -313,6 +313,20 @@ class OfbizPatterns {
                                                 .withName("type")
                                                 .withValue(string().contains("service")))
                                 )
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName('name')
+                                .inside(xmlTag()
+                                        .withName('invoke')
+                                        .inside(xmlTag()
+                                                .withName('group')
+                                                .inside(xmlTag()
+                                                        .withName('service')
+                                                        .withAttributeValue('engine', 'group')
+                                                )
+                                        )
+                                )
                 )
         )
 

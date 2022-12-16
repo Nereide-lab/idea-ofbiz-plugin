@@ -22,6 +22,7 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import fr.nereide.reference.xml.GroovyServiceDefReference
 import fr.nereide.reference.xml.JavaMethodReference
 import fr.nereide.reference.xml.RequestMapReference
+import fr.nereide.reference.xml.ServiceReference
 import fr.nereide.reference.xml.ViewMapReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
@@ -102,5 +103,10 @@ class TestReferenceInXml extends GenericRefTestCase {
     void testJavaMethodReferenceFromServiceDef() {
         String file = "xml/JavaMethodReferenceFromServiceDef.xml"
         configureByFileAndTestRefTypeAndValueForXml(file, JavaMethodReference.class, 'createNote')
+    }
+
+    void testServiceDefReferenceFromServiceGroup() {
+        String file = "xml/ServiceDefReferenceFromServiceGroup.xml"
+        configureByFileAndTestRefTypeAndValueForXml(file, ServiceReference.class, 'SmileSmileSmile')
     }
 }
