@@ -87,4 +87,15 @@ class TestReferenceInJava extends GenericRefTestCase {
         assertEquals 'Rick', entityRef.getValue() as String
         assertNotNull ref.resolve()
     }
+
+    /**
+     * Test for makeValue() method from delegator
+     */
+    void testEntityReferenceWithMakeValueMethod() {
+        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithMakeValueMethod.java')
+        assertTrue ref instanceof EntityJavaReference
+        EntityJavaReference entityRef = (EntityJavaReference) ref
+        assertEquals 'PickleRick', entityRef.getValue() as String
+        assertNotNull ref.resolve()
+    }
 }

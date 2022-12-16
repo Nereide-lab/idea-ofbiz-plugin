@@ -29,7 +29,7 @@
     <entity entity-name="Rick">
         <field name="universeId" type="id"/>
     </entity>
-    <entity entity-name="PickleRick">
+    <entity entity-name="picklerick">
         <field name="universeId" type="id"/>
     </entity>
 

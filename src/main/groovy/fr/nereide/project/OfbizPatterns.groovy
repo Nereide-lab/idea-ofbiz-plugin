@@ -152,7 +152,12 @@ class OfbizPatterns {
                         withName("makeGenericValue").definedInClass("org.apache.ofbiz.entityext.data.EntityDataServices")),
 
                 literalExpression().methodCallParameter(0, psiMethod()
-                        .withName("from").definedInClass("org.apache.ofbiz.entity.util.EntityQuery"))
+                        .withName("from").definedInClass("org.apache.ofbiz.entity.util.EntityQuery")),
+
+                literalExpression().methodCallParameter(0,
+                        psiMethod()
+                                .withName("makeValue")
+                                .definedInClass("org.apache.ofbiz.entity.Delegator"))
         )
 
         public static final PsiElementPattern LABEL_CALL = psiElement().andOr(
