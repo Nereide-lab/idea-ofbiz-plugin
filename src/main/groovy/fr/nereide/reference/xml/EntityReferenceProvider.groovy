@@ -27,16 +27,6 @@ import org.jetbrains.annotations.NotNull
 class EntityReferenceProvider extends PsiReferenceProvider {
     EntityReferenceProvider() {}
 
-//    @NotNull
-//    PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-//        if (element instanceof XmlAttributeValue) {
-//            EntityReference entity = new EntityReference(element)
-//            PsiReference[] reference = (PsiReference) entity
-//            return reference
-//        }
-//        return PsiReference.EMPTY_ARRAY
-//    }
-
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         EntityReference entity = new EntityReference(element)
