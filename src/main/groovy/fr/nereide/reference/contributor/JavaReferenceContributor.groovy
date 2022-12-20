@@ -48,7 +48,7 @@ class JavaReferenceContributor extends PsiReferenceContributor {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
                 PsiLiteralExpression el = (PsiLiteralExpression) element
-                EntityJavaReference entity = new EntityJavaReference(el, true)
+                EntityJavaReference entity = new EntityJavaReference(el)
                 PsiReference[] reference = (PsiReference) entity
                 return reference
             }

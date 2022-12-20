@@ -48,7 +48,7 @@ class GroovyReferenceContributor extends PsiReferenceContributor {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
                 GrLiteral el = (GrLiteral) element
-                EntityGroovyReference entity = new EntityGroovyReference(el, true)
+                EntityGroovyReference entity = new EntityGroovyReference(el)
                 PsiReference[] reference = (PsiReference) entity
                 return reference
             }

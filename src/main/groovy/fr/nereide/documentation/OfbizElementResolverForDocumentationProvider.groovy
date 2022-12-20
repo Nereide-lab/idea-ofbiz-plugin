@@ -54,7 +54,7 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
     }
 
     private static PsiElement resolveEntityOrView(XmlAttributeValue attr) {
-        EntityReference entity = new EntityReference(attr, true)
+        EntityReference entity = new EntityReference(attr)
         return entity.resolve()
     }
 
@@ -69,7 +69,7 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
     }
 
     private static PsiElement resolveEntityOrView(PsiLiteralExpression expr) {
-        EntityJavaReference entity = new EntityJavaReference(expr, true)
+        EntityJavaReference entity = new EntityJavaReference(expr)
         return entity.resolve()
     }
 }

@@ -30,7 +30,7 @@ class EntityReferenceProvider extends PsiReferenceProvider {
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (element instanceof XmlAttributeValue) {
-            EntityReference entity = new EntityReference((XmlAttributeValue) element, true)
+            EntityReference entity = new EntityReference((XmlAttributeValue) element)
             PsiReference[] reference = (PsiReference) entity
             return reference
         }
