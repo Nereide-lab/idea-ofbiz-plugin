@@ -25,7 +25,7 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
 
     private void configureAndMoveFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName, boolean strict) {
         myFixture.moveFile(file, MOVE_TO)
-        configureByFileAndTestRefTypeAndValueForXml(file, expectedRefType, expectedRefValueName, strict)
+        configureByFileAndTestRefTypeAndValue(file, expectedRefType, expectedRefValueName, strict)
     }
 
     //=====================================

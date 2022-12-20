@@ -19,6 +19,7 @@ package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
 import fr.nereide.reference.java.EntityJavaReference
+import fr.nereide.reference.xml.ScreenReference
 
 class TestReferenceInJava extends GenericRefTestCase {
 
@@ -26,76 +27,55 @@ class TestReferenceInJava extends GenericRefTestCase {
      * Test for find method() from delegator
      */
     void testEntityReferenceWithFindMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithFindMethod.java')
-        assertTrue ref instanceof EntityJavaReference
-        EntityJavaReference entityRef = (EntityJavaReference) ref
-        assertEquals 'HyruleCastle', entityRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = 'java/EntityReferenceWithFindMethod.java'
+        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'HyruleCastle')
     }
 
     /**
      * Test for findOne() method from delegator
      */
     void testEntityReferenceWithFindOneMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithFindOneMethod.java')
-        assertTrue ref instanceof EntityJavaReference
-        EntityJavaReference entityRef = (EntityJavaReference) ref
-        assertEquals 'PiltoverData', entityRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = 'java/EntityReferenceWithFindOneMethod.java'
+        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'PiltoverData')
     }
 
     /**
      * Test for findList() method from delegator
      */
     void testEntityReferenceWithFindListMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithFindListMethod.java')
-        assertTrue ref instanceof EntityJavaReference
-        EntityJavaReference entityRef = (EntityJavaReference) ref
-        assertEquals 'Enderman', entityRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = 'java/EntityReferenceWithFindListMethod.java'
+        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'Enderman')
     }
 
     /**
      * Test for findAll() method from delegator
      */
     void testEntityReferenceWithFindAllMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithFindAllMethod.java')
-        assertTrue ref instanceof EntityJavaReference
-        EntityJavaReference entityRef = (EntityJavaReference) ref
-        assertEquals 'TwoFlowers', entityRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = 'java/EntityReferenceWithFindAllMethod.java'
+        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'TwoFlowers')
     }
 
     /**
      * Test for addMemberEntity() method from DynamicViewEntity
      */
     void testEntityReferenceWithAddMemberEntityMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithAddMemberEntityMethod.java')
-        assertTrue ref instanceof EntityJavaReference
-        EntityJavaReference entityRef = (EntityJavaReference) ref
-        assertEquals 'WeWereOnABreak', entityRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = 'java/EntityReferenceWithAddMemberEntityMethod.java'
+        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'WeWereOnABreak')
     }
 
     /**
      * Test for from() method from EntityQuery
      */
     void testEntityReferenceWithFromMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithFromMethod.java')
-        assertTrue ref instanceof EntityJavaReference
-        EntityJavaReference entityRef = (EntityJavaReference) ref
-        assertEquals 'Rick', entityRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = 'java/EntityReferenceWithFromMethod.java'
+        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'Rick')
     }
 
     /**
      * Test for makeValue() method from delegator
      */
     void testEntityReferenceWithMakeValueMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('java/EntityReferenceWithMakeValueMethod.java')
-        assertTrue ref instanceof EntityJavaReference
-        EntityJavaReference entityRef = (EntityJavaReference) ref
-        assertEquals 'PickleRick', entityRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = 'java/EntityReferenceWithMakeValueMethod.java'
+        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'PickleRick')
     }
 }

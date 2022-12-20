@@ -18,10 +18,8 @@
 package fr.nereide.test.reference
 
 import com.intellij.lang.properties.references.PropertyReference
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
-import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import fr.nereide.test.GenericOfbizPluginTestCase
 
 class GenericRefTestCase extends GenericOfbizPluginTestCase {
@@ -58,8 +56,8 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
         return ref
     }
 
-    protected void configureByFileAndTestRefTypeAndValueForXml(String file, Class expectedRefType, String expectedRefValueName,
-                                                               boolean strict) {
+    protected void configureByFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName,
+                                                         boolean strict) {
         myFixture.configureByFile(file)
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
         if (ref instanceof PsiMultiReference) {
@@ -67,15 +65,17 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
         }
         assert expectedRefType.isAssignableFrom(ref.getClass())
         if (strict) {
-            assertEquals expectedRefValueName, ref.getElement().getName() as String
+            assertEquals expectedRefValueName, ref.getElement().getName() ?
+                    ref.getElement().getName() : ref.getElement().getText().replaceAll('"', '')
+                    as String
         } else {
             assert ref.getElement().getText().contains(expectedRefValueName)
         }
         assertNotNull "Reference for $expectedRefValueName not found", ref.resolve()
     }
 
-    protected void configureByFileAndTestRefTypeAndValueForXml(String file, Class expectedRefType, String expectedRefValueName) {
-        configureByFileAndTestRefTypeAndValueForXml(file, expectedRefType, expectedRefValueName, true)
+    protected void configureByFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName) {
+        configureByFileAndTestRefTypeAndValue(file, expectedRefType, expectedRefValueName, true)
     }
 
     /**
