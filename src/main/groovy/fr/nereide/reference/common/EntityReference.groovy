@@ -15,14 +15,24 @@
  *  under the License.
  */
 
-package fr.nereide.reference.java
+package fr.nereide.reference.common
 
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiReferenceBase
+import com.intellij.util.xml.DomElement
+import fr.nereide.project.ProjectServiceInterface
+import org.jetbrains.annotations.Nullable
 
-import com.intellij.psi.PsiLiteralExpression
-import fr.nereide.reference.common.BaseEntityReference
+class EntityReference extends PsiReferenceBase<PsiElement> {
+    EntityReference(PsiElement entityName) {
+        super(entityName)
+    }
 
-class EntityJavaReference extends BaseEntityReference {
-    EntityJavaReference(PsiLiteralExpression element) {
-        super(element)
+    @Nullable
+    PsiElement resolve() {
+        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
+        DomElement definition = structureService.getEntity(this.getValue())
+        if (!definition) definition = structureService.getViewEntity(this.getValue())
+        return definition != null ? definition.getXmlElement() : null
     }
 }

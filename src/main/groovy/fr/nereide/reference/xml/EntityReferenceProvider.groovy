@@ -20,21 +20,27 @@ package fr.nereide.reference.xml
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
-import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
+import fr.nereide.reference.common.EntityReference
 import org.jetbrains.annotations.NotNull
 
 class EntityReferenceProvider extends PsiReferenceProvider {
     EntityReferenceProvider() {}
 
+//    @NotNull
+//    PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+//        if (element instanceof XmlAttributeValue) {
+//            EntityReference entity = new EntityReference(element)
+//            PsiReference[] reference = (PsiReference) entity
+//            return reference
+//        }
+//        return PsiReference.EMPTY_ARRAY
+//    }
+
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (element instanceof XmlAttributeValue) {
-            EntityReference entity = new EntityReference((XmlAttributeValue) element)
-            PsiReference[] reference = (PsiReference) entity
-            return reference
-        }
-        return PsiReference.EMPTY_ARRAY
+        EntityReference entity = new EntityReference(element)
+        PsiReference[] reference = (PsiReference) entity
+        return reference ?: null
     }
-
 }

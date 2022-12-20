@@ -5,7 +5,7 @@ import fr.nereide.reference.xml.JavaMethodReference
 import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.reference.xml.ServiceReference
 import fr.nereide.reference.xml.ViewMapReference
-import fr.nereide.reference.xml.EntityReference
+import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.ScreenReference

@@ -17,9 +17,8 @@
 
 package fr.nereide.test.reference
 
-import com.intellij.psi.PsiReference
-import fr.nereide.reference.java.EntityJavaReference
-import fr.nereide.reference.xml.ScreenReference
+
+import fr.nereide.reference.common.EntityReference
 
 class TestReferenceInJava extends GenericRefTestCase {
 
@@ -28,7 +27,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      */
     void testEntityReferenceWithFindMethod() {
         String file = 'java/EntityReferenceWithFindMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'HyruleCastle')
+        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'HyruleCastle')
     }
 
     /**
@@ -36,7 +35,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      */
     void testEntityReferenceWithFindOneMethod() {
         String file = 'java/EntityReferenceWithFindOneMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'PiltoverData')
+        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'PiltoverData')
     }
 
     /**
@@ -44,7 +43,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      */
     void testEntityReferenceWithFindListMethod() {
         String file = 'java/EntityReferenceWithFindListMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'Enderman')
+        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'Enderman')
     }
 
     /**
@@ -52,7 +51,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      */
     void testEntityReferenceWithFindAllMethod() {
         String file = 'java/EntityReferenceWithFindAllMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'TwoFlowers')
+        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'TwoFlowers')
     }
 
     /**
@@ -60,7 +59,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      */
     void testEntityReferenceWithAddMemberEntityMethod() {
         String file = 'java/EntityReferenceWithAddMemberEntityMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'WeWereOnABreak')
+        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'WeWereOnABreak')
     }
 
     /**
@@ -68,7 +67,7 @@ class TestReferenceInJava extends GenericRefTestCase {
      */
     void testEntityReferenceWithFromMethod() {
         String file = 'java/EntityReferenceWithFromMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'Rick')
+        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'Rick')
     }
 
     /**
@@ -76,6 +75,6 @@ class TestReferenceInJava extends GenericRefTestCase {
      */
     void testEntityReferenceWithMakeValueMethod() {
         String file = 'java/EntityReferenceWithMakeValueMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityJavaReference.class, 'PickleRick')
+        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'PickleRick')
     }
 }

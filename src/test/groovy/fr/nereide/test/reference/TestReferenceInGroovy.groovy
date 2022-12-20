@@ -18,31 +18,31 @@
 package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
-import fr.nereide.reference.groovy.EntityGroovyReference
+import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.groovy.ServiceGroovyReference
 
 class TestReferenceInGroovy extends GenericRefTestCase {
 
     void testGroovyEntityReferenceWithFindMethod() {
         PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyEntityReferenceWithFindMethod.groovy')
-        assertTrue ref instanceof EntityGroovyReference
-        EntityGroovyReference entityRef = (EntityGroovyReference) ref
+        assertTrue ref instanceof EntityReference
+        EntityReference entityRef = (EntityReference) ref
         assertEquals 'Lobster', entityRef.getValue() as String
         assertNotNull ref.resolve()
     }
 
     void testGroovyViewEntityReferenceWithFindMethod() {
         PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyViewEntityReferenceWithFindMethod.groovy')
-        assertTrue ref instanceof EntityGroovyReference
-        EntityGroovyReference entityRef = (EntityGroovyReference) ref
+        assertTrue ref instanceof EntityReference
+        EntityReference entityRef = (EntityReference) ref
         assertEquals 'Zaun', entityRef.getValue() as String
         assertNotNull ref.resolve()
     }
 
     void testGroovyEntityReferenceWithFromMethod() {
         PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyEntityReferenceWithFromMethod.groovy')
-        assertTrue ref instanceof EntityGroovyReference
-        EntityGroovyReference entityRef = (EntityGroovyReference) ref
+        assertTrue ref instanceof EntityReference
+        EntityReference entityRef = (EntityReference) ref
         assertEquals 'PickleRick', entityRef.getValue() as String
         assertNotNull ref.resolve()
     }
