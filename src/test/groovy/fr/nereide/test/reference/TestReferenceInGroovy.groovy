@@ -19,7 +19,7 @@ package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
 import fr.nereide.reference.common.EntityReference
-import fr.nereide.reference.groovy.ServiceGroovyReference
+import fr.nereide.reference.common.ServiceReference
 
 class TestReferenceInGroovy extends GenericRefTestCase {
 
@@ -49,8 +49,8 @@ class TestReferenceInGroovy extends GenericRefTestCase {
 
     void testGroovyServiceReferenceWithRunCall() {
         PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyServiceReferenceWithRunCall.groovy')
-        assertTrue ref instanceof ServiceGroovyReference
-        ServiceGroovyReference serviceRef = (ServiceGroovyReference) ref
+        assertTrue ref instanceof ServiceReference
+        ServiceReference serviceRef = (ServiceReference) ref
         assertEquals 'pivot', serviceRef.getValue() as String
         assertNotNull ref.resolve()
     }

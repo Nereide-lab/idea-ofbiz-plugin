@@ -22,6 +22,7 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
+import fr.nereide.reference.common.ServiceReference
 import org.jetbrains.annotations.NotNull
 
 class ServiceReferenceProvider extends PsiReferenceProvider {
@@ -30,11 +31,10 @@ class ServiceReferenceProvider extends PsiReferenceProvider {
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (element instanceof XmlAttributeValue) {
-            ServiceReference service = new ServiceReference((XmlAttributeValue) element, true)
+            ServiceReference service = new ServiceReference(element)
             PsiReference[] reference = (PsiReference) service
             return reference
         }
         return PsiReference.EMPTY_ARRAY
     }
-
 }

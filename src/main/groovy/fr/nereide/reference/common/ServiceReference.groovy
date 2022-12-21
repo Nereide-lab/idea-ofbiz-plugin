@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package fr.nereide.reference.xml
+package fr.nereide.reference.common
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
@@ -24,9 +24,9 @@ import com.intellij.util.xml.DomElement
 import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.Nullable
 
-class ServiceReference extends PsiReferenceBase<XmlAttributeValue> {
-    ServiceReference(XmlAttributeValue element, boolean soft) {
-        super(element, soft)
+class ServiceReference extends PsiReferenceBase<PsiElement> {
+    ServiceReference(PsiElement element) {
+        super(element)
     }
 
     @Nullable

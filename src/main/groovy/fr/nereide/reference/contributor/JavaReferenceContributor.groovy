@@ -27,7 +27,7 @@ import com.intellij.psi.PsiReferenceRegistrar
 import com.intellij.util.ProcessingContext
 import fr.nereide.project.OfbizPatterns
 import fr.nereide.reference.common.EntityReference
-import fr.nereide.reference.java.ServiceJavaReference
+import fr.nereide.reference.common.ServiceReference
 import fr.nereide.reference.java.UiLabelJavaReference
 import org.jetbrains.annotations.NotNull
 
@@ -38,8 +38,7 @@ class JavaReferenceContributor extends PsiReferenceContributor {
         registrar.registerReferenceProvider(OfbizPatterns.JAVA.SERVICE_CALL, new PsiReferenceProvider() {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                PsiLiteralExpression el = (PsiLiteralExpression) element
-                ServiceJavaReference service = new ServiceJavaReference(el, true)
+                ServiceReference service = new ServiceReference(element)
                 PsiReference[] reference = (PsiReference) service
                 return reference
             }

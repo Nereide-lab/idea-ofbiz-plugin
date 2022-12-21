@@ -26,7 +26,7 @@ import com.intellij.psi.PsiReferenceRegistrar
 import com.intellij.util.ProcessingContext
 import fr.nereide.project.OfbizPatterns
 import fr.nereide.reference.common.EntityReference
-import fr.nereide.reference.groovy.ServiceGroovyReference
+import fr.nereide.reference.common.ServiceReference
 import fr.nereide.reference.groovy.UiLabelGroovyReference
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
@@ -38,8 +38,7 @@ class GroovyReferenceContributor extends PsiReferenceContributor {
         registrar.registerReferenceProvider(OfbizPatterns.GROOVY.SERVICE_CALL, new PsiReferenceProvider() {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                GrLiteral el = (GrLiteral) element
-                ServiceGroovyReference service = new ServiceGroovyReference(el, true)
+                ServiceReference service = new ServiceReference(element)
                 PsiReference[] reference = (PsiReference) service
                 return reference
             }
