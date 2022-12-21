@@ -15,22 +15,26 @@
  *  under the License.
  */
 
-package fr.nereide.reference.xml
+package fr.nereide.reference.xml.provider
 
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
+import fr.nereide.reference.xml.RequestMapReference
 import org.jetbrains.annotations.NotNull
 
-class UiLabelReferenceProvider extends PsiReferenceProvider {
+class RequestMapReferenceProvider extends PsiReferenceProvider {
+    RequestMapReferenceProvider() {}
 
-    @NotNull
+    private static final Logger LOG = Logger.getInstance(RequestMapReferenceProvider.class)
+
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (element instanceof XmlAttributeValue) {
-            UiLabelReference property = new UiLabelReference((XmlAttributeValue) element, true)
-            PsiReference[] reference = (PsiReference) property
+            RequestMapReference controller = new RequestMapReference((XmlAttributeValue) element, true)
+            PsiReference[] reference = (PsiReference) controller
             return reference
         }
         return PsiReference.EMPTY_ARRAY

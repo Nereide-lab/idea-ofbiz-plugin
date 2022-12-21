@@ -15,23 +15,26 @@
  *  under the License.
  */
 
-package fr.nereide.reference.xml
+package fr.nereide.reference.xml.provider
 
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
+import fr.nereide.reference.xml.ViewMapReference
 import org.jetbrains.annotations.NotNull
 
-class FormReferenceProvider extends PsiReferenceProvider {
-    FormReferenceProvider() {}
+class ViewMapReferenceProvider extends PsiReferenceProvider {
+    ViewMapReferenceProvider() {}
 
-    @NotNull
+    private static final Logger LOG = Logger.getInstance(ViewMapReferenceProvider.class)
+
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (element instanceof XmlAttributeValue) {
-            FormReference form = new FormReference((XmlAttributeValue) element, true)
-            PsiReference[] reference = (PsiReference) form
+            ViewMapReference controller = new ViewMapReference((XmlAttributeValue) element, true)
+            PsiReference[] reference = (PsiReference) controller
             return reference
         }
         return PsiReference.EMPTY_ARRAY

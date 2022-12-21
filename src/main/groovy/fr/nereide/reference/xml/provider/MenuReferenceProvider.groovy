@@ -15,24 +15,24 @@
  *  under the License.
  */
 
-package fr.nereide.reference.xml
+package fr.nereide.reference.xml.provider
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
+import fr.nereide.reference.xml.MenuReference
 import org.jetbrains.annotations.NotNull
 
-
-class ScreenReferenceProvider extends PsiReferenceProvider {
-    ScreenReferenceProvider() {}
+class MenuReferenceProvider extends PsiReferenceProvider {
+    MenuReferenceProvider() {}
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (element instanceof XmlAttributeValue) {
-            ScreenReference screen = new ScreenReference((XmlAttributeValue) element, true)
-            PsiReference[] reference = (PsiReference) screen
+            MenuReference menu = new MenuReference((XmlAttributeValue) element, true)
+            PsiReference[] reference = (PsiReference) menu
             return reference
         }
         return PsiReference.EMPTY_ARRAY

@@ -21,17 +21,7 @@ package fr.nereide.reference.contributor
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
 import fr.nereide.project.OfbizPatterns
-import fr.nereide.reference.xml.GroovyServiceMethodReferenceProvider
-import fr.nereide.reference.xml.RequestMapReferenceProvider
-import fr.nereide.reference.xml.ViewMapReferenceProvider
-import fr.nereide.reference.xml.EntityReferenceProvider
-import fr.nereide.reference.xml.FileReferenceProvider
-import fr.nereide.reference.xml.FormReferenceProvider
-import fr.nereide.reference.xml.JavaMethodReferenceProvider
-import fr.nereide.reference.xml.MenuReferenceProvider
-import fr.nereide.reference.xml.ScreenReferenceProvider
-import fr.nereide.reference.xml.ServiceReferenceProvider
-import fr.nereide.reference.xml.UiLabelReferenceProvider
+import fr.nereide.reference.xml.provider.*
 import org.jetbrains.annotations.NotNull
 
 class XmlReferenceContributor extends PsiReferenceContributor {

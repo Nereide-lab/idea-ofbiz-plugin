@@ -1,4 +1,4 @@
-package fr.nereide.reference.xml
+package fr.nereide.reference.xml.provider
 
 import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiClass
@@ -11,6 +11,7 @@ import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
+import fr.nereide.reference.xml.JavaMethodReference
 import org.jetbrains.annotations.NotNull
 
 class JavaMethodReferenceProvider extends PsiReferenceProvider {
