@@ -21,6 +21,9 @@ package fr.nereide.reference.contributor
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
 import fr.nereide.project.OfbizPatterns
+import fr.nereide.reference.common.provider.EntityReferenceProvider
+import fr.nereide.reference.common.provider.ServiceReferenceProvider
+import fr.nereide.reference.common.provider.UiLabelReferenceProvider
 import fr.nereide.reference.xml.provider.*
 import org.jetbrains.annotations.NotNull
 

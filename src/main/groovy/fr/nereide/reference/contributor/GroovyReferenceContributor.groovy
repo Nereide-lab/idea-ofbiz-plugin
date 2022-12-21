@@ -18,45 +18,20 @@
 package fr.nereide.reference.contributor
 
 
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceContributor
-import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.PsiReferenceRegistrar
-import com.intellij.util.ProcessingContext
 import fr.nereide.project.OfbizPatterns
-import fr.nereide.reference.common.EntityReference
-import fr.nereide.reference.common.ServiceReference
-import fr.nereide.reference.common.UiLabelReference
+import fr.nereide.reference.common.provider.EntityReferenceProvider
+import fr.nereide.reference.common.provider.ServiceReferenceProvider
+import fr.nereide.reference.common.provider.UiLabelReferenceProvider
 import org.jetbrains.annotations.NotNull
 
 class GroovyReferenceContributor extends PsiReferenceContributor {
     GroovyReferenceContributor() {}
 
     void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.SERVICE_CALL, new PsiReferenceProvider() {
-            @NotNull
-            PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                ServiceReference service = new ServiceReference(element)
-                PsiReference[] reference = (PsiReference) service
-                return reference
-            }
-        })
-        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.ENTITY_CALL, new PsiReferenceProvider() {
-            @NotNull
-            PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                EntityReference entity = new EntityReference(element)
-                PsiReference[] reference = (PsiReference) entity
-                return reference
-            }
-        })
-        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.LABEL_CALL, new PsiReferenceProvider() {
-            @NotNull
-            PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                UiLabelReference label = new UiLabelReference(element)
-                PsiReference[] reference = (PsiReference) label
-                return reference
-            }
-        })
+        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.SERVICE_CALL, new ServiceReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.ENTITY_CALL, new EntityReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.LABEL_CALL, new UiLabelReferenceProvider())
     }
 }

@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package fr.nereide.reference.xml.provider
+package fr.nereide.reference.common.provider
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
@@ -31,6 +31,6 @@ class EntityReferenceProvider extends PsiReferenceProvider {
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         EntityReference entity = new EntityReference(element)
         PsiReference[] reference = (PsiReference) entity
-        return reference ?: null
+        return reference ?: PsiReference.EMPTY_ARRAY
     }
 }
