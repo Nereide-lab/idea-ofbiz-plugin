@@ -22,7 +22,7 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
-import fr.nereide.reference.xml.UiLabelReference
+import fr.nereide.reference.common.UiLabelReference
 import org.jetbrains.annotations.NotNull
 
 class UiLabelReferenceProvider extends PsiReferenceProvider {
@@ -30,7 +30,7 @@ class UiLabelReferenceProvider extends PsiReferenceProvider {
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (element instanceof XmlAttributeValue) {
-            UiLabelReference property = new UiLabelReference((XmlAttributeValue) element, true)
+            UiLabelReference property = new UiLabelReference(element)
             PsiReference[] reference = (PsiReference) property
             return reference
         }

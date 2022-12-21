@@ -27,9 +27,8 @@ import com.intellij.util.ProcessingContext
 import fr.nereide.project.OfbizPatterns
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.ServiceReference
-import fr.nereide.reference.groovy.UiLabelGroovyReference
+import fr.nereide.reference.common.UiLabelReference
 import org.jetbrains.annotations.NotNull
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
 
 class GroovyReferenceContributor extends PsiReferenceContributor {
     GroovyReferenceContributor() {}
@@ -54,8 +53,7 @@ class GroovyReferenceContributor extends PsiReferenceContributor {
         registrar.registerReferenceProvider(OfbizPatterns.GROOVY.LABEL_CALL, new PsiReferenceProvider() {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                GrLiteral el = (GrLiteral) element
-                UiLabelGroovyReference label = new UiLabelGroovyReference(el, true)
+                UiLabelReference label = new UiLabelReference(element)
                 PsiReference[] reference = (PsiReference) label
                 return reference
             }

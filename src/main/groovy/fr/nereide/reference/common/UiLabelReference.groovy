@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package fr.nereide.reference.xml
+package fr.nereide.reference.common
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
@@ -25,9 +25,9 @@ import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.Nullable
 
-class UiLabelReference extends PsiReferenceBase<XmlAttributeValue> {
-    UiLabelReference(XmlAttributeValue element, boolean soft) {
-        super(element, soft)
+class UiLabelReference extends PsiReferenceBase<PsiElement> {
+    UiLabelReference(PsiElement element) {
+        super(element)
     }
 
     @Nullable
@@ -36,5 +36,4 @@ class UiLabelReference extends PsiReferenceBase<XmlAttributeValue> {
         DomElement definition = structureService.getProperty(MiscUtils.getUiLabelSafeValue(this.getValue()))
         return definition != null ? definition.getXmlElement() : null
     }
-
 }

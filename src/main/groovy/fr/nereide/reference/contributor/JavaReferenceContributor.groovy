@@ -19,7 +19,6 @@ package fr.nereide.reference.contributor
 
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceProvider
@@ -28,7 +27,7 @@ import com.intellij.util.ProcessingContext
 import fr.nereide.project.OfbizPatterns
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.ServiceReference
-import fr.nereide.reference.java.UiLabelJavaReference
+import fr.nereide.reference.common.UiLabelReference
 import org.jetbrains.annotations.NotNull
 
 class JavaReferenceContributor extends PsiReferenceContributor {
@@ -54,8 +53,7 @@ class JavaReferenceContributor extends PsiReferenceContributor {
         registrar.registerReferenceProvider(OfbizPatterns.JAVA.LABEL_CALL, new PsiReferenceProvider() {
             @NotNull
             PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                PsiLiteralExpression el = (PsiLiteralExpression) element
-                UiLabelJavaReference label = new UiLabelJavaReference(el, true)
+                UiLabelReference label = new UiLabelReference(element)
                 PsiReference[] reference = (PsiReference) label
                 return reference
             }
