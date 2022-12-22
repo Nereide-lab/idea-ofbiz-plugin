@@ -35,27 +35,6 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
         return "src/test/resources/testData/reference"
     }
 
-    /**
-     * Workaround for groovy refs, which brings back a multi ref object.
-     * We don't want that
-     * @param testFolder
-     * @param type
-     * @return
-     */
-    PsiReference setupFixtureForTestAndGetRefForGroovy(String file) {
-        myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(file)
-        if (ref instanceof PsiMultiReference) {
-            def multi = ref as PsiMultiReference
-            for (PsiReference curRef : multi.getReferences()) {
-                if (!(curRef instanceof PropertyReference)) {
-                    return curRef
-                }
-            }
-        }
-        return ref
-    }
-
     protected void configureByFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName,
                                                          boolean strict) {
         myFixture.configureByFile(file)
@@ -66,12 +45,18 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
         assert expectedRefType.isAssignableFrom(ref.getClass())
         if (strict) {
             assertEquals expectedRefValueName, ref.getElement().getName() ?
-                    ref.getElement().getName() : ref.getElement().getText().replaceAll('"', '')
+                    ref.getElement().getName() : getSafeTextInReference(ref)
                     as String
         } else {
             assert ref.getElement().getText().contains(expectedRefValueName)
         }
         assertNotNull "Reference for $expectedRefValueName not found", ref.resolve()
+    }
+
+    static String getSafeTextInReference(PsiReference ref) {
+        ref.getElement().getText()
+                .replaceAll('"', '')
+                .replaceAll('\'', '')
     }
 
     protected void configureByFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName) {
