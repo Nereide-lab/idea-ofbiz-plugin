@@ -15,24 +15,27 @@
  *  under the License.
  */
 
-package fr.nereide.reference.xml
+package fr.nereide.reference.xml.provider
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiReferenceBase
+import com.intellij.psi.PsiReference
+import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.xml.XmlAttributeValue
-import com.intellij.util.xml.DomElement
-import fr.nereide.project.ProjectServiceInterface
-import org.jetbrains.annotations.Nullable
+import com.intellij.util.ProcessingContext
+import fr.nereide.reference.xml.ScreenReference
+import org.jetbrains.annotations.NotNull
 
-class ServiceReference extends PsiReferenceBase<XmlAttributeValue> {
-    ServiceReference(XmlAttributeValue element, boolean soft) {
-        super(element, soft)
-    }
 
-    @Nullable
-    PsiElement resolve() {
-        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = structureService.getService(this.getValue())
-        return definition != null ? definition.getXmlElement() : null
+class ScreenReferenceProvider extends PsiReferenceProvider {
+    ScreenReferenceProvider() {}
+
+    @NotNull
+    PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+        if (element instanceof XmlAttributeValue) {
+            ScreenReference screen = new ScreenReference((XmlAttributeValue) element, true)
+            PsiReference[] reference = (PsiReference) screen
+            return reference
+        }
+        return PsiReference.EMPTY_ARRAY
     }
 }

@@ -23,5 +23,5 @@
     </service>
     <service name="pivot" default-entity-name="Ross" engine="entity-auto">
     </service>
-
+    <service name="SmileSmileSmile"> </service>
 </services>

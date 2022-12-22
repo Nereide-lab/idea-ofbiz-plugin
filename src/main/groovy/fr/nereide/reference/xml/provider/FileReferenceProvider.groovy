@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package fr.nereide.reference.xml
+package fr.nereide.reference.xml.provider
 
 
 import com.intellij.psi.PsiElement

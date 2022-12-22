@@ -17,41 +17,33 @@
 
 package fr.nereide.test.reference
 
-import com.intellij.psi.PsiReference
-import fr.nereide.reference.groovy.EntityGroovyReference
-import fr.nereide.reference.groovy.ServiceGroovyReference
+import fr.nereide.reference.common.EntityReference
+import fr.nereide.reference.common.ServiceReference
 
 class TestReferenceInGroovy extends GenericRefTestCase {
 
     void testGroovyEntityReferenceWithFindMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyEntityReferenceWithFindMethod.groovy')
-        assertTrue ref instanceof EntityGroovyReference
-        EntityGroovyReference entityRef = (EntityGroovyReference) ref
-        assertEquals 'Lobster', entityRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = "groovy/GroovyEntityReferenceWithFindMethod.groovy"
+        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'Lobster')
     }
 
     void testGroovyViewEntityReferenceWithFindMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyViewEntityReferenceWithFindMethod.groovy')
-        assertTrue ref instanceof EntityGroovyReference
-        EntityGroovyReference entityRef = (EntityGroovyReference) ref
-        assertEquals 'Zaun', entityRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = "groovy/GroovyViewEntityReferenceWithFindMethod.groovy"
+        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'Zaun')
     }
 
     void testGroovyEntityReferenceWithFromMethod() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyEntityReferenceWithFromMethod.groovy')
-        assertTrue ref instanceof EntityGroovyReference
-        EntityGroovyReference entityRef = (EntityGroovyReference) ref
-        assertEquals 'PickleRick', entityRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = "groovy/GroovyEntityReferenceWithFromMethod.groovy"
+        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'PickleRick')
     }
 
     void testGroovyServiceReferenceWithRunCall() {
-        PsiReference ref = setupFixtureForTestAndGetRefForGroovy('groovy/GroovyServiceReferenceWithRunCall.groovy')
-        assertTrue ref instanceof ServiceGroovyReference
-        ServiceGroovyReference serviceRef = (ServiceGroovyReference) ref
-        assertEquals 'pivot', serviceRef.getValue() as String
-        assertNotNull ref.resolve()
+        String file = "groovy/GroovyServiceReferenceWithRunCall.groovy"
+        configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'pivot')
+    }
+
+    void testEntityReferenceWithMakeValueMethod() {
+        String file = "groovy/EntityReferenceWithMakeValueMethod.groovy"
+        configureByFileAndTestRefTypeAndValue(file,EntityReference.class, 'Zaun')
     }
 }

@@ -15,27 +15,25 @@
  *  under the License.
  */
 
-package fr.nereide.reference.java
+package fr.nereide.reference.common
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiReferenceBase
+import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.xml.DomElement
 import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.Nullable
 
-class EntityJavaReference extends PsiReferenceBase<PsiLiteralExpression> {
-    EntityJavaReference(PsiLiteralExpression element, boolean soft) {
-        super(element, soft)
+class UiLabelReference extends PsiReferenceBase<PsiElement> {
+    UiLabelReference(PsiElement element) {
+        super(element)
     }
 
     @Nullable
     PsiElement resolve() {
         ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = structureService.getEntity(this.getValue())
-        if (!definition) {
-            definition = structureService.getViewEntity(this.getValue())
-        }
+        DomElement definition = structureService.getProperty(MiscUtils.getUiLabelSafeValue(this.getValue()))
         return definition != null ? definition.getXmlElement() : null
     }
 }

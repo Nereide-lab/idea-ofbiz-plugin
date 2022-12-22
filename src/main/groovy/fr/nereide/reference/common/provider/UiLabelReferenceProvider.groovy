@@ -15,26 +15,21 @@
  *  under the License.
  */
 
-package fr.nereide.reference.xml
+package fr.nereide.reference.common.provider
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
-import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
+import fr.nereide.reference.common.UiLabelReference
 import org.jetbrains.annotations.NotNull
 
-class EntityReferenceProvider extends PsiReferenceProvider {
-    EntityReferenceProvider() {}
+class UiLabelReferenceProvider extends PsiReferenceProvider {
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (element instanceof XmlAttributeValue) {
-            EntityReference entity = new EntityReference((XmlAttributeValue) element, true)
-            PsiReference[] reference = (PsiReference) entity
-            return reference
-        }
-        return PsiReference.EMPTY_ARRAY
+        UiLabelReference property = new UiLabelReference(element)
+        PsiReference[] reference = (PsiReference) property
+        return reference ?: PsiReference.EMPTY_ARRAY
     }
-
 }

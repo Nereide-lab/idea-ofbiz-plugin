@@ -10,11 +10,9 @@ import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.project.OfbizPatterns
-import fr.nereide.project.utils.MiscUtils
-import fr.nereide.reference.java.EntityJavaReference
-import fr.nereide.reference.java.ServiceJavaReference
-import fr.nereide.reference.xml.EntityReference
-import fr.nereide.reference.xml.ServiceReference
+
+import fr.nereide.reference.common.EntityReference
+import fr.nereide.reference.common.ServiceReference
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
@@ -54,22 +52,22 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
     }
 
     private static PsiElement resolveEntityOrView(XmlAttributeValue attr) {
-        EntityReference entity = new EntityReference(attr, true)
+        EntityReference entity = new EntityReference(attr)
         return entity.resolve()
     }
 
     private static PsiElement resolveService(XmlAttributeValue attr) {
-        ServiceReference service = new ServiceReference(attr, true)
+        ServiceReference service = new ServiceReference(attr)
         return service.resolve()
     }
 
     private static PsiElement resolveService(PsiLiteralExpression expr) {
-        ServiceJavaReference service = new ServiceJavaReference(expr, true)
+        ServiceReference service = new ServiceReference(expr)
         return service.resolve()
     }
 
     private static PsiElement resolveEntityOrView(PsiLiteralExpression expr) {
-        EntityJavaReference entity = new EntityJavaReference(expr, true)
+        EntityReference entity = new EntityReference(expr)
         return entity.resolve()
     }
 }

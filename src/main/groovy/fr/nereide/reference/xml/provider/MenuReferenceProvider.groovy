@@ -15,24 +15,26 @@
  *  under the License.
  */
 
-package fr.nereide.reference.java
+package fr.nereide.reference.xml.provider
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiLiteralExpression
-import com.intellij.psi.PsiReferenceBase
-import com.intellij.util.xml.DomElement
-import fr.nereide.project.ProjectServiceInterface
-import org.jetbrains.annotations.Nullable
+import com.intellij.psi.PsiReference
+import com.intellij.psi.PsiReferenceProvider
+import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.util.ProcessingContext
+import fr.nereide.reference.xml.MenuReference
+import org.jetbrains.annotations.NotNull
 
-class ServiceJavaReference extends PsiReferenceBase<PsiLiteralExpression> {
-    ServiceJavaReference(PsiLiteralExpression element, boolean soft) {
-        super(element, soft)
-    }
+class MenuReferenceProvider extends PsiReferenceProvider {
+    MenuReferenceProvider() {}
 
-    @Nullable
-    PsiElement resolve() {
-        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = structureService.getService(this.getValue())
-        return definition != null ? definition.getXmlElement() : null
+    @NotNull
+    PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+        if (element instanceof XmlAttributeValue) {
+            MenuReference menu = new MenuReference((XmlAttributeValue) element, true)
+            PsiReference[] reference = (PsiReference) menu
+            return reference
+        }
+        return PsiReference.EMPTY_ARRAY
     }
 }

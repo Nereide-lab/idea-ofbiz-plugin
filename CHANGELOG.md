@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.5] The refactor update
+
+### Added
+- Added reference from xml service definition with group engine to service definition that are called.
+
+### Changed
+- Massive simplification of entity reference
+- Massive simplification of service reference
+- Some test refactor
+
+### Fixed
+- Added fixes for two NPE errors when getting files or script
+- Fixed condition syntax and removed some non idiomatic try / catch
+- Fixed reference from makeValue() method towards an entity definition in groovy
+
 ## [1.4.4]
 
 ### Changed

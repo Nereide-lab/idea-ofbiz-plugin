@@ -18,49 +18,19 @@
 package fr.nereide.reference.contributor
 
 
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiLiteralExpression
-import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceContributor
-import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.PsiReferenceRegistrar
-import com.intellij.util.ProcessingContext
 import fr.nereide.project.OfbizPatterns
-import fr.nereide.reference.java.EntityJavaReference
-import fr.nereide.reference.java.ServiceJavaReference
-import fr.nereide.reference.java.UiLabelJavaReference
-import org.jetbrains.annotations.NotNull
+import fr.nereide.reference.common.provider.EntityReferenceProvider
+import fr.nereide.reference.common.provider.ServiceReferenceProvider
+import fr.nereide.reference.common.provider.UiLabelReferenceProvider
 
 class JavaReferenceContributor extends PsiReferenceContributor {
     JavaReferenceContributor() {}
 
     void registerReferenceProviders(PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(OfbizPatterns.JAVA.SERVICE_CALL, new PsiReferenceProvider() {
-            @NotNull
-            PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                PsiLiteralExpression el = (PsiLiteralExpression) element
-                ServiceJavaReference service = new ServiceJavaReference(el, true)
-                PsiReference[] reference = (PsiReference) service
-                return reference
-            }
-        })
-        registrar.registerReferenceProvider(OfbizPatterns.JAVA.ENTITY_CALL, new PsiReferenceProvider() {
-            @NotNull
-            PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                PsiLiteralExpression el = (PsiLiteralExpression) element
-                EntityJavaReference entity = new EntityJavaReference(el, true)
-                PsiReference[] reference = (PsiReference) entity
-                return reference
-            }
-        })
-        registrar.registerReferenceProvider(OfbizPatterns.JAVA.LABEL_CALL, new PsiReferenceProvider() {
-            @NotNull
-            PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-                PsiLiteralExpression el = (PsiLiteralExpression) element
-                UiLabelJavaReference label = new UiLabelJavaReference(el, true)
-                PsiReference[] reference = (PsiReference) label
-                return reference
-            }
-        })
+        registrar.registerReferenceProvider(OfbizPatterns.JAVA.SERVICE_CALL, new ServiceReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.JAVA.ENTITY_CALL, new EntityReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.JAVA.LABEL_CALL, new UiLabelReferenceProvider())
     }
 }

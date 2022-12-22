@@ -86,8 +86,12 @@ class FileHandlingUtils {
                     .collect(Collectors.toList())
 
             PsiDirectory currentDir = structureService.getComponentDir(pathPieces.first())
-            for (int i = 1; i < pathPieces.size() - 1; i++) {
-                currentDir = currentDir.findSubdirectory(pathPieces.get(i))
+            try {
+                for (int i = 1; i < pathPieces.size() - 1; i++) {
+                    currentDir = currentDir.findSubdirectory(pathPieces.get(i))
+                }
+            } catch (NullPointerException ignored) {
+                return null
             }
             PsiFile file = currentDir.findFile(pathPieces.last())
             return file

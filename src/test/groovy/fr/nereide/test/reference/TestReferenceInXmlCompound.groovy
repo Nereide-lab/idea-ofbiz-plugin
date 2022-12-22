@@ -3,9 +3,9 @@ package fr.nereide.test.reference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import fr.nereide.reference.xml.JavaMethodReference
 import fr.nereide.reference.xml.RequestMapReference
-import fr.nereide.reference.xml.ServiceReference
+import fr.nereide.reference.common.ServiceReference
 import fr.nereide.reference.xml.ViewMapReference
-import fr.nereide.reference.xml.EntityReference
+import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.ScreenReference
@@ -25,7 +25,7 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
 
     private void configureAndMoveFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName, boolean strict) {
         myFixture.moveFile(file, MOVE_TO)
-        configureByFileAndTestRefTypeAndValueForXml(file, expectedRefType, expectedRefValueName, strict)
+        configureByFileAndTestRefTypeAndValue(file, expectedRefType, expectedRefValueName, strict)
     }
 
     //=====================================

@@ -22,6 +22,7 @@ import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferen
 import fr.nereide.reference.xml.GroovyServiceDefReference
 import fr.nereide.reference.xml.JavaMethodReference
 import fr.nereide.reference.xml.RequestMapReference
+import fr.nereide.reference.common.ServiceReference
 import fr.nereide.reference.xml.ViewMapReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
@@ -31,18 +32,12 @@ class TestReferenceInXml extends GenericRefTestCase {
 
     void testScreenInCurrentFileReference() {
         String file = 'xml/ScreenInCurrentFileReference.xml'
-        myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(file)
-        assertEquals 'FindFacility', ref.getElement().getName() as String
-        assertNotNull ref.resolve()
+        configureByFileAndTestRefTypeAndValue(file, ScreenReference.class, 'FindFacility', false)
     }
 
     void testScreenInDistantFileReference() {
         String file = 'xml/ScreenInDistantFileReference.xml'
-        myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion(file)
-        assertEquals 'viewprofile', ref.getElement().getName() as String
-        assertNotNull ref.resolve()
+        configureByFileAndTestRefTypeAndValue(file, ScreenReference.class, 'viewprofile', false)
     }
 
     void testScreenNotFoundReferenceInCurrentFile() {
@@ -61,46 +56,51 @@ class TestReferenceInXml extends GenericRefTestCase {
 
     void testScreenReferenceFromViewMap() {
         String file = "xml/ScreenReferenceFromViewMap.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, ScreenReference.class, 'viewprofile', false)
+        configureByFileAndTestRefTypeAndValue(file, ScreenReference.class, 'viewprofile', false)
     }
 
     void testFormReferenceFromScreen() {
         String file = "xml/FormReferenceFromScreen.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, FormReference.class, 'FooForm')
+        configureByFileAndTestRefTypeAndValue(file, FormReference.class, 'FooForm')
     }
 
     void testFileReferenceFromScreen() {
         String file = "xml/FileReferenceFromScreen.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, FileReference.class, 'FooScript', false)
+        configureByFileAndTestRefTypeAndValue(file, FileReference.class, 'FooScript', false)
     }
 
     void testFormReferenceFromForm() {
         String file = "xml/FormReferenceFromForm.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, FormReference.class, 'FooForm')
+        configureByFileAndTestRefTypeAndValue(file, FormReference.class, 'FooForm')
     }
 
     void testRequestMapReferenceFromForm() {
         String file = "xml/RequestMapReferenceFromForm.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, RequestMapReference.class, 'fooRequest')
+        configureByFileAndTestRefTypeAndValue(file, RequestMapReference.class, 'fooRequest')
     }
 
     void testViewMapReferenceFromRequestMap() {
         String file = "xml/ViewMapReferenceFromRequestMap.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, ViewMapReference.class, 'MyHome')
+        configureByFileAndTestRefTypeAndValue(file, ViewMapReference.class, 'MyHome')
     }
 
     void testMenuReferenceFromScreen() {
         String file = "xml/MenuReferenceFromScreen.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, MenuReference.class, 'FooMenu')
+        configureByFileAndTestRefTypeAndValue(file, MenuReference.class, 'FooMenu')
     }
 
     void testGroovyMethodReferenceFromServiceDef() {
         String file = "xml/GroovyMethodReferenceFromServiceDef.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, GroovyServiceDefReference.class, 'fooGroovyService')
+        configureByFileAndTestRefTypeAndValue(file, GroovyServiceDefReference.class, 'fooGroovyService')
     }
 
     void testJavaMethodReferenceFromServiceDef() {
         String file = "xml/JavaMethodReferenceFromServiceDef.xml"
-        configureByFileAndTestRefTypeAndValueForXml(file, JavaMethodReference.class, 'createNote')
+        configureByFileAndTestRefTypeAndValue(file, JavaMethodReference.class, 'createNote')
+    }
+
+    void testServiceDefReferenceFromServiceGroup() {
+        String file = "xml/ServiceDefReferenceFromServiceGroup.xml"
+        configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'SmileSmileSmile')
     }
 }

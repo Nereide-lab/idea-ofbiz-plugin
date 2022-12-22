@@ -1,4 +1,4 @@
-package fr.nereide.reference.xml
+package fr.nereide.reference.xml.provider
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -7,6 +7,7 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.FileHandlingUtils
+import fr.nereide.reference.xml.GroovyServiceDefReference
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.GroovyFile
 
@@ -18,7 +19,7 @@ class GroovyServiceMethodReferenceProvider extends JavaMethodReferenceProvider {
         String locationAttr = getClassLocation(element)
         if (!locationAttr) return null
         PsiFile targetedFile = FileHandlingUtils.getTargetFile(locationAttr, ps)
-        if (!targetedFile instanceof GroovyFile) return null
+        if (!targetedFile || !(targetedFile instanceof GroovyFile)) return null
         return new GroovyServiceDefReference(element as XmlAttributeValue,
                 (targetedFile as GroovyFile).getScriptClass(),
                 true)
