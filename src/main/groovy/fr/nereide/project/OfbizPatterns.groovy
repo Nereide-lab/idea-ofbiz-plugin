@@ -168,9 +168,7 @@ class OfbizPatterns {
 
                 groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("from")),
 
-                // TODO : Marche pas
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("makeValue")
-                        .definedInClass("org.apache.ofbiz.service.engine.GroovyBaseScript")),
+                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("makeValue")),
 
                 groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findOne"))
         )

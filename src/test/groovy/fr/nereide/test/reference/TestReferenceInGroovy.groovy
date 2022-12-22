@@ -41,4 +41,9 @@ class TestReferenceInGroovy extends GenericRefTestCase {
         String file = "groovy/GroovyServiceReferenceWithRunCall.groovy"
         configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'pivot')
     }
+
+    void testEntityReferenceWithMakeValueMethod() {
+        String file = "groovy/EntityReferenceWithMakeValueMethod.groovy"
+        configureByFileAndTestRefTypeAndValue(file,EntityReference.class, 'Zaun')
+    }
 }
