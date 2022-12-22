@@ -40,34 +40,6 @@ class OfbizPatterns {
     // =============================================================
     class JAVA {
         public static final PsiElementPattern SERVICE_CALL = psiElement().andOr(
-                psiElement().withTreeParent(literalExpression().methodCallParameter(0, psiMethod()
-                        .withName("makeValidContext")
-                        .definedInClass("org.apache.ofbiz.service.DispatchContext"))),
-
-                psiElement().withTreeParent(literalExpression().methodCallParameter(0, psiMethod()
-                        .withName("runSync")
-                        .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("runAsync")
-                                .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("runAsyncWait")
-                                .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("runSyncIgnore")
-                                .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("runSyncNewTrans")
-                                .definedInClass("org.apache.ofbiz.service.LocalDispatcher"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("runService")
-                                .definedInClass("org.apache.ofbiz.base.util.ScriptHelper"))),
-
                 literalExpression()
                         .methodCallParameter(0, psiMethod().withName("makeValidContext")
                                 .definedInClass("org.apache.ofbiz.service.DispatchContext")),
@@ -94,42 +66,14 @@ class OfbizPatterns {
 
                 literalExpression()
                         .methodCallParameter(0, psiMethod().withName("runService")
-                                .definedInClass("org.apache.ofbiz.base.util.ScriptHelper"))
+                                .definedInClass("org.apache.ofbiz.base.util.ScriptHelper")),
+
+                literalExpression()
+                        .methodCallParameter(0, psiMethod().withName("schedule")
+                                .definedInClass("org.apache.ofbiz.service.LocalDispatcher")),
         )
 
         public static final PsiElementPattern ENTITY_CALL = psiElement().andOr(
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("find")
-                                .definedInClass("org.apache.ofbiz.entity.Delegator"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("findOne")
-                                .definedInClass("org.apache.ofbiz.entity.Delegator"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("findAll")
-                                .definedInClass("org.apache.ofbiz.entity.Delegator"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("findCountByCondition")
-                                .definedInClass("org.apache.ofbiz.entity.Delegator"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("findList")
-                                .definedInClass("org.apache.ofbiz.entity.Delegator"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(1, psiMethod().withName("addMemberEntity")
-                                .definedInClass("org.apache.ofbiz.entity.model.DynamicViewEntity"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(1, psiMethod().withName("makeGenericValue")
-                                .definedInClass("org.apache.ofbiz.entityext.data.EntityDataServices"))),
-
-                psiElement().withTreeParent(literalExpression()
-                        .methodCallParameter(0, psiMethod().withName("from")
-                                .definedInClass("org.apache.ofbiz.entity.util.EntityQuery"))),
-
                 literalExpression().methodCallParameter(0, psiMethod()
                         .withName("find").definedInClass("org.apache.ofbiz.entity.Delegator")),
 

@@ -19,6 +19,7 @@ package fr.nereide.test.reference
 
 
 import fr.nereide.reference.common.EntityReference
+import fr.nereide.reference.common.ServiceReference
 
 class TestReferenceInJava extends GenericRefTestCase {
 
@@ -76,5 +77,29 @@ class TestReferenceInJava extends GenericRefTestCase {
     void testEntityReferenceWithMakeValueMethod() {
         String file = 'java/EntityReferenceWithMakeValueMethod.java'
         configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'PickleRick')
+    }
+
+    /**
+     * Test for dispatcher.runSync()
+     */
+    void testServiceReferenceWithRunSync() {
+        String file = 'java/ServiceReferenceWithRunSync.java'
+        configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'pivot')
+    }
+
+    /**
+     * Test for dispatchContext.makeValidContext()
+     */
+    void testServiceReferenceWithMakeValidContext() {
+        String file = 'java/ServiceReferenceWithMakeValidContext.java'
+        configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'pivot')
+    }
+
+    /**
+     * Test for dispatcher.schedule()
+     */
+    void testServiceReferenceWithSchedule() {
+        String file = 'java/ServiceReferenceWithSchedule.java'
+        configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'pivot')
     }
 }
