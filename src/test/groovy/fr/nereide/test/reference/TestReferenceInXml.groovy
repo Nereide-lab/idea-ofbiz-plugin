@@ -19,6 +19,7 @@ package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import fr.nereide.reference.xml.DatasourceReference
 import fr.nereide.reference.xml.GroovyServiceDefReference
 import fr.nereide.reference.xml.JavaMethodReference
 import fr.nereide.reference.xml.RequestMapReference
@@ -102,5 +103,10 @@ class TestReferenceInXml extends GenericRefTestCase {
     void testServiceDefReferenceFromServiceGroup() {
         String file = "xml/ServiceDefReferenceFromServiceGroup.xml"
         configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'SmileSmileSmile')
+    }
+
+    void testDataSourceReferenceFromDelegator() {
+        String file = "xml/DataSourceReferenceFromDelegator.xml"
+        configureByFileAndTestRefTypeAndValue(file, DatasourceReference.class, 'localderby')
     }
 }
