@@ -18,14 +18,14 @@
 package fr.nereide.project
 
 import com.intellij.psi.PsiDirectory
-import com.intellij.psi.PsiMethod
-import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.ControllerFile.RequestMap
-import fr.nereide.dom.EntityModelFile.ExtendEntity
+import fr.nereide.dom.ControllerFile.ViewMap
+import fr.nereide.dom.EntityEngineFile.Datasource
 import fr.nereide.dom.EntityModelFile.Entity
+import fr.nereide.dom.EntityModelFile.ExtendEntity
 import fr.nereide.dom.EntityModelFile.ViewEntity
-import fr.nereide.dom.FormFile.Grid
 import fr.nereide.dom.FormFile.Form
+import fr.nereide.dom.FormFile.Grid
 import fr.nereide.dom.MenuFile.Menu
 import fr.nereide.dom.ScreenFile.Screen
 import fr.nereide.dom.ServiceDefFile.Service
@@ -64,4 +64,6 @@ interface ProjectServiceInterface {
     List<ExtendEntity> getExtendEntityListForEntity(String entityName)
 
     List<ExtendEntity> getAllExtendsEntity()
+
+    Datasource getDatasource(String name)
 }

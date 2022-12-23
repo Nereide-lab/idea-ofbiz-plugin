@@ -42,5 +42,6 @@ class XmlReferenceContributor extends PsiReferenceContributor {
         registrar.registerReferenceProvider(OfbizPatterns.XML.MENU_CALL, new MenuReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.JAVA_EVENT_CALL, new JavaMethodReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.GROOVY_SERVICE_METHOD, new GroovyServiceMethodReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.DATASOURCE_CALL, new DatasourceReferenceProvider())
     }
 }

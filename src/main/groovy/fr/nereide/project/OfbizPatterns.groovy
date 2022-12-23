@@ -456,6 +456,11 @@ class OfbizPatterns {
                                 )
                 )
         )
+
+        public static final XmlAttributeValuePattern DATASOURCE_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(xmlAttribute().withName("datasource-name"))
+        )
+
         public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement()
                 .inside(ENTITY_CALL)
         public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement()

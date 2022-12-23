@@ -29,6 +29,8 @@ import fr.nereide.dom.CompoundFile
 import fr.nereide.dom.ControllerFile
 import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.ControllerFile.RequestMap
+import fr.nereide.dom.EntityEngineFile
+import fr.nereide.dom.EntityEngineFile.Datasource
 import fr.nereide.dom.EntityModelFile
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.ViewEntity
@@ -104,6 +106,10 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     Menu getMenu(String name) {
         return getMatchingElementFromXmlFiles(MenuFile.class, "getMenus", "getName", name)
+    }
+
+    Datasource getDatasource(String name) {
+        return getMatchingElementFromXmlFiles(EntityEngineFile.class, "getDatasources", "getName", name)
     }
 
     PsiDirectory getComponentDir(String name) {
