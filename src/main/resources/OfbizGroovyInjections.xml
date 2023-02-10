@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="LanguageInjectionConfiguration">
+    <injection language="Groovy" injector-id="xml">
+        <display-name>OFBiz groovy in xml</display-name>
+        <single-file value="false"/>
+        <value-pattern>\$\{groovy:(.+)\}</value-pattern>
+        <place><![CDATA[
+            xmlAttribute().withLocalName(string().oneOf(
+                    "value",
+                    "use-when",
+                    "tooltip",
+                    "default-value",
+                    "location",
+                    "description"
+            )).withParent(
+                    xmlTag().withNamespace(string().oneOf(
+                            "http://ofbiz.apache.org/Widget-Screen",
+                            "http://ofbiz.apache.org/Widget-Menu",
+                            "http://ofbiz.apache.org/Widget-Form"
+                    )))
+            ]]></place>
+    </injection>
+</component>

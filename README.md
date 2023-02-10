@@ -39,6 +39,10 @@ The plugins adds hover documentation for the following ofbiz elements, in javan 
 - View and entities
 For OFBiz properties (AKA UiLabels), the english message in the property will be display instead.
 
+#### LANGUAGE INJECTION
+Plugin now supports Language injection :
+- Injects groovy in relevant locations in xml files
+
 **Feel free to contribute !**
 ## CONTRIBUTE
 Clone this repo, and you can get started here : [DOCS](https://plugins.jetbrains.com/docs/intellij/basics.html)

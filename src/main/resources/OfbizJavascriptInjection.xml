@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="LanguageInjectionConfiguration">
+    <injection language="JavaScript" injector-id="xml">
+        <display-name>OFBiz javascript in xml</display-name>
+        <single-file value="false"/>
+        <value-pattern>javascript:(.+)</value-pattern>
+        <place><![CDATA[
+            xmlAttribute().withLocalName(string().oneOf(
+                    "action",
+                    "target"
+            )).withParent(
+                    xmlTag().withNamespace(string().oneOf(
+                            "http://ofbiz.apache.org/Widget-Menu",
+                            "http://ofbiz.apache.org/Widget-Form"
+                    )))
+            ]]></place>
+    </injection>
+</component>

@@ -1,0 +1,6 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="org.intellij.intelliLang">
+        <injectionConfig config="OfbizGroovyInjections.xml"/>
+<!--        <injectionConfig config="OfbizJavascriptInjection.xml"/>-->
+    </extensions>
+</idea-plugin>

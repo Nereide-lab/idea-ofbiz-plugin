@@ -6,8 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.4.6]
 
+### Changed
+- Updated Intellij gradle plugin from 1.10 to 1.12
+- Upgraded gradle version from 7.2 to 7.3
+
 ### Added
 - Added reference to datasources in delegator definition
+- Added OFBiz specific Groovy injections in xml files
 
 ## [1.4.5] The refactor update
 
