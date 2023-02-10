@@ -10,7 +10,7 @@ static def definedInPluginXml(String key) {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '1.10.1'
+    id 'org.jetbrains.intellij' version '1.12.0'
     id 'groovy'
     id 'java'
     id 'org.jetbrains.changelog' version '1.2.1'
@@ -36,8 +36,14 @@ java {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
+    type = 'IC'
     version = '2022.3'
-    plugins = ['java', 'com.intellij.java', 'org.intellij.groovy']
+    plugins = ['java',
+//               'JavaScript', Seulement dans la version ultimate.. C'est pénible
+               'com.intellij.java',
+               'org.intellij.groovy',
+               'org.intellij.intelliLang'
+    ]
 }
 
 project.gradle.startParameter.excludedTaskNames.add('buildSearchableOptions')
