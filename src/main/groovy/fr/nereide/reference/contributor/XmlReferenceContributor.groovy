@@ -37,6 +37,7 @@ class XmlReferenceContributor extends PsiReferenceContributor {
         registrar.registerReferenceProvider(OfbizPatterns.XML.SERVICE_DEF_CALL, new ServiceReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.LABEL_CALL, new UiLabelReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.FORM_CALL, new FormReferenceProvider())
+        registrar.registerReferenceProvider(OfbizPatterns.XML.FORM_CALL, new GridReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.FILE_CALL, new FileReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.SCREEN_CALL, new ScreenReferenceProvider())
         registrar.registerReferenceProvider(OfbizPatterns.XML.MENU_CALL, new MenuReferenceProvider())

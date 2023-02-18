@@ -348,6 +348,22 @@ class OfbizPatterns {
                                         .withName("${SCREEN_NS_PREFIX}include-form")
                                         .withNamespace(SCREEN_NS_URL)
                                 ),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${FORM_NS_PREFIX}include-grid")
+                                        .withNamespace(FORM_NS_URL)
+                                ),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .withName("name")
+                                .inside(xmlTag()
+                                        .withName("${SCREEN_NS_PREFIX}include-grid")
+                                        .withNamespace(SCREEN_NS_URL)
+                                ),
                 )
         )
 

@@ -1,6 +1,7 @@
 package fr.nereide.test.reference
 
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import fr.nereide.reference.xml.GridReference
 import fr.nereide.reference.xml.JavaMethodReference
 import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.reference.common.ServiceReference
@@ -39,7 +40,7 @@ class TestReferenceInXmlCompound extends GenericRefTestCase {
 
     void testCpdGridReferenceFromCpdScreen() {
         String file = 'CpdGridReferenceFromCpdScreen.xml'
-        configureAndMoveFileAndTestRefTypeAndValue(file, FormReference.class, 'FooGrid')
+        configureAndMoveFileAndTestRefTypeAndValue(file, GridReference.class, 'MyCompoundElement')
     }
 
     void testCpdScreenReferenceFromCpdScreen() {
