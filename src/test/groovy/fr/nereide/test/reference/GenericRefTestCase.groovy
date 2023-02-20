@@ -17,7 +17,6 @@
 
 package fr.nereide.test.reference
 
-import com.intellij.lang.properties.references.PropertyReference
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import fr.nereide.test.GenericOfbizPluginTestCase
@@ -40,17 +39,25 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
         myFixture.configureByFile(file)
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
         if (ref instanceof PsiMultiReference) {
+            PsiMultiReference multiRef = ref
             ref = ref.getReferences().find { expectedRefType.isAssignableFrom(it.getClass()) }
+//            assertNoOtherRefType(multiRef, expectedRefType)
         }
         assert expectedRefType.isAssignableFrom(ref.getClass())
         if (strict) {
             assertEquals expectedRefValueName, ref.getElement().getName() ?
-                    ref.getElement().getName() : getSafeTextInReference(ref)
-                    as String
+                    ref.getElement().getName() : getSafeTextInReference(ref) as String
         } else {
             assert ref.getElement().getText().contains(expectedRefValueName)
         }
         assertNotNull "Reference for $expectedRefValueName not found", ref.resolve()
+    }
+
+    private static void assertNoOtherRefType(PsiMultiReference multiRef, Class expectedRefType) {
+        assert (multiRef.getReferences() as List).stream()
+                .filter { !expectedRefType.isAssignableFrom(it.getClass()) }
+                .filter { it.getClass().getName().contains('fr.nereide') }
+                .toList().size() == 0
     }
 
     static String getSafeTextInReference(PsiReference ref) {
