@@ -41,7 +41,7 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
         if (ref instanceof PsiMultiReference) {
             PsiMultiReference multiRef = ref
             ref = ref.getReferences().find { expectedRefType.isAssignableFrom(it.getClass()) }
-//            assertNoOtherRefType(multiRef, expectedRefType)
+            assertNoOtherRefType(multiRef, expectedRefType)
         }
         assert expectedRefType.isAssignableFrom(ref.getClass())
         if (strict) {
@@ -53,6 +53,12 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
         assertNotNull "Reference for $expectedRefValueName not found", ref.resolve()
     }
 
+    /**
+     * Checks that no other reference type was found for an element.
+     * For example, no screen reference resolved from a form
+     * @param multiRef
+     * @param expectedRefType
+     */
     private static void assertNoOtherRefType(PsiMultiReference multiRef, Class expectedRefType) {
         assert (multiRef.getReferences() as List).stream()
                 .filter { !expectedRefType.isAssignableFrom(it.getClass()) }

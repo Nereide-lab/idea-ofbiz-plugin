@@ -320,17 +320,7 @@ class OfbizPatterns {
                 ),
                 xmlAttributeValue().inside(
                         xmlAttribute()
-                                .inside(xmlTag().withName("include-grid"))
-                                .withName("name"),
-                ),
-                xmlAttributeValue().inside(
-                        xmlAttribute()
                                 .inside(xmlTag().withName("form"))
-                                .withName("extends"),
-                ),
-                xmlAttributeValue().inside(
-                        xmlAttribute()
-                                .inside(xmlTag().withName("grid"))
                                 .withName("extends"),
                 ),
                 xmlAttributeValue().inside(
@@ -348,6 +338,19 @@ class OfbizPatterns {
                                         .withName("${SCREEN_NS_PREFIX}include-form")
                                         .withNamespace(SCREEN_NS_URL)
                                 ),
+                ),
+        )
+
+        public static final XmlAttributeValuePattern GRID_CALL = xmlAttributeValue().andOr(
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("include-grid"))
+                                .withName("name"),
+                ),
+                xmlAttributeValue().inside(
+                        xmlAttribute()
+                                .inside(xmlTag().withName("grid"))
+                                .withName("extends"),
                 ),
                 xmlAttributeValue().inside(
                         xmlAttribute()
@@ -448,7 +451,7 @@ class OfbizPatterns {
                 xmlAttributeValue().inside(
                         xmlAttribute()
                                 .withName("name")
-                                .inside(xmlTag().withName("decorator-screen"))
+                                .withParent(xmlTag().withName("decorator-screen"))
                 ),
                 xmlAttributeValue().inside(
                         xmlAttribute()
