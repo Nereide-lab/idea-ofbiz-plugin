@@ -17,21 +17,24 @@
 
 package fr.nereide.project
 
-
 import com.intellij.patterns.PsiElementPattern
+import com.intellij.patterns.PsiJavaElementPattern
+import com.intellij.patterns.PsiJavaPatterns
 import com.intellij.patterns.XmlAttributeValuePattern
+import com.intellij.psi.PsiLiteral
 import com.intellij.psi.PsiLiteralExpression
 import fr.nereide.project.pattern.FieldTypeCondition
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
+import org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyElementPattern
+import org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns
 
 import static com.intellij.patterns.PlatformPatterns.psiElement
-import static com.intellij.patterns.PsiJavaElementPattern.*
-import static com.intellij.patterns.PsiJavaPatterns.literalExpression
+import static com.intellij.patterns.PsiJavaElementPattern.Capture
 import static com.intellij.patterns.PsiJavaPatterns.psiMethod
 import static com.intellij.patterns.StandardPatterns.string
-import static com.intellij.patterns.XmlPatterns.xmlAttribute
-import static com.intellij.patterns.XmlPatterns.xmlAttributeValue
-import static com.intellij.patterns.XmlPatterns.xmlTag
+import static com.intellij.patterns.XmlPatterns.*
 import static fr.nereide.dom.CompoundFileDescription.*
+import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyElementPattern.Capture as GrCapture
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.groovyLiteralExpression
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.namedArgument
 
@@ -49,10 +52,17 @@ class OfbizPatterns {
     public static final String ENTITY_QUERY_CLASS = "org.apache.ofbiz.entity.util.EntityQuery"
     public static final String UTIL_PROPERTIES_CLASS = "org.apache.ofbiz.base.util.UtilProperties"
 
+    static Object makeMethodPattern(PsiJavaElementPattern<? extends PsiLiteral, ?> elementPattern,
+                                    String methodName, String className, int index) {
+        return elementPattern.methodCallParameter(index, psiMethod().withName(methodName).definedInClass(className))
+    }
+
     static Capture<PsiLiteralExpression> makeMethodJavaPattern(String methodName, String className, int index) {
-        return literalExpression()
-                .methodCallParameter(index, psiMethod().withName(methodName)
-                        .definedInClass(className))
+        return makeMethodPattern(PsiJavaPatterns::literalExpression(), methodName, className, index)
+    }
+
+    static GrCapture<GrLiteral> makeGroovyMethodPattern(String methodName, String className, int index) {
+        return makeMethodPattern(GroovyPatterns::groovyLiteralExpression(), methodName, className, index)
     }
 
     static Capture<PsiLiteralExpression> makeLocalDispatcherJavaMethodPattern(String methodName, int index) {
@@ -85,6 +95,26 @@ class OfbizPatterns {
 
     static Capture<PsiLiteralExpression> makeUtilPropertiesJavaMethodPattern(String methodName, int index) {
         return makeMethodJavaPattern(methodName, UTIL_PROPERTIES_CLASS, index)
+    }
+
+    static GrCapture<GrLiteral> makeLocalDispatcherGroovyMethodPattern(String methodName, int index) {
+        return makeGroovyMethodPattern(methodName, LOCAL_DISPATCHER_CLASS, index)
+    }
+
+    static GrCapture<GrLiteral> makeDelegatorGroovyMethodPattern(String methodName, int index) {
+        return makeGroovyMethodPattern(methodName, DELEGATOR_CLASS, index)
+    }
+
+    static GrCapture<GrLiteral> makeDynamicViewEntityGroovyMethodPattern(String methodName, int index) {
+        return makeGroovyMethodPattern(methodName, DYNAMIC_VIEW_ENTITY_CLASS, index)
+    }
+
+    static GrCapture<GrLiteral> makeEntityDataServicesGroovyMethodPattern(String methodName, int index) {
+        return makeGroovyMethodPattern(methodName, ENTITY_DATA_SERVICES_CLASS, index)
+    }
+
+    static GrCapture<GrLiteral> makeUtilPropertiesGroovyMethodPattern(String methodName, int index) {
+        return makeGroovyMethodPattern(methodName, UTIL_PROPERTIES_CLASS, index)
     }
 
     class JAVA {
@@ -126,63 +156,34 @@ class OfbizPatterns {
     // =============================================================
     class GROOVY {
         public static final PsiElementPattern SERVICE_CALL = psiElement().andOr(
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runSync")
-                        .definedInClass(LOCAL_DISPATCHER_CLASS)),
-
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runAsync")
-                        .definedInClass(LOCAL_DISPATCHER_CLASS)),
-
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runAsyncWait")
-                        .definedInClass(LOCAL_DISPATCHER_CLASS)),
-
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runSyncIgnore")
-                        .definedInClass(LOCAL_DISPATCHER_CLASS)),
-
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runSyncNewTrans")
-                        .definedInClass(LOCAL_DISPATCHER_CLASS)),
-
+                makeLocalDispatcherGroovyMethodPattern('runSync', 0),
+                makeLocalDispatcherGroovyMethodPattern('runAsync', 0),
+                makeLocalDispatcherGroovyMethodPattern('runAsyncWait', 0),
+                makeLocalDispatcherGroovyMethodPattern('runSyncIgnore', 0),
+                makeLocalDispatcherGroovyMethodPattern('runSyncNewTrans', 0),
                 groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("runService")),
-
                 //TODO : bétonner un peu pour éviter les soucis de référence non trouvée ?
                 groovyLiteralExpression().withParent(namedArgument().withLabel('service')
                 )
         )
 
         public static final PsiElementPattern ENTITY_CALL = psiElement().andOr(
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("find")
-                        .definedInClass(DELEGATOR_CLASS)),
-
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findOne")
-                        .definedInClass(DELEGATOR_CLASS)),
-
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findAll")
-                        .definedInClass(DELEGATOR_CLASS)),
-
-                // TODO : Marche pas
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findCountByCondition")
-                        .definedInClass(DELEGATOR_CLASS)),
-
-                // TODO : Marche pas
-                groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findList")
-                        .definedInClass(DELEGATOR_CLASS)),
-
-                groovyLiteralExpression().methodCallParameter(1, psiMethod().withName("addMemberEntity")
-                        .definedInClass(DYNAMIC_VIEW_ENTITY_CLASS)),
-
-                groovyLiteralExpression().methodCallParameter(1, psiMethod().withName("makeGenericValue")
-                        .definedInClass(ENTITY_DATA_SERVICES_CLASS)),
-
+                makeDelegatorGroovyMethodPattern("find", 0),
+                makeDelegatorGroovyMethodPattern("findOne", 0),
+                makeDelegatorGroovyMethodPattern("findAll", 0),
+                makeDelegatorGroovyMethodPattern("findCountByCondition", 0),
+                makeDelegatorGroovyMethodPattern("findList", 0),
+                makeDynamicViewEntityGroovyMethodPattern('addMemberEntity', 1),
+                makeEntityDataServicesGroovyMethodPattern('makeGenericValue', 1),
                 groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("from")),
-
                 groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("makeValue")),
-
                 groovyLiteralExpression().methodCallParameter(0, psiMethod().withName("findOne"))
         )
 
         public static final PsiElementPattern LABEL_CALL = psiElement().andOr(
-                groovyLiteralExpression().methodCallParameter(1, psiMethod().withName("getMessage")
-                        .definedInClass(UTIL_PROPERTIES_CLASS))
+                makeUtilPropertiesGroovyMethodPattern('getMessage', 1)
         )
+
 
         public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE = psiElement().andOr(
                 psiElement().afterLeafSkipping(
