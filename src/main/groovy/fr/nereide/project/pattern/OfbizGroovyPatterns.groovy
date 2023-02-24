@@ -5,8 +5,9 @@ import com.intellij.patterns.PsiElementPattern
 import com.intellij.patterns.PsiJavaPatterns
 import com.intellij.patterns.StandardPatterns
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
-import org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyElementPattern
 import org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns
+
+import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyElementPattern.Capture
 
 class OfbizGroovyPatterns {
 
@@ -66,27 +67,27 @@ class OfbizGroovyPatterns {
     //============================================
     //       UTILITY METHODS
     //============================================
-    static GroovyElementPattern.Capture<GrLiteral> makeGroovyMethodPattern(String methodName, String className, int index) {
+    static Capture<GrLiteral> makeGroovyMethodPattern(String methodName, String className, int index) {
         return OfbizPatternConst.makeMethodPattern(GroovyPatterns::groovyLiteralExpression(), methodName, className, index)
     }
 
-    static GroovyElementPattern.Capture<GrLiteral> makeLocalDispatcherGroovyMethodPattern(String methodName, int index) {
+    static Capture<GrLiteral> makeLocalDispatcherGroovyMethodPattern(String methodName, int index) {
         return makeGroovyMethodPattern(methodName, OfbizPatternConst.LOCAL_DISPATCHER_CLASS, index)
     }
 
-    static GroovyElementPattern.Capture<GrLiteral> makeDelegatorGroovyMethodPattern(String methodName, int index) {
+    static Capture<GrLiteral> makeDelegatorGroovyMethodPattern(String methodName, int index) {
         return makeGroovyMethodPattern(methodName, OfbizPatternConst.DELEGATOR_CLASS, index)
     }
 
-    static GroovyElementPattern.Capture<GrLiteral> makeDynamicViewEntityGroovyMethodPattern(String methodName, int index) {
+    static Capture<GrLiteral> makeDynamicViewEntityGroovyMethodPattern(String methodName, int index) {
         return makeGroovyMethodPattern(methodName, OfbizPatternConst.DYNAMIC_VIEW_ENTITY_CLASS, index)
     }
 
-    static GroovyElementPattern.Capture<GrLiteral> makeEntityDataServicesGroovyMethodPattern(String methodName, int index) {
+    static Capture<GrLiteral> makeEntityDataServicesGroovyMethodPattern(String methodName, int index) {
         return makeGroovyMethodPattern(methodName, OfbizPatternConst.ENTITY_DATA_SERVICES_CLASS, index)
     }
 
-    static GroovyElementPattern.Capture<GrLiteral> makeUtilPropertiesGroovyMethodPattern(String methodName, int index) {
+    static Capture<GrLiteral> makeUtilPropertiesGroovyMethodPattern(String methodName, int index) {
         return makeGroovyMethodPattern(methodName, OfbizPatternConst.UTIL_PROPERTIES_CLASS, index)
     }
 }
