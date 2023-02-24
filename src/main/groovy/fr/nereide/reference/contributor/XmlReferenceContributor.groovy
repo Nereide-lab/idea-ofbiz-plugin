@@ -20,7 +20,7 @@ package fr.nereide.reference.contributor
 
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
-import fr.nereide.project.OfbizPatterns
+import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.reference.common.provider.EntityReferenceProvider
 import fr.nereide.reference.common.provider.ServiceReferenceProvider
 import fr.nereide.reference.common.provider.UiLabelReferenceProvider
@@ -31,18 +31,18 @@ class XmlReferenceContributor extends PsiReferenceContributor {
     XmlReferenceContributor() {}
 
     void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(OfbizPatterns.XML.URI_CALL, new RequestMapReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.RESPONSE_CALL, new ViewMapReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.ENTITY_CALL, new EntityReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.SERVICE_DEF_CALL, new ServiceReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.LABEL_CALL, new UiLabelReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.FORM_CALL, new FormReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.GRID_CALL, new GridReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.FILE_CALL, new FileReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.SCREEN_CALL, new ScreenReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.MENU_CALL, new MenuReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.JAVA_EVENT_CALL, new JavaMethodReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.GROOVY_SERVICE_METHOD, new GroovyServiceMethodReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.XML.DATASOURCE_CALL, new DatasourceReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.URI_CALL, new RequestMapReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.RESPONSE_CALL, new ViewMapReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.ENTITY_CALL, new EntityReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.SERVICE_DEF_CALL, new ServiceReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.LABEL_CALL, new UiLabelReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.FORM_CALL, new FormReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.GRID_CALL, new GridReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.FILE_CALL, new FileReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.SCREEN_CALL, new ScreenReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.MENU_CALL, new MenuReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.JAVA_EVENT_CALL, new JavaMethodReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.GROOVY_SERVICE_METHOD, new GroovyServiceMethodReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.DATASOURCE_CALL, new DatasourceReferenceProvider())
     }
 }

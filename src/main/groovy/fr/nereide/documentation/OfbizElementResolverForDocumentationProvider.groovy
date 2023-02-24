@@ -9,8 +9,8 @@ import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
-import fr.nereide.project.OfbizPatterns
-
+import fr.nereide.project.pattern.OfbizJavaPatterns
+import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.ServiceReference
 import org.jetbrains.annotations.NotNull
@@ -29,19 +29,19 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
          *************/
         if (xmlAttr) {
             PsiElement xmlAttrValue = PsiTreeUtil.getChildOfType(xmlAttr, XmlAttributeValue)
-            if (OfbizPatterns.XML.SERVICE_DEF_CALL.accepts(xmlAttr)) {
+            if (OfbizXmlPatterns.SERVICE_DEF_CALL.accepts(xmlAttr)) {
                 return xmlAttrValue ? resolveService(xmlAttrValue) : null
-            } else if (OfbizPatterns.XML.ENTITY_CALL.accepts(xmlAttr)) {
+            } else if (OfbizXmlPatterns.ENTITY_CALL.accepts(xmlAttr)) {
                 return xmlAttrValue ? resolveEntityOrView(xmlAttrValue) : null
             }
         }
         /*************
          *    JAVA   *
          *************/
-        if (OfbizPatterns.JAVA.SERVICE_CALL.accepts(contextElement)) {
+        if (OfbizJavaPatterns.SERVICE_CALL.accepts(contextElement)) {
             return resolveService(PsiTreeUtil.getParentOfType(contextElement, PsiLiteralExpression.class))
         }
-        if (OfbizPatterns.JAVA.ENTITY_CALL.accepts(contextElement)) {
+        if (OfbizJavaPatterns.ENTITY_CALL.accepts(contextElement)) {
             return resolveEntityOrView(PsiTreeUtil.getParentOfType(contextElement, PsiLiteralExpression.class))
         }
         /*************
