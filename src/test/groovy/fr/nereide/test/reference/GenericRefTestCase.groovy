@@ -20,7 +20,9 @@ package fr.nereide.test.reference
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import fr.nereide.test.GenericOfbizPluginTestCase
+import org.junit.Ignore
 
+@Ignore('Setup class, No tests here')
 class GenericRefTestCase extends GenericOfbizPluginTestCase {
 
     @Override
@@ -76,10 +78,4 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
         configureByFileAndTestRefTypeAndValue(file, expectedRefType, expectedRefValueName, true)
     }
 
-    /**
-     * Temporary workaround for tests to stay green
-     */
-    void testDummy() {
-        assert true
-    }
 }
