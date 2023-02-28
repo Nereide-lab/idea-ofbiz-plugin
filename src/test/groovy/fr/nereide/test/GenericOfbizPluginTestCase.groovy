@@ -19,18 +19,13 @@ package fr.nereide.test
 
 import com.intellij.testFramework.LightProjectDescriptor
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
+import org.junit.Ignore
 
+@Ignore('Parent class, No tests here')
 class GenericOfbizPluginTestCase extends LightJavaCodeInsightFixtureTestCase {
 
     @Override
     protected LightProjectDescriptor getProjectDescriptor() {
         return new OfbizProjectDescriptor()
-    }
-
-    /**
-     * Temporary workaround for tests to stay green
-     */
-    void testDummy() {
-        assert true
     }
 }

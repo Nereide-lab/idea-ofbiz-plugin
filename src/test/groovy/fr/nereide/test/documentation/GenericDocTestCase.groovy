@@ -38,7 +38,9 @@ import com.intellij.codeInsight.documentation.DocumentationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.test.GenericOfbizPluginTestCase
+import org.junit.Ignore
 
+@Ignore('Setup class, No tests here')
 class GenericDocTestCase extends GenericOfbizPluginTestCase {
 
     @Override
@@ -50,10 +52,6 @@ class GenericDocTestCase extends GenericOfbizPluginTestCase {
     @Override
     protected String getTestDataPath() {
         return "src/test/resources/testData/documentation"
-    }
-
-    void testDummy() {
-        assert true
     }
 
     void assertCorrectQuickNavigateInfo(PsiElement element, XmlAttributeValue originalElement) {

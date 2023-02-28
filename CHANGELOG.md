@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.7]
+
+### Added
+- Added a specific pattern for grids instead of using the form one
+- Added a control for references singleness in tests
+
+### Fixed
+- Fixed a bug when getting reference for a form un compounds
+
+### Changed
+- Splitting patterns in extension specific files
+- Again, massive refactoring of patterns
+- Use of the doTest() syntax in compound tests
+
 ## [1.4.6]
 
 ### Changed
