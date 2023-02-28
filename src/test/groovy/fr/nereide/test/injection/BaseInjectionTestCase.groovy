@@ -2,7 +2,9 @@ package fr.nereide.test.injection
 
 import com.intellij.psi.PsiElement
 import fr.nereide.test.GenericOfbizPluginTestCase
+import org.junit.Ignore
 
+@Ignore('Parent class, No tests here')
 class BaseInjectionTestCase extends GenericOfbizPluginTestCase {
 
     protected doTest(Class expectedLang) {

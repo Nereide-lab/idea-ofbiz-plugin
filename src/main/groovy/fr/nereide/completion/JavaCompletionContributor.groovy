@@ -21,11 +21,11 @@ import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
 import fr.nereide.completion.provider.common.EntityNameCompletionProvider
 import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
-import fr.nereide.project.OfbizPatterns
+import fr.nereide.project.pattern.OfbizJavaPatterns
 
 class JavaCompletionContributor extends CompletionContributor{
     JavaCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizPatterns.JAVA.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizPatterns.JAVA.SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizJavaPatterns.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizJavaPatterns.SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
     }
 }

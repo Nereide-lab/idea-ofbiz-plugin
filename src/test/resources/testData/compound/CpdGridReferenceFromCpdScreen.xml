@@ -24,17 +24,17 @@ under the License.
                   xsi:noNamespaceSchemaLocation="../../../../framework/widget/dtd/compound-widgets.xsd">
 
     <ws:screens>
-        <ws:screen name="FooScreen">
+        <ws:screen name="MyCompoundElement">
             <ws:section>
                 <ws:widgets>
-                    <ws:include-form name="Foo<caret>Grid" location="component://FooComponent/widget/CpdGridReferenceFromCpdScreen.xml"/>
+                    <ws:include-grid name="MyCompoundEle<caret>ment" location="component://FooComponent/widget/CpdGridReferenceFromCpdScreen.xml"/>
                 </ws:widgets>
             </ws:section>
         </ws:screen>
     </ws:screens>
 
     <wf:forms>
-        <wf:grid name="FooGrid">
+        <wf:grid name="MyCompoundElement">
         </wf:grid>
     </wf:forms>
 </compound-widgets>

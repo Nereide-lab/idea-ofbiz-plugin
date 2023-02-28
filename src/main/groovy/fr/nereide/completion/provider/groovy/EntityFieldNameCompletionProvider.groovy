@@ -26,7 +26,6 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiLoopStatement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.DomElement
@@ -36,8 +35,8 @@ import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.EntityField
 import fr.nereide.dom.EntityModelFile.ViewEntity
 import fr.nereide.dom.EntityModelFile.ViewEntityMember
-import fr.nereide.project.OfbizPatterns
 import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.pattern.OfbizGroovyPatterns
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrForStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrLoopStatement
@@ -159,7 +158,7 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                     return retrieveEntityOfViewNameFromOldFashionedLoop(oldFashionedLoop)
                 }
                 GrReferenceExpression potentialLoop = getPotentialLoop(initialElement)
-                if (potentialLoop && OfbizPatterns.GROOVY.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
+                if (potentialLoop && OfbizGroovyPatterns.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
                     PsiElement gvList = getGVListVariablefromLoopInstruction(potentialLoop, 0)
                     assert gvList instanceof GrVariable
                     return retrieveEntityOrViewNameFromGrVariable(gvList)

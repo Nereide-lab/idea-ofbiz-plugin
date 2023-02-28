@@ -18,10 +18,5 @@
 
 <services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
-    <service name="makeWitcher" default-entity-name="Witcher" engine="entity-auto">
-        <attribute name="mutagene" type="String" mode="IN"/>
-    </service>
-    <service name="pivot" default-entity-name="Ross" engine="entity-auto">
-    </service>
     <service name="SmileSmileSmile"> </service>
 </services>

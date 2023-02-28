@@ -23,83 +23,51 @@ import fr.nereide.reference.common.ServiceReference
 
 class TestReferenceInJava extends GenericRefTestCase {
 
-    /**
-     * Test for find method() from delegator
-     */
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/java"
+    }
+
+    @Override
+    protected String getExtension() { return 'java' }
+
     void testEntityReferenceWithFindMethod() {
-        String file = 'java/EntityReferenceWithFindMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'HyruleCastle')
+        doTest(EntityReference.class, 'HyruleCastle')
     }
 
-    /**
-     * Test for findOne() method from delegator
-     */
     void testEntityReferenceWithFindOneMethod() {
-        String file = 'java/EntityReferenceWithFindOneMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'PiltoverData')
+        doTest(EntityReference.class, 'PiltoverData')
     }
 
-    /**
-     * Test for findList() method from delegator
-     */
     void testEntityReferenceWithFindListMethod() {
-        String file = 'java/EntityReferenceWithFindListMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'Enderman')
+        doTest(EntityReference.class, 'Enderman')
     }
 
-    /**
-     * Test for findAll() method from delegator
-     */
     void testEntityReferenceWithFindAllMethod() {
-        String file = 'java/EntityReferenceWithFindAllMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'TwoFlowers')
+        doTest(EntityReference.class, 'TwoFlowers')
     }
 
-    /**
-     * Test for addMemberEntity() method from DynamicViewEntity
-     */
     void testEntityReferenceWithAddMemberEntityMethod() {
-        String file = 'java/EntityReferenceWithAddMemberEntityMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'WeWereOnABreak')
+        doTest(EntityReference.class, 'WeWereOnABreak')
     }
 
-    /**
-     * Test for from() method from EntityQuery
-     */
     void testEntityReferenceWithFromMethod() {
-        String file = 'java/EntityReferenceWithFromMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'Rick')
+        doTest(EntityReference.class, 'Rick')
     }
 
-    /**
-     * Test for makeValue() method from delegator
-     */
     void testEntityReferenceWithMakeValueMethod() {
-        String file = 'java/EntityReferenceWithMakeValueMethod.java'
-        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'PickleRick')
+        doTest(EntityReference.class, 'PickleRick')
     }
 
-    /**
-     * Test for dispatcher.runSync()
-     */
     void testServiceReferenceWithRunSync() {
-        String file = 'java/ServiceReferenceWithRunSync.java'
-        configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'pivot')
+        doTest(ServiceReference.class, 'pivot')
     }
 
-    /**
-     * Test for dispatchContext.makeValidContext()
-     */
     void testServiceReferenceWithMakeValidContext() {
-        String file = 'java/ServiceReferenceWithMakeValidContext.java'
-        configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'pivot')
+        doTest(ServiceReference.class, 'pivot')
     }
 
-    /**
-     * Test for dispatcher.schedule()
-     */
     void testServiceReferenceWithSchedule() {
-        String file = 'java/ServiceReferenceWithSchedule.java'
-        configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'pivot')
+        doTest(ServiceReference.class, 'pivot')
     }
 }

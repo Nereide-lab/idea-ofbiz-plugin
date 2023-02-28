@@ -20,7 +20,7 @@ package fr.nereide.reference.contributor
 
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
-import fr.nereide.project.OfbizPatterns
+import fr.nereide.project.pattern.OfbizJavaPatterns
 import fr.nereide.reference.common.provider.EntityReferenceProvider
 import fr.nereide.reference.common.provider.ServiceReferenceProvider
 import fr.nereide.reference.common.provider.UiLabelReferenceProvider
@@ -29,8 +29,8 @@ class JavaReferenceContributor extends PsiReferenceContributor {
     JavaReferenceContributor() {}
 
     void registerReferenceProviders(PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(OfbizPatterns.JAVA.SERVICE_CALL, new ServiceReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.JAVA.ENTITY_CALL, new EntityReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.JAVA.LABEL_CALL, new UiLabelReferenceProvider())
+        registrar.registerReferenceProvider(OfbizJavaPatterns.SERVICE_CALL, new ServiceReferenceProvider())
+        registrar.registerReferenceProvider(OfbizJavaPatterns.ENTITY_CALL, new EntityReferenceProvider())
+        registrar.registerReferenceProvider(OfbizJavaPatterns.LABEL_CALL, new UiLabelReferenceProvider())
     }
 }

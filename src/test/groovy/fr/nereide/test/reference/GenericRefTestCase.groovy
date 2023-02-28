@@ -17,12 +17,17 @@
 
 package fr.nereide.test.reference
 
-import com.intellij.lang.properties.references.PropertyReference
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import fr.nereide.test.GenericOfbizPluginTestCase
+import org.junit.Ignore
 
+@Ignore('Setup class, No tests here')
 class GenericRefTestCase extends GenericOfbizPluginTestCase {
+
+    static final String BASE_TEST_DIR = 'src/test/resources/testData/reference'
+
+    protected String getExtension() { return 'xml' }
 
     @Override
     protected void setUp() {
@@ -30,27 +35,40 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
         myFixture.copyDirectoryToProject('assets', '')
     }
 
-    @Override
-    protected String getTestDataPath() {
-        return "src/test/resources/testData/reference"
+    protected void doTest(Class expectedRefType, String expectedRefValueName) {
+        doTest(expectedRefType, expectedRefValueName, true)
     }
 
-    protected void configureByFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName,
-                                                         boolean strict) {
+    protected void doTest(Class expectedRefType, String expectedRefValueName, boolean strict) {
+        String file = "${this.getTestName(false)}.${getExtension()}"
         myFixture.configureByFile(file)
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
         if (ref instanceof PsiMultiReference) {
+            PsiMultiReference multiRef = ref
             ref = ref.getReferences().find { expectedRefType.isAssignableFrom(it.getClass()) }
+            assertNoOtherRefType(multiRef, expectedRefType)
         }
         assert expectedRefType.isAssignableFrom(ref.getClass())
         if (strict) {
             assertEquals expectedRefValueName, ref.getElement().getName() ?
-                    ref.getElement().getName() : getSafeTextInReference(ref)
-                    as String
+                    ref.getElement().getName() : getSafeTextInReference(ref) as String
         } else {
             assert ref.getElement().getText().contains(expectedRefValueName)
         }
         assertNotNull "Reference for $expectedRefValueName not found", ref.resolve()
+    }
+
+    /**
+     * Checks that no other reference type was found for an element.
+     * For example, no screen reference resolved from a form
+     * @param multiRef
+     * @param expectedRefType
+     */
+    private static void assertNoOtherRefType(PsiMultiReference multiRef, Class expectedRefType) {
+        assert (multiRef.getReferences() as List).stream()
+                .filter { !expectedRefType.isAssignableFrom(it.getClass()) }
+                .filter { it.getClass().getName().contains('fr.nereide') }
+                .toList().size() == 0
     }
 
     static String getSafeTextInReference(PsiReference ref) {
@@ -59,14 +77,4 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
                 .replaceAll('\'', '')
     }
 
-    protected void configureByFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName) {
-        configureByFileAndTestRefTypeAndValue(file, expectedRefType, expectedRefValueName, true)
-    }
-
-    /**
-     * Temporary workaround for tests to stay green
-     */
-    void testDummy() {
-        assert true
-    }
 }

@@ -19,7 +19,9 @@ package fr.nereide.test.completion
 
 import com.intellij.codeInsight.completion.CompletionType
 import fr.nereide.test.GenericOfbizPluginTestCase
+import org.junit.Ignore
 
+@Ignore('Parent class, No tests here')
 class GenericComplTestCase extends GenericOfbizPluginTestCase {
 
     @Override
@@ -39,10 +41,4 @@ class GenericComplTestCase extends GenericOfbizPluginTestCase {
         return myFixture.getLookupElementStrings()
     }
 
-    /**
-     * Temporary workaround for tests to stay green
-     */
-    void testDummy() {
-        assert true
-    }
 }

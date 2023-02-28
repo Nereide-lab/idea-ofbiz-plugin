@@ -20,7 +20,7 @@ package fr.nereide.reference.contributor
 
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
-import fr.nereide.project.OfbizPatterns
+import fr.nereide.project.pattern.OfbizGroovyPatterns
 import fr.nereide.reference.common.provider.EntityReferenceProvider
 import fr.nereide.reference.common.provider.ServiceReferenceProvider
 import fr.nereide.reference.common.provider.UiLabelReferenceProvider
@@ -30,8 +30,8 @@ class GroovyReferenceContributor extends PsiReferenceContributor {
     GroovyReferenceContributor() {}
 
     void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
-        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.SERVICE_CALL, new ServiceReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.ENTITY_CALL, new EntityReferenceProvider())
-        registrar.registerReferenceProvider(OfbizPatterns.GROOVY.LABEL_CALL, new UiLabelReferenceProvider())
+        registrar.registerReferenceProvider(OfbizGroovyPatterns.SERVICE_CALL, new ServiceReferenceProvider())
+        registrar.registerReferenceProvider(OfbizGroovyPatterns.ENTITY_CALL, new EntityReferenceProvider())
+        registrar.registerReferenceProvider(OfbizGroovyPatterns.LABEL_CALL, new UiLabelReferenceProvider())
     }
 }

@@ -1,10 +1,9 @@
 package fr.nereide.test.service
 
-import com.intellij.lang.properties.references.PropertyReference
-import com.intellij.psi.PsiReference
-import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import fr.nereide.test.GenericOfbizPluginTestCase
+import org.junit.Ignore
 
+@Ignore('Setup class, No tests here')
 class GenericServiceTest extends GenericOfbizPluginTestCase {
 
     @Override
@@ -16,12 +15,5 @@ class GenericServiceTest extends GenericOfbizPluginTestCase {
     @Override
     protected String getTestDataPath() {
         return "src/test/resources/testData/service"
-    }
-
-    /**
-     * Temporary workaround for tests to stay green
-     */
-    void testDummy() {
-        assert true
     }
 }
