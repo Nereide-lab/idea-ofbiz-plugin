@@ -8,7 +8,7 @@ import org.junit.Ignore
 class BaseInjectionTestCase extends GenericOfbizPluginTestCase {
 
     protected doTest(Class expectedLang) {
-        String file = "${this.getTestName(false).replaceAll('test', '')}.xml"
+        String file = "${this.getTestName(false)}.xml"
         myFixture.configureByFile(file)
         PsiElement elementAtCaret = myFixture.file.findElementAt(myFixture.caretOffset)
         assert expectedLang.isAssignableFrom(elementAtCaret.language.getClass())
