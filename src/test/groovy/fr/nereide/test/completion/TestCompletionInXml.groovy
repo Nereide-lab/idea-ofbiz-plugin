@@ -17,7 +17,7 @@
 
 package fr.nereide.test.completion
 
-class TestCompletionInXml extends GenericComplTestCase {
+class TestCompletionInXml extends BaseComplTestCase {
 
     void testEntityCompletionInXmlFile() {
         List<String> lookupElementStrings = configureByFileAndGetLookupsElements('xml/EntityCompletionInXmlFile.xml')

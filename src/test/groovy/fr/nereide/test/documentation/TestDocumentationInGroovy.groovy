@@ -4,7 +4,7 @@ import com.intellij.codeInsight.documentation.DocumentationManager
 import com.intellij.psi.PsiElement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
 
-class TestDocumentationInGroovy extends GenericDocTestCase {
+class TestDocumentationInGroovy extends BaseDocumentationTestCase {
 
     void testHoverDocOnServiceRunCallInGroovy() {
         myFixture.configureByFile('groovy/HoverDocOnServiceRunCallInGroovy.groovy')

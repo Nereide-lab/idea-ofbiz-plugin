@@ -11,7 +11,7 @@ import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.ScreenReference
 
-class TestReferenceInXmlCompound extends GenericRefTestCase {
+class TestReferenceInXmlCompound extends BaseReferenceTestCase {
 
     private static String MOVE_TO = "FooComponent/widget"
 

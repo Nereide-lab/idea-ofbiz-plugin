@@ -18,7 +18,7 @@
 package fr.nereide.test.completion
 
 
-class TestCompletionInGroovy extends GenericComplTestCase {
+class TestCompletionInGroovy extends BaseComplTestCase {
 
     void testEntityCompletionInGroovyFile() {
         List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityCompletionInGroovyFile.groovy')

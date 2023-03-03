@@ -19,11 +19,11 @@ package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
-import fr.nereide.test.GenericOfbizPluginTestCase
+import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
 @Ignore('Setup class, No tests here')
-class GenericRefTestCase extends GenericOfbizPluginTestCase {
+class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
 
     static final String BASE_TEST_DIR = 'src/test/resources/testData/reference'
 

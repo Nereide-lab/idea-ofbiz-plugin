@@ -37,11 +37,11 @@ package fr.nereide.test.documentation
 import com.intellij.codeInsight.documentation.DocumentationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
-import fr.nereide.test.GenericOfbizPluginTestCase
+import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
 @Ignore('Setup class, No tests here')
-class GenericDocTestCase extends GenericOfbizPluginTestCase {
+class BaseDocumentationTestCase extends BaseOfbizPluginTestCase {
 
     @Override
     protected void setUp() {

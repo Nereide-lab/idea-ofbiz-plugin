@@ -20,7 +20,7 @@ package fr.nereide.test.documentation
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
 
-class TestDocumentationInXml extends GenericDocTestCase {
+class TestDocumentationInXml extends BaseDocumentationTestCase {
 
 
     /*********************

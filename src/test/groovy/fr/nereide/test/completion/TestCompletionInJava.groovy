@@ -17,7 +17,7 @@
 
 package fr.nereide.test.completion
 
-class TestCompletionInJava extends GenericComplTestCase {
+class TestCompletionInJava extends BaseComplTestCase {
     TestCompletionInJava() {}
 
     void testEntityCompletionInJavaFile() {

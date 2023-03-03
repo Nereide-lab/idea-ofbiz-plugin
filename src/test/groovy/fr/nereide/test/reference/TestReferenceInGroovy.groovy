@@ -20,7 +20,7 @@ package fr.nereide.test.reference
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.ServiceReference
 
-class TestReferenceInGroovy extends GenericRefTestCase {
+class TestReferenceInGroovy extends BaseReferenceTestCase {
 
     @Override
     protected String getTestDataPath() {

@@ -15,30 +15,17 @@
  * under the License.
  */
 
-package fr.nereide.test.completion
+package fr.nereide.test
 
-import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.test.GenericOfbizPluginTestCase
+import com.intellij.testFramework.LightProjectDescriptor
+import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
 import org.junit.Ignore
 
 @Ignore('Parent class, No tests here')
-class GenericComplTestCase extends GenericOfbizPluginTestCase {
+class BaseOfbizPluginTestCase extends LightJavaCodeInsightFixtureTestCase {
 
     @Override
-    protected void setUp() {
-        super.setUp()
-        myFixture.copyDirectoryToProject('assets', '')
+    protected LightProjectDescriptor getProjectDescriptor() {
+        return new OfbizProjectDescriptor()
     }
-
-    @Override
-    protected String getTestDataPath() {
-        return "src/test/resources/testData/completion"
-    }
-
-    protected List<String> configureByFileAndGetLookupsElements(String file) {
-        myFixture.configureByFile(file)
-        myFixture.complete(CompletionType.BASIC)
-        return myFixture.getLookupElementStrings()
-    }
-
 }

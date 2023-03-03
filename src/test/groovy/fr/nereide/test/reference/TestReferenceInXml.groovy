@@ -28,7 +28,7 @@ import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.reference.xml.ScreenReference
 import fr.nereide.reference.xml.ViewMapReference
 
-class TestReferenceInXml extends GenericRefTestCase {
+class TestReferenceInXml extends BaseReferenceTestCase {
 
     @Override
     protected String getTestDataPath() {

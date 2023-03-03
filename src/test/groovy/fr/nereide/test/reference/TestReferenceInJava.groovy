@@ -21,7 +21,7 @@ package fr.nereide.test.reference
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.ServiceReference
 
-class TestReferenceInJava extends GenericRefTestCase {
+class TestReferenceInJava extends BaseReferenceTestCase {
 
     @Override
     protected String getTestDataPath() {
