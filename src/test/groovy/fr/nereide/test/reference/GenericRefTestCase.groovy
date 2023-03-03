@@ -27,12 +27,24 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
 
     static final String BASE_TEST_DIR = 'src/test/resources/testData/reference'
 
+    /**
+     * Default reference test file extention is xml
+     */
     protected String getExtension() { return 'xml' }
+
+    /**
+     * Used for moving files in tests in case there is need for reference resolving
+     */
+    protected String getDestination() { return null }
 
     @Override
     protected void setUp() {
         super.setUp()
         myFixture.copyDirectoryToProject('assets', '')
+        if(getDestination()) {
+            String file = "${this.getTestName(false)}.${getExtension()}"
+            myFixture.moveFile(file, getDestination())
+        }
     }
 
     protected void doTest(Class expectedRefType, String expectedRefValueName) {
@@ -76,5 +88,4 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
                 .replaceAll('"', '')
                 .replaceAll('\'', '')
     }
-
 }

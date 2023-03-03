@@ -17,17 +17,16 @@
 
 package fr.nereide.test.reference
 
-import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import fr.nereide.reference.common.ServiceReference
 import fr.nereide.reference.xml.DatasourceReference
+import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.GroovyServiceDefReference
 import fr.nereide.reference.xml.JavaMethodReference
-import fr.nereide.reference.xml.RequestMapReference
-import fr.nereide.reference.common.ServiceReference
-import fr.nereide.reference.xml.ViewMapReference
-import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
+import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.reference.xml.ScreenReference
+import fr.nereide.reference.xml.ViewMapReference
 
 class TestReferenceInXml extends GenericRefTestCase {
 
