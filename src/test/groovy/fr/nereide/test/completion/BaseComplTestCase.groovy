@@ -24,6 +24,8 @@ import org.junit.Ignore
 @Ignore('Parent class, No tests here')
 class BaseComplTestCase extends BaseOfbizPluginTestCase {
 
+    protected String getFileType() { return null }
+
     @Override
     protected void setUp() {
         super.setUp()
@@ -35,10 +37,18 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
         return "src/test/resources/testData/completion"
     }
 
-    protected List<String> configureByFileAndGetLookupsElements(String file) {
-        myFixture.configureByFile(file)
-        myFixture.complete(CompletionType.BASIC)
-        return myFixture.getLookupElementStrings()
+    protected void doTest(List<String> expectedLookups) {
+        doTest(expectedLookups, null)
     }
 
+    protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups) {
+        String file = "${getFileType()}/${this.getTestName(false)}.${getFileType()}"
+        myFixture.configureByFile(file)
+        myFixture.complete(CompletionType.BASIC)
+        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
+        assertContainsElements(lookupElementStrings, expectedLookups)
+        if (notExpectedLookups) {
+            assertDoesntContain(lookupElementStrings, notExpectedLookups)
+        }
+    }
 }
