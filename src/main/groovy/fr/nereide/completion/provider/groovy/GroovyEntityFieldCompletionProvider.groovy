@@ -45,8 +45,8 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrRefere
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionParameters> {
-    private static final Logger LOG = Logger.getInstance(EntityFieldNameCompletionProvider.class)
+class GroovyEntityFieldCompletionProvider extends CompletionProvider<CompletionParameters> {
+    private static final Logger LOG = Logger.getInstance(GroovyEntityFieldCompletionProvider.class)
     private static final Pattern ENTITY_NAME_PATTERN = Pattern.compile("(['\"](.*?)['\"])")
 
     @Override
