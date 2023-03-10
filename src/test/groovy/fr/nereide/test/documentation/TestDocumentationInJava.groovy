@@ -4,7 +4,7 @@ import com.intellij.codeInsight.documentation.DocumentationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLiteralExpression
 
-class TestDocumentationInJava extends GenericDocTestCase {
+class TestDocumentationInJava extends BaseDocumentationTestCase {
 
     void testHoverDocOnServiceInJava() {
         myFixture.configureByFile('java/HoverDocOnServiceInJava.java')

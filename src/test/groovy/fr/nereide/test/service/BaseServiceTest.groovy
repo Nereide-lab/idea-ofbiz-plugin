@@ -1,10 +1,10 @@
 package fr.nereide.test.service
 
-import fr.nereide.test.GenericOfbizPluginTestCase
+import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
 @Ignore('Setup class, No tests here')
-class GenericServiceTest extends GenericOfbizPluginTestCase {
+class BaseServiceTest extends BaseOfbizPluginTestCase {
 
     @Override
     protected void setUp() {

@@ -11,24 +11,16 @@ import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.ScreenReference
 
-class TestReferenceInXmlCompound extends GenericRefTestCase {
+class TestReferenceInXmlCompound extends BaseReferenceTestCase {
 
     private static String MOVE_TO = "FooComponent/widget"
 
     @Override
     protected String getTestDataPath() {
-        return "src/test/resources/testData/compound"
+        return "$BASE_TEST_DIR/compound"
     }
 
-    protected void doTest(Class expectedClass, String expectedName) {
-        doTest(expectedClass, expectedName, true)
-    }
-
-    protected void doTest(Class expectedClass, String expectedName, boolean strict) {
-        String file = "${this.getTestName(false).replaceAll('test', '')}.xml"
-        myFixture.moveFile(file, MOVE_TO)
-        configureByFileAndTestRefTypeAndValue(file, expectedClass, expectedName, strict)
-    }
+    protected String getDestination() { return MOVE_TO }
 
     //=====================================
     //              SCREEN TESTS

@@ -18,90 +18,76 @@
 package fr.nereide.test.completion
 
 
-class TestCompletionInGroovy extends GenericComplTestCase {
+class TestCompletionInGroovy extends BaseComplTestCase {
+
+    String getFileType() { return 'groovy' }
 
     void testEntityCompletionInGroovyFile() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityCompletionInGroovyFile.groovy')
-        assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
+        List<String> expected = ['Yenefer', 'Roach']
+        doTest(expected)
     }
 
     void testServiceCompletionInGroovyFile() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/ServiceCompletionInGroovyFile.groovy')
-        assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
+        List<String> expected = ['makeWitcher', 'makeHorse']
+        doTest(expected)
     }
 
     void testEntityFieldCompletionInGroovyFileWithSimpleEntity() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithSimpleEntity.groovy')
-        assertContainsElements(lookupElementStrings, 'michael')
+        List<String> expected = ['michael']
+        doTest(expected)
     }
 
-    void testEntityFieldCompletionInGroovyFileWithViewByAlias() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewNoNested.groovy')
-        assertContainsElements(lookupElementStrings, 'michael')
-        assertDoesntContain(lookupElementStrings, 'maline')
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithViewByAliasAll() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewNoNested.groovy')
-        assertContainsElements(lookupElementStrings, 'jo', 'gabriel')
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithSimpleView() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewNoNested.groovy')
-        assertContainsElements(lookupElementStrings, 'jo', 'gabriel', 'michael')
+    void testEntityFieldCompletionInGroovyFileWithViewNoNested() {
+        List<String> expected = ['jo', 'gabriel', 'michael'],
+                     notExpected = ['maline']
+        doTest(expected, notExpected)
     }
 
     void testEntityFieldCompletionInGroovyFileWithViewAndNested() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewAndNested.groovy')
-        assertContainsElements(lookupElementStrings, 'michael', 'jo', 'gabriel', 'david')
+        List<String> expected = ['michael', 'jo', 'gabriel', 'david']
+        doTest(expected)
     }
 
     void testEntityFieldCompletionInGroovyFileWithRecursiveView() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithRecursiveView.groovy')
-        assertContainsElements(lookupElementStrings, 'david')
+        List<String> expected = ['david']
+        doTest(expected)
     }
 
     void testEntityFieldCompletionInGroovyFileWithViewAndExclude() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewAndExclude.groovy')
-        assertContainsElements(lookupElementStrings, 'johnny', 'johnkreese')
-        assertDoesntContain(lookupElementStrings, 'daniel')
+        List<String> expected = ['johnny', 'johnkreese'],
+                     notExpected = ['daniel']
+        doTest(expected, notExpected)
     }
 
     void testEntityFieldCompletionInGroovyFileWithViewAndExcludeViewField() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('groovy/EntityFieldCompletionInGroovyFileWithViewAndExcludeViewField.groovy')
-        assertContainsElements(lookupElementStrings, 'johnny')
-        assertDoesntContain(lookupElementStrings, 'daniel', 'johnkreese')
+        List<String> expected = ['johnny'],
+                     notExpected = ['daniel', 'johnkreese']
+        doTest(expected, notExpected)
     }
 
     void testEntityFieldCompletionInGroovyFileWithSimpleViewAndPrefix() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
-                'groovy/EntityFieldCompletionInGroovyFileWithSimpleViewAndPrefix.groovy')
-        assertContainsElements(lookupElementStrings, 'bigshovelreese', 'bigshovelfrancis', 'bigshovellois',
-                'reese', 'francis', 'lois')
+        List<String> expected = ['bigshovelreese', 'bigshovelfrancis', 'bigshovellois', 'reese', 'francis', 'lois']
+        doTest(expected)
     }
 
     void testEntityFieldCompletionInGroovyFileWithComplexViewAndPrefix() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
-                'groovy/EntityFieldCompletionInGroovyFileWithComplexViewAndPrefix.groovy')
-        assertContainsElements(lookupElementStrings, 'geniusbigshovelreese', 'geniusbigshovelfrancis',
-                'geniusbigshovellois', 'geniusreese', 'geniusfrancis', 'geniuslois')
+        List<String> expected = ['geniusbigshovelreese', 'geniusbigshovelfrancis', 'geniusbigshovellois',
+                                 'geniusreese', 'geniusfrancis', 'geniuslois']
+        doTest(expected)
     }
 
     void testEntityFieldCompletionInGroovyFileInLoopOfListWithExplicitTypeAndForeachLoop() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
-                'groovy/EntityFieldCompletionInGroovyFileInLoopOfListWithExplicitTypeAndForeachLoop.groovy')
-        assertContainsElements(lookupElementStrings, 'sauron')
+        List<String> expected = ['sauron']
+        doTest(expected)
     }
 
     void testEntityFieldCompletionInGroovyFileInGVListStreamWithExplicitType() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
-                'groovy/EntityFieldCompletionInGroovyFileInGVListStreamWithExplicitType.groovy')
-        assertContainsElements(lookupElementStrings, 'sauron')
+        List<String> expected = ['sauron']
+        doTest(expected)
     }
 
     void testEntityFieldCompletionInGroovyFileInForLoop() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements(
-                'groovy/EntityFieldCompletionInGroovyFileInForLoop.groovy')
-        assertContainsElements(lookupElementStrings, 'sauron')
+        List<String> expected = ['sauron']
+        doTest(expected)
     }
 }

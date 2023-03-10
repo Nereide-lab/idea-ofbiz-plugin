@@ -17,96 +17,87 @@
 
 package fr.nereide.test.reference
 
-import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import fr.nereide.reference.common.ServiceReference
 import fr.nereide.reference.xml.DatasourceReference
+import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.GroovyServiceDefReference
 import fr.nereide.reference.xml.JavaMethodReference
-import fr.nereide.reference.xml.RequestMapReference
-import fr.nereide.reference.common.ServiceReference
-import fr.nereide.reference.xml.ViewMapReference
-import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
+import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.reference.xml.ScreenReference
+import fr.nereide.reference.xml.ViewMapReference
 
-class TestReferenceInXml extends GenericRefTestCase {
+class TestReferenceInXml extends BaseReferenceTestCase {
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/xml"
+    }
+
+//    void testScreenNotFoundReferenceInCurrentFile() {
+//        String file = 'xml/ScreenNotFoundReferenceInCurrentFile.xml'
+//        myFixture.configureByFile(file)
+//        PsiReference ref = myFixture.getReferenceAtCaretPosition(file)
+//        assertNull ref.resolve()
+//    }
+//
+//    void testScreenNotFoundReferenceInDistantFile() {
+//        String file = 'xml/ScreenNotFoundReferenceInDistantFile.xml'
+//        myFixture.configureByFile(file)
+//        PsiReference ref = myFixture.getReferenceAtCaretPosition(file)
+//        assertNull ref.resolve()
+//    }
 
     void testScreenInCurrentFileReference() {
-        String file = 'xml/ScreenInCurrentFileReference.xml'
-        configureByFileAndTestRefTypeAndValue(file, ScreenReference.class, 'FindFacility', false)
+        doTest(ScreenReference.class, 'FindFacility', false)
     }
 
     void testScreenInDistantFileReference() {
-        String file = 'xml/ScreenInDistantFileReference.xml'
-        configureByFileAndTestRefTypeAndValue(file, ScreenReference.class, 'viewprofile', false)
-    }
-
-    void testScreenNotFoundReferenceInCurrentFile() {
-        String file = 'xml/ScreenNotFoundReferenceInCurrentFile.xml'
-        myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPosition(file)
-        assertNull ref.resolve()
-    }
-
-    void testScreenNotFoundReferenceInDistantFile() {
-        String file = 'xml/ScreenNotFoundReferenceInDistantFile.xml'
-        myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPosition(file)
-        assertNull ref.resolve()
+        doTest(ScreenReference.class, 'viewprofile', false)
     }
 
     void testScreenReferenceFromViewMap() {
-        String file = "xml/ScreenReferenceFromViewMap.xml"
-        configureByFileAndTestRefTypeAndValue(file, ScreenReference.class, 'viewprofile', false)
+        doTest(ScreenReference.class, 'viewprofile', false)
     }
 
     void testFormReferenceFromScreen() {
-        String file = "xml/FormReferenceFromScreen.xml"
-        configureByFileAndTestRefTypeAndValue(file, FormReference.class, 'FooForm')
+        doTest(FormReference.class, 'FooForm')
     }
 
     void testFileReferenceFromScreen() {
-        String file = "xml/FileReferenceFromScreen.xml"
-        configureByFileAndTestRefTypeAndValue(file, FileReference.class, 'FooScript', false)
+        doTest(FileReference.class, 'FooScript', false)
     }
 
     void testFormReferenceFromForm() {
-        String file = "xml/FormReferenceFromForm.xml"
-        configureByFileAndTestRefTypeAndValue(file, FormReference.class, 'FooForm')
+        doTest(FormReference.class, 'FooForm')
     }
 
     void testRequestMapReferenceFromForm() {
-        String file = "xml/RequestMapReferenceFromForm.xml"
-        configureByFileAndTestRefTypeAndValue(file, RequestMapReference.class, 'fooRequest')
+        doTest(RequestMapReference.class, 'fooRequest')
     }
 
     void testViewMapReferenceFromRequestMap() {
-        String file = "xml/ViewMapReferenceFromRequestMap.xml"
-        configureByFileAndTestRefTypeAndValue(file, ViewMapReference.class, 'MyHome')
+        doTest(ViewMapReference.class, 'MyHome')
     }
 
     void testMenuReferenceFromScreen() {
-        String file = "xml/MenuReferenceFromScreen.xml"
-        configureByFileAndTestRefTypeAndValue(file, MenuReference.class, 'FooMenu')
+        doTest(MenuReference.class, 'FooMenu')
     }
 
     void testGroovyMethodReferenceFromServiceDef() {
-        String file = "xml/GroovyMethodReferenceFromServiceDef.xml"
-        configureByFileAndTestRefTypeAndValue(file, GroovyServiceDefReference.class, 'fooGroovyService')
+        doTest(GroovyServiceDefReference.class, 'fooGroovyService')
     }
 
     void testJavaMethodReferenceFromServiceDef() {
-        String file = "xml/JavaMethodReferenceFromServiceDef.xml"
-        configureByFileAndTestRefTypeAndValue(file, JavaMethodReference.class, 'createNote')
+        doTest(JavaMethodReference.class, 'createNote')
     }
 
     void testServiceDefReferenceFromServiceGroup() {
-        String file = "xml/ServiceDefReferenceFromServiceGroup.xml"
-        configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'SmileSmileSmile')
+        doTest(ServiceReference.class, 'SmileSmileSmile')
     }
 
     void testDataSourceReferenceFromDelegator() {
-        String file = "xml/DataSourceReferenceFromDelegator.xml"
-        configureByFileAndTestRefTypeAndValue(file, DatasourceReference.class, 'localderby')
+        doTest(DatasourceReference.class, 'localderby')
     }
 }

@@ -20,30 +20,33 @@ package fr.nereide.test.reference
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.ServiceReference
 
-class TestReferenceInGroovy extends GenericRefTestCase {
+class TestReferenceInGroovy extends BaseReferenceTestCase {
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/groovy"
+    }
+
+    @Override
+    protected String getExtension() { return 'groovy' }
 
     void testGroovyEntityReferenceWithFindMethod() {
-        String file = "groovy/GroovyEntityReferenceWithFindMethod.groovy"
-        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'Lobster')
+        doTest(EntityReference.class, 'Lobster')
     }
 
     void testGroovyViewEntityReferenceWithFindMethod() {
-        String file = "groovy/GroovyViewEntityReferenceWithFindMethod.groovy"
-        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'Zaun')
+        doTest(EntityReference.class, 'Zaun')
     }
 
     void testGroovyEntityReferenceWithFromMethod() {
-        String file = "groovy/GroovyEntityReferenceWithFromMethod.groovy"
-        configureByFileAndTestRefTypeAndValue(file, EntityReference.class, 'PickleRick')
+        doTest(EntityReference.class, 'PickleRick')
     }
 
     void testGroovyServiceReferenceWithRunCall() {
-        String file = "groovy/GroovyServiceReferenceWithRunCall.groovy"
-        configureByFileAndTestRefTypeAndValue(file, ServiceReference.class, 'pivot')
+        doTest(ServiceReference.class, 'pivot')
     }
 
     void testEntityReferenceWithMakeValueMethod() {
-        String file = "groovy/EntityReferenceWithMakeValueMethod.groovy"
-        configureByFileAndTestRefTypeAndValue(file,EntityReference.class, 'Zaun')
+        doTest(EntityReference.class, 'Zaun')
     }
 }

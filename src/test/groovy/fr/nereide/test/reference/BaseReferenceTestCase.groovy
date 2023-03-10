@@ -19,25 +19,40 @@ package fr.nereide.test.reference
 
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
-import fr.nereide.test.GenericOfbizPluginTestCase
+import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
 @Ignore('Setup class, No tests here')
-class GenericRefTestCase extends GenericOfbizPluginTestCase {
+class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
+
+    static final String BASE_TEST_DIR = 'src/test/resources/testData/reference'
+
+    /**
+     * Default reference test file extention is xml
+     */
+    protected String getExtension() { return 'xml' }
+
+    /**
+     * Used for moving files in tests in case there is need for reference resolving
+     */
+    protected String getDestination() { return null }
 
     @Override
     protected void setUp() {
         super.setUp()
         myFixture.copyDirectoryToProject('assets', '')
+        if(getDestination()) {
+            String file = "${this.getTestName(false)}.${getExtension()}"
+            myFixture.moveFile(file, getDestination())
+        }
     }
 
-    @Override
-    protected String getTestDataPath() {
-        return "src/test/resources/testData/reference"
+    protected void doTest(Class expectedRefType, String expectedRefValueName) {
+        doTest(expectedRefType, expectedRefValueName, true)
     }
 
-    protected void configureByFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName,
-                                                         boolean strict) {
+    protected void doTest(Class expectedRefType, String expectedRefValueName, boolean strict) {
+        String file = "${this.getTestName(false)}.${getExtension()}"
         myFixture.configureByFile(file)
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
         if (ref instanceof PsiMultiReference) {
@@ -73,9 +88,4 @@ class GenericRefTestCase extends GenericOfbizPluginTestCase {
                 .replaceAll('"', '')
                 .replaceAll('\'', '')
     }
-
-    protected void configureByFileAndTestRefTypeAndValue(String file, Class expectedRefType, String expectedRefValueName) {
-        configureByFileAndTestRefTypeAndValue(file, expectedRefType, expectedRefValueName, true)
-    }
-
 }

@@ -5,7 +5,7 @@ import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.worker.ServiceWorker
 
-class TestServiceAttributes extends GenericServiceTest {
+class TestServiceAttributes extends BaseServiceTest {
 
     void testVanillaServiceAttributes() {
         ProjectServiceInterface ps = myFixture.getProject().getService(ProjectServiceInterface.class)

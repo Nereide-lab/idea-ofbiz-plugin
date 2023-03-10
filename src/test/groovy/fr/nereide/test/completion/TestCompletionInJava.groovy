@@ -17,16 +17,17 @@
 
 package fr.nereide.test.completion
 
-class TestCompletionInJava extends GenericComplTestCase {
-    TestCompletionInJava() {}
+class TestCompletionInJava extends BaseComplTestCase {
+
+    String getFileType() { return 'java' }
 
     void testEntityCompletionInJavaFile() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('java/EntityCompletionInJavaFile.java')
-        assertContainsElements(lookupElementStrings, 'Yenefer', 'Roach')
+        List<String> expected = ['Yenefer', 'Roach']
+        doTest(expected)
     }
 
     void testServiceCompletionInJavaFile() {
-        List<String> lookupElementStrings = configureByFileAndGetLookupsElements('java/ServiceCompletionInJavaFile.java')
-        assertContainsElements(lookupElementStrings, 'makeWitcher', 'makeHorse')
+        List<String> expected = ['makeWitcher', 'makeHorse']
+        doTest(expected)
     }
 }
