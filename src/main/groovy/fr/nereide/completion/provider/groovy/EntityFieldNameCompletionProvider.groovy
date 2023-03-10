@@ -59,36 +59,41 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
 
         PsiElement element = parameters.getPosition()
+        Entity entity
+        String entityName
         try {
             PsiElement genericValueRef = element.getParent().getFirstChild()
             assert genericValueRef instanceof GrReferenceExpression
-
             PsiElement initialVariable = genericValueRef.resolve()
             assert initialVariable instanceof GrVariable
-
-            String entityName = retrieveEntityOrViewNameFromGrVariable(initialVariable)
+            entityName = retrieveEntityOrViewNameFromGrVariable(initialVariable)
             if (!entityName) return
-            Entity entity = structureService.getEntity(entityName)
-
-            if (entity) {
-                generateLookupsWithEntity(entity, result)
-            } else {
-                ViewEntity view = structureService.getViewEntity(entityName)
-                generateLookupsWithView(view, structureService, result, 0)
-            }
-        } catch (ProcessCanceledException e) {
-            LOG.info(e)
+            entity = structureService.getEntity(entityName)
         } catch (Exception e) {
             LOG.error(e)
+            return
+        }
+        if (entity) {
+            List<String> entityFields = getEntityFields(entity)
+            entityFields.forEach { field ->
+                result.addElement(PrioritizedLookupElement.withPriority(LookupElementBuilder.create(field), 1000))
+            }
+        } else {
+            ViewEntity view = structureService.getViewEntity(entityName)
+            List<String> viewFields = getViewFields(view, structureService, 0)
+            viewFields.forEach { field ->
+                result.addElement(PrioritizedLookupElement.withPriority(LookupElementBuilder.create(field), 1000))
+            }
         }
     }
 
-    static void generateLookupsWithView(ViewEntity view, ProjectServiceInterface structureService, CompletionResultSet result, index) {
-        generateLookupsWithView(view, null, structureService, [], result, index)
+    static List<String> getViewFields(ViewEntity view, ProjectServiceInterface structureService, int index) {
+        return getViewFields(view, null, structureService, [], index)
     }
 
-    static void generateLookupsWithView(ViewEntity view, String prefix, ProjectServiceInterface structureService, List<String> excludedFields,
-                                        CompletionResultSet result, index) {
+    static List<String> getViewFields(ViewEntity view, String prefix, ProjectServiceInterface structureService,
+                                      List<String> excludedFields, int index) {
+        List<String> fieldsList = []
         if (index >= 10) return // infinite loop workaround
         List<Alias> aliases = view.getAliases()
         List<AliasAll> aliasAllList = view.getAliasAllList()
@@ -102,15 +107,17 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
                     if (currentExcludedFields) currentExcludedFields.addAll(excludedFields)
                     Entity currentEntity = structureService.getEntity(entityName)
                     if (currentEntity) {
-                        generateLookupsWithEntity(currentEntity, currentPrefix, currentExcludedFields, result)
+                        fieldsList.addAll(getEntityFields(currentEntity, currentPrefix, currentExcludedFields))
                     } else {
                         ViewEntity currentView = structureService.getViewEntity(entityName)
-                        generateLookupsWithView(currentView, currentPrefix, structureService, currentExcludedFields, result, index + 1)
+                        List<String> viewFields = getViewFields(currentView, currentPrefix, structureService, currentExcludedFields, index + 1)
+                        if (viewFields) fieldsList.addAll(viewFields)
                     }
                 }
             }
         }
-        generateLookupElementsFromName(aliases, result)
+        fieldsList.addAll(getFormatedFieldsName(aliases))
+        return fieldsList.unique()
     }
 
     private static String getEntityNameFromAlias(AliasAll aliasAllElmt, List<ViewEntityMember> members) {
@@ -122,26 +129,25 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         return aliasAllElmt.getAliasAllExcludes().collect { it.getField().getValue() }
     }
 
-    private static void generateLookupsWithEntity(Entity entity, result) {
-        generateLookupsWithEntity(entity, null, [], result)
+    private static List<String> getEntityFields(Entity entity) {
+        return getEntityFields(entity, null, [])
     }
 
-    private static void generateLookupsWithEntity(Entity entity, String prefix, List<String> excludedFields, result) {
+    private static List<String> getEntityFields(Entity entity, String prefix, List<String> excludedFields) {
         List<EntityField> fields = entity.getFields().findAll { entityField ->
             !excludedFields.contains(entityField.getName().getValue())
         }
-        generateLookupElementsFromName(fields, prefix, result)
+        return getFormatedFieldsName(fields, prefix)
     }
 
-    private static generateLookupElementsFromName(aliases, result) {
-        generateLookupElementsFromName(aliases, null, result)
+    private static List<String> getFormatedFieldsName(aliases) {
+        return getFormatedFieldsName(aliases, null)
     }
 
-    private static generateLookupElementsFromName(List<DomElement> fields, String prefix, CompletionResultSet result) {
-        fields.forEach {
-            String fieldName = "${prefix ?: ''}${it.getName()}"
-            if (fieldName) createFieldLookupElement(fieldName, result)
-        }
+    private static List<String> getFormatedFieldsName(List<DomElement> fields, String prefix) {
+        return fields.stream().map { DomElement field ->
+            "${prefix ?: ''}${field.getName()}"
+        }.toList() as List<String>
     }
 
     private static String retrieveEntityOrViewNameFromGrVariable(GrVariable initialElement) {
@@ -197,8 +203,5 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         return potentialLoopCall
     }
 
-    private static void createFieldLookupElement(String fieldName, CompletionResultSet result) {
-        LookupElement el = LookupElementBuilder.create(fieldName)
-        result.addElement(PrioritizedLookupElement.withPriority(el, 1000))
-    }
+
 }
