@@ -21,22 +21,17 @@ import com.intellij.codeInsight.completion.CompletionParameters
 import com.intellij.codeInsight.completion.CompletionProvider
 import com.intellij.codeInsight.completion.CompletionResultSet
 import com.intellij.codeInsight.completion.PrioritizedLookupElement
-import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.ProcessingContext
-import com.intellij.util.xml.DomElement
-import fr.nereide.dom.EntityModelFile.Alias
-import fr.nereide.dom.EntityModelFile.AliasAll
 import fr.nereide.dom.EntityModelFile.Entity
-import fr.nereide.dom.EntityModelFile.EntityField
 import fr.nereide.dom.EntityModelFile.ViewEntity
-import fr.nereide.dom.EntityModelFile.ViewEntityMember
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizGroovyPatterns
+import fr.nereide.project.worker.EntityWorker
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrForStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrLoopStatement
@@ -74,82 +69,24 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
             return
         }
         if (entity) {
-            List<String> entityFields = getEntityFields(entity)
+            List<String> entityFields = EntityWorker.getEntityFields(entity)
             entityFields.forEach { field ->
                 result.addElement(PrioritizedLookupElement.withPriority(LookupElementBuilder.create(field), 1000))
             }
         } else {
             ViewEntity view = structureService.getViewEntity(entityName)
-            List<String> viewFields = getViewFields(view, structureService, 0)
+            List<String> viewFields = EntityWorker.getViewFields(view, structureService, 0)
             viewFields.forEach { field ->
                 result.addElement(PrioritizedLookupElement.withPriority(LookupElementBuilder.create(field), 1000))
             }
         }
     }
 
-    static List<String> getViewFields(ViewEntity view, ProjectServiceInterface structureService, int index) {
-        return getViewFields(view, null, structureService, [], index)
-    }
-
-    static List<String> getViewFields(ViewEntity view, String prefix, ProjectServiceInterface structureService,
-                                      List<String> excludedFields, int index) {
-        List<String> fieldsList = []
-        if (index >= 10) return // infinite loop workaround
-        List<Alias> aliases = view.getAliases()
-        List<AliasAll> aliasAllList = view.getAliasAllList()
-        if (aliasAllList) {
-            List<ViewEntityMember> members = view.getMemberEntities()
-            aliasAllList.each { aliasAllElmt ->
-                String currentPrefix = "${prefix ?: ''}${aliasAllElmt.getPrefix().getValue() ?: ''}" as String
-                String entityName = getEntityNameFromAlias(aliasAllElmt, members)
-                if (entityName) {
-                    List<String> currentExcludedFields = getListOfExcludedFieldNames(aliasAllElmt)
-                    if (currentExcludedFields) currentExcludedFields.addAll(excludedFields)
-                    Entity currentEntity = structureService.getEntity(entityName)
-                    if (currentEntity) {
-                        fieldsList.addAll(getEntityFields(currentEntity, currentPrefix, currentExcludedFields))
-                    } else {
-                        ViewEntity currentView = structureService.getViewEntity(entityName)
-                        List<String> viewFields = getViewFields(currentView, currentPrefix, structureService, currentExcludedFields, index + 1)
-                        if (viewFields) fieldsList.addAll(viewFields)
-                    }
-                }
-            }
-        }
-        fieldsList.addAll(getFormatedFieldsName(aliases))
-        return fieldsList.unique()
-    }
-
-    private static String getEntityNameFromAlias(AliasAll aliasAllElmt, List<ViewEntityMember> members) {
-        String alias = aliasAllElmt.getEntityAlias()
-        return members.find { it.getEntityAlias().getValue() == alias }?.getEntityName()
-    }
-
-    private static List<String> getListOfExcludedFieldNames(AliasAll aliasAllElmt) {
-        return aliasAllElmt.getAliasAllExcludes().collect { it.getField().getValue() }
-    }
-
-    private static List<String> getEntityFields(Entity entity) {
-        return getEntityFields(entity, null, [])
-    }
-
-    private static List<String> getEntityFields(Entity entity, String prefix, List<String> excludedFields) {
-        List<EntityField> fields = entity.getFields().findAll { entityField ->
-            !excludedFields.contains(entityField.getName().getValue())
-        }
-        return getFormatedFieldsName(fields, prefix)
-    }
-
-    private static List<String> getFormatedFieldsName(aliases) {
-        return getFormatedFieldsName(aliases, null)
-    }
-
-    private static List<String> getFormatedFieldsName(List<DomElement> fields, String prefix) {
-        return fields.stream().map { DomElement field ->
-            "${prefix ?: ''}${field.getName()}"
-        }.toList() as List<String>
-    }
-
+    /**
+     * Tries to get the entity or view name from the declaration of the Generic value or object
+     * @param initialElement
+     * @return the name or null if not found
+     */
     private static String retrieveEntityOrViewNameFromGrVariable(GrVariable initialElement) {
         GrExpression declarationExpr = initialElement.getInitializerGroovy()
         String declarationString = declarationExpr ? declarationExpr.getText() : null
@@ -202,6 +139,4 @@ class EntityFieldNameCompletionProvider extends CompletionProvider<CompletionPar
         PsiElement potentialLoopCall = PsiTreeUtil.getChildOfType(fullCallBlock, GrReferenceExpression.class) ?: null
         return potentialLoopCall
     }
-
-
 }
