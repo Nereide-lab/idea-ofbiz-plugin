@@ -42,6 +42,19 @@ class OfbizJavaPatterns {
             makeUtilPropertiesJavaMethodPattern('getMessage', 1)
     )
 
+    public static final PsiElementPattern GENERIC_VALUE_FIELD = psiElement().andOr(
+            makeGenericEntityJavaMethodPattern('get', 0),
+            makeGenericEntityJavaMethodPattern('getBigDecimal', 0),
+            makeGenericEntityJavaMethodPattern('getBoolean', 0),
+            makeGenericEntityJavaMethodPattern('getBytes', 0),
+            makeGenericEntityJavaMethodPattern('getDate', 0),
+            makeGenericEntityJavaMethodPattern('getDouble', 0),
+            makeGenericEntityJavaMethodPattern('getDuration', 0),
+            makeGenericEntityJavaMethodPattern('getFloat', 0),
+            makeGenericEntityJavaMethodPattern('getInteger', 0),
+            makeGenericEntityJavaMethodPattern('getLong', 0),
+    )
+
     public static final PsiElementPattern SERVICE_CALL_COMPL = psiElement()
             .inside(SERVICE_CALL)
 
@@ -49,9 +62,8 @@ class OfbizJavaPatterns {
             .inside(ENTITY_CALL)
 
     public static final PsiElementPattern ENTITY_FIELD_COMPL = psiElement()
-            .inside(psiElement().andOr(
-                    makeGenericEntityJavaMethodPattern('get', 0))
-            )
+            .inside(GENERIC_VALUE_FIELD)
+
     //============================================
     //       UTILITY METHODS
     //============================================
