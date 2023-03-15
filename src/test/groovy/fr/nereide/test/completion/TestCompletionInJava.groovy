@@ -31,7 +31,7 @@ class TestCompletionInJava extends BaseComplTestCase {
         doTest(expected)
     }
 
-    void testEntityFieldCompletionInGenericValueJavaClass() {
+    void testEntityFieldCompletionInSimpleGetFieldFromGenericValueJavaClass() {
         List<String> expected = ['michael', 'maline']
         doTest(expected)
     }
