@@ -3,25 +3,19 @@ package fr.nereide.project.pattern
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.patterns.PsiElementPattern
 import com.intellij.patterns.PsiJavaPatterns
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLiteralExpression
 
+import static com.intellij.patterns.PlatformPatterns.*
 import static com.intellij.patterns.PsiJavaElementPattern.Capture
-import static fr.nereide.project.pattern.OfbizPatternConst.DELEGATOR_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.DISPATCH_CONTEXT_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.DYNAMIC_VIEW_ENTITY_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_DATA_SERVICES_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_QUERY_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.LOCAL_DISPATCHER_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.SCRIPT_HELPER_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.UTIL_PROPERTIES_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.makeMethodPattern
+import static fr.nereide.project.pattern.OfbizPatternConst.*
 
 class OfbizJavaPatterns {
 
     //============================================
     //       PATTERNS
     //============================================
-    public static final PsiElementPattern SERVICE_CALL = PlatformPatterns.psiElement().andOr(
+    public static final PsiElementPattern SERVICE_CALL = psiElement().andOr(
             makeDispatchContextJavaMethodPattern('makeValidContext', 0),
             makeLocalDispatcherJavaMethodPattern('runSync', 0),
             makeLocalDispatcherJavaMethodPattern('runAsync', 0),
@@ -32,7 +26,7 @@ class OfbizJavaPatterns {
             makeScriptHelperJavaMethodPattern('runService', 0),
     )
 
-    public static final PsiElementPattern ENTITY_CALL = PlatformPatterns.psiElement().andOr(
+    public static final PsiElementPattern ENTITY_CALL = psiElement().andOr(
             makeDelegatorJavaMethodPattern('find', 0),
             makeDelegatorJavaMethodPattern('findOne', 0),
             makeDelegatorJavaMethodPattern('findAll', 0),
@@ -44,21 +38,33 @@ class OfbizJavaPatterns {
             makeEntityDataServiceJavaMethodPattern('makeGenericValue', 1),
     )
 
-    public static final PsiElementPattern LABEL_CALL = PlatformPatterns.psiElement().andOr(
+    public static final PsiElementPattern LABEL_CALL = psiElement().andOr(
             makeUtilPropertiesJavaMethodPattern('getMessage', 1)
     )
 
-    public static final PsiElementPattern SERVICE_CALL_COMPL = PlatformPatterns.psiElement()
+    public static final PsiElementPattern SERVICE_CALL_COMPL = psiElement()
             .inside(SERVICE_CALL)
 
-    public static final PsiElementPattern ENTITY_CALL_COMPL = PlatformPatterns.psiElement()
+    public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement()
             .inside(ENTITY_CALL)
 
+    public static final PsiElementPattern ENTITY_FIELD_COMPL = psiElement()
+            .inside(psiElement().andOr(
+                    makeGenericEntityJavaMethodPattern('get', 0))
+            )
     //============================================
     //       UTILITY METHODS
     //============================================
     static Capture<PsiLiteralExpression> makeMethodJavaPattern(String methodName, String className, int index) {
         return makeMethodPattern(PsiJavaPatterns::literalExpression(), methodName, className, index)
+    }
+
+    static Capture<PsiLiteralExpression> makeGenericEntityJavaMethodPattern(String methodName, int index) {
+        return makeMethodJavaPattern(methodName, GENERIC_ENTITY_CLASS, index)
+    }
+
+    static Capture<PsiLiteralExpression> makeGenericValueJavaMethodPattern(String methodName, int index) {
+        return makeMethodJavaPattern(methodName, GENERIC_VALUE_CLASS, index)
     }
 
     static Capture<PsiLiteralExpression> makeLocalDispatcherJavaMethodPattern(String methodName, int index) {

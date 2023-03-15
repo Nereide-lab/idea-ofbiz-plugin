@@ -19,6 +19,7 @@ package fr.nereide.completion
 
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
+import fr.nereide.completion.provider.JavaEntityFieldsCompletionProvider
 import fr.nereide.completion.provider.common.EntityNameCompletionProvider
 import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
 import fr.nereide.project.pattern.OfbizJavaPatterns
@@ -27,5 +28,6 @@ class JavaCompletionContributor extends CompletionContributor{
     JavaCompletionContributor(){
         this.extend(CompletionType.BASIC, OfbizJavaPatterns.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
         this.extend(CompletionType.BASIC, OfbizJavaPatterns.SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizJavaPatterns.ENTITY_FIELD_COMPL, new JavaEntityFieldsCompletionProvider())
     }
 }

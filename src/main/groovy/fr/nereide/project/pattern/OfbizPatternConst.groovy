@@ -13,6 +13,8 @@ class OfbizPatternConst {
     public static final String ENTITY_DATA_SERVICES_CLASS = 'org.apache.ofbiz.entityext.data.EntityDataServices'
     public static final String ENTITY_QUERY_CLASS = 'org.apache.ofbiz.entity.util.EntityQuery'
     public static final String UTIL_PROPERTIES_CLASS = 'org.apache.ofbiz.base.util.UtilProperties'
+    public static final String GENERIC_VALUE_CLASS = 'org.apache.ofbiz.entity.GenericValue'
+    public static final String GENERIC_ENTITY_CLASS = 'org.apache.ofbiz.entity.GenericEntity'
 
     static Object makeMethodPattern(PsiJavaElementPattern<? extends PsiLiteral, ?> elementPattern,
                                     String methodName, String className, int index) {
