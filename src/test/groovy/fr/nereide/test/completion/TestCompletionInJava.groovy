@@ -40,4 +40,9 @@ class TestCompletionInJava extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected)
     }
+
+    void testEntityFieldCompletionInGetFieldFromGVListInForLoop() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
 }
