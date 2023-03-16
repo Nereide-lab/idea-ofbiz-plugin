@@ -15,7 +15,7 @@
  * under the License.
  */
 
-package fr.nereide.completion
+package fr.nereide.completion.provider.xml
 
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType

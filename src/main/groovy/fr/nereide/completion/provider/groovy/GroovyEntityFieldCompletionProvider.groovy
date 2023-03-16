@@ -17,68 +17,35 @@
 
 package fr.nereide.completion.provider.groovy
 
-import com.intellij.codeInsight.completion.CompletionParameters
-import com.intellij.codeInsight.completion.CompletionProvider
-import com.intellij.codeInsight.completion.CompletionResultSet
-import com.intellij.codeInsight.completion.PrioritizedLookupElement
-import com.intellij.codeInsight.lookup.LookupElementBuilder
+
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.PsiTreeUtil
-import com.intellij.util.ProcessingContext
-import fr.nereide.dom.EntityModelFile.Entity
-import fr.nereide.dom.EntityModelFile.ViewEntity
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
 import fr.nereide.project.pattern.OfbizGroovyPatterns
-import fr.nereide.project.worker.EntityWorker
-import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrForStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrLoopStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlock
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.clauses.GrForClause
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.clauses.GrForInClause
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-
-class GroovyEntityFieldCompletionProvider extends CompletionProvider<CompletionParameters> {
+class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider {
     private static final Logger LOG = Logger.getInstance(GroovyEntityFieldCompletionProvider.class)
-    private static final Pattern ENTITY_NAME_PATTERN = Pattern.compile("(['\"](.*?)['\"])")
 
-    @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
-        ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
-
-        PsiElement element = parameters.getPosition()
-        Entity entity
-        String entityName
+    String getEntityNameFromPsiElement(PsiElement element) {
         try {
             PsiElement genericValueRef = element.getParent().getFirstChild()
             assert genericValueRef instanceof GrReferenceExpression
             PsiElement initialVariable = genericValueRef.resolve()
             assert initialVariable instanceof GrVariable
-            entityName = retrieveEntityOrViewNameFromGrVariable(initialVariable)
-            if (!entityName) return
-            entity = structureService.getEntity(entityName)
-        } catch (Exception e) {
-            LOG.error(e)
-            return
-        }
-        if (entity) {
-            List<String> entityFields = EntityWorker.getEntityFields(entity)
-            entityFields.forEach { field ->
-                result.addElement(PrioritizedLookupElement.withPriority(LookupElementBuilder.create(field), 1000))
-            }
-        } else {
-            ViewEntity view = structureService.getViewEntity(entityName)
-            List<String> viewFields = EntityWorker.getViewFields(view, structureService, 0)
-            viewFields.forEach { field ->
-                result.addElement(PrioritizedLookupElement.withPriority(LookupElementBuilder.create(field), 1000))
-            }
+            return retrieveEntityOrViewNameFromGrVariable(initialVariable) ?: null
+        } catch (Exception ignored) {
+            return null
         }
     }
 
@@ -91,9 +58,7 @@ class GroovyEntityFieldCompletionProvider extends CompletionProvider<CompletionP
         GrExpression declarationExpr = initialElement.getInitializerGroovy()
         String declarationString = declarationExpr ? declarationExpr.getText() : null
         if (declarationString) {
-            Matcher matcher = ENTITY_NAME_PATTERN.matcher(declarationString)
-            String entityName = matcher.find() ? matcher.group(0) : null
-            return entityName ? entityName.substring(1, entityName.length() - 1) : null
+            getEntityNameFromDeclarationString(declarationString)
         } else {
             try {
                 def oldFashionedLoop = PsiTreeUtil.getParentOfType(initialElement, GrLoopStatement.class)
@@ -106,8 +71,6 @@ class GroovyEntityFieldCompletionProvider extends CompletionProvider<CompletionP
                     assert gvList instanceof GrVariable
                     return retrieveEntityOrViewNameFromGrVariable(gvList)
                 }
-            } catch (ProcessCanceledException e) {
-                LOG.info(e)
             } catch (Exception e) {
                 LOG.warn(e)
             }
@@ -117,7 +80,7 @@ class GroovyEntityFieldCompletionProvider extends CompletionProvider<CompletionP
     private static String retrieveEntityOfViewNameFromOldFashionedLoop(GrLoopStatement oldFashionedLoop) {
         GrVariable iteratedList = null
         if (oldFashionedLoop instanceof GrForStatement) {
-            def forDeclaration = (oldFashionedLoop as GrForStatement).getClause()
+            GrForClause forDeclaration = (oldFashionedLoop as GrForStatement).getClause()
             if (forDeclaration instanceof GrForInClause) iteratedList = forDeclaration.getIteratedExpression().resolve()
         }
         return iteratedList ? retrieveEntityOrViewNameFromGrVariable(iteratedList) : null

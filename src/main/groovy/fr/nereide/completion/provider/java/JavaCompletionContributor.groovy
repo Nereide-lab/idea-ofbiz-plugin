@@ -15,11 +15,11 @@
  * under the License.
  */
 
-package fr.nereide.completion
+package fr.nereide.completion.provider.java
 
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.JavaEntityFieldsCompletionProvider
+import fr.nereide.completion.provider.java.JavaEntityFieldsCompletionProvider
 import fr.nereide.completion.provider.common.EntityNameCompletionProvider
 import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
 import fr.nereide.project.pattern.OfbizJavaPatterns
