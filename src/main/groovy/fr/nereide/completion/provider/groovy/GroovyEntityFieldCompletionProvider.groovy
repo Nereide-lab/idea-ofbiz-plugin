@@ -38,15 +38,12 @@ class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider 
     private static final Logger LOG = Logger.getInstance(GroovyEntityFieldCompletionProvider.class)
 
     String getEntityNameFromPsiElement(PsiElement element) {
-        try {
-            PsiElement genericValueRef = element.getParent().getFirstChild()
-            assert genericValueRef instanceof GrReferenceExpression
-            PsiElement initialVariable = genericValueRef.resolve()
-            assert initialVariable instanceof GrVariable
-            return retrieveEntityOrViewNameFromGrVariable(initialVariable) ?: null
-        } catch (Exception ignored) {
-            return null
-        }
+        PsiElement genericValueRef = element.getParent().getFirstChild()
+        assert genericValueRef instanceof GrReferenceExpression
+        PsiElement initialVariable = genericValueRef.resolve()
+        assert initialVariable instanceof GrVariable
+        return retrieveEntityOrViewNameFromGrVariable(initialVariable) ?: null
+        return null
     }
 
     /**
@@ -60,19 +57,15 @@ class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider 
         if (declarationString) {
             getEntityNameFromDeclarationString(declarationString)
         } else {
-            try {
-                def oldFashionedLoop = PsiTreeUtil.getParentOfType(initialElement, GrLoopStatement.class)
-                if (oldFashionedLoop) {
-                    return retrieveEntityOfViewNameFromOldFashionedLoop(oldFashionedLoop)
-                }
-                GrReferenceExpression potentialLoop = getPotentialLoop(initialElement)
-                if (potentialLoop && OfbizGroovyPatterns.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
-                    PsiElement gvList = getGVListVariablefromLoopInstruction(potentialLoop, 0)
-                    assert gvList instanceof GrVariable
-                    return retrieveEntityOrViewNameFromGrVariable(gvList)
-                }
-            } catch (Exception e) {
-                LOG.warn(e)
+            def oldFashionedLoop = PsiTreeUtil.getParentOfType(initialElement, GrLoopStatement.class)
+            if (oldFashionedLoop) {
+                return retrieveEntityOfViewNameFromOldFashionedLoop(oldFashionedLoop)
+            }
+            GrReferenceExpression potentialLoop = getPotentialLoop(initialElement)
+            if (potentialLoop && OfbizGroovyPatterns.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
+                PsiElement gvList = getGVListVariablefromLoopInstruction(potentialLoop, 0)
+                assert gvList instanceof GrVariable
+                return retrieveEntityOrViewNameFromGrVariable(gvList)
             }
         }
     }

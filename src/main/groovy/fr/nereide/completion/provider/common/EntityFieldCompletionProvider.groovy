@@ -25,9 +25,13 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
         ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
-        // Todo : ajouter un try seulement ici
-        // Ca permetra d'aérer le code des classes filles
-        String entityName = getEntityNameFromPsiElement(parameters.getPosition())
+        String entityName
+        try {
+            entityName = getEntityNameFromPsiElement(parameters.getPosition())
+        } catch (Exception e) {
+            e.printStackTrace()
+            return
+        }
 
         Entity entity = structureService.getEntity(entityName)
 
@@ -41,6 +45,12 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         }
     }
 
+    /**
+     * Add lookup element to display, with the fields and the entity name at the end of the line
+     * @param result
+     * @param fields
+     * @param entityName
+     */
     static addLookupElementFromEntity(CompletionResultSet result, List<String> fields, String entityName) {
         fields.forEach { field ->
             result.addElement(PrioritizedLookupElement.withPriority(
@@ -49,12 +59,23 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         }
     }
 
+    /**
+     * Extracts entity name from declarations like
+     * <code> EntityQuery.use(delegator).from() </code>
+     * @param declaration
+     * @return
+     */
     static String getEntityNameFromDeclarationString(String declaration) {
         Matcher matcher = ENTITY_NAME_PATTERN.matcher(declaration)
         String entityName = matcher.find() ? matcher.group(0) : null
         return entityName ? entityName.substring(1, entityName.length() - 1) : null
     }
 
+    /**
+     * Try to get the EntityName from PsiElement and its context
+     * @param psiElement
+     * @return
+     */
     abstract String getEntityNameFromPsiElement(PsiElement psiElement)
 
 }
