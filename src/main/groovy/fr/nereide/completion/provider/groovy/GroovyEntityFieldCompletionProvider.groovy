@@ -43,7 +43,6 @@ class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider 
         PsiElement initialVariable = genericValueRef.resolve()
         assert initialVariable instanceof GrVariable
         return retrieveEntityOrViewNameFromGrVariable(initialVariable) ?: null
-        return null
     }
 
     /**
