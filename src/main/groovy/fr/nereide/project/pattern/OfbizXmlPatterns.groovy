@@ -96,8 +96,14 @@ class OfbizXmlPatterns {
     public static final XmlAttributeValuePattern DATASOURCE_CALL = xmlAttributeValue().andOr(
             xmlAttributeValue().withParent(xmlAttribute().withName('datasource-name'))
     )
+
+    public static final XmlAttributeValuePattern ENTITY_FIELD_CALL = xmlAttributeValue().andOr(
+            xmlAttributeValue().inside(nameAttr().withParent(aliasTag()))
+    )
+
     public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_CALL)
     public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement().inside(SERVICE_DEF_CALL)
+    public static final PsiElementPattern ENTITY_FIELD_COMPL = psiElement().inside(ENTITY_FIELD_CALL)
 
     //============================================
     //       UTILITY METHODS
@@ -169,6 +175,8 @@ class OfbizXmlPatterns {
     static Capture groupTag() { return makeTagPattern('group') }
 
     static Capture invokeTag() { return makeTagPattern('invoke') }
+
+    static Capture aliasTag() { xmlTag().withName("alias") }
 
     static Capture eventTagInSiteConfNs() {
         return xmlTag().withName("${SITE_CONF_NS_PREFIX}event").withNamespace(SITE_CONF_NS_URL)
