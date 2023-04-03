@@ -98,7 +98,8 @@ class OfbizXmlPatterns {
     )
 
     public static final XmlAttributeValuePattern ENTITY_FIELD_CALL = xmlAttributeValue().andOr(
-            xmlAttributeValue().inside(nameAttr().withParent(aliasTag())),
+            xmlAttributeValue().inside(nameAttr().withParent(aliasTag()))
+                    .andNot(xmlAttributeValue().inside(nameAttr().withParent(aliasTag().withChild(fieldAttr())))),
             xmlAttributeValue().inside(fieldAttr().withParent(aliasTag()))
     )
 

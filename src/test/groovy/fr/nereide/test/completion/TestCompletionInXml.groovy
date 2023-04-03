@@ -31,13 +31,17 @@ class TestCompletionInXml extends BaseComplTestCase {
         doTest(expected)
     }
 
-    void testServiceCompletionInViewInAliasInName() {
+    void testEntityFieldCompletionInViewInAliasInName() {
         List<String> expected = ['mobId', 'colorId']
         doTest(expected)
     }
 
-    void testServiceCompletionInViewInAliasInField() {
+    void testEntityFieldCompletionInViewInAliasInField() {
         List<String> expected = ['genderId', 'name']
         doTest(expected)
+    }
+
+    void testNoEntityFieldCompletionInViewInAliasInNameWithField() {
+        doTest(null)
     }
 }
