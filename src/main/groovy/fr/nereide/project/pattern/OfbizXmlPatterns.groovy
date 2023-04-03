@@ -98,8 +98,10 @@ class OfbizXmlPatterns {
     )
 
     public static final XmlAttributeValuePattern ENTITY_FIELD_CALL = xmlAttributeValue().andOr(
-            xmlAttributeValue().inside(nameAttr().withParent(aliasTag()))
+            xmlAttributeValue().inside(nameAttr().withParent(aliasTag())),
+            xmlAttributeValue().inside(fieldAttr().withParent(aliasTag()))
     )
+
 
     public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_CALL)
     public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement().inside(SERVICE_DEF_CALL)
@@ -133,6 +135,8 @@ class OfbizXmlPatterns {
     static XmlAttributePattern nameAttr() { return makeAttrPattern('name') }
 
     static XmlAttributePattern invokeAttr() { return makeAttrPattern('invoke') }
+
+    static XmlAttributePattern fieldAttr() { xmlAttribute('field') }
 
     static XmlAttributePattern serviceLikeAttr() { return xmlAttribute().withName('service', 'service-name') }
 

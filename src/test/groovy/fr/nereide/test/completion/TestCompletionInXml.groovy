@@ -35,4 +35,9 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> expected = ['mobId', 'colorId']
         doTest(expected)
     }
+
+    void testServiceCompletionInViewInAliasInField() {
+        List<String> expected = ['genderId', 'name']
+        doTest(expected)
+    }
 }
