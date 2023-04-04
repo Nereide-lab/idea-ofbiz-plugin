@@ -51,6 +51,7 @@ class OfbizXmlPatterns {
     public static final XmlAttributeValuePattern LABEL_CALL = xmlAttributeValue().withParent(
             xmlAttribute().withValue(string().startsWith('${uiLabelMap.'))
     )
+
     public static final XmlAttributeValuePattern FORM_CALL = xmlAttributeValue().andOr(
             xmlAttributeValue().withParent(nameAttr().withParent(includeFormTag())),
             xmlAttributeValue().withParent(extendsAttr().withParent(formTag())),
@@ -100,9 +101,9 @@ class OfbizXmlPatterns {
     public static final XmlAttributeValuePattern ENTITY_FIELD_CALL = xmlAttributeValue().andOr(
             xmlAttributeValue().inside(nameAttr().withParent(aliasTag()))
                     .andNot(xmlAttributeValue().inside(nameAttr().withParent(aliasTag().withChild(fieldAttr())))),
-            xmlAttributeValue().inside(fieldAttr().withParent(aliasTag()))
+            xmlAttributeValue().inside(fieldAttr().withParent(aliasTag())),
+            xmlAttributeValue().inside(fieldNameAttr().inside(keyMapTag()))
     )
-
 
     public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_CALL)
     public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement().inside(SERVICE_DEF_CALL)
@@ -139,6 +140,8 @@ class OfbizXmlPatterns {
 
     static XmlAttributePattern fieldAttr() { xmlAttribute('field') }
 
+    static XmlAttributePattern fieldNameAttr() { xmlAttribute('field-name') }
+
     static XmlAttributePattern serviceLikeAttr() { return xmlAttribute().withName('service', 'service-name') }
 
     static XmlAttributePattern groovyEngineAttrValue() { return makeAttrAndValPattern('engine', 'groovy') }
@@ -164,6 +167,8 @@ class OfbizXmlPatterns {
     static Capture eventTag() { return makeTagPattern('event') }
 
     static Capture screenletTag() { return makeTagPattern('screenlet') }
+
+    static Capture keyMapTag() { xmlTag().withName('key-map') }
 
     static Capture gridTag() { return makeTagPattern('grid') }
 

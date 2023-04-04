@@ -10,11 +10,23 @@ class XmlEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
 
     @Override
     String getEntityNameFromPsiElement(PsiElement psiElement) {
-        XmlTag aliasTag = getParentOfType(psiElement, XmlTag.class)
-        String entityAlias = aliasTag.getAttribute('entity-alias')?.getValue()
-        if (!entityAlias) return null
+        String entityAlias = null
+        XmlTag initialContainingTag = getParentOfType(psiElement, XmlTag.class)
+        XmlTag fullView = null
 
-        XmlTag fullView = getParentOfType(aliasTag, XmlTag.class)
+        switch (initialContainingTag.getName()) {
+            case 'alias':
+                entityAlias = initialContainingTag.getAttribute('entity-alias')?.getValue()
+                if (!entityAlias) return null
+                fullView = getParentOfType(initialContainingTag, XmlTag.class)
+                break
+            case 'key-map':
+                XmlTag viewLinkTag = getParentOfType(initialContainingTag, XmlTag.class)
+                entityAlias = viewLinkTag.getAttributeValue('entity-alias')
+                fullView = getParentOfType(viewLinkTag, XmlTag.class)
+                break
+        }
+        if (!entityAlias || !fullView) return null
 
         Optional<XmlTag> relevantMember = List.of(fullView.getSubTags()).stream()
                 .filter { it.getName() == 'member-entity' }

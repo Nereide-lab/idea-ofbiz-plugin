@@ -87,4 +87,14 @@
         <field name="sauron" type="id"/>
     </entity>
 
+    <entity entity-name="RossCouple">
+        <field name="rachel" type="id"/>
+        <field name="ross" type="id"/>
+    </entity>
+
+    <entity entity-name="RossAndSister">
+        <field name="rachel" type="id"/>
+        <field name="monica" type="id"/>
+    </entity>
+
 </entitymodel>

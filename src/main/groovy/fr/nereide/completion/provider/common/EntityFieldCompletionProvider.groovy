@@ -32,7 +32,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
             e.printStackTrace()
             return
         }
-
+        if (!entityName) return
         Entity entity = structureService.getEntity(entityName)
 
         if (entity) {
