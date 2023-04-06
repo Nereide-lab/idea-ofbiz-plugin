@@ -93,7 +93,7 @@
     </entity>
 
     <entity entity-name="RossAndSister">
-        <field name="rachel" type="id"/>
+        <field name="ross" type="id"/>
         <field name="monica" type="id"/>
     </entity>
 

@@ -49,4 +49,10 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> expected = ['rachel', 'ross']
         doTest(expected)
     }
+
+    void testEntityFieldCompletionInViewInKeyMapInRelFieldName() {
+        List<String> expected = ['monica', 'ross']
+        List<String> notExpected = ['rachel']
+        doTest(expected, notExpected)
+    }
 }

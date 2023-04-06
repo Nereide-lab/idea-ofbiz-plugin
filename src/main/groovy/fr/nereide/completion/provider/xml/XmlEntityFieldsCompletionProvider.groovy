@@ -1,6 +1,7 @@
 package fr.nereide.completion.provider.xml
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
 
@@ -22,7 +23,9 @@ class XmlEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
                 break
             case 'key-map':
                 XmlTag viewLinkTag = getParentOfType(initialContainingTag, XmlTag.class)
-                entityAlias = viewLinkTag.getAttributeValue('entity-alias')
+                entityAlias = getParentOfType(psiElement, XmlAttribute.class).getName() == 'field-name' ?
+                        viewLinkTag.getAttributeValue('entity-alias') :
+                        viewLinkTag.getAttributeValue('rel-entity-alias')
                 fullView = getParentOfType(viewLinkTag, XmlTag.class)
                 break
         }

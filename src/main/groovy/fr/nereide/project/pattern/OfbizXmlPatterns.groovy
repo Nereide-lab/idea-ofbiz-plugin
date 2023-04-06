@@ -102,7 +102,8 @@ class OfbizXmlPatterns {
             xmlAttributeValue().inside(nameAttr().withParent(aliasTag()))
                     .andNot(xmlAttributeValue().inside(nameAttr().withParent(aliasTag().withChild(fieldAttr())))),
             xmlAttributeValue().inside(fieldAttr().withParent(aliasTag())),
-            xmlAttributeValue().inside(fieldNameAttr().inside(keyMapTag()))
+            xmlAttributeValue().inside(fieldNameAttr().inside(keyMapTag().inside(viewLinkTag()))),
+            xmlAttributeValue().inside(relFieldNameAttr().inside(keyMapTag()))
     )
 
     public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_CALL)
@@ -142,6 +143,8 @@ class OfbizXmlPatterns {
 
     static XmlAttributePattern fieldNameAttr() { xmlAttribute('field-name') }
 
+    static XmlAttributePattern relFieldNameAttr() { xmlAttribute('rel-field-name') }
+
     static XmlAttributePattern serviceLikeAttr() { return xmlAttribute().withName('service', 'service-name') }
 
     static XmlAttributePattern groovyEngineAttrValue() { return makeAttrAndValPattern('engine', 'groovy') }
@@ -169,6 +172,8 @@ class OfbizXmlPatterns {
     static Capture screenletTag() { return makeTagPattern('screenlet') }
 
     static Capture keyMapTag() { xmlTag().withName('key-map') }
+
+    static Capture viewLinkTag() { xmlTag().withName('view-link') }
 
     static Capture gridTag() { return makeTagPattern('grid') }
 
