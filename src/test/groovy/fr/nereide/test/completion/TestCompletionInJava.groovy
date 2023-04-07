@@ -45,4 +45,9 @@ class TestCompletionInJava extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected)
     }
+
+    void testEntityFieldCompletionInSimpleWhereInEntityQuery() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
 }

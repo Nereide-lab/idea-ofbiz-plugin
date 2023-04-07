@@ -2,6 +2,7 @@ package fr.nereide.project.pattern
 
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.patterns.PsiElementPattern
+import com.intellij.patterns.PsiJavaElementPattern
 import com.intellij.patterns.PsiJavaPatterns
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLiteralExpression
@@ -53,6 +54,7 @@ class OfbizJavaPatterns {
             makeGenericEntityJavaMethodPattern('getFloat', 0),
             makeGenericEntityJavaMethodPattern('getInteger', 0),
             makeGenericEntityJavaMethodPattern('getLong', 0),
+            makeEntityQueryJavaMethodPattern('where', 0)
     )
 
     public static final PsiElementPattern SERVICE_CALL_COMPL = psiElement()

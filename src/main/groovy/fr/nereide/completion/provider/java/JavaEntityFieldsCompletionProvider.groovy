@@ -14,9 +14,14 @@ import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 
 class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
 
-     String getEntityNameFromPsiElement(PsiElement element) {
-        PsiMethodCallExpression fullGetStatement = getParentOfType(element, PsiMethodCallExpression.class)
-        List<PsiReferenceExpression> fullGetStatementParts = getChildrenOfTypeAsList(fullGetStatement,
+    String getEntityNameFromPsiElement(PsiElement element) {
+        PsiMethodCallExpression fullCalledMethod = getParentOfType(element, PsiMethodCallExpression.class)
+
+        if (fullCalledMethod.getText().startsWith('EntityQuery.use(')) { // on est dans une query
+            return getEntityNameFromDeclarationString(fullCalledMethod.getText())
+        }
+
+        List<PsiReferenceExpression> fullGetStatementParts = getChildrenOfTypeAsList(fullCalledMethod,
                 PsiReferenceExpression.class)
 
         List<PsiReferenceExpression> subGetStatementParts = getChildrenOfTypeAsList((fullGetStatementParts[0] as PsiElement),
