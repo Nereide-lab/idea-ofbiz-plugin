@@ -2,6 +2,7 @@ package fr.nereide.project.pattern
 
 import com.intellij.patterns.PsiElementPattern
 import com.intellij.patterns.XmlAttributeValuePattern
+import com.intellij.patterns.XmlTagPattern
 
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.StandardPatterns.string
@@ -31,7 +32,7 @@ class OfbizXmlPatterns {
             xmlAttributeValue().withParent(valueAttr().withParent(responseTag()))
     )
 
-    public static final XmlAttributeValuePattern ENTITY_CALL = xmlAttributeValue()
+    public static final XmlAttributeValuePattern ENTITY_OR_VIEW_CALL = xmlAttributeValue()
             .withParent(xmlAttribute().withName('entity', 'entity-name', 'default-entity-name', 'rel-entity-name'))
 
     public static final XmlAttributeValuePattern SERVICE_DEF_CALL = xmlAttributeValue().andOr(
@@ -106,9 +107,13 @@ class OfbizXmlPatterns {
             xmlAttributeValue().inside(relFieldNameAttr().inside(keyMapTag()))
     )
 
-    public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_CALL)
+    public static final XmlTagPattern ENTITY_TAG_CALL =
+            xmlTag().inside(xmlTag().withName('entity-engine-xml'))
+
+    public static final PsiElementPattern ENTITY_OR_VIEW_CALL_COMPL = psiElement().inside(ENTITY_OR_VIEW_CALL)
     public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement().inside(SERVICE_DEF_CALL)
     public static final PsiElementPattern ENTITY_FIELD_COMPL = psiElement().inside(ENTITY_FIELD_CALL)
+    public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_TAG_CALL)
 
     //============================================
     //       UTILITY METHODS

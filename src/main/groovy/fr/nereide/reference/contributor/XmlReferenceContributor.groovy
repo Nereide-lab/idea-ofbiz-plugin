@@ -33,7 +33,7 @@ class XmlReferenceContributor extends PsiReferenceContributor {
     void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
         registrar.registerReferenceProvider(OfbizXmlPatterns.URI_CALL, new RequestMapReferenceProvider())
         registrar.registerReferenceProvider(OfbizXmlPatterns.RESPONSE_CALL, new ViewMapReferenceProvider())
-        registrar.registerReferenceProvider(OfbizXmlPatterns.ENTITY_CALL, new EntityReferenceProvider())
+        registrar.registerReferenceProvider(OfbizXmlPatterns.ENTITY_OR_VIEW_CALL, new EntityReferenceProvider())
         registrar.registerReferenceProvider(OfbizXmlPatterns.SERVICE_DEF_CALL, new ServiceReferenceProvider())
         registrar.registerReferenceProvider(OfbizXmlPatterns.LABEL_CALL, new UiLabelReferenceProvider())
         registrar.registerReferenceProvider(OfbizXmlPatterns.FORM_CALL, new FormReferenceProvider())

@@ -31,22 +31,29 @@ import fr.nereide.project.utils.MiscUtils
 import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
 
-class EntityNameCompletionProvider extends CompletionProvider<CompletionParameters> {
+class EntityOrViewNameCompletionProvider extends CompletionProvider<CompletionParameters> {
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
 
         ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
-        List entities = structureService.getAllEntities()
-        List viewEntities = structureService.getAllViewEntities()
+        addEntitiesLookup(structureService, result)
+        addViewEntitiesLookups(structureService, result)
+    }
 
+    static void addEntitiesLookup(ProjectServiceInterface structureService, CompletionResultSet result) {
+        List entities = structureService.getAllEntities()
         for (Entity entity : entities) {
             LookupElement lookupElement = LookupElementBuilder.create(entity.getEntityName())
                     .withIcon(PluginIcons.ENTITY_ICON)
                     .withTailText(" Component:${MiscUtils.getComponentName(entity)}" as String, true)
             result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
         }
+    }
+
+    static void addViewEntitiesLookups(ProjectServiceInterface structureService, CompletionResultSet result) {
+        List viewEntities = structureService.getAllViewEntities()
         for (ViewEntity view : viewEntities) {
             LookupElement lookupElement = LookupElementBuilder.create(view.getEntityName())
                     .withIcon(PluginIcons.VIEW_ENTITY_ICON)

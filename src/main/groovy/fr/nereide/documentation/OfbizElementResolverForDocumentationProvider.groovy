@@ -31,7 +31,7 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
             PsiElement xmlAttrValue = PsiTreeUtil.getChildOfType(xmlAttr, XmlAttributeValue)
             if (OfbizXmlPatterns.SERVICE_DEF_CALL.accepts(xmlAttr)) {
                 return xmlAttrValue ? resolveService(xmlAttrValue) : null
-            } else if (OfbizXmlPatterns.ENTITY_CALL.accepts(xmlAttr)) {
+            } else if (OfbizXmlPatterns.ENTITY_OR_VIEW_CALL.accepts(xmlAttr)) {
                 return xmlAttrValue ? resolveEntityOrView(xmlAttrValue) : null
             }
         }

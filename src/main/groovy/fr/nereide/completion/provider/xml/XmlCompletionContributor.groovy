@@ -19,14 +19,15 @@ package fr.nereide.completion.provider.xml
 
 import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.common.EntityNameCompletionProvider
+import fr.nereide.completion.provider.common.EntityOrViewNameCompletionProvider
 import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
 import fr.nereide.project.pattern.OfbizXmlPatterns
 
 class XmlCompletionContributor extends CompletionContributor {
     XmlCompletionContributor() {
-        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_OR_VIEW_CALL_COMPL, new EntityOrViewNameCompletionProvider())
         this.extend(CompletionType.BASIC, OfbizXmlPatterns.SERVICE_DEF_CALL_COMPL, new ServiceNameCompletionProvider())
         this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_COMPL, new XmlEntityFieldsCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
     }
 }

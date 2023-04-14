@@ -55,4 +55,12 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> notExpected = ['rachel']
         doTest(expected, notExpected)
     }
+
+    void testEntityNameCompletionInEntityEngineFile() {
+        List<String> expected = ['Yenefer', 'Roach', 'DunderMifflin', 'Sabre', 'DunderCorporate', 'CobraKai',
+                                 'Malcolm', 'Mordor', 'RossCouple', 'RossAndSister']
+        List<String> notExpected = ['WholePaperCompany', 'RecursiveView', 'CobraKaiNeverDie', 'Miyagido', 'InTheMiddle',
+                                    'LifeIsUnfair', 'PaperCompany']
+        doTest(expected, notExpected)
+    }
 }
