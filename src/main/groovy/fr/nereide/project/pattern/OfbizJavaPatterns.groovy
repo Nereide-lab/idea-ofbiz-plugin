@@ -45,6 +45,7 @@ class OfbizJavaPatterns {
 
     public static final PsiElementPattern GENERIC_VALUE_FIELD = psiElement().andOr(
             makeGenericEntityJavaMethodPattern('get', 0),
+            makeGenericEntityJavaMethodPattern('getString', 0),
             makeGenericEntityJavaMethodPattern('getBigDecimal', 0),
             makeGenericEntityJavaMethodPattern('getBoolean', 0),
             makeGenericEntityJavaMethodPattern('getBytes', 0),
