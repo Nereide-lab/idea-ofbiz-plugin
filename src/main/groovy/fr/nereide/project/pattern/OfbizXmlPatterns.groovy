@@ -107,8 +107,9 @@ class OfbizXmlPatterns {
             xmlAttributeValue().inside(relFieldNameAttr().inside(keyMapTag()))
     )
 
-    public static final XmlTagPattern ENTITY_TAG_CALL =
-            xmlTag().inside(xmlTag().withName('entity-engine-xml'))
+    public static final PsiElementPattern ENTITY_TAG_CALL = psiElement()
+            .afterLeaf('<')
+            .inside(xmlTag().withName('entity-engine-xml'))
 
     public static final PsiElementPattern ENTITY_OR_VIEW_CALL_COMPL = psiElement().inside(ENTITY_OR_VIEW_CALL)
     public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement().inside(SERVICE_DEF_CALL)

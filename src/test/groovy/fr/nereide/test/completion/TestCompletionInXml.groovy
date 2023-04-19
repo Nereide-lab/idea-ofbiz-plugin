@@ -63,4 +63,8 @@ class TestCompletionInXml extends BaseComplTestCase {
                                     'LifeIsUnfair', 'PaperCompany']
         doTest(expected, notExpected)
     }
+
+    void testNoEntityNameCompletionInEntityEngineFile() {
+        doTest(null)
+    }
 }
