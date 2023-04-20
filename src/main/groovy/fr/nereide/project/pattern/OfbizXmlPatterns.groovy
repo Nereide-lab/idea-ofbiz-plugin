@@ -2,13 +2,14 @@ package fr.nereide.project.pattern
 
 import com.intellij.patterns.PsiElementPattern
 import com.intellij.patterns.XmlAttributeValuePattern
-import com.intellij.patterns.XmlTagPattern
+import com.intellij.patterns.XmlFilePattern
 
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.StandardPatterns.string
 import static com.intellij.patterns.XmlNamedElementPattern.XmlAttributePattern
 import static com.intellij.patterns.XmlPatterns.xmlAttribute
 import static com.intellij.patterns.XmlPatterns.xmlAttributeValue
+import static com.intellij.patterns.XmlPatterns.xmlFile
 import static com.intellij.patterns.XmlPatterns.xmlTag
 import static com.intellij.patterns.XmlTagPattern.Capture
 import static fr.nereide.dom.CompoundFileDescription.FORM_NS_PREFIX
@@ -109,7 +110,8 @@ class OfbizXmlPatterns {
 
     public static final PsiElementPattern ENTITY_TAG_CALL = psiElement()
             .afterLeaf('<')
-            .inside(xmlTag().withName('entity-engine-xml'))
+            .inside(entityEngineXmlTag().inside(entityEngineXmlFile()))
+
 
     public static final PsiElementPattern ENTITY_OR_VIEW_CALL_COMPL = psiElement().inside(ENTITY_OR_VIEW_CALL)
     public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement().inside(SERVICE_DEF_CALL)
@@ -130,6 +132,8 @@ class OfbizXmlPatterns {
     static Capture makeTagPattern(String tagName) {
         return xmlTag().withName(tagName)
     }
+
+    static XmlFilePattern.Capture entityEngineXmlFile() { xmlFile().withRootTag(entityEngineXmlTag()) }
 
     static XmlAttributePattern pageAttr() { return makeAttrPattern('page') }
 
@@ -170,6 +174,8 @@ class OfbizXmlPatterns {
     static Capture viewMapTag() { return makeTagPattern('view-map') }
 
     static Capture includeScreenTag() { return makeTagPattern('include-screen') }
+
+    static Capture entityEngineXmlTag() { xmlTag().withName('entity-engine-xml') }
 
     static Capture includeMenuTag() { return makeTagPattern('include-menu') }
 
