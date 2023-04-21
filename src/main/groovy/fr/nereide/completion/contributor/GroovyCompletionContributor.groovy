@@ -15,18 +15,16 @@
  * under the License.
  */
 
-package fr.nereide.completion.provider.groovy
+package fr.nereide.completion.contributor
 
-import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.common.EntityOrViewNameCompletionProvider
-import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
+import fr.nereide.completion.provider.groovy.GroovyEntityFieldCompletionProvider
 import fr.nereide.project.pattern.OfbizGroovyPatterns
 
-class GroovyCompletionContributor extends CompletionContributor{
-    GroovyCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizGroovyPatterns.ENTITY_CALL_COMPL, new EntityOrViewNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizGroovyPatterns.SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
+class GroovyCompletionContributor extends OfbizBaseCompletionContributor {
+    GroovyCompletionContributor() {
+        this.extend(CompletionType.BASIC, OfbizGroovyPatterns.ENTITY_CALL_COMPL, entityOrViewNameCompletionProvider)
+        this.extend(CompletionType.BASIC, OfbizGroovyPatterns.SERVICE_CALL_COMPL, serviceNameCompletionProvider)
         this.extend(CompletionType.BASIC, OfbizGroovyPatterns.GENERIC_VALUE_ATTRIBUTE_COMPL, new GroovyEntityFieldCompletionProvider())
     }
 }

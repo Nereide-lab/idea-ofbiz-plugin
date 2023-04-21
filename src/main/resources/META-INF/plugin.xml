@@ -43,15 +43,15 @@
 
         <!-- XML reference support -->
         <psi.referenceContributor language="XML" implementation="fr.nereide.reference.contributor.XmlReferenceContributor"/>
-        <completion.contributor order="first" language="XML" implementationClass="fr.nereide.completion.provider.xml.XmlCompletionContributor"/>
+        <completion.contributor order="first" language="XML" implementationClass="fr.nereide.completion.contributor.XmlCompletionContributor"/>
 
         <!-- Java reference support -->
         <psi.referenceContributor language="JAVA" implementation="fr.nereide.reference.contributor.JavaReferenceContributor"/>
-        <completion.contributor order="first" language="JAVA" implementationClass="fr.nereide.completion.provider.java.JavaCompletionContributor"/>
+        <completion.contributor order="first" language="JAVA" implementationClass="fr.nereide.completion.contributor.JavaCompletionContributor"/>
 
         <!-- Groovy reference support -->
         <psi.referenceContributor language="Groovy" implementation="fr.nereide.reference.contributor.GroovyReferenceContributor"/>
-        <completion.contributor order="first" language="Groovy" implementationClass="fr.nereide.completion.provider.groovy.GroovyCompletionContributor"/>
+        <completion.contributor order="first" language="Groovy" implementationClass="fr.nereide.completion.contributor.GroovyCompletionContributor"/>
 
         <!-- Documentation -->
         <documentationProvider implementation="fr.nereide.documentation.OfbizElementResolverForDocumentationProvider" order="first"/>

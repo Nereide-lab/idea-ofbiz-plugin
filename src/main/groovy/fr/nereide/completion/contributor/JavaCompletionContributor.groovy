@@ -15,18 +15,16 @@
  * under the License.
  */
 
-package fr.nereide.completion.provider.java
+package fr.nereide.completion.contributor
 
-import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.common.EntityOrViewNameCompletionProvider
-import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
+import fr.nereide.completion.provider.java.JavaEntityFieldsCompletionProvider
 import fr.nereide.project.pattern.OfbizJavaPatterns
 
-class JavaCompletionContributor extends CompletionContributor{
-    JavaCompletionContributor(){
-        this.extend(CompletionType.BASIC, OfbizJavaPatterns.ENTITY_CALL_COMPL, new EntityOrViewNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizJavaPatterns.SERVICE_CALL_COMPL, new ServiceNameCompletionProvider())
+class JavaCompletionContributor extends OfbizBaseCompletionContributor {
+    JavaCompletionContributor() {
+        this.extend(CompletionType.BASIC, OfbizJavaPatterns.ENTITY_CALL_COMPL, entityOrViewNameCompletionProvider)
+        this.extend(CompletionType.BASIC, OfbizJavaPatterns.SERVICE_CALL_COMPL, serviceNameCompletionProvider)
         this.extend(CompletionType.BASIC, OfbizJavaPatterns.ENTITY_FIELD_COMPL, new JavaEntityFieldsCompletionProvider())
     }
 }
