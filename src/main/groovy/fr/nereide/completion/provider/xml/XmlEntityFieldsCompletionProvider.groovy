@@ -28,6 +28,9 @@ class XmlEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
                         viewLinkTag.getAttributeValue('rel-entity-alias')
                 fullView = getParentOfType(viewLinkTag, XmlTag.class)
                 break
+            default: // cas du fichier de chargement de données
+                return initialContainingTag.getName()
+
         }
         if (!entityAlias || !fullView) return null
 

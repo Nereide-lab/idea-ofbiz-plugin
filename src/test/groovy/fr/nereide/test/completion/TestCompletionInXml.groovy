@@ -67,4 +67,9 @@ class TestCompletionInXml extends BaseComplTestCase {
     void testNoEntityNameCompletionInEntityEngineFile() {
         doTest(null)
     }
+
+    void testEntityFieldCompletionInEntityEngineFile() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
 }

@@ -24,10 +24,14 @@ import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
 import fr.nereide.project.pattern.OfbizXmlPatterns
 
 class XmlCompletionContributor extends CompletionContributor {
+    XmlEntityFieldsCompletionProvider fieldsComplProv
+
     XmlCompletionContributor() {
+        fieldsComplProv = new XmlEntityFieldsCompletionProvider()
         this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_OR_VIEW_CALL_COMPL, new EntityOrViewNameCompletionProvider())
         this.extend(CompletionType.BASIC, OfbizXmlPatterns.SERVICE_DEF_CALL_COMPL, new ServiceNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_COMPL, new XmlEntityFieldsCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_COMPL, fieldsComplProv)
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_IN_DATALOAD_COMPL, fieldsComplProv)
         this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
     }
 }

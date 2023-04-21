@@ -1,8 +1,11 @@
 package fr.nereide.project.pattern
 
+import com.intellij.patterns.ElementPattern
 import com.intellij.patterns.PsiElementPattern
+import com.intellij.patterns.StandardPatterns
 import com.intellij.patterns.XmlAttributeValuePattern
 import com.intellij.patterns.XmlFilePattern
+import com.intellij.psi.PsiElement
 
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.StandardPatterns.string
@@ -112,11 +115,14 @@ class OfbizXmlPatterns {
             .afterLeaf('<')
             .inside(entityEngineXmlTag().inside(entityEngineXmlFile()))
 
+    public static final XmlAttributePattern ENTITY_FIELD_IN_DATALOAD = xmlAttribute()
+            .inside(xmlTag().withParent(entityEngineXmlTag().inside(entityEngineXmlFile())))
 
     public static final PsiElementPattern ENTITY_OR_VIEW_CALL_COMPL = psiElement().inside(ENTITY_OR_VIEW_CALL)
     public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement().inside(SERVICE_DEF_CALL)
     public static final PsiElementPattern ENTITY_FIELD_COMPL = psiElement().inside(ENTITY_FIELD_CALL)
     public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_TAG_CALL)
+    public static final PsiElementPattern ENTITY_FIELD_IN_DATALOAD_COMPL = psiElement().inside(ENTITY_FIELD_IN_DATALOAD)
 
     //============================================
     //       UTILITY METHODS
