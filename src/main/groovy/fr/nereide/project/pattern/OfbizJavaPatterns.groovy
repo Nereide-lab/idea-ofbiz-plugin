@@ -61,7 +61,8 @@ class OfbizJavaPatterns {
 
     public static final PsiElementPattern GENERIC_VALUE_FIELD_IN_DVE = psiElement().inside(
             psiElement().andOr(
-                    makeDynamicViewEntityJavaMethodPattern('addAlias', 1)
+                    makeDynamicViewEntityJavaMethodPattern('addAlias', 1),
+                    makeDynamicViewEntityJavaMethodPattern('addAlias', 2)
             )
     )
 

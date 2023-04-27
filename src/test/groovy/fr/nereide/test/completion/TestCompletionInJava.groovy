@@ -60,4 +60,9 @@ class TestCompletionInJava extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected)
     }
+
+    void testEntityFieldCompletionInFullAddAliasInDynamicView() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
 }
