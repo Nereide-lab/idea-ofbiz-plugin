@@ -5,7 +5,6 @@ import com.intellij.find.findUsages.FindUsagesHandler
 import com.intellij.find.findUsages.FindUsagesOptions
 import com.intellij.find.impl.FindManagerImpl
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiAssignmentExpression
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiForeachStatement
 import com.intellij.psi.PsiMethodCallExpression
@@ -14,10 +13,8 @@ import com.intellij.psi.PsiVariable
 import com.intellij.usageView.UsageInfo
 import com.intellij.util.ArrayUtil
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
-import fr.nereide.project.pattern.OfbizPatternConst
 
 import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfTypeAsList
-import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import static com.intellij.util.CommonProcessors.CollectProcessor
 
 abstract class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
@@ -31,25 +28,6 @@ abstract class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionP
         List fullGetStatementParts = getChildrenOfTypeAsList(fullCalledMethod, PsiReferenceExpression.class)
         List subGetStatementParts = getChildrenOfTypeAsList((fullGetStatementParts[0] as PsiElement), PsiReferenceExpression.class)
         return subGetStatementParts[0].resolve() as PsiVariable
-    }
-
-    /**
-     * Tries to extract the entity name from the context and potentials assignements
-     * @param element
-     * @param genericValueTopVariable
-     * @return
-     */
-    static String getEntityNameFromLastQueryAssignment(PsiVariable genericValueTopVariable) {
-        List<UsageInfo> usages = getUsagesOfVariable(genericValueTopVariable)
-        if (!usages) return null
-        LinkedList<UsageInfo> usagesInQuery = usages.stream().filter { usage ->
-            PsiAssignmentExpression assign = getParentOfType(usage.getElement(), PsiAssignmentExpression.class)
-            assign && assign.getRExpression().getText().contains(OfbizPatternConst.QUERY_BEGINNING_STRING)
-        }.toList()
-        if (!usagesInQuery) return
-        UsageInfo lastAssign = usagesInQuery.getLast()
-        PsiAssignmentExpression lastAssignExpr = getParentOfType(lastAssign.getElement(), PsiAssignmentExpression.class)
-        return getEntityNameFromDeclarationString(lastAssignExpr.getRExpression().getText())
     }
 
     /**
