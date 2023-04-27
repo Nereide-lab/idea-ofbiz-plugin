@@ -55,7 +55,8 @@ class OfbizJavaPatterns {
             makeGenericEntityJavaMethodPattern('getFloat', 0),
             makeGenericEntityJavaMethodPattern('getInteger', 0),
             makeGenericEntityJavaMethodPattern('getLong', 0),
-            makeEntityQueryJavaMethodPattern('where', 0)
+            makeEntityQueryJavaMethodPattern('where', 0),
+            makeDynamicViewEntityJavaMethodPattern('addAlias', 1)
     )
 
     public static final PsiElementPattern SERVICE_CALL_COMPL = psiElement()

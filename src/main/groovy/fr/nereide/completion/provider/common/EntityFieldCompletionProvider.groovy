@@ -33,6 +33,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
             return
         }
         if (!entityName) return
+        if (entityName.startsWith('\"')) entityName = entityName.replaceAll('\"', '')
         Entity entity = structureService.getEntity(entityName)
 
         if (entity) {
