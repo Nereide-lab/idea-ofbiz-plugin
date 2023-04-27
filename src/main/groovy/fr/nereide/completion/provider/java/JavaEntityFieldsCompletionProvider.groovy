@@ -15,6 +15,7 @@ import com.intellij.psi.PsiVariable
 import com.intellij.usageView.UsageInfo
 import com.intellij.util.ArrayUtil
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
+import fr.nereide.project.pattern.OfbizPatternConst
 
 import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfTypeAsList
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
@@ -23,12 +24,10 @@ import static com.intellij.util.CommonProcessors.CollectProcessor
 class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
 
 
-    public static final String QUERY_BEGINNING_STRING = 'EntityQuery.use('
-
     String getEntityNameFromPsiElement(PsiElement element) {
         PsiMethodCallExpression originMethod = getParentOfType(element, PsiMethodCallExpression.class)
 
-        if (originMethod && originMethod.text.startsWith(QUERY_BEGINNING_STRING)) {
+        if (originMethod && originMethod.text.startsWith(OfbizPatternConst.QUERY_BEGINNING_STRING)) {
             return getEntityNameFromDeclarationString(originMethod.text)
         }
         PsiVariable initialTopVariable = getPsiTopVariable(originMethod)
@@ -96,7 +95,7 @@ class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
         if (!usages) return null
         LinkedList<UsageInfo> usagesInQuery = usages.stream().filter { usage ->
             PsiAssignmentExpression assign = getParentOfType(usage.getElement(), PsiAssignmentExpression.class)
-            assign && assign.getRExpression().getText().contains(QUERY_BEGINNING_STRING)
+            assign && assign.getRExpression().getText().contains(OfbizPatternConst.QUERY_BEGINNING_STRING)
         }.toList()
         if (!usagesInQuery) return
         UsageInfo lastAssign = usagesInQuery.getLast()
