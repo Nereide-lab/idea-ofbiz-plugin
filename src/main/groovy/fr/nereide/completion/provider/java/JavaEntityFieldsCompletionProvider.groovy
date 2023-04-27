@@ -7,7 +7,6 @@ import com.intellij.find.impl.FindManagerImpl
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiAssignmentExpression
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiForeachStatement
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiReferenceExpression
@@ -21,57 +20,7 @@ import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfTypeAsList
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import static com.intellij.util.CommonProcessors.CollectProcessor
 
-class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
-
-
-    String getEntityNameFromPsiElement(PsiElement element) {
-        PsiMethodCallExpression originMethod = getParentOfType(element, PsiMethodCallExpression.class)
-
-        if (originMethod && originMethod.text.startsWith(OfbizPatternConst.QUERY_BEGINNING_STRING)) {
-            return getEntityNameFromDeclarationString(originMethod.text)
-        }
-        PsiVariable initialTopVariable = getPsiTopVariable(originMethod)
-        if (initialTopVariable.typeElement && initialTopVariable.typeElement.text == 'DynamicViewEntity') {
-            return getEntityNameFromDynamicView(originMethod, initialTopVariable)
-        }
-        PsiExpression variableInit = initialTopVariable.initializer
-        if (variableInit) {
-            // init instruction easily found, basic case
-            return getEntityNameFromDeclarationString(variableInit.text)
-        } else {
-            // search for for loop
-            PsiForeachStatement basicFor = getParentOfType(element, PsiForeachStatement.class)
-            if (basicFor) {
-                return getEntityNameFromForStatement(basicFor)
-                // search for query assignment
-            } else {
-                return getEntityNameFromLastQueryAssignment(initialTopVariable)
-            }
-        }
-    }
-
-    static String getEntityNameFromDynamicView(PsiMethodCallExpression originMethod, PsiVariable initialTopVariable) {
-        PsiExpression[] params = originMethod.argumentList.expressions
-        if (params) {
-            String aliasToLookFor = params[0].text
-            List<UsageInfo> dveUsages = getUsagesOfVariable(initialTopVariable)
-            PsiMethodCallExpression relevantAddAlias = dveUsages.stream()
-                    .map { UsageInfo usage ->
-                        getParentOfType(usage.element, PsiMethodCallExpression.class)
-                    }
-                    .find { PsiMethodCallExpression addAliasCall ->
-                        aliasMethodUsesWantedAlias(addAliasCall, aliasToLookFor)
-                    } as PsiMethodCallExpression
-            if (!relevantAddAlias) return null
-            return relevantAddAlias?.argumentList?.expressions?[1]?.text
-        }
-    }
-
-    static boolean aliasMethodUsesWantedAlias(PsiMethodCallExpression addAliasCall, String aliasToLookFor) {
-        PsiExpression[] params = addAliasCall.argumentList.expressions
-        String aliasParam = params?[0].text
-        return aliasParam && aliasToLookFor == aliasParam
-    }
+abstract class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
 
     /**
      * Get the initial variable declaration
@@ -129,7 +78,7 @@ class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
      * @param forStatement
      * @return
      */
-    static String getEntityNameFromForStatement(PsiElement forStatement) {
+    static String getEntityNameFromForStatement(PsiForeachStatement forStatement) {
         PsiReferenceExpression iteratedValue = forStatement.getIteratedValue() as PsiReferenceExpression
         if (iteratedValue) {
             PsiVariable iteratedValueVariable = iteratedValue.resolve() as PsiVariable

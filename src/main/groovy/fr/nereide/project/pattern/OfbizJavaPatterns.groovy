@@ -43,20 +43,32 @@ class OfbizJavaPatterns {
             makeUtilPropertiesJavaMethodPattern('getMessage', 1)
     )
 
-    public static final PsiElementPattern GENERIC_VALUE_FIELD = psiElement().andOr(
-            makeGenericEntityJavaMethodPattern('get', 0),
-            makeGenericEntityJavaMethodPattern('getString', 0),
-            makeGenericEntityJavaMethodPattern('getBigDecimal', 0),
-            makeGenericEntityJavaMethodPattern('getBoolean', 0),
-            makeGenericEntityJavaMethodPattern('getBytes', 0),
-            makeGenericEntityJavaMethodPattern('getDate', 0),
-            makeGenericEntityJavaMethodPattern('getDouble', 0),
-            makeGenericEntityJavaMethodPattern('getDuration', 0),
-            makeGenericEntityJavaMethodPattern('getFloat', 0),
-            makeGenericEntityJavaMethodPattern('getInteger', 0),
-            makeGenericEntityJavaMethodPattern('getLong', 0),
-            makeEntityQueryJavaMethodPattern('where', 0),
-            makeDynamicViewEntityJavaMethodPattern('addAlias', 1)
+    public static final PsiElementPattern GENERIC_VALUE_FIELD_FROM_GV_OBJECT = psiElement().inside(
+            psiElement().andOr(
+                    makeGenericEntityJavaMethodPattern('get', 0),
+                    makeGenericEntityJavaMethodPattern('getString', 0),
+                    makeGenericEntityJavaMethodPattern('getBigDecimal', 0),
+                    makeGenericEntityJavaMethodPattern('getBoolean', 0),
+                    makeGenericEntityJavaMethodPattern('getBytes', 0),
+                    makeGenericEntityJavaMethodPattern('getDate', 0),
+                    makeGenericEntityJavaMethodPattern('getDouble', 0),
+                    makeGenericEntityJavaMethodPattern('getDuration', 0),
+                    makeGenericEntityJavaMethodPattern('getFloat', 0),
+                    makeGenericEntityJavaMethodPattern('getInteger', 0),
+                    makeGenericEntityJavaMethodPattern('getLong', 0)
+            )
+    )
+
+    public static final PsiElementPattern GENERIC_VALUE_FIELD_IN_DVE = psiElement().inside(
+            psiElement().andOr(
+                    makeDynamicViewEntityJavaMethodPattern('addAlias', 1)
+            )
+    )
+
+    public static final PsiElementPattern GENERIC_VALUE_FIELD_IN_WHERE_QUERY = psiElement().inside(
+            psiElement().andOr(
+                    makeEntityQueryJavaMethodPattern('where', 0),
+            )
     )
 
     public static final PsiElementPattern SERVICE_CALL_COMPL = psiElement()
@@ -64,9 +76,6 @@ class OfbizJavaPatterns {
 
     public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement()
             .inside(ENTITY_CALL)
-
-    public static final PsiElementPattern ENTITY_FIELD_COMPL = psiElement()
-            .inside(GENERIC_VALUE_FIELD)
 
     //============================================
     //       UTILITY METHODS
