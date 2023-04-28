@@ -23,17 +23,21 @@ import fr.nereide.completion.provider.java.JavaEntityFieldsFromGvMethodCompletio
 import fr.nereide.completion.provider.java.JavaEntityFieldsInQueryCompletionProvider
 
 import static fr.nereide.project.pattern.OfbizJavaPatterns.ENTITY_CALL_COMPL
+import static fr.nereide.project.pattern.OfbizJavaPatterns.ENTITY_FIELD_INKEYMAP_IND_VE
 import static fr.nereide.project.pattern.OfbizJavaPatterns.GENERIC_VALUE_FIELD_FROM_GV_OBJECT
 import static fr.nereide.project.pattern.OfbizJavaPatterns.GENERIC_VALUE_FIELD_IN_DVE
 import static fr.nereide.project.pattern.OfbizJavaPatterns.GENERIC_VALUE_FIELD_IN_WHERE_QUERY
 import static fr.nereide.project.pattern.OfbizJavaPatterns.SERVICE_CALL_COMPL
 
 class JavaCompletionContributor extends OfbizBaseCompletionContributor {
+    JavaEntityFieldsFromDVECompletionProvider dveCompletionProvider
     JavaCompletionContributor() {
+        dveCompletionProvider = new JavaEntityFieldsFromDVECompletionProvider()
         this.extend(CompletionType.BASIC, ENTITY_CALL_COMPL, entityOrViewNameCompletionProvider)
         this.extend(CompletionType.BASIC, SERVICE_CALL_COMPL, serviceNameCompletionProvider)
         this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_IN_WHERE_QUERY, new JavaEntityFieldsInQueryCompletionProvider())
         this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_FROM_GV_OBJECT, new JavaEntityFieldsFromGvMethodCompletionProvider())
-        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_IN_DVE, new JavaEntityFieldsFromDVECompletionProvider())
+        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_IN_DVE, dveCompletionProvider)
+        this.extend(CompletionType.BASIC, ENTITY_FIELD_INKEYMAP_IND_VE, dveCompletionProvider)
     }
 }

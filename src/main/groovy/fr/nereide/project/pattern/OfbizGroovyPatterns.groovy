@@ -71,7 +71,7 @@ class OfbizGroovyPatterns {
     //       UTILITY METHODS
     //============================================
     static Capture<GrLiteral> makeGroovyMethodPattern(String methodName, String className, int index) {
-        return makeMethodPattern(GroovyPatterns::groovyLiteralExpression(), methodName, className, index)
+        return makeMethodParameterPattern(GroovyPatterns::groovyLiteralExpression(), methodName, className, index)
     }
 
     static Capture<GrLiteral> makeLocalDispatcherGroovyMethodPattern(String methodName, int index) {

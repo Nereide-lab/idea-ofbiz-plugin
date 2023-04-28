@@ -65,4 +65,9 @@ class TestCompletionInJava extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected)
     }
+
+    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicView() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
 }

@@ -12,12 +12,28 @@ class JavaEntityFieldsFromDVECompletionProvider extends JavaEntityFieldsCompleti
 
     @Override
     String getEntityNameFromPsiElement(PsiElement element) {
-        PsiMethodCallExpression addAliasInitialMethod = getParentOfType(element, PsiMethodCallExpression.class)
-        PsiVariable initialDve = getPsiTopVariable(addAliasInitialMethod)
-        if (initialDve.typeElement && initialDve.typeElement.text == 'DynamicViewEntity') {
-            return getEntityNameFromDynamicView(addAliasInitialMethod, initialDve)
+        PsiMethodCallExpression dveMethodCall = getParentOfType(element, PsiMethodCallExpression.class)
+        PsiVariable dveVariable
+        if (isModelKeyMap(dveMethodCall)) {
+            dveMethodCall = getParentOfType(dveMethodCall, PsiMethodCallExpression.class)
+            dveVariable = getPsiTopVariable(dveMethodCall)
+            getEntityNameFromDynamicView(dveMethodCall, dveVariable)
+        } else {
+            dveVariable = getPsiTopVariable(dveMethodCall)
+            if (dveVariable.typeElement && dveVariable.typeElement.text == 'DynamicViewEntity') {
+                return getEntityNameFromDynamicView(dveMethodCall, dveVariable)
+            }
+            return null
         }
-        return null
+    }
+
+    /**
+     * Checks if the method is from modelKeymap
+     * @param originInitialMethod
+     * @return
+     */
+    static boolean isModelKeyMap(PsiMethodCallExpression originInitialMethod) {
+        return originInitialMethod ? originInitialMethod.methodExpression.qualifierExpression.text == 'ModelKeyMap' : false
     }
 
     /**
