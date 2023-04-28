@@ -33,7 +33,7 @@
     <depends>com.intellij.modules.java</depends>
     <depends>org.intellij.groovy</depends>
 <!--    <depends>JavaScript</depends> Ultimate only, c'est pénible -->
-    <depends config-file="xml-injections.xml">org.intellij.intelliLang</depends>
+    <depends config-file="ofbiz-xml-injections.xml">org.intellij.intelliLang</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 

@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.4.8]
+
+### Fixed
+- Fixed security issues metionned in https://youtrack.jetbrains.com/issue/IDEA-317841/Upgrading-plugin-from-2022.3-to-2023.1-breaks-language-injection-tests
 
 ### Changed
-- Massive test refactor
+- Updated to 223.1 version
+- Commented Groovy injection tests until they are repaired
 
 ## [1.4.7]
 
