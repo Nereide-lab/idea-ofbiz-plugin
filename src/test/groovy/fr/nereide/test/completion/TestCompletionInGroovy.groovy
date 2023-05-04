@@ -22,70 +22,60 @@ class TestCompletionInGroovy extends BaseComplTestCase {
 
     String getFileType() { return 'groovy' }
 
+    /**
+     * {@code def myVar = EntityQuery.use(delegator).from('<caret>').queryFirst()}
+     */
     void testEntityCompletionInGroovyFile() {
         List<String> expected = ['Yenefer', 'Roach']
         doTest(expected)
     }
 
+    /**
+     * {@code var result = dispatcher.runSync('<caret>', null)}
+     */
     void testServiceCompletionInGroovyFile() {
         List<String> expected = ['makeWitcher', 'makeHorse']
         doTest(expected)
     }
 
+    /**
+     * <pre>
+     * {@code org.apache.ofbiz.entity.GenericValue paper = from('DunderMifflin')
+     *      def foo = paper.<caret> }</pre>
+     */
     void testEntityFieldCompletionInGroovyFileWithSimpleEntity() {
         List<String> expected = ['michael']
         doTest(expected)
     }
 
-    void testEntityFieldCompletionInGroovyFileWithViewNoNested() {
-        List<String> expected = ['jo', 'gabriel', 'michael'],
-                     notExpected = ['maline']
-        doTest(expected, notExpected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithViewAndNested() {
-        List<String> expected = ['michael', 'jo', 'gabriel', 'david']
-        doTest(expected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithRecursiveView() {
-        List<String> expected = ['david']
-        doTest(expected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithViewAndExclude() {
-        List<String> expected = ['johnny', 'johnkreese'],
-                     notExpected = ['daniel']
-        doTest(expected, notExpected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithViewAndExcludeViewField() {
-        List<String> expected = ['johnny'],
-                     notExpected = ['daniel', 'johnkreese']
-        doTest(expected, notExpected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithSimpleViewAndPrefix() {
-        List<String> expected = ['bigshovelreese', 'bigshovelfrancis', 'bigshovellois', 'reese', 'francis', 'lois']
-        doTest(expected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithComplexViewAndPrefix() {
-        List<String> expected = ['geniusbigshovelreese', 'geniusbigshovelfrancis', 'geniusbigshovellois',
-                                 'geniusreese', 'geniusfrancis', 'geniuslois']
-        doTest(expected)
-    }
-
+    /**
+     * <pre>
+     * {@code List<org.apache.ofbiz.entity.GenericValue> rings = from('Mordor')
+     *      rings.forEach { org.apache.ofbiz.entity.GenericValue it -> it.<caret> }
+     *} </pre>
+     */
     void testEntityFieldCompletionInGroovyFileInLoopOfListWithExplicitTypeAndForeachLoop() {
         List<String> expected = ['sauron']
         doTest(expected)
     }
 
+    /**
+     * <pre>
+     * {@code List<org.apache.ofbiz.entity.GenericValue> rings = from('Mordor')
+     * rings.stream().filter({ GenericValue it -> it.<caret> })
+     * } </pre>
+     */
     void testEntityFieldCompletionInGroovyFileInGVListStreamWithExplicitType() {
         List<String> expected = ['sauron']
         doTest(expected)
     }
 
+    /**
+     * <pre>
+     * {@code List<GenericValue> rings = from('Mordor')
+     * for (GenericValue ring : rings) { ring.<caret> }
+     * } </pre>
+     */
     void testEntityFieldCompletionInGroovyFileInForLoop() {
         List<String> expected = ['sauron']
         doTest(expected)

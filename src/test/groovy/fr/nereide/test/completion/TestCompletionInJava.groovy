@@ -70,7 +70,7 @@ class TestCompletionInJava extends BaseComplTestCase {
     }
 
     /**
-     * {@catch EntityQuery.use(delegator).from("DunderMifflin").where("<caret>", "bar").queryFirst(); }
+     * {@code EntityQuery.use(delegator).from("DunderMifflin").where("<caret>", "bar").queryFirst(); }
      */
     void testEntityFieldCompletionInSimpleWhereInEntityQuery() {
         List<String> expected = ['michael', 'maline']
