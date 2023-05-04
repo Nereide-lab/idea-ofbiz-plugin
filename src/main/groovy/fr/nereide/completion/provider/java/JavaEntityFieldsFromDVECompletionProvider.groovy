@@ -13,39 +13,24 @@ class JavaEntityFieldsFromDVECompletionProvider extends JavaEntityFieldsCompleti
     @Override
     String getEntityNameFromPsiElement(PsiElement element) {
         PsiMethodCallExpression dveMethodCall = getParentOfType(element, PsiMethodCallExpression.class)
-        PsiVariable dveVariable
-        if (isModelKeyMap(dveMethodCall)) {
-            dveMethodCall = getParentOfType(dveMethodCall, PsiMethodCallExpression.class)
-            dveVariable = getPsiTopVariable(dveMethodCall)
-            getEntityNameFromDynamicView(dveMethodCall, dveVariable)
-        } else {
-            dveVariable = getPsiTopVariable(dveMethodCall)
-            if (dveVariable.typeElement && dveVariable.typeElement.text == 'DynamicViewEntity') {
-                return getEntityNameFromDynamicView(dveMethodCall, dveVariable)
-            }
-            return null
+        PsiVariable dveVariable = getPsiTopVariable(dveMethodCall)
+        if (dveVariable && dveVariable.typeElement && dveVariable.typeElement.text == 'DynamicViewEntity') {
+            return getEntityNameFromDynamicView(dveMethodCall, dveVariable)
         }
-    }
-
-    /**
-     * Checks if the method is from modelKeymap
-     * @param originInitialMethod
-     * @return
-     */
-    static boolean isModelKeyMap(PsiMethodCallExpression originInitialMethod) {
-        return originInitialMethod ? originInitialMethod.methodExpression.qualifierExpression.text == 'ModelKeyMap' : false
+        return null
     }
 
     /**
      * Tries to retrieve the entity name from the context Dynamic view
-     * @param addAliasInitialMethod
-     * @param initialDve
+     * @param addAliasInitialMethod addAlias method where the completion takes place
+     * @param initialDve dve java variable
+     * @param index index of the alias maram to use for entityName
      * @return
      */
-    static String getEntityNameFromDynamicView(PsiMethodCallExpression addAliasInitialMethod, PsiVariable initialDve) {
+    static String getEntityNameFromDynamicView(PsiMethodCallExpression addAliasInitialMethod, PsiVariable initialDve, int index) {
         PsiExpression[] params = addAliasInitialMethod.argumentList.expressions
         if (params) {
-            String aliasToLookFor = params[0].text
+            String aliasToLookFor = params[index].text
             List<UsageInfo> dveUsages = getUsagesOfVariable(initialDve)
             PsiMethodCallExpression relevantAddAlias = dveUsages.stream()
                     .map { UsageInfo usage ->
@@ -57,6 +42,11 @@ class JavaEntityFieldsFromDVECompletionProvider extends JavaEntityFieldsCompleti
             if (!relevantAddAlias) return null
             return relevantAddAlias?.argumentList?.expressions?[1]?.text
         }
+        return null
+    }
+
+    static String getEntityNameFromDynamicView(PsiMethodCallExpression addAliasInitialMethod, PsiVariable initialDve) {
+        return getEntityNameFromDynamicView(addAliasInitialMethod, initialDve, 0)
     }
 
     static boolean addAliasMethodUsesWantedAlias(PsiMethodCallExpression addAliasCall, String aliasToLookFor) {

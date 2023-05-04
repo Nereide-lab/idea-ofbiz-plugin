@@ -113,4 +113,13 @@ class TestCompletionInJava extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected)
     }
+
+    /**
+     * {@code myDve.addViewLink("SB", "DM", Boolean.FALSE, ModelKeyMap.makeKeyMapList("gabriel", "<caret>")); }
+     */
+    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicView() {
+        List<String> notExpected = ['gabriel', 'jo']
+        List<String> expected = ['michael', 'maline']
+        doTest(expected, notExpected)
+    }
 }

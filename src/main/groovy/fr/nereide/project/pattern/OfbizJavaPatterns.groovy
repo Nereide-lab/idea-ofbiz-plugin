@@ -81,9 +81,18 @@ class OfbizJavaPatterns {
             )
     )
 
-    public static final PsiElementPattern ENTITY_FIELD_INKEYMAP_IND_VE = psiElement().inside(
+    public static final PsiElementPattern ENTITY_FIELD_INKEYMAP_IN_DVE_0 = psiElement().inside(
             psiElement().andOr(
                     makeModelKeyMapJavaMethodParameterPattern('makeKeyMapList', 0)
+                            .inside(psiExpression().methodCall(psiMethod()
+                                    .withName('addViewLink')
+                                    .definedInClass(DYNAMIC_VIEW_ENTITY_CLASS)))
+            )
+    )
+
+    public static final PsiElementPattern ENTITY_FIELD_INKEYMAP_IN_DVE_1 = psiElement().inside(
+            psiElement().andOr(
+                    makeModelKeyMapJavaMethodParameterPattern('makeKeyMapList', 1)
                             .inside(psiExpression().methodCall(psiMethod()
                                     .withName('addViewLink')
                                     .definedInClass(DYNAMIC_VIEW_ENTITY_CLASS)))
