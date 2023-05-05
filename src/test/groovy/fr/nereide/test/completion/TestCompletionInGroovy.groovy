@@ -86,6 +86,10 @@ class TestCompletionInGroovy extends BaseComplTestCase {
     }
 
     /**
+     * <pre>
+     * {@code GenericValue myVal = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryFirst()
+     * myVal.get('<caret>')
+     *} </pre>
      */
     void testEntityFieldCompletionInSimpleGetFieldFromGenericValue() {
         List<String> expected = ['ross', 'monica']
