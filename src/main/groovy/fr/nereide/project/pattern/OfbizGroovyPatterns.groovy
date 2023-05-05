@@ -69,6 +69,12 @@ class OfbizGroovyPatterns {
             makeGenericEntityGroovyMethodParameterPattern('getLong', 0)
     ))
 
+    public static final PsiElementPattern GENERIC_VALUE_FIELD_QUERY = psiElement().inside(
+            psiElement().andOr(
+                    makeEntityQueryGroovyMethodParamaterPattern('where', 0)
+            )
+    )
+
     public static final PsiElementPattern GROOVY_LOOP_PATTERN = psiElement().andOr(
             psiElement().withText(string().contains('forEach')),
             psiElement().withText(string().contains('stream'))
@@ -79,6 +85,10 @@ class OfbizGroovyPatterns {
     //============================================
     static Capture<GrLiteral> makeGroovyMethodParameterPattern(String methodName, String className, int index) {
         return makeMethodParameterPattern(GroovyPatterns::groovyLiteralExpression(), methodName, className, index)
+    }
+
+    static Capture<GrLiteral> makeEntityQueryGroovyMethodParamaterPattern(String methodName, int index) {
+        return makeGroovyMethodParameterPattern(methodName, ENTITY_QUERY_CLASS, index)
     }
 
     static Capture<GrLiteral> makeLocalDispatcherGroovyMethodPattern(String methodName, int index) {

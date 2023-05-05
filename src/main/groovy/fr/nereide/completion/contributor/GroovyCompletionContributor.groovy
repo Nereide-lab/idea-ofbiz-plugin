@@ -19,10 +19,12 @@ package fr.nereide.completion.contributor
 
 import com.intellij.codeInsight.completion.CompletionType
 import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromGvCompletionProvider
+import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromQueryCompletionProvider
 
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.ENTITY_CALL
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_ATTRIBUTE
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_ATTRIBUTE_GET
+import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_FIELD_QUERY
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.SERVICE_CALL
 
 class GroovyCompletionContributor extends OfbizBaseCompletionContributor {
@@ -31,5 +33,6 @@ class GroovyCompletionContributor extends OfbizBaseCompletionContributor {
         this.extend(CompletionType.BASIC, SERVICE_CALL, serviceNameCompletionProvider)
         this.extend(CompletionType.BASIC, GENERIC_VALUE_ATTRIBUTE, new GroovyEntityFieldsFromGvCompletionProvider())
         this.extend(CompletionType.BASIC, GENERIC_VALUE_ATTRIBUTE_GET, new GroovyEntityFieldsFromGvCompletionProvider())
+        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_QUERY, new GroovyEntityFieldsFromQueryCompletionProvider())
     }
 }
