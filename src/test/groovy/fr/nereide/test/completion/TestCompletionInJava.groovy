@@ -37,6 +37,10 @@ class TestCompletionInJava extends BaseComplTestCase {
         doTest(expected)
     }
 
+    //**********************************************
+    //                 ENTITY FIELDS              //
+    //**********************************************
+
     /**
      * <pre>
      * {@code basic query

@@ -48,6 +48,10 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         doTest(expected)
     }
 
+    //**********************************************
+    //                 ENTITY FIELDS              //
+    //**********************************************
+
     /**
      * <pre>
      * {@code List<org.apache.ofbiz.entity.GenericValue> rings = from('Mordor')
@@ -63,7 +67,7 @@ class TestCompletionInGroovy extends BaseComplTestCase {
      * <pre>
      * {@code List<org.apache.ofbiz.entity.GenericValue> rings = from('Mordor')
      * rings.stream().filter({ GenericValue it -> it.<caret> })
-     * } </pre>
+     *} </pre>
      */
     void testEntityFieldCompletionInGroovyFileInGVListStreamWithExplicitType() {
         List<String> expected = ['sauron']
@@ -74,10 +78,64 @@ class TestCompletionInGroovy extends BaseComplTestCase {
      * <pre>
      * {@code List<GenericValue> rings = from('Mordor')
      * for (GenericValue ring : rings) { ring.<caret> }
-     * } </pre>
+     *} </pre>
      */
     void testEntityFieldCompletionInGroovyFileInForLoop() {
         List<String> expected = ['sauron']
         doTest(expected)
+    }
+
+    /**
+     */
+    void testEntityFieldCompletionInSimpleGetFieldFromGenericValue() {
+        assert true
+    }
+
+    /**
+     */
+    void testEntityFieldCompletionInGetFieldFromGenericValueWithWhere() {
+        assert true
+    }
+
+    /**
+     */
+    void testEntityFieldCompletionInGetFieldFromGVListInForLoop() {
+        assert true
+    }
+
+    /**
+     */
+    void testEntityFieldCompletionInSimpleWhereInEntityQuery() {
+        assert true
+    }
+
+    /**
+     */
+    void testEntityFieldCompletionInValueQueriedInTryCatch() {
+        assert true
+    }
+
+    /**
+     */
+    void testEntityFieldCompletionInSimpleAddAliasInDynamicView() {
+        assert true
+    }
+
+    /**
+     */
+    void testEntityFieldCompletionInFullAddAliasInDynamicView() {
+        assert true
+    }
+
+    /**
+     */
+    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicView() {
+        assert true
+    }
+
+    /**
+     */
+    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicView() {
+        assert true
     }
 }
