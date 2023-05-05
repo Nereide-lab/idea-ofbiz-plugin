@@ -129,12 +129,15 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         List<String> expected = ['ross', 'monica']
         doTest(expected)
     }
-//
-//    /**
-//     */
-//    void testEntityFieldCompletionInSimpleWhereInEntityQueryInScript() {
-//        assert true
-//    }
+
+    /**
+     * Script
+     * {@code GenericValue lookedValue = from('RossAndSister').where('<caret>').queryOne()}
+     */
+    void testEntityFieldCompletionInSimpleWhereInEntityQueryInScript() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
 
 //    /**
 //     */
