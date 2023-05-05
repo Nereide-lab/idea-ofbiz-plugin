@@ -17,7 +17,7 @@ class OfbizGroovyPatterns {
     //============================================
     //       PATTERNS
     //============================================
-    public static final PsiElementPattern SERVICE_CALL = psiElement().andOr(
+    public static final PsiElementPattern SERVICE_CALL = psiElement().inside(psiElement().andOr(
             makeLocalDispatcherGroovyMethodPattern('runSync', 0),
             makeLocalDispatcherGroovyMethodPattern('runAsync', 0),
             makeLocalDispatcherGroovyMethodPattern('runAsyncWait', 0),
@@ -27,9 +27,9 @@ class OfbizGroovyPatterns {
             //TODO : bétonner un peu pour éviter les soucis de référence non trouvée ?
             groovyLiteralExpression().withParent(namedArgument().withLabel('service')
             )
-    )
+    ))
 
-    public static final PsiElementPattern ENTITY_CALL = psiElement().andOr(
+    public static final PsiElementPattern ENTITY_CALL = psiElement().inside(psiElement().andOr(
             makeDelegatorGroovyMethodPattern('find', 0),
             makeDelegatorGroovyMethodPattern('findOne', 0),
             makeDelegatorGroovyMethodPattern('findAll', 0),
@@ -40,13 +40,13 @@ class OfbizGroovyPatterns {
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('from')),
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('makeValue')),
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('findOne'))
-    )
+    ))
 
     public static final PsiElementPattern LABEL_CALL = psiElement().andOr(
             makeUtilPropertiesGroovyMethodPattern('getMessage', 1)
     )
 
-    public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE = psiElement().andOr(
+    public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE = psiElement().inside(psiElement().andOr(
             psiElement().afterLeafSkipping(
                     psiElement().withText('.'),
                     psiElement().withParent(psiElement().with(new FieldTypeCondition(
@@ -54,13 +54,7 @@ class OfbizGroovyPatterns {
                             'org.apache.ofbiz.entity.GenericValue', 'GenericValue'))
                     )
             )
-    )
-
-    public static final PsiElementPattern SERVICE_CALL_COMPL = psiElement().inside(SERVICE_CALL)
-
-    public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_CALL)
-
-    public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE_COMPL = psiElement().inside(GENERIC_VALUE_ATTRIBUTE)
+    ))
 
     public static final PsiElementPattern GROOVY_LOOP_PATTERN = psiElement().andOr(
             psiElement().withText(string().contains('forEach')),
