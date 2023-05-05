@@ -17,10 +17,9 @@
 
 package fr.nereide.completion.provider.groovy
 
-
 import com.intellij.openapi.diagnostic.Logger
-import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiVariable
 import com.intellij.psi.util.PsiTreeUtil
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
@@ -31,14 +30,11 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlock
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.clauses.GrForClause
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.clauses.GrForInClause
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
 abstract  class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider {
     private static final Logger LOG = Logger.getInstance(GroovyEntityFieldCompletionProvider.class)
-
-    abstract String getEntityNameFromPsiElement(PsiElement element)
 
     /**
      * Tries to get the entity or view name from the declaration of the Generic value or object
@@ -46,8 +42,8 @@ abstract  class GroovyEntityFieldCompletionProvider extends EntityFieldCompletio
      * @return the name or null if not found
      */
     protected static String retrieveEntityOrViewNameFromGrVariable(PsiVariable initialElement) {
-        GrExpression declarationExpr = initialElement.getInitializerGroovy()
-        String declarationString = declarationExpr ? declarationExpr.getText() : null
+        PsiExpression init = initialElement.initializer
+        String declarationString = init ? init.text : initialElement.initializerGroovy?.text
         if (declarationString) {
             getEntityNameFromDeclarationString(declarationString)
         } else {
