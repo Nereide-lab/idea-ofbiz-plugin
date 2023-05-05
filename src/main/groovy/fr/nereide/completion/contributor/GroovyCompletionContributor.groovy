@@ -18,16 +18,18 @@
 package fr.nereide.completion.contributor
 
 import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.groovy.GroovyEntityFieldCompletionProvider
+import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromGvCompletionProvider
 
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.ENTITY_CALL
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_ATTRIBUTE
+import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_ATTRIBUTE_GET
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.SERVICE_CALL
 
 class GroovyCompletionContributor extends OfbizBaseCompletionContributor {
     GroovyCompletionContributor() {
         this.extend(CompletionType.BASIC, ENTITY_CALL, entityOrViewNameCompletionProvider)
         this.extend(CompletionType.BASIC, SERVICE_CALL, serviceNameCompletionProvider)
-        this.extend(CompletionType.BASIC, GENERIC_VALUE_ATTRIBUTE, new GroovyEntityFieldCompletionProvider())
+        this.extend(CompletionType.BASIC, GENERIC_VALUE_ATTRIBUTE, new GroovyEntityFieldsFromGvCompletionProvider())
+        this.extend(CompletionType.BASIC, GENERIC_VALUE_ATTRIBUTE_GET, new GroovyEntityFieldsFromGvCompletionProvider())
     }
 }

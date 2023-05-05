@@ -21,6 +21,7 @@ package fr.nereide.completion.provider.groovy
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiVariable
 import com.intellij.psi.util.PsiTreeUtil
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
 import fr.nereide.project.pattern.OfbizGroovyPatterns
@@ -34,23 +35,17 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpres
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
-class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider {
+abstract  class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider {
     private static final Logger LOG = Logger.getInstance(GroovyEntityFieldCompletionProvider.class)
 
-    String getEntityNameFromPsiElement(PsiElement element) {
-        PsiElement genericValueRef = element.getParent().getFirstChild()
-        assert genericValueRef instanceof GrReferenceExpression
-        PsiElement initialVariable = genericValueRef.resolve()
-        assert initialVariable instanceof GrVariable
-        return retrieveEntityOrViewNameFromGrVariable(initialVariable) ?: null
-    }
+    abstract String getEntityNameFromPsiElement(PsiElement element)
 
     /**
      * Tries to get the entity or view name from the declaration of the Generic value or object
      * @param initialElement
      * @return the name or null if not found
      */
-    private static String retrieveEntityOrViewNameFromGrVariable(GrVariable initialElement) {
+    protected static String retrieveEntityOrViewNameFromGrVariable(PsiVariable initialElement) {
         GrExpression declarationExpr = initialElement.getInitializerGroovy()
         String declarationString = declarationExpr ? declarationExpr.getText() : null
         if (declarationString) {
@@ -69,7 +64,7 @@ class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider 
         }
     }
 
-    private static String retrieveEntityOfViewNameFromOldFashionedLoop(GrLoopStatement oldFashionedLoop) {
+    protected static String retrieveEntityOfViewNameFromOldFashionedLoop(GrLoopStatement oldFashionedLoop) {
         GrVariable iteratedList = null
         if (oldFashionedLoop instanceof GrForStatement) {
             GrForClause forDeclaration = (oldFashionedLoop as GrForStatement).getClause()
@@ -78,7 +73,7 @@ class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider 
         return iteratedList ? retrieveEntityOrViewNameFromGrVariable(iteratedList) : null
     }
 
-    private static PsiElement getGVListVariablefromLoopInstruction(GrReferenceExpression potentialLoop, int index) {
+    protected static PsiElement getGVListVariablefromLoopInstruction(GrReferenceExpression potentialLoop, int index) {
         if (index > 10) return null
         GrReferenceExpression expression = PsiTreeUtil.findChildOfType(potentialLoop, GrReferenceExpression.class, true)
         PsiElement gvList = expression.resolve()
@@ -88,7 +83,7 @@ class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider 
         return gvList
     }
 
-    private static GrReferenceExpression getPotentialLoop(GrVariable initialElement) {
+    protected static GrReferenceExpression getPotentialLoop(GrVariable initialElement) {
         PsiElement bracketsBlock = PsiTreeUtil.getParentOfType(initialElement, GrClosableBlock.class)
         PsiElement fullCallBlock = PsiTreeUtil.getParentOfType(bracketsBlock, GrMethodCall.class)
         PsiElement potentialLoopCall = PsiTreeUtil.getChildOfType(fullCallBlock, GrReferenceExpression.class) ?: null

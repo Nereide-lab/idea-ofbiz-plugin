@@ -88,54 +88,55 @@ class TestCompletionInGroovy extends BaseComplTestCase {
     /**
      */
     void testEntityFieldCompletionInSimpleGetFieldFromGenericValue() {
-        assert true
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
     }
 
-    /**
-     */
-    void testEntityFieldCompletionInGetFieldFromGenericValueWithWhere() {
-        assert true
-    }
-
-    /**
-     */
-    void testEntityFieldCompletionInGetFieldFromGVListInForLoop() {
-        assert true
-    }
-
-    /**
-     */
-    void testEntityFieldCompletionInSimpleWhereInEntityQuery() {
-        assert true
-    }
-
-    /**
-     */
-    void testEntityFieldCompletionInValueQueriedInTryCatch() {
-        assert true
-    }
-
-    /**
-     */
-    void testEntityFieldCompletionInSimpleAddAliasInDynamicView() {
-        assert true
-    }
-
-    /**
-     */
-    void testEntityFieldCompletionInFullAddAliasInDynamicView() {
-        assert true
-    }
-
-    /**
-     */
-    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicView() {
-        assert true
-    }
-
-    /**
-     */
-    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicView() {
-        assert true
-    }
+//    /**
+//     */
+//    void testEntityFieldCompletionInGetFieldFromGenericValueWithWhere() {
+//        assert true
+//    }
+//
+//    /**
+//     */
+//    void testEntityFieldCompletionInGetFieldFromGVListInForLoop() {
+//        assert true
+//    }
+//
+//    /**
+//     */
+//    void testEntityFieldCompletionInSimpleWhereInEntityQuery() {
+//        assert true
+//    }
+//
+//    /**
+//     */
+//    void testEntityFieldCompletionInValueQueriedInTryCatch() {
+//        assert true
+//    }
+//
+//    /**
+//     */
+//    void testEntityFieldCompletionInSimpleAddAliasInDynamicView() {
+//        assert true
+//    }
+//
+//    /**
+//     */
+//    void testEntityFieldCompletionInFullAddAliasInDynamicView() {
+//        assert true
+//    }
+//
+//    /**
+//     */
+//    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicView() {
+//        assert true
+//    }
+//
+//    /**
+//     */
+//    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicView() {
+//        assert true
+//    }
 }

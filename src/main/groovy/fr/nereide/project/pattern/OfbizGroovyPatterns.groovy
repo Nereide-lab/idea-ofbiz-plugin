@@ -30,13 +30,13 @@ class OfbizGroovyPatterns {
     ))
 
     public static final PsiElementPattern ENTITY_CALL = psiElement().inside(psiElement().andOr(
-            makeDelegatorGroovyMethodPattern('find', 0),
-            makeDelegatorGroovyMethodPattern('findOne', 0),
-            makeDelegatorGroovyMethodPattern('findAll', 0),
-            makeDelegatorGroovyMethodPattern('findCountByCondition', 0),
-            makeDelegatorGroovyMethodPattern('findList', 0),
-            makeDynamicViewEntityGroovyMethodPattern('addMemberEntity', 1),
-            makeEntityDataServicesGroovyMethodPattern('makeGenericValue', 1),
+            makeDelegatorGroovyMethodParameterPattern('find', 0),
+            makeDelegatorGroovyMethodParameterPattern('findOne', 0),
+            makeDelegatorGroovyMethodParameterPattern('findAll', 0),
+            makeDelegatorGroovyMethodParameterPattern('findCountByCondition', 0),
+            makeDelegatorGroovyMethodParameterPattern('findList', 0),
+            makeDynamicViewEntityGroovyMethodParameterPattern('addMemberEntity', 1),
+            makeEntityDataServicesGroovyParameterPattern('makeGenericValue', 1),
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('from')),
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('makeValue')),
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('findOne'))
@@ -55,6 +55,9 @@ class OfbizGroovyPatterns {
                     )
             )
     ))
+    public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE_GET = psiElement().inside(psiElement().andOr(
+            makeGenericEntityGroovyMethodParameterPattern('get', 0)
+    ))
 
     public static final PsiElementPattern GROOVY_LOOP_PATTERN = psiElement().andOr(
             psiElement().withText(string().contains('forEach')),
@@ -64,27 +67,31 @@ class OfbizGroovyPatterns {
     //============================================
     //       UTILITY METHODS
     //============================================
-    static Capture<GrLiteral> makeGroovyMethodPattern(String methodName, String className, int index) {
+    static Capture<GrLiteral> makeGroovyMethodParameterPattern(String methodName, String className, int index) {
         return makeMethodParameterPattern(GroovyPatterns::groovyLiteralExpression(), methodName, className, index)
     }
 
     static Capture<GrLiteral> makeLocalDispatcherGroovyMethodPattern(String methodName, int index) {
-        return makeGroovyMethodPattern(methodName, LOCAL_DISPATCHER_CLASS, index)
+        return makeGroovyMethodParameterPattern(methodName, LOCAL_DISPATCHER_CLASS, index)
     }
 
-    static Capture<GrLiteral> makeDelegatorGroovyMethodPattern(String methodName, int index) {
-        return makeGroovyMethodPattern(methodName, DELEGATOR_CLASS, index)
+    static Capture<GrLiteral> makeDelegatorGroovyMethodParameterPattern(String methodName, int index) {
+        return makeGroovyMethodParameterPattern(methodName, DELEGATOR_CLASS, index)
     }
 
-    static Capture<GrLiteral> makeDynamicViewEntityGroovyMethodPattern(String methodName, int index) {
-        return makeGroovyMethodPattern(methodName, DYNAMIC_VIEW_ENTITY_CLASS, index)
+    static Capture<GrLiteral> makeDynamicViewEntityGroovyMethodParameterPattern(String methodName, int index) {
+        return makeGroovyMethodParameterPattern(methodName, DYNAMIC_VIEW_ENTITY_CLASS, index)
     }
 
-    static Capture<GrLiteral> makeEntityDataServicesGroovyMethodPattern(String methodName, int index) {
-        return makeGroovyMethodPattern(methodName, ENTITY_DATA_SERVICES_CLASS, index)
+    static Capture<GrLiteral> makeEntityDataServicesGroovyParameterPattern(String methodName, int index) {
+        return makeGroovyMethodParameterPattern(methodName, ENTITY_DATA_SERVICES_CLASS, index)
     }
 
     static Capture<GrLiteral> makeUtilPropertiesGroovyMethodPattern(String methodName, int index) {
-        return makeGroovyMethodPattern(methodName, UTIL_PROPERTIES_CLASS, index)
+        return makeGroovyMethodParameterPattern(methodName, UTIL_PROPERTIES_CLASS, index)
+    }
+
+    static Capture<GrLiteral> makeGenericEntityGroovyMethodParameterPattern(String methodName, int index) {
+        return makeGroovyMethodParameterPattern(methodName, GENERIC_ENTITY_CLASS, index)
     }
 }
