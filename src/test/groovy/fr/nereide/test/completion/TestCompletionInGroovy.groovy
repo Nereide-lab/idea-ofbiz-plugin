@@ -96,17 +96,30 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         doTest(expected)
     }
 
-//    /**
-//     */
-//    void testEntityFieldCompletionInGetFieldFromGenericValueWithWhere() {
-//        assert true
-//    }
-//
-//    /**
-//     */
-//    void testEntityFieldCompletionInGetFieldFromGVListInForLoop() {
-//        assert true
-//    }
+
+    /**
+     * Compiled
+     * <pre>
+     * {@code List<GenericValue> myVals = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryList()
+     * for (GenericValue myVal : myVals) { myVal.get('<caret>') }
+     *} </pre>
+     */
+    void testEntityFieldCompletionInGetFieldFromGVListInForLoop() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
+
+    /**
+     * Script
+     * <pre>
+     * {@code List<GenericValue> myVals = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryList()
+     * for (GenericValue myVal : myVals) { myVal.get('<caret>') }
+     *} </pre>
+     */
+    void testEntityFieldCompletionInGetFieldFromGVListInForLoopInScript() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
 //
 //    /**
 //     */
@@ -114,6 +127,12 @@ class TestCompletionInGroovy extends BaseComplTestCase {
 //        assert true
 //    }
 //
+//    /**
+//     */
+//    void testEntityFieldCompletionInSimpleWhereInEntityQueryInScript() {
+//        assert true
+//    }
+
 //    /**
 //     */
 //    void testEntityFieldCompletionInValueQueriedInTryCatch() {

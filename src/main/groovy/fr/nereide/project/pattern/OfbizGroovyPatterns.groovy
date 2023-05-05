@@ -56,7 +56,17 @@ class OfbizGroovyPatterns {
             )
     ))
     public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE_GET = psiElement().inside(psiElement().andOr(
-            makeGenericEntityGroovyMethodParameterPattern('get', 0)
+            makeGenericEntityGroovyMethodParameterPattern('get', 0),
+            makeGenericEntityGroovyMethodParameterPattern('getString', 0),
+            makeGenericEntityGroovyMethodParameterPattern('getBigDecimal', 0),
+            makeGenericEntityGroovyMethodParameterPattern('getBoolean', 0),
+            makeGenericEntityGroovyMethodParameterPattern('getBytes', 0),
+            makeGenericEntityGroovyMethodParameterPattern('getDate', 0),
+            makeGenericEntityGroovyMethodParameterPattern('getDouble', 0),
+            makeGenericEntityGroovyMethodParameterPattern('getDuration', 0),
+            makeGenericEntityGroovyMethodParameterPattern('getFloat', 0),
+            makeGenericEntityGroovyMethodParameterPattern('getInteger', 0),
+            makeGenericEntityGroovyMethodParameterPattern('getLong', 0)
     ))
 
     public static final PsiElementPattern GROOVY_LOOP_PATTERN = psiElement().andOr(
