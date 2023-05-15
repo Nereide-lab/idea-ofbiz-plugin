@@ -21,19 +21,25 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiVariable
-import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.usageView.UsageInfo
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
 import fr.nereide.project.pattern.OfbizGroovyPatterns
+import fr.nereide.project.pattern.OfbizPatternConst
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrForStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrLoopStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.blocks.GrClosableBlock
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.clauses.GrForClause
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.clauses.GrForInClause
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrAssignmentExpression
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
-abstract  class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider {
+import static com.intellij.psi.util.PsiTreeUtil.findChildOfType
+import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
+import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
+
+abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider {
     private static final Logger LOG = Logger.getInstance(GroovyEntityFieldCompletionProvider.class)
 
     /**
@@ -44,10 +50,10 @@ abstract  class GroovyEntityFieldCompletionProvider extends EntityFieldCompletio
     protected static String retrieveEntityOrViewNameFromGrVariable(PsiVariable initialElement) {
         PsiExpression init = initialElement.initializer
         String declarationString = init ? init.text : initialElement.initializerGroovy?.text
-        if (declarationString) {
-            getEntityNameFromDeclarationString(declarationString)
+        if (declarationString && !(declarationString == 'null')) {
+            return getEntityNameFromDeclarationString(declarationString)
         } else {
-            def oldFashionedLoop = PsiTreeUtil.getParentOfType(initialElement, GrLoopStatement.class)
+            def oldFashionedLoop = getParentOfType(initialElement, GrLoopStatement.class)
             if (oldFashionedLoop) {
                 return retrieveEntityOfViewNameFromOldFashionedLoop(oldFashionedLoop)
             }
@@ -58,6 +64,7 @@ abstract  class GroovyEntityFieldCompletionProvider extends EntityFieldCompletio
                 return retrieveEntityOrViewNameFromGrVariable(gvList)
             }
         }
+        return getEntityNameFromLastQueryAssignment(initialElement)
     }
 
     protected static String retrieveEntityOfViewNameFromOldFashionedLoop(GrLoopStatement oldFashionedLoop) {
@@ -71,7 +78,7 @@ abstract  class GroovyEntityFieldCompletionProvider extends EntityFieldCompletio
 
     protected static PsiElement getGVListVariablefromLoopInstruction(GrReferenceExpression potentialLoop, int index) {
         if (index > 10) return null
-        GrReferenceExpression expression = PsiTreeUtil.findChildOfType(potentialLoop, GrReferenceExpression.class, true)
+        GrReferenceExpression expression = findChildOfType(potentialLoop, GrReferenceExpression.class, true)
         PsiElement gvList = expression.resolve()
         if (!gvList) { // on regarde au niveau du dessous
             return getGVListVariablefromLoopInstruction(expression, index++)
@@ -80,9 +87,27 @@ abstract  class GroovyEntityFieldCompletionProvider extends EntityFieldCompletio
     }
 
     protected static GrReferenceExpression getPotentialLoop(GrVariable initialElement) {
-        PsiElement bracketsBlock = PsiTreeUtil.getParentOfType(initialElement, GrClosableBlock.class)
-        PsiElement fullCallBlock = PsiTreeUtil.getParentOfType(bracketsBlock, GrMethodCall.class)
-        PsiElement potentialLoopCall = PsiTreeUtil.getChildOfType(fullCallBlock, GrReferenceExpression.class) ?: null
+        PsiElement bracketsBlock = getParentOfType(initialElement, GrClosableBlock.class)
+        PsiElement fullCallBlock = getParentOfType(bracketsBlock, GrMethodCall.class)
+        PsiElement potentialLoopCall = getChildOfType(fullCallBlock, GrReferenceExpression.class) ?: null
         return potentialLoopCall
+    }
+
+    /**
+     * Tries to extract the entity name from the context and potentials assignements
+     * @param element
+     * @param genericValueVariable
+     * @return
+     */
+    static String getEntityNameFromLastQueryAssignment(PsiVariable genericValueVariable) {
+        List<UsageInfo> usages = getUsagesOfVariable(genericValueVariable)
+        if (!usages) return null
+        UsageInfo lastQuery = usages.stream().filter { usage ->
+            GrAssignmentExpression assign = getParentOfType(usage.element, GrAssignmentExpression.class)
+            assign && assign.RValue.text.contains(OfbizPatternConst.QUERY_BEGINNING_STRING)
+        }.toList()?.last()
+        if (!lastQuery) return
+        GrAssignmentExpression lastAssignExpr = getParentOfType(lastQuery.element, GrAssignmentExpression.class)
+        return getEntityNameFromDeclarationString(lastAssignExpr.RValue.text)
     }
 }

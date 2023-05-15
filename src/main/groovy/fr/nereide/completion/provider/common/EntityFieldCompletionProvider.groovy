@@ -5,7 +5,16 @@ import com.intellij.codeInsight.completion.CompletionProvider
 import com.intellij.codeInsight.completion.CompletionResultSet
 import com.intellij.codeInsight.completion.PrioritizedLookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
+import com.intellij.find.FindManager
+import com.intellij.find.findUsages.FindUsagesHandler
+import com.intellij.find.findUsages.FindUsagesOptions
+import com.intellij.find.impl.FindManagerImpl
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiVariable
+import com.intellij.usageView.UsageInfo
+import com.intellij.util.ArrayUtil
+import com.intellij.util.CommonProcessors
 import com.intellij.util.ProcessingContext
 import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.NotNull
@@ -70,6 +79,27 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         Matcher matcher = ENTITY_NAME_PATTERN.matcher(declaration)
         String entityName = matcher.find() ? matcher.group(0) : null
         return entityName ? entityName.substring(1, entityName.length() - 1) : null
+    }
+
+    /**
+     * returns the list of all usages of the variable
+     * @param variable
+     * @return
+     */
+    static List<UsageInfo> getUsagesOfVariable(PsiVariable variable) {
+        Project project = variable.getProject()
+        FindUsagesHandler handler = ((FindManagerImpl) FindManager.getInstance(project))
+                .getFindUsagesManager()
+                .getFindUsagesHandler(variable, false)
+        if (!handler) return null
+        CommonProcessors.CollectProcessor<UsageInfo> processor = new CommonProcessors.CollectProcessor<>(Collections.synchronizedList(new ArrayList<>()))
+        if (!processor) return null
+        PsiElement[] psiElements = ArrayUtil.mergeArrays(handler.getPrimaryElements(), handler.getSecondaryElements())
+        FindUsagesOptions options = handler.getFindUsagesOptions(null)
+        for (PsiElement psiElement : psiElements) {
+            handler.processElementUsages(psiElement, processor, options)
+        }
+        return processor.getResults()
     }
 
     /**
