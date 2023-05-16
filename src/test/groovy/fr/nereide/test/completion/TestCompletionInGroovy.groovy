@@ -153,11 +153,20 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         doTest(expected)
     }
 
-//    /**
-//     */
-//    void testEntityFieldCompletionInValueQueriedInTryCatchInScript() {
-//        assert true
-//    }
+    /**
+     * Script
+     * {@code
+     * GenericValue myVal = null
+     * try { //query
+     * } catch (Exception ignored) { }
+     * myVal.get('<caret>')
+     *}
+     */
+    void testEntityFieldCompletionInValueQueriedInTryCatchInScript() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
+
 //
 //    /**
 //     */

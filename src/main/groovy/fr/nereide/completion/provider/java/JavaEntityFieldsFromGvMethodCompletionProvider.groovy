@@ -46,7 +46,7 @@ class JavaEntityFieldsFromGvMethodCompletionProvider extends JavaEntityFieldsCom
         if (!usages) return null
         LinkedList<UsageInfo> usagesInQuery = usages.stream().filter { usage ->
             PsiAssignmentExpression assign = getParentOfType(usage.element, PsiAssignmentExpression.class)
-            assign && assign.RExpression.text.contains(OfbizPatternConst.QUERY_BEGINNING_STRING)
+            assign && assign.RExpression.text.contains(OfbizPatternConst.QUERY_FROM_STATEMENT)
         }.toList()
         if (!usagesInQuery) return
         UsageInfo lastAssign = usagesInQuery.last

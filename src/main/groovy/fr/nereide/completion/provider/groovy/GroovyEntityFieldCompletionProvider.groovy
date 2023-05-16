@@ -104,7 +104,7 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
         if (!usages) return null
         UsageInfo lastQuery = usages.stream().filter { usage ->
             GrAssignmentExpression assign = getParentOfType(usage.element, GrAssignmentExpression.class)
-            assign && assign.RValue.text.contains(OfbizPatternConst.QUERY_BEGINNING_STRING)
+            assign && assign.RValue.text.contains(OfbizPatternConst.QUERY_FROM_STATEMENT)
         }.toList()?.last()
         if (!lastQuery) return
         GrAssignmentExpression lastAssignExpr = getParentOfType(lastQuery.element, GrAssignmentExpression.class)

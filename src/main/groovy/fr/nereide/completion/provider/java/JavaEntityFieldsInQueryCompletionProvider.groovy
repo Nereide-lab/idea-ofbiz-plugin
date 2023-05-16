@@ -11,7 +11,7 @@ class JavaEntityFieldsInQueryCompletionProvider extends JavaEntityFieldsCompleti
     @Override
     String getEntityNameFromPsiElement(PsiElement element) {
         PsiMethodCallExpression originMethod = getParentOfType(element, PsiMethodCallExpression.class)
-        if (originMethod && originMethod.text.startsWith(OfbizPatternConst.QUERY_BEGINNING_STRING)) {
+        if (originMethod && originMethod.text.contains(OfbizPatternConst.QUERY_FROM_STATEMENT)) {
             return getEntityNameFromDeclarationString(originMethod.text)
         }
         return null

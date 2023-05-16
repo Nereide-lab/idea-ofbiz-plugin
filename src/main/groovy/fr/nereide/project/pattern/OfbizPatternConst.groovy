@@ -19,7 +19,7 @@ class OfbizPatternConst {
     public static final String MODEL_KEYMAP_CLASS = 'org.apache.ofbiz.entity.model.ModelKeyMap'
 
     // Strings
-    public static final String QUERY_BEGINNING_STRING = 'EntityQuery.use('
+    public static final String QUERY_FROM_STATEMENT = 'from('
 
     static Object makeMethodParameterPattern(PsiJavaElementPattern<? extends PsiLiteral, ?> elementPattern,
                                              String methodName, String className, int index) {
