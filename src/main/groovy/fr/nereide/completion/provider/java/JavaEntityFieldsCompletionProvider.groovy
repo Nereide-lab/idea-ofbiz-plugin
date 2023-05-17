@@ -1,5 +1,6 @@
 package fr.nereide.completion.provider.java
 
+import com.intellij.psi.PsiAssignmentExpression
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiForeachStatement
 import com.intellij.psi.PsiMethodCallExpression
@@ -36,4 +37,11 @@ abstract class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionP
         return null
     }
 
+    Class getAssigmentClass() {
+        return PsiAssignmentExpression.class
+    }
+
+    String getAssigmentString(PsiElement assign) {
+        return (assign as PsiAssignmentExpression).RExpression.text
+    }
 }

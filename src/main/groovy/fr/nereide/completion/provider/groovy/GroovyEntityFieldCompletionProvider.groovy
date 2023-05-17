@@ -21,10 +21,8 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiVariable
-import com.intellij.usageView.UsageInfo
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
 import fr.nereide.project.pattern.OfbizGroovyPatterns
-import fr.nereide.project.pattern.OfbizPatternConst
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrForStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrLoopStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
@@ -47,7 +45,7 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
      * @param initialElement
      * @return the name or null if not found
      */
-    protected static String retrieveEntityOrViewNameFromGrVariable(PsiVariable initialElement) {
+    protected String retrieveEntityOrViewNameFromGrVariable(PsiVariable initialElement) {
         PsiExpression init = initialElement.initializer
         String declarationString = init ? init.text : initialElement.initializerGroovy?.text
         if (declarationString && !(declarationString == 'null')) {
@@ -67,7 +65,7 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
         return getEntityNameFromLastQueryAssignment(initialElement)
     }
 
-    protected static String retrieveEntityOfViewNameFromOldFashionedLoop(GrLoopStatement oldFashionedLoop) {
+    protected String retrieveEntityOfViewNameFromOldFashionedLoop(GrLoopStatement oldFashionedLoop) {
         GrVariable iteratedList = null
         if (oldFashionedLoop instanceof GrForStatement) {
             GrForClause forDeclaration = (oldFashionedLoop as GrForStatement).getClause()
@@ -93,21 +91,11 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
         return potentialLoopCall
     }
 
-    /**
-     * Tries to extract the entity name from the context and potentials assignements
-     * @param element
-     * @param genericValueVariable
-     * @return
-     */
-    static String getEntityNameFromLastQueryAssignment(PsiVariable genericValueVariable) {
-        List<UsageInfo> usages = getUsagesOfVariable(genericValueVariable)
-        if (!usages) return null
-        UsageInfo lastQuery = usages.stream().filter { usage ->
-            GrAssignmentExpression assign = getParentOfType(usage.element, GrAssignmentExpression.class)
-            assign && assign.RValue.text.contains(OfbizPatternConst.QUERY_FROM_STATEMENT)
-        }.toList()?.last()
-        if (!lastQuery) return
-        GrAssignmentExpression lastAssignExpr = getParentOfType(lastQuery.element, GrAssignmentExpression.class)
-        return getEntityNameFromDeclarationString(lastAssignExpr.RValue.text)
+    Class getAssigmentClass() {
+        return GrAssignmentExpression.class
+    }
+
+    String getAssigmentString(PsiElement assign) {
+        return (assign as GrAssignmentExpression).RValue.text
     }
 }

@@ -17,11 +17,13 @@ import com.intellij.util.ArrayUtil
 import com.intellij.util.CommonProcessors
 import com.intellij.util.ProcessingContext
 import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.pattern.OfbizPatternConst
 import org.jetbrains.annotations.NotNull
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import static fr.nereide.dom.EntityModelFile.Entity
 import static fr.nereide.dom.EntityModelFile.ViewEntity
 import static fr.nereide.project.worker.EntityWorker.getEntityFields
@@ -103,10 +105,32 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
     }
 
     /**
+     * Tries to extract the entity name from the context and potentials assignements
+     * @param element
+     * @param genericValueVariable
+     * @return
+     */
+    String getEntityNameFromLastQueryAssignment(PsiVariable genericValueVariable) {
+        List<UsageInfo> usages = getUsagesOfVariable(genericValueVariable)
+        if (!usages) return null
+        UsageInfo lastQuery = usages.stream().filter { usage ->
+            def assign = getParentOfType(usage.element, getAssigmentClass())
+            assign && getAssigmentString(assign).contains(OfbizPatternConst.QUERY_FROM_STATEMENT)
+        }.toList()?.last()
+        if (!lastQuery) return
+        def lastAssignExpr = getParentOfType(lastQuery.element, getAssigmentClass())
+        return getEntityNameFromDeclarationString(getAssigmentString(lastAssignExpr))
+    }
+
+
+    /**
      * Try to get the EntityName from PsiElement and its context
      * @param psiElement
      * @return
      */
     abstract String getEntityNameFromPsiElement(PsiElement psiElement)
 
+    abstract Class getAssigmentClass()
+
+    abstract String getAssigmentString(PsiElement assign)
 }

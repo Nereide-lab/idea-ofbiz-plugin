@@ -41,4 +41,12 @@ class XmlEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
         return relevantMember.isEmpty() ? null :
                 relevantMember.get().getAttribute('entity-name')?.getValue()
     }
+
+    Class getAssigmentClass() {
+        return null
+    }
+
+    String getAssigmentString(PsiElement assign) {
+        return null
+    }
 }
