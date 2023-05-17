@@ -130,7 +130,16 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
      */
     abstract String getEntityNameFromPsiElement(PsiElement psiElement)
 
+    /**
+     * get the class to use for assigment search in psi tree when looking for assignement
+     * @return
+     */
     abstract Class getAssigmentClass()
 
+    /**
+     * returns the right operator of the assignement depending if the variable is java or groovy
+     * @param assign
+     * @return
+     */
     abstract String getAssigmentString(PsiElement assign)
 }
