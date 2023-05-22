@@ -35,6 +35,7 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrRefere
 
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType
 import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
+import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfTypeAsList
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 
 abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider {
@@ -91,6 +92,16 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
         return potentialLoopCall
     }
 
+    /**
+     * Get the initial variable declaration
+     * @param fullCalledMethod
+     * @return
+     */
+    static PsiVariable getPsiTopVariable(GrMethodCall fullCalledMethod) {
+        List fullGetStatementParts = getChildrenOfTypeAsList(fullCalledMethod, GrReferenceExpression.class)
+        List subGetStatementParts = getChildrenOfTypeAsList((fullGetStatementParts[0] as PsiElement), GrReferenceExpression.class)
+        return subGetStatementParts[0].resolve() as PsiVariable
+    }
     Class getAssigmentClass() {
         return GrAssignmentExpression.class
     }

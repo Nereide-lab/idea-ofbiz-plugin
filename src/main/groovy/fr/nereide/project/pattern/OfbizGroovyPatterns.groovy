@@ -69,6 +69,12 @@ class OfbizGroovyPatterns {
             makeGenericEntityGroovyMethodParameterPattern('getLong', 0)
     ))
 
+    public static final PsiElementPattern GENERIC_VALUE_FIELD_IN_DVE = psiElement().inside(
+            psiElement().andOr(
+                    makeDynamicViewEntityGroovyMethodParameterPattern('addAlias', 1)
+            )
+    )
+
     public static final PsiElementPattern GENERIC_VALUE_FIELD_QUERY = psiElement().inside(
             psiElement().andOr(
                     makeEntityQueryGroovyMethodParamaterPattern('where', 0)

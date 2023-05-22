@@ -167,15 +167,16 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         doTest(expected)
     }
 
-//
+    /**
+     */
+    void testEntityFieldCompletionInSimpleAddAliasInDynamicView() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
 //    /**
 //     */
-//    void testEntityFieldCompletionInValueQueriedInTryCatchInScriptGroovySyntax() {
-//        assert true
-//    }
-//    /**
-//     */
-//    void testEntityFieldCompletionInSimpleAddAliasInDynamicView() {
+//    void testEntityFieldCompletionInSimpleAddAliasInDynamicViewInScript() {
 //        assert true
 //    }
 //
@@ -187,13 +188,32 @@ class TestCompletionInGroovy extends BaseComplTestCase {
 //
 //    /**
 //     */
+//    void testEntityFieldCompletionInFullAddAliasInDynamicViewInScript() {
+//        assert true
+//    }
+
+//    /**
+//     */
 //    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicView() {
 //        assert true
 //    }
+
+//    /**
+//     */
+//    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicViewInScript() {
+//        assert true
+//    }
+//
 //
 //    /**
 //     */
 //    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicView() {
+//        assert true
+//    }
+
+//    /**
+//     */
+//    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicViewInScript() {
 //        assert true
 //    }
 }
