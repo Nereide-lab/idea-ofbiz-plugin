@@ -193,12 +193,14 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected)
     }
-//
-//    /**
-//     */
-//    void testEntityFieldCompletionInFullAddAliasInDynamicViewInScript() {
-//        assert true
-//    }
+
+    /**
+     * Script
+     * {@code myDve.addAlias("DM", "name", "<caret>", null, null, null, null) }
+     */
+    void testEntityFieldCompletionInFullAddAliasInDynamicViewInScript() {
+        assert true
+    }
 
 //    /**
 //     */
