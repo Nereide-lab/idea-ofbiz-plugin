@@ -7,7 +7,15 @@ import org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.PsiJavaPatterns.psiMethod
 import static com.intellij.patterns.StandardPatterns.string
-import static fr.nereide.project.pattern.OfbizPatternConst.*
+import static fr.nereide.project.pattern.OfbizPatternConst.DELEGATOR_CLASS
+import static fr.nereide.project.pattern.OfbizPatternConst.DYNAMIC_VIEW_ENTITY_CLASS
+import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_DATA_SERVICES_CLASS
+import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_QUERY_CLASS
+import static fr.nereide.project.pattern.OfbizPatternConst.GENERIC_ENTITY_CLASS
+import static fr.nereide.project.pattern.OfbizPatternConst.LOCAL_DISPATCHER_CLASS
+import static fr.nereide.project.pattern.OfbizPatternConst.MODEL_KEYMAP_CLASS
+import static fr.nereide.project.pattern.OfbizPatternConst.UTIL_PROPERTIES_CLASS
+import static fr.nereide.project.pattern.OfbizPatternConst.makeMethodParameterPattern
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyElementPattern.Capture
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.groovyLiteralExpression
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.namedArgument
@@ -82,6 +90,16 @@ class OfbizGroovyPatterns {
             )
     )
 
+    public static final PsiElementPattern ENTITY_FIELD_IN_KEYMAP_IN_DVE_0 = psiElement().inside(
+            psiElement().andOr(
+                    makeModelKeyMapGroovyMethodParamaterPattern('makeKeyMapList', 0)
+//                    TODO : Ajouter la condition qui n'est pas équivalente à celle de Java
+//                            .inside(psiExpression().methodCall(psiMethod()
+//                                    .withName('addViewLink')
+//                                    .definedInClass(DYNAMIC_VIEW_ENTITY_CLASS)))
+            )
+    )
+
     public static final PsiElementPattern GROOVY_LOOP_PATTERN = psiElement().andOr(
             psiElement().withText(string().contains('forEach')),
             psiElement().withText(string().contains('stream'))
@@ -92,6 +110,10 @@ class OfbizGroovyPatterns {
     //============================================
     static Capture<GrLiteral> makeGroovyMethodParameterPattern(String methodName, String className, int index) {
         return makeMethodParameterPattern(GroovyPatterns::groovyLiteralExpression(), methodName, className, index)
+    }
+
+    static Capture<GrLiteral> makeModelKeyMapGroovyMethodParamaterPattern(String methodName, int index) {
+        return makeGroovyMethodParameterPattern(methodName, MODEL_KEYMAP_CLASS, index)
     }
 
     static Capture<GrLiteral> makeEntityQueryGroovyMethodParamaterPattern(String methodName, int index) {
