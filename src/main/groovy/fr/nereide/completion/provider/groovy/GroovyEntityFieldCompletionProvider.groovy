@@ -35,7 +35,6 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrRefere
 
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType
 import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
-import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfTypeAsList
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 
 abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider {
