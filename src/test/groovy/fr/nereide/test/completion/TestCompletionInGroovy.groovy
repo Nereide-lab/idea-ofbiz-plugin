@@ -212,11 +212,14 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         doTest(expected)
     }
 
-//    /**
-//     */
-//    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicViewInScript() {
-//        assert true
-//    }
+    /**
+     * Script
+     * {@code myDve.addViewLink("DM", "OP", Boolean.FALSE, ModelKeyMap.makeKeyMapList("<caret>"))}
+     */
+    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicViewInScript() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
 //
 //
 //    /**
