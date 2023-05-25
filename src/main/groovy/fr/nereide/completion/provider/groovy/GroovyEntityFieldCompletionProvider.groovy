@@ -92,16 +92,10 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
         return potentialLoopCall
     }
 
-    /**
-     * Get the initial variable declaration
-     * @param fullCalledMethod
-     * @return
-     */
-    static PsiVariable getPsiTopVariable(GrMethodCall fullCalledMethod) {
-        List fullGetStatementParts = getChildrenOfTypeAsList(fullCalledMethod, GrReferenceExpression.class)
-        List subGetStatementParts = getChildrenOfTypeAsList((fullGetStatementParts[0] as PsiElement), GrReferenceExpression.class)
-        return subGetStatementParts[0].resolve() as PsiVariable
+    Class getReferenceExpressionClass() {
+        return GrReferenceExpression.class
     }
+
     Class getAssigmentClass() {
         return GrAssignmentExpression.class
     }

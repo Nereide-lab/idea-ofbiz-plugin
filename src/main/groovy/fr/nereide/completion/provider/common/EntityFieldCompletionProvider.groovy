@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfTypeAsList
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import static fr.nereide.dom.EntityModelFile.Entity
 import static fr.nereide.dom.EntityModelFile.ViewEntity
@@ -124,6 +125,17 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
 
 
     /**
+     * Get the initial variable declaration
+     * @param fullCalledMethod
+     * @return
+     */
+    PsiVariable getPsiTopVariable(def fullCalledMethod) {
+        List fullGetStatementParts = getChildrenOfTypeAsList(fullCalledMethod, getReferenceExpressionClass())
+        List subGetStatementParts = getChildrenOfTypeAsList((fullGetStatementParts[0] as PsiElement), getReferenceExpressionClass())
+        return subGetStatementParts[0].resolve() as PsiVariable
+    }
+
+    /**
      * Try to get the EntityName from PsiElement and its context
      * @param psiElement
      * @return
@@ -137,9 +149,16 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
     abstract Class getAssigmentClass()
 
     /**
+     * Returns the PsiClass used for reference expressions
+     * @return
+     */
+    abstract Class getReferenceExpressionClass()
+
+    /**
      * returns the right operator of the assignement depending if the variable is java or groovy
      * @param assign
      * @return
      */
     abstract String getAssigmentString(PsiElement assign)
+
 }

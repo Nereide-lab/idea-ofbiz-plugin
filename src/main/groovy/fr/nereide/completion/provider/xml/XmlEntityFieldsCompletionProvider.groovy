@@ -46,6 +46,10 @@ class XmlEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
         return null
     }
 
+    Class getReferenceExpressionClass() {
+        return null
+    }
+
     String getAssigmentString(PsiElement assign) {
         return null
     }
