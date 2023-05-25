@@ -100,6 +100,16 @@ class OfbizGroovyPatterns {
             )
     )
 
+    public static final PsiElementPattern ENTITY_FIELD_IN_KEYMAP_IN_DVE_1 = psiElement().inside(
+            psiElement().andOr(
+                    makeModelKeyMapGroovyMethodParamaterPattern('makeKeyMapList', 1)
+//                    TODO : Ajouter la condition qui n'est pas équivalente à celle de Java
+//                            .inside(psiExpression().methodCall(psiMethod()
+//                                    .withName('addViewLink')
+//                                    .definedInClass(DYNAMIC_VIEW_ENTITY_CLASS)))
+            )
+    )
+
     public static final PsiElementPattern GROOVY_LOOP_PATTERN = psiElement().andOr(
             psiElement().withText(string().contains('forEach')),
             psiElement().withText(string().contains('stream'))

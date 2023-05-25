@@ -30,6 +30,7 @@ import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_FIELD
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_FIELD_QUERY
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.SERVICE_CALL
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.ENTITY_FIELD_IN_KEYMAP_IN_DVE_0
+import static fr.nereide.project.pattern.OfbizGroovyPatterns.ENTITY_FIELD_IN_KEYMAP_IN_DVE_1
 
 class GroovyCompletionContributor extends OfbizBaseCompletionContributor {
     GroovyCompletionContributor() {
@@ -40,5 +41,6 @@ class GroovyCompletionContributor extends OfbizBaseCompletionContributor {
         this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_QUERY, new GroovyEntityFieldsFromQueryCompletionProvider())
         this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_IN_DVE, new GroovyEntityFieldsFromDVECompletionProvider())
         this.extend(CompletionType.BASIC, ENTITY_FIELD_IN_KEYMAP_IN_DVE_0, new GroovyEntityFieldsFromDVEKeyMapCompletionProvider(0))
+        this.extend(CompletionType.BASIC, ENTITY_FIELD_IN_KEYMAP_IN_DVE_1, new GroovyEntityFieldsFromDVEKeyMapCompletionProvider(1))
     }
 }

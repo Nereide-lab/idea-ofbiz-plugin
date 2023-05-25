@@ -220,17 +220,24 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected)
     }
-//
-//
-//    /**
-//     */
-//    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicView() {
-//        assert true
-//    }
 
-//    /**
-//     */
-//    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicViewInScript() {
-//        assert true
-//    }
+    /**
+     * Compiled
+     * {@code myDve.addViewLink("SB", "DM", Boolean.FALSE, ModelKeyMap.makeKeyMapList("foo", "<caret>"))}
+     */
+    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicView() {
+        List<String> notExpected = ['gabriel', 'jo']
+        List<String> expected = ['michael', 'maline']
+        doTest(expected, notExpected)
+    }
+
+    /**
+     * Script
+     * {@code myDve.addViewLink("SB", "DM", Boolean.FALSE, ModelKeyMap.makeKeyMapList("foo", "<caret>"))}
+     */
+    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicViewInScript() {
+        List<String> notExpected = ['gabriel', 'jo']
+        List<String> expected = ['michael', 'maline']
+        doTest(expected, notExpected)
+    }
 }
