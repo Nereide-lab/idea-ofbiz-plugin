@@ -131,8 +131,9 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
      */
     PsiVariable getPsiTopVariable(def fullCalledMethod) {
         List fullGetStatementParts = getChildrenOfTypeAsList(fullCalledMethod, getReferenceExpressionClass())
+        if (!fullGetStatementParts) return null
         List subGetStatementParts = getChildrenOfTypeAsList((fullGetStatementParts[0] as PsiElement), getReferenceExpressionClass())
-        return subGetStatementParts[0].resolve() as PsiVariable
+        return subGetStatementParts ? subGetStatementParts[0].resolve() as PsiVariable : null
     }
 
     /**

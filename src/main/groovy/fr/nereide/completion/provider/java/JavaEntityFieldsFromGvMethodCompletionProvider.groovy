@@ -16,6 +16,7 @@ class JavaEntityFieldsFromGvMethodCompletionProvider extends JavaEntityFieldsCom
         PsiMethodCallExpression getMethod = getParentOfType(element, PsiMethodCallExpression.class)
 
         PsiVariable gvVariable = getPsiTopVariable(getMethod)
+        if (!gvVariable) return null
         PsiExpression gvInit = gvVariable.initializer
         if (gvInit) {
             // init instruction easily found, basic case

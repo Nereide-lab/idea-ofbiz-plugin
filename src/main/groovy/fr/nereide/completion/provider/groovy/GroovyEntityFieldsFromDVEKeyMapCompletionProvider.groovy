@@ -20,6 +20,6 @@ class GroovyEntityFieldsFromDVEKeyMapCompletionProvider extends GroovyEntityFiel
                 getParentOfType(element, GrMethodCall.class),
                 GrMethodCallExpression.class)
         PsiVariable dveVariable = getPsiTopVariable(dveMethodCall)
-        return getEntityNameFromDynamicView(dveMethodCall, dveVariable, index)
+        return dveVariable ? getEntityNameFromDynamicView(dveMethodCall, dveVariable, index) : null
     }
 }

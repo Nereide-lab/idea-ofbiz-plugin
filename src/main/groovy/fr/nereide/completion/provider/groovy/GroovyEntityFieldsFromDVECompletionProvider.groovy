@@ -21,7 +21,7 @@ class GroovyEntityFieldsFromDVECompletionProvider extends GroovyEntityFieldCompl
     String getEntityNameFromPsiElement(PsiElement element) {
         GrMethodCall dveMethodCall = getParentOfType(element, GrMethodCall.class)
         PsiVariable dveVariable = getPsiTopVariable(dveMethodCall)
-        if (variableHasDveType(dveVariable, dveMethodCall)) {
+        if (dveVariable && variableHasDveType(dveVariable, dveMethodCall)) {
             return getEntityNameFromDynamicView(dveMethodCall, dveVariable)
         }
         return null
