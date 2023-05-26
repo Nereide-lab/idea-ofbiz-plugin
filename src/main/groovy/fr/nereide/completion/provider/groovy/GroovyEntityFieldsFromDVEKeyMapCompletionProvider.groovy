@@ -16,10 +16,6 @@ class GroovyEntityFieldsFromDVEKeyMapCompletionProvider extends GroovyEntityFiel
 
     @Override
     String getEntityNameFromPsiElement(PsiElement element) {
-        GrMethodCall dveMethodCall = getParentOfType(
-                getParentOfType(element, GrMethodCall.class),
-                GrMethodCallExpression.class)
-        PsiVariable dveVariable = getPsiTopVariable(dveMethodCall)
-        return dveVariable ? getEntityNameFromDynamicView(dveMethodCall, dveVariable, index) : null
+        return getEntityNameFromKeyMapInDve(element, getMethodExprClass(), this.index)
     }
 }

@@ -186,8 +186,29 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         return aliasParam && aliasToLookFor == aliasParam
     }
 
-    String getEntityNameFromQuery(PsiElement element, Class methocTypeClass) {
-        PsiElement originMethod = getParentOfType(element, methocTypeClass)
+    /**
+     * Searches the EntityName from a modelMeymap in a Dynamic view
+     * @param element
+     * @param methodClass
+     * @param index
+     * @return
+     */
+    String getEntityNameFromKeyMapInDve(PsiElement element, Class methodClass, int index) {
+        PsiElement dveMethodCall = getParentOfType(
+                getParentOfType(element, methodClass),
+                methodClass)
+        PsiVariable dveVariable = getPsiTopVariable(dveMethodCall)
+        return dveVariable ? getEntityNameFromDynamicView(dveMethodCall, dveVariable, index) : null
+    }
+
+    /**
+     * Searchs for the entity name in the query String
+     * @param element
+     * @param methodTypeClass
+     * @return
+     */
+    static String getEntityNameFromQuery(PsiElement element, Class methodTypeClass) {
+        PsiElement originMethod = getParentOfType(element, methodTypeClass)
         if (originMethod && originMethod.text.contains(OfbizPatternConst.QUERY_FROM_STATEMENT)) {
             return getEntityNameFromDeclarationString(originMethod.text)
         }

@@ -15,10 +15,6 @@ class JavaEntityFieldsFromDVEKeyMapCompletionProvider extends JavaEntityFieldsFr
 
     @Override
     String getEntityNameFromPsiElement(PsiElement element) {
-        PsiMethodCallExpression dveMethodCall = getParentOfType(
-                getParentOfType(element, PsiMethodCallExpression.class),
-                PsiMethodCallExpression.class)
-        PsiVariable dveVariable = getPsiTopVariable(dveMethodCall)
-        return dveVariable ? getEntityNameFromDynamicView(dveMethodCall, dveVariable, index) : null
+        return getEntityNameFromKeyMapInDve(element, getMethodExprClass(), this.index)
     }
 }
