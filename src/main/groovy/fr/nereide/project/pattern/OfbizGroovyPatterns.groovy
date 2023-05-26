@@ -63,6 +63,7 @@ class OfbizGroovyPatterns {
                     )
             )
     ))
+
     public static final PsiElementPattern GENERIC_VALUE_ATTRIBUTE_GET = psiElement().inside(psiElement().andOr(
             makeGenericEntityGroovyMethodParameterPattern('get', 0),
             makeGenericEntityGroovyMethodParameterPattern('getString', 0),
@@ -93,20 +94,14 @@ class OfbizGroovyPatterns {
     public static final PsiElementPattern ENTITY_FIELD_IN_KEYMAP_IN_DVE_0 = psiElement().inside(
             psiElement().andOr(
                     makeModelKeyMapGroovyMethodParamaterPattern('makeKeyMapList', 0)
-//                    TODO : Ajouter la condition qui n'est pas équivalente à celle de Java
-//                            .inside(psiExpression().methodCall(psiMethod()
-//                                    .withName('addViewLink')
-//                                    .definedInClass(DYNAMIC_VIEW_ENTITY_CLASS)))
+                            .inside(GroovyPatterns.methodCall().withMethodName('addViewLink'))
             )
     )
 
     public static final PsiElementPattern ENTITY_FIELD_IN_KEYMAP_IN_DVE_1 = psiElement().inside(
             psiElement().andOr(
                     makeModelKeyMapGroovyMethodParamaterPattern('makeKeyMapList', 1)
-//                    TODO : Ajouter la condition qui n'est pas équivalente à celle de Java
-//                            .inside(psiExpression().methodCall(psiMethod()
-//                                    .withName('addViewLink')
-//                                    .definedInClass(DYNAMIC_VIEW_ENTITY_CLASS)))
+                            .inside(GroovyPatterns.methodCall().withMethodName('addViewLink'))
             )
     )
 
