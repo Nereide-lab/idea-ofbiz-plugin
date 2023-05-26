@@ -11,6 +11,7 @@ import com.intellij.find.findUsages.FindUsagesOptions
 import com.intellij.find.impl.FindManagerImpl
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiType
 import com.intellij.psi.PsiVariable
 import com.intellij.usageView.UsageInfo
 import com.intellij.util.ArrayUtil
@@ -19,16 +20,19 @@ import com.intellij.util.ProcessingContext
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizPatternConst
 import org.jetbrains.annotations.NotNull
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
+import org.jetbrains.plugins.groovy.lang.psi.dataFlow.types.TypeInferenceHelper
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfType
 import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfTypeAsList
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import static fr.nereide.dom.EntityModelFile.Entity
 import static fr.nereide.dom.EntityModelFile.ViewEntity
+import static fr.nereide.project.pattern.OfbizPatternConst.DYNAMIC_VIEW_ENTITY_CLASS_NAME
 import static fr.nereide.project.worker.EntityWorker.getEntityFields
 import static fr.nereide.project.worker.EntityWorker.getViewFields
 
@@ -146,10 +150,10 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
                     }
             if (!relevantAddAlias) return null
             return getMethodArgs(relevantAddAlias)?[1].text
-
         }
         return null
     }
+
 
     String getEntityNameFromDynamicView(PsiElement addAliasInitialMethod, PsiVariable initialDve) {
         return getEntityNameFromDynamicView(addAliasInitialMethod, initialDve, 0)
@@ -159,6 +163,15 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         PsiElement[] params = getMethodArgs(addAliasCall)
         String aliasParam = params?[0].text
         return aliasParam && aliasToLookFor == aliasParam
+    }
+
+    String getEntityNameFromInsideDynamisView(PsiElement element, Class methodClass) {
+        PsiElement dveMethodCall = getParentOfType(element, methodClass)
+        PsiVariable dveVariable = getPsiTopVariable(dveMethodCall)
+        if (dveVariable && variableHasDveType(dveVariable, dveMethodCall)) {
+            return getEntityNameFromDynamicView(dveMethodCall, dveVariable)
+        }
+        return null
     }
 
     /**
@@ -200,6 +213,20 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         if (!fullGetStatementParts) return null
         List subGetStatementParts = getChildrenOfTypeAsList((fullGetStatementParts[0] as PsiElement), getReferenceExpressionClass())
         return subGetStatementParts ? subGetStatementParts[0].resolve() as PsiVariable : null
+    }
+
+    static boolean variableHasDveType(PsiVariable dveVariable, PsiElement dveMethodCall) {
+        if (dveVariable && dveVariable.typeElement) {
+            return dveVariable.typeElement.text == DYNAMIC_VIEW_ENTITY_CLASS_NAME
+        } else if (dveVariable instanceof GrVariable) {
+            GrReferenceExpression methodCallRMember = getChildrenOfType(dveMethodCall, GrReferenceExpression.class)[0]
+            if (!methodCallRMember) return false
+            GrReferenceExpression dveVarExpr = getChildrenOfType(methodCallRMember, GrReferenceExpression.class)[0]
+            if (!dveVarExpr) return false
+            PsiType type = TypeInferenceHelper.getInferredType(dveVarExpr)
+            return type && type.presentableText == DYNAMIC_VIEW_ENTITY_CLASS_NAME
+        }
+        return false
     }
 
     /**
