@@ -128,31 +128,6 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
     /**
      * Tries to retrieve the entity name from the context Dynamic view
      * @param addAliasInitialMethod addAlias method where the completion takes place
-     * @param initialDve dve java variable
-     * @param index index of the alias maram to use for entityName
-     * @return
-     */
-    String getEntityNameFromDynamicView(GrMethodCall addAliasInitialMethod, PsiVariable initialDve, int index) {
-        GrExpression[] params = addAliasInitialMethod.argumentList.expressionArguments
-        if (params) {
-            String aliasToLookFor = params[index].text
-            List<UsageInfo> dveUsages = getUsagesOfVariable(initialDve)
-            GrMethodCall relevantAddAlias = dveUsages.stream()
-                    .map { UsageInfo usage ->
-                        getParentOfType(usage.element, GrMethodCall.class)
-                    }
-                    .find { GrMethodCall addAliasCall ->
-                        addAliasMethodUsesWantedAlias(addAliasCall, aliasToLookFor)
-                    } as GrMethodCall
-            if (!relevantAddAlias) return null
-            return relevantAddAlias?.argumentList?.expressionArguments?[1]?.text
-        }
-        return null
-    }
-
-    /**
-     * Tries to retrieve the entity name from the context Dynamic view
-     * @param addAliasInitialMethod addAlias method where the completion takes place
      * @param initialDve dve variable
      * @param index index of the alias maram to use for entityName
      * @return
