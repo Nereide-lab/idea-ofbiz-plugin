@@ -20,6 +20,7 @@ class OfbizPatternConst {
 
     // Strings
     public static final String QUERY_FROM_STATEMENT = 'from('
+    public static final String DYNAMIC_VIEW_ENTITY_CLASS_NAME = 'DynamicViewEntity'
 
     static Object makeMethodParameterPattern(PsiJavaElementPattern<? extends PsiLiteral, ?> elementPattern,
                                              String methodName, String className, int index) {

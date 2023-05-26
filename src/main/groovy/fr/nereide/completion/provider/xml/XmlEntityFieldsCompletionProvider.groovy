@@ -53,4 +53,12 @@ class XmlEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
     String getAssigmentString(PsiElement assign) {
         return null
     }
+
+    PsiElement[] getMethodArgs(PsiElement method) {
+        return null
+    }
+
+    Class getMethodExprClass() {
+        return null
+    }
 }

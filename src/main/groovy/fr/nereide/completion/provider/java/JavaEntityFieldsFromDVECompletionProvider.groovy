@@ -20,38 +20,4 @@ class JavaEntityFieldsFromDVECompletionProvider extends JavaEntityFieldsCompleti
         return null
     }
 
-    /**
-     * Tries to retrieve the entity name from the context Dynamic view
-     * @param addAliasInitialMethod addAlias method where the completion takes place
-     * @param initialDve dve java variable
-     * @param index index of the alias maram to use for entityName
-     * @return
-     */
-    static String getEntityNameFromDynamicView(PsiMethodCallExpression addAliasInitialMethod, PsiVariable initialDve, int index) {
-        PsiExpression[] params = addAliasInitialMethod.argumentList.expressions
-        if (params) {
-            String aliasToLookFor = params[index].text
-            List<UsageInfo> dveUsages = getUsagesOfVariable(initialDve)
-            PsiMethodCallExpression relevantAddAlias = dveUsages.stream()
-                    .map { UsageInfo usage ->
-                        getParentOfType(usage.element, PsiMethodCallExpression.class)
-                    }
-                    .find { PsiMethodCallExpression addAliasCall ->
-                        addAliasMethodUsesWantedAlias(addAliasCall, aliasToLookFor)
-                    } as PsiMethodCallExpression
-            if (!relevantAddAlias) return null
-            return relevantAddAlias?.argumentList?.expressions?[1]?.text
-        }
-        return null
-    }
-
-    static String getEntityNameFromDynamicView(PsiMethodCallExpression addAliasInitialMethod, PsiVariable initialDve) {
-        return getEntityNameFromDynamicView(addAliasInitialMethod, initialDve, 0)
-    }
-
-    static boolean addAliasMethodUsesWantedAlias(PsiMethodCallExpression addAliasCall, String aliasToLookFor) {
-        PsiExpression[] params = addAliasCall.argumentList.expressions
-        String aliasParam = params?[0].text
-        return aliasParam && aliasToLookFor == aliasParam
-    }
 }

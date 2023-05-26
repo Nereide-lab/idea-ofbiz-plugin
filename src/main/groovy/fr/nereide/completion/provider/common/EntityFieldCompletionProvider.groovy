@@ -19,6 +19,8 @@ import com.intellij.util.ProcessingContext
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizPatternConst
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -123,13 +125,73 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         return getEntityNameFromDeclarationString(getAssigmentString(lastAssignExpr))
     }
 
+    /**
+     * Tries to retrieve the entity name from the context Dynamic view
+     * @param addAliasInitialMethod addAlias method where the completion takes place
+     * @param initialDve dve java variable
+     * @param index index of the alias maram to use for entityName
+     * @return
+     */
+    String getEntityNameFromDynamicView(GrMethodCall addAliasInitialMethod, PsiVariable initialDve, int index) {
+        GrExpression[] params = addAliasInitialMethod.argumentList.expressionArguments
+        if (params) {
+            String aliasToLookFor = params[index].text
+            List<UsageInfo> dveUsages = getUsagesOfVariable(initialDve)
+            GrMethodCall relevantAddAlias = dveUsages.stream()
+                    .map { UsageInfo usage ->
+                        getParentOfType(usage.element, GrMethodCall.class)
+                    }
+                    .find { GrMethodCall addAliasCall ->
+                        addAliasMethodUsesWantedAlias(addAliasCall, aliasToLookFor)
+                    } as GrMethodCall
+            if (!relevantAddAlias) return null
+            return relevantAddAlias?.argumentList?.expressionArguments?[1]?.text
+        }
+        return null
+    }
+
+    /**
+     * Tries to retrieve the entity name from the context Dynamic view
+     * @param addAliasInitialMethod addAlias method where the completion takes place
+     * @param initialDve dve variable
+     * @param index index of the alias maram to use for entityName
+     * @return
+     */
+    String getEntityNameFromDynamicView(PsiElement addAliasInitialMethod, PsiVariable initialDve, int index) {
+        PsiElement[] params = getMethodArgs(addAliasInitialMethod)
+        if (params) {
+            String aliasToLookFor = params[index].text
+            List<UsageInfo> dveUsages = getUsagesOfVariable(initialDve)
+            def relevantAddAlias = dveUsages.stream()
+                    .map { UsageInfo usage ->
+                        getParentOfType(usage.element, getMethodExprClass())
+                    }
+                    .find { PsiElement addAliasCall ->
+                        addAliasMethodUsesWantedAlias(addAliasCall, aliasToLookFor)
+                    }
+            if (!relevantAddAlias) return null
+            return getMethodArgs(relevantAddAlias)?[1].text
+
+        }
+        return null
+    }
+
+    String getEntityNameFromDynamicView(PsiElement addAliasInitialMethod, PsiVariable initialDve) {
+        return getEntityNameFromDynamicView(addAliasInitialMethod, initialDve, 0)
+    }
+
+    boolean addAliasMethodUsesWantedAlias(PsiElement addAliasCall, String aliasToLookFor) {
+        PsiElement[] params = getMethodArgs(addAliasCall)
+        String aliasParam = params?[0].text
+        return aliasParam && aliasToLookFor == aliasParam
+    }
 
     /**
      * Get the initial variable declaration
      * @param fullCalledMethod
      * @return
      */
-    PsiVariable getPsiTopVariable(def fullCalledMethod) {
+    PsiVariable getPsiTopVariable(PsiElement fullCalledMethod) {
         List fullGetStatementParts = getChildrenOfTypeAsList(fullCalledMethod, getReferenceExpressionClass())
         if (!fullGetStatementParts) return null
         List subGetStatementParts = getChildrenOfTypeAsList((fullGetStatementParts[0] as PsiElement), getReferenceExpressionClass())
@@ -162,4 +224,16 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
      */
     abstract String getAssigmentString(PsiElement assign)
 
+    /**
+     * Returns a method arguments depending on language
+     * @param method
+     * @return
+     */
+    abstract PsiElement[] getMethodArgs(PsiElement method)
+
+    /**
+     * Returns the PsiClass used for Method psi representations
+     * @return
+     */
+    abstract Class getMethodExprClass()
 }

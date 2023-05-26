@@ -102,4 +102,12 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
     String getAssigmentString(PsiElement assign) {
         return (assign as GrAssignmentExpression).RValue.text
     }
+
+    PsiElement[] getMethodArgs(PsiElement method) {
+        return (method as GrMethodCall).argumentList.expressionArguments
+    }
+
+    Class getMethodExprClass() {
+        return GrMethodCall.class
+    }
 }

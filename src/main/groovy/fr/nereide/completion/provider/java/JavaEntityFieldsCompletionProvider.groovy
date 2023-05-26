@@ -3,6 +3,7 @@ package fr.nereide.completion.provider.java
 import com.intellij.psi.PsiAssignmentExpression
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiForeachStatement
+import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiVariable
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
@@ -34,4 +35,13 @@ abstract class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionP
     String getAssigmentString(PsiElement assign) {
         return (assign as PsiAssignmentExpression).RExpression.text
     }
+
+    PsiElement[] getMethodArgs(PsiElement method) {
+        return (method as PsiMethodCallExpression).argumentList.expressions
+    }
+
+    Class getMethodExprClass() {
+        return PsiMethodCallExpression.class
+    }
+
 }
