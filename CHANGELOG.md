@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.0] Entity fields completion update
+
+### Added
+- Added entity fields completion in Java, Groovy, and Xml
+
 ## [1.4.8]
 
 ### Fixed

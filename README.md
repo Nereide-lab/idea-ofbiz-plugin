@@ -25,15 +25,13 @@ Navigate by `CTRL`+`CLICK` (default)
 - References in controller.xml file
   -You van navigate towards a view map definition, a service or java method in an event
 
-#### COMPLETION 
-Auto-completion by `CTRL`+`SPACE` for entity and view names as well as service names in java, xml, and groovy
-Auto-completion for fields of GenericValue in groovy.
-=> Still heavily BETA. Please report errors to this github project.
-At this point, for the completion to work, the Generic Value or GV list needs to be explicitly declared, so the plugin can
-find the declaration instruction. 
-Completion will not work for a list or GV that is not declared in the file.
+#### COMPLETION
+- Service name completion when calling service in most cases in java, groovy, and xml
+- Entity and View-entity name completion when calling entities and views in most cases in java, groovy, and xml
+- Entity and view entity fields completion in Java, Groovy, and Xml : 
+  - Most common cases should be covered. But for the field completion to work, the relevant entity must be written somewhere in the method.
 
-#### QUICK DOCUMENTATION (BETA)
+#### QUICK DOCUMENTATION
 The plugins adds hover documentation for the following ofbiz elements, in javan groovy and xml :
 - Services
 - View and entities
