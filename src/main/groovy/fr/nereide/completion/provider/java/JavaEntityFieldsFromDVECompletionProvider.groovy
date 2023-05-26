@@ -1,10 +1,8 @@
 package fr.nereide.completion.provider.java
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiVariable
-import com.intellij.usageView.UsageInfo
 
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 

@@ -23,7 +23,6 @@ import com.intellij.codeInsight.completion.CompletionResultSet
 import com.intellij.codeInsight.completion.PrioritizedLookupElement
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.util.ProcessingContext
 import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.project.ProjectServiceInterface
