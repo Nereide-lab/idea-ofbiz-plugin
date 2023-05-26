@@ -186,6 +186,14 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         return aliasParam && aliasToLookFor == aliasParam
     }
 
+    String getEntityNameFromQuery(PsiElement element, Class methocTypeClass) {
+        PsiElement originMethod = getParentOfType(element, methocTypeClass)
+        if (originMethod && originMethod.text.contains(OfbizPatternConst.QUERY_FROM_STATEMENT)) {
+            return getEntityNameFromDeclarationString(originMethod.text)
+        }
+        return null
+    }
+
     /**
      * Get the initial variable declaration
      * @param fullCalledMethod
