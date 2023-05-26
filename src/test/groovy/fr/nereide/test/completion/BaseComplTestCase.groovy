@@ -46,9 +46,13 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
         myFixture.configureByFile(file)
         myFixture.complete(CompletionType.BASIC)
         List<String> lookupElementStrings = myFixture.getLookupElementStrings()
-        assertContainsElements(lookupElementStrings, expectedLookups)
-        if (notExpectedLookups) {
-            assertDoesntContain(lookupElementStrings, notExpectedLookups)
+        if (expectedLookups) {
+            assertContainsElements(lookupElementStrings, expectedLookups)
+            if (notExpectedLookups) {
+                assertDoesntContain(lookupElementStrings, notExpectedLookups)
+            }
+        } else {
+            assert !lookupElementStrings
         }
     }
 }

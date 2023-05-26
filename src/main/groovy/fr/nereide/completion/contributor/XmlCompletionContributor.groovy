@@ -15,17 +15,22 @@
  * under the License.
  */
 
-package fr.nereide.completion
+package fr.nereide.completion.contributor
 
-import com.intellij.codeInsight.completion.CompletionContributor
 import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.common.EntityNameCompletionProvider
-import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
+import fr.nereide.completion.provider.xml.EntityNameCompletionProvider
+import fr.nereide.completion.provider.xml.XmlEntityFieldsCompletionProvider
 import fr.nereide.project.pattern.OfbizXmlPatterns
 
-class XmlCompletionContributor extends CompletionContributor{
-    XmlCompletionContributor(){
+class XmlCompletionContributor extends OfbizBaseCompletionContributor {
+    XmlEntityFieldsCompletionProvider xmlEntityFieldsCompletionProvider
+
+    XmlCompletionContributor() {
+        xmlEntityFieldsCompletionProvider = new XmlEntityFieldsCompletionProvider()
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_OR_VIEW_CALL_COMPL, entityOrViewNameCompletionProvider)
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.SERVICE_DEF_CALL_COMPL, serviceNameCompletionProvider)
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_COMPL, xmlEntityFieldsCompletionProvider)
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_IN_DATALOAD_COMPL, xmlEntityFieldsCompletionProvider)
         this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, OfbizXmlPatterns.SERVICE_DEF_CALL_COMPL, new ServiceNameCompletionProvider())
     }
 }

@@ -21,13 +21,109 @@ class TestCompletionInJava extends BaseComplTestCase {
 
     String getFileType() { return 'java' }
 
+    /**
+     * {@code EntityQuery.from("<caret>"); }
+     */
     void testEntityCompletionInJavaFile() {
         List<String> expected = ['Yenefer', 'Roach']
         doTest(expected)
     }
 
+    /**
+     * {@code dispatcher.runSync('<caret>'); }
+     */
     void testServiceCompletionInJavaFile() {
         List<String> expected = ['makeWitcher', 'makeHorse']
         doTest(expected)
+    }
+
+    //**********************************************
+    //                 ENTITY FIELDS              //
+    //**********************************************
+
+    /**
+     * <pre>
+     * {@code basic query
+     * String foo = testData.get("<caret>");
+     *} </pre>
+     */
+    void testEntityFieldCompletionInSimpleGetFieldFromGenericValueJavaClass() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * <pre>
+     * {@code query.where..
+     * String foo = testData.get("<caret>")
+     *} </pre>
+     */
+    void testEntityFieldCompletionInGetFieldFromGenericValueJavaClassWithWhere() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * <pre> {@code for (GenericValue testData : testDataList) {
+     *      String foo = testData.get("<caret>");
+     *  }}
+     */
+    void testEntityFieldCompletionInGetFieldFromGVListInForLoop() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * {@code EntityQuery.use(delegator).from("DunderMifflin").where("<caret>", "bar").queryFirst(); }
+     */
+    void testEntityFieldCompletionInSimpleWhereInEntityQuery() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * <pre> {@code GenericValue testData;
+     *  try {
+     *      testData = //..
+     *  } catch {//.. }
+     *  String foo = testData.get("<caret>");}
+     *  </pre>
+     */
+    void testEntityFieldCompletionInValueQueriedInTryCatch() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * {@code myDve.addAlias("OI", "<caret>");}
+     */
+    void testEntityFieldCompletionInSimpleAddAliasInDynamicView() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * {@code myDve.addAlias("OI", "name", "<caret>", null, null, null, null);}
+     */
+    void testEntityFieldCompletionInFullAddAliasInDynamicView() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * {@code myDve.addViewLink("DM", "OP", Boolean.FALSE, ModelKeyMap.makeKeyMapList("<caret>")); }
+     */
+    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicView() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * {@code myDve.addViewLink("SB", "DM", Boolean.FALSE, ModelKeyMap.makeKeyMapList("gabriel", "<caret>")); }
+     */
+    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicView() {
+        List<String> notExpected = ['gabriel', 'jo']
+        List<String> expected = ['michael', 'maline']
+        doTest(expected, notExpected)
     }
 }

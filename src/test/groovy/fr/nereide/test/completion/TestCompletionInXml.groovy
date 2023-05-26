@@ -30,4 +30,42 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> expected = ['makeWitcher', 'makeHorse']
         doTest(expected)
     }
+
+    void testEntityFieldCompletionInViewInAliasInName() {
+        List<String> expected = ['mobId', 'colorId']
+        doTest(expected)
+    }
+
+    void testEntityFieldCompletionInViewInAliasInField() {
+        List<String> expected = ['genderId', 'name']
+        doTest(expected)
+    }
+
+    void testNoEntityFieldCompletionInViewInAliasInNameWithField() {
+        doTest(null)
+    }
+
+    void testEntityFieldCompletionInViewInKeyMapInFieldName() {
+        List<String> expected = ['rachel', 'ross']
+        doTest(expected)
+    }
+
+    void testEntityFieldCompletionInViewInKeyMapInRelFieldName() {
+        List<String> expected = ['monica', 'ross']
+        List<String> notExpected = ['rachel']
+        doTest(expected, notExpected)
+    }
+
+    void testEntityNameCompletionInEntityEngineFile() {
+        List<String> expected = ['Yenefer', 'Roach', 'DunderMifflin', 'Sabre', 'DunderCorporate', 'CobraKai',
+                                 'Malcolm', 'Mordor', 'RossCouple', 'RossAndSister']
+        List<String> notExpected = ['WholePaperCompany', 'RecursiveView', 'CobraKaiNeverDie', 'Miyagido', 'InTheMiddle',
+                                    'LifeIsUnfair', 'PaperCompany']
+        doTest(expected, notExpected)
+    }
+
+    void testEntityFieldCompletionInEntityEngineFile() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
 }

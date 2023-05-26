@@ -22,72 +22,222 @@ class TestCompletionInGroovy extends BaseComplTestCase {
 
     String getFileType() { return 'groovy' }
 
+    /**
+     * {@code def myVar = EntityQuery.use(delegator).from('<caret>').queryFirst()}
+     */
     void testEntityCompletionInGroovyFile() {
         List<String> expected = ['Yenefer', 'Roach']
         doTest(expected)
     }
 
+    /**
+     * {@code var result = dispatcher.runSync('<caret>', null)}
+     */
     void testServiceCompletionInGroovyFile() {
         List<String> expected = ['makeWitcher', 'makeHorse']
         doTest(expected)
     }
 
+    /**
+     * <pre>
+     * {@code org.apache.ofbiz.entity.GenericValue paper = from('DunderMifflin')
+     *      def foo = paper.<caret> }</pre>
+     */
     void testEntityFieldCompletionInGroovyFileWithSimpleEntity() {
         List<String> expected = ['michael']
         doTest(expected)
     }
 
-    void testEntityFieldCompletionInGroovyFileWithViewNoNested() {
-        List<String> expected = ['jo', 'gabriel', 'michael'],
-                     notExpected = ['maline']
-        doTest(expected, notExpected)
-    }
+    //**********************************************
+    //                 ENTITY FIELDS              //
+    //**********************************************
 
-    void testEntityFieldCompletionInGroovyFileWithViewAndNested() {
-        List<String> expected = ['michael', 'jo', 'gabriel', 'david']
-        doTest(expected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithRecursiveView() {
-        List<String> expected = ['david']
-        doTest(expected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithViewAndExclude() {
-        List<String> expected = ['johnny', 'johnkreese'],
-                     notExpected = ['daniel']
-        doTest(expected, notExpected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithViewAndExcludeViewField() {
-        List<String> expected = ['johnny'],
-                     notExpected = ['daniel', 'johnkreese']
-        doTest(expected, notExpected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithSimpleViewAndPrefix() {
-        List<String> expected = ['bigshovelreese', 'bigshovelfrancis', 'bigshovellois', 'reese', 'francis', 'lois']
-        doTest(expected)
-    }
-
-    void testEntityFieldCompletionInGroovyFileWithComplexViewAndPrefix() {
-        List<String> expected = ['geniusbigshovelreese', 'geniusbigshovelfrancis', 'geniusbigshovellois',
-                                 'geniusreese', 'geniusfrancis', 'geniuslois']
-        doTest(expected)
-    }
-
+    /**
+     * <pre>
+     * {@code List<org.apache.ofbiz.entity.GenericValue> rings = from('Mordor')
+     *      rings.forEach { org.apache.ofbiz.entity.GenericValue it -> it.<caret> }
+     *} </pre>
+     */
     void testEntityFieldCompletionInGroovyFileInLoopOfListWithExplicitTypeAndForeachLoop() {
         List<String> expected = ['sauron']
         doTest(expected)
     }
 
+    /**
+     * <pre>
+     * {@code List<org.apache.ofbiz.entity.GenericValue> rings = from('Mordor')
+     * rings.stream().filter({ GenericValue it -> it.<caret> })
+     *} </pre>
+     */
     void testEntityFieldCompletionInGroovyFileInGVListStreamWithExplicitType() {
         List<String> expected = ['sauron']
         doTest(expected)
     }
 
+    /**
+     * <pre>
+     * {@code List<GenericValue> rings = from('Mordor')
+     * for (GenericValue ring : rings) { ring.<caret> }
+     *} </pre>
+     */
     void testEntityFieldCompletionInGroovyFileInForLoop() {
         List<String> expected = ['sauron']
         doTest(expected)
+    }
+
+    /**
+     * <pre>
+     * {@code GenericValue myVal = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryFirst()
+     * myVal.get('<caret>')
+     *} </pre>
+     */
+    void testEntityFieldCompletionInSimpleGetFieldFromGenericValue() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
+
+
+    /**
+     * Compiled
+     * <pre>
+     * {@code List<GenericValue> myVals = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryList()
+     * for (GenericValue myVal : myVals) { myVal.get('<caret>') }
+     *} </pre>
+     */
+    void testEntityFieldCompletionInGetFieldFromGVListInForLoop() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
+
+    /**
+     * Script
+     * <pre>
+     * {@code List<GenericValue> myVals = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryList()
+     * for (GenericValue myVal : myVals) { myVal.get('<caret>') }
+     *} </pre>
+     */
+    void testEntityFieldCompletionInGetFieldFromGVListInForLoopInScript() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
+
+    /**
+     * Compiled
+     * {@code GenericValue myVal = EntityQuery.use(delegator).from('RossAndSister').where('<caret>').queryList() }
+     */
+    void testEntityFieldCompletionInSimpleWhereInEntityQuery() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
+
+    /**
+     * Script
+     * {@code GenericValue lookedValue = from('RossAndSister').where('<caret>').queryOne()}
+     */
+    void testEntityFieldCompletionInSimpleWhereInEntityQueryInScript() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
+
+    /**
+     * Compiled
+     * {@code
+     * GenericValue myVal = null
+     * try { //query
+     * } catch (Exception ignored) { }
+     * myVal.get('<caret>')
+     *}
+     */
+    void testEntityFieldCompletionInValueQueriedInTryCatch() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
+
+    /**
+     * Script
+     * {@code
+     * GenericValue myVal = null
+     * try { //query
+     * } catch (Exception ignored) { }
+     * myVal.get('<caret>')
+     *}
+     */
+    void testEntityFieldCompletionInValueQueriedInTryCatchInScript() {
+        List<String> expected = ['ross', 'monica']
+        doTest(expected)
+    }
+
+    /**
+     * Compiled
+     * {@code myDve.addAlias("OI", "<caret>") }
+     */
+    void testEntityFieldCompletionInSimpleAddAliasInDynamicView() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * Script
+     * {@code myDve.addAlias("OI", "<caret>") }
+     */
+    void testEntityFieldCompletionInSimpleAddAliasInDynamicViewInScript() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * Compiled
+     * {@code myDve.addAlias("DM", "name", "<caret>", null, null, null, null) }
+     */
+    void testEntityFieldCompletionInFullAddAliasInDynamicView() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * Script
+     * {@code myDve.addAlias("DM", "name", "<caret>", null, null, null, null) }
+     */
+    void testEntityFieldCompletionInFullAddAliasInDynamicViewInScript() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * Compiled
+     * {@code myDve.addViewLink("DM", "OP", Boolean.FALSE, ModelKeyMap.makeKeyMapList("<caret>")) }
+     */
+    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicView() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * Script
+     * {@code myDve.addViewLink("DM", "OP", Boolean.FALSE, ModelKeyMap.makeKeyMapList("<caret>"))}
+     */
+    void testEntityFieldCompletionInModelKeyMapFirstFieldAddViewLinkInDynamicViewInScript() {
+        List<String> expected = ['michael', 'maline']
+        doTest(expected)
+    }
+
+    /**
+     * Compiled
+     * {@code myDve.addViewLink("SB", "DM", Boolean.FALSE, ModelKeyMap.makeKeyMapList("foo", "<caret>"))}
+     */
+    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicView() {
+        List<String> notExpected = ['gabriel', 'jo']
+        List<String> expected = ['michael', 'maline']
+        doTest(expected, notExpected)
+    }
+
+    /**
+     * Script
+     * {@code myDve.addViewLink("SB", "DM", Boolean.FALSE, ModelKeyMap.makeKeyMapList("foo", "<caret>"))}
+     */
+    void testEntityFieldCompletionInModelKeyMapSecondFieldAddViewLinkInDynamicViewInScript() {
+        List<String> notExpected = ['gabriel', 'jo']
+        List<String> expected = ['michael', 'maline']
+        doTest(expected, notExpected)
     }
 }
