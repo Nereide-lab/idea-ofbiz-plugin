@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unrealeased]
+## [Unreleased]
 
 ### Fixed
 - Fixed the recuperation of component dirs that brought back test directories and broke some references
