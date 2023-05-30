@@ -112,15 +112,19 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getMatchingElementFromXmlFiles(EntityEngineFile.class, "getDatasources", "getName", name)
     }
 
+    static boolean isInTestDir(DomFileElement file) {
+        String dir = file.getFile().getContainingDirectory().toString()
+        return dir.contains('/tests')
+    }
+
     PsiDirectory getComponentDir(String name) {
         List<DomFileElement> componentFiles = DomService.getInstance()
                 .getFileElements(ComponentFile.class, project, GlobalSearchScope.allScope(project))
-
-        for (DomFileElement component : componentFiles) {
-            if (component.getRootElement().getName().getValue().equalsIgnoreCase(name)) {
-                component = (DomFileElement) component
-                return component.getFile().getContainingDirectory()
-            }
+        DomFileElement relevantComponent = componentFiles.stream().find { componentFile ->
+            !isInTestDir(componentFile) && componentFile.getRootElement().getName().getValue().equalsIgnoreCase(name)
+        }
+        if(relevantComponent) {
+            return relevantComponent.getFile().getContainingDirectory()
         }
         return null
     }
