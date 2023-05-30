@@ -35,7 +35,7 @@ class ViewMapReferenceProvider extends PsiReferenceProvider {
         if (element instanceof XmlAttributeValue) {
             ViewMapReference controller = new ViewMapReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) controller
-            return reference
+            return reference ?: PsiReference.EMPTY_ARRAY
         }
         return PsiReference.EMPTY_ARRAY
     }

@@ -35,7 +35,7 @@ class RequestMapReferenceProvider extends PsiReferenceProvider {
         if (element instanceof XmlAttributeValue) {
             RequestMapReference controller = new RequestMapReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) controller
-            return reference
+            return reference ?: PsiReference.EMPTY_ARRAY
         }
         return PsiReference.EMPTY_ARRAY
     }

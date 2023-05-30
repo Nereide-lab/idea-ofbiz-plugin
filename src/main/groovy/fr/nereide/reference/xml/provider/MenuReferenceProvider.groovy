@@ -33,7 +33,7 @@ class MenuReferenceProvider extends PsiReferenceProvider {
         if (element instanceof XmlAttributeValue) {
             MenuReference menu = new MenuReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) menu
-            return reference
+            return reference ?: PsiReference.EMPTY_ARRAY
         }
         return PsiReference.EMPTY_ARRAY
     }

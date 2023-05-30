@@ -34,7 +34,7 @@ class ScreenReferenceProvider extends PsiReferenceProvider {
         if (element instanceof XmlAttributeValue) {
             ScreenReference screen = new ScreenReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) screen
-            return reference
+            return reference ?: PsiReference.EMPTY_ARRAY
         }
         return PsiReference.EMPTY_ARRAY
     }
