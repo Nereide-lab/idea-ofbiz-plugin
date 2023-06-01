@@ -18,6 +18,7 @@
 package fr.nereide.project
 
 import com.intellij.psi.PsiDirectory
+import fr.nereide.dom.ComponentFile
 import fr.nereide.dom.ControllerFile.RequestMap
 import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.EntityEngineFile.Datasource
@@ -60,6 +61,10 @@ interface ProjectServiceInterface {
     Menu getMenu(String name)
 
     PsiDirectory getComponentDir(String name)
+
+    List<ComponentFile> getAllComponentsFiles()
+
+    List<String> getAllComponentsNames()
 
     List<ExtendEntity> getExtendEntityListForEntity(String entityName)
 
