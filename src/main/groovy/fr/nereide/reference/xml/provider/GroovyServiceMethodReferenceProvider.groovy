@@ -17,9 +17,9 @@ class GroovyServiceMethodReferenceProvider extends JavaMethodReferenceProvider {
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         ProjectServiceInterface ps = element.getProject().getService(ProjectServiceInterface.class)
         String locationAttr = getClassLocation(element)
-        if (!locationAttr) return null
+        if (!locationAttr) return PsiReference.EMPTY_ARRAY
         PsiFile targetedFile = FileHandlingUtils.getTargetFile(locationAttr, ps)
-        if (!targetedFile || !(targetedFile instanceof GroovyFile)) return null
+        if (!targetedFile || !(targetedFile instanceof GroovyFile)) return PsiReference.EMPTY_ARRAY
         return new GroovyServiceDefReference(element as XmlAttributeValue,
                 (targetedFile as GroovyFile).getScriptClass(),
                 true)

@@ -24,6 +24,7 @@ repositories {
 
 dependencies {
     implementation 'org.codehaus.groovy:groovy-all:3.0.13'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
     testImplementation platform('org.junit:junit-bom:5.8.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'

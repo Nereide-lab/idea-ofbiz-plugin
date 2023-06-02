@@ -70,5 +70,15 @@
         <dom.fileMetaData implementation="fr.nereide.dom.CompoundFileDescription" rootTagName="compound-widgets"/>
         <dom.fileMetaData implementation="fr.nereide.dom.EntityEngineFileDescription" rootTagName="entity-config"/>
 
+        <!-- Code inspections -->
+        <localInspection language="XML"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.location.target.file.not.found.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.probable.bugs"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.EmptyFileLocationInspection"/>
     </extensions>
 </idea-plugin>

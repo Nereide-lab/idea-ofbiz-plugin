@@ -4,10 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unrealeased]
+## [1.5.1]
 
 ### Fixed
 - Fixed the recuperation of component dirs that brought back test directories and broke some references
+
+### Added
+- Added code inspection in xml for strings in location attribute that checks if there is indeed a file at the end of the path.
 
 ## [1.5.0] Entity fields completion update
 

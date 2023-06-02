@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/services.xsd">
+
+    <service name="getNedracScale" location="component://ze<caret>lda/groovySc/linkservices/edrac.groovy" invoke="getNedracScale">
+    </service>
+</services>

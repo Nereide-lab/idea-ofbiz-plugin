@@ -32,10 +32,13 @@ class FileReferenceProvider extends PsiReferenceProvider {
 
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (isJavaService(element)) {
-            return ClassValueConverterImpl.getClassValueConverter().createReferences(null, element, null)
+            return ClassValueConverterImpl
+                    .getClassValueConverter()
+                    .createReferences(null, element, null) ?: PsiReference.EMPTY_ARRAY
         } else {
-            return ComponentAwareFileReferenceSet.createSet(element, true, true, false)
-                    .getAllReferences()
+            return ComponentAwareFileReferenceSet
+                    .createSet(element, true, true, false)
+                    .getAllReferences() ?: PsiReference.EMPTY_ARRAY
         }
     }
 

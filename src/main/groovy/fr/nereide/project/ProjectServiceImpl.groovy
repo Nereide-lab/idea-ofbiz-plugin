@@ -19,7 +19,6 @@ package fr.nereide.project
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
@@ -118,12 +117,11 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     PsiDirectory getComponentDir(String name) {
-        List<DomFileElement> componentFiles = DomService.getInstance()
-                .getFileElements(ComponentFile.class, project, GlobalSearchScope.allScope(project))
+        List<ComponentFile> componentFiles = getAllComponentsFiles()
         DomFileElement relevantComponent = componentFiles.stream().find { componentFile ->
-            !isInTestDir(componentFile) && componentFile.getRootElement().getName().getValue().equalsIgnoreCase(name)
+            componentFile.getRootElement().getName().getValue().equalsIgnoreCase(name)
         }
-        if(relevantComponent) {
+        if (relevantComponent) {
             return relevantComponent.getFile().getContainingDirectory()
         }
         return null
@@ -140,6 +138,23 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     @Override
     List<ExtendEntity> getAllExtendsEntity() {
         return getAllElementOfSpecificType(EntityModelFile.class, "getExtendEntities")
+    }
+
+    @Override
+    List<ComponentFile> getAllComponentsFiles() {
+        return DomService.getInstance()
+                .getFileElements(ComponentFile.class, project, GlobalSearchScope.allScope(project))
+                .findAll { !isInTestDir(it) }
+                .toList() as List<ComponentFile>
+    }
+
+    @Override
+    List<String> getAllComponentsNames() {
+        return DomService.getInstance()
+                .getFileElements(ComponentFile.class, project, GlobalSearchScope.allScope(project))
+                .findAll { !isInTestDir(it) }
+                .collect { it.getRootElement() }
+                .collect { it.name.value }
     }
 
     private DomElement getMatchingElementFromXmlFiles(Class classFile,

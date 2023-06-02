@@ -80,10 +80,7 @@ class FileHandlingUtils {
         Matcher componentMatcher = ComponentAwareFileReferenceSet.COMPONENT_NAME_PATTERN.matcher(componentPathToFile)
 
         if (componentMatcher.find() && componentMatcher.groupCount() != 0) {
-            List<String> pathPieces = Arrays.asList(
-                    componentPathToFile.split("\\s*/\\s*")).stream()
-                    .filter { !it.equalsIgnoreCase("") && !it.equalsIgnoreCase("component:") }
-                    .collect(Collectors.toList())
+            List<String> pathPieces = splitPathToList(componentPathToFile)
 
             PsiDirectory currentDir = structureService.getComponentDir(pathPieces.first())
             try {
@@ -97,6 +94,17 @@ class FileHandlingUtils {
             return file
         }
         return null
+    }
+
+    /**
+     * Splits a string like "component://order/path/to/file.xml"
+     * @param componentPathToFile
+     * @return a list with ['order', 'path', 'to', 'file.xml']
+     */
+    static List<String> splitPathToList(String componentPathToFile) {
+        return Arrays.asList(componentPathToFile.split("\\s*/\\s*")).stream()
+                .filter { !it.equalsIgnoreCase("") && !it.equalsIgnoreCase("component:") }
+                .collect(Collectors.toList())
     }
 
 }

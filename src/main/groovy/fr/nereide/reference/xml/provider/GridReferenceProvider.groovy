@@ -26,14 +26,14 @@ import fr.nereide.reference.xml.GridReference
 import org.jetbrains.annotations.NotNull
 
 class GridReferenceProvider extends PsiReferenceProvider {
-    GridReferenceProvider () {}
+    GridReferenceProvider() {}
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         if (element instanceof XmlAttributeValue) {
             GridReference form = new GridReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) form
-            return reference
+            return reference ?: PsiReference.EMPTY_ARRAY
         }
         return PsiReference.EMPTY_ARRAY
     }

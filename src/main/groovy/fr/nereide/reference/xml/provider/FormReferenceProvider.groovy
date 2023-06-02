@@ -33,7 +33,7 @@ class FormReferenceProvider extends PsiReferenceProvider {
         if (element instanceof XmlAttributeValue) {
             FormReference form = new FormReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) form
-            return reference
+            return reference ?: PsiReference.EMPTY_ARRAY
         }
         return PsiReference.EMPTY_ARRAY
     }
