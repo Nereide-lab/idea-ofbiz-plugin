@@ -5,6 +5,7 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiFileSystemItem
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.inspection.InspectionBundle
@@ -46,7 +47,7 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
 
         if (!currentDir) {
             List<String> allComponents = ps.getAllComponentsNames()
-            componentName = getMostLikelyCandidateStringInDirList(allComponents, componentNameInput)
+            componentName = getMostLikelyCandidateStringInList(allComponents, componentNameInput)
             currentDir = ps.getComponentDir(componentName)
         } else {
             componentName = componentNameInput
@@ -57,19 +58,17 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
             String inputPieceName = pathList[i]
             if (inputPieceName.contains('.')) {
                 List<PsiFile> files = currentDir.getFiles()
-                String mostProbableFile = files
-                        .findAll { distance.apply(inputPieceName, it.name) >= 0 }
-                        .min { distance.apply(inputPieceName, it.name) }?.name
-                if (mostProbableFile) {
-                    correctionAttempt.append(mostProbableFile)
+                String mostProbableFileName = getMostLikelyCandidateStringInDirOrFileList(files, inputPieceName)
+                if (mostProbableFileName) {
+                    correctionAttempt.append(mostProbableFileName)
                 } else {
                     doFix = false
                     break
                 }
             } else {
                 List<PsiDirectory> possibleDirs = currentDir.getSubdirectories()
-                String mostProbableDir = getMostLikelyCandidateStringInDirList(possibleDirs, inputPieceName)
-                currentDir = currentDir.getSubdirectories().find { it.name == mostProbableDir }
+                String mostProbableDirName = getMostLikelyCandidateStringInDirOrFileList(possibleDirs, inputPieceName)
+                currentDir = currentDir.getSubdirectories().find { it.name == mostProbableDirName }
                 if (currentDir) {
                     correctionAttempt.append(currentDir.name).append('/')
                 } else {
@@ -83,10 +82,9 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
         }
     }
 
-    String getMostLikelyCandidateStringInDirList(List<PsiDirectoryImpl> possibleDirs, String inputPieceName) {
+    String getMostLikelyCandidateStringInDirOrFileList(List<PsiFileSystemItem> possibleDirs, String inputPieceName) {
         return getMostLikelyCandidateStringInList(possibleDirs.collect { it.getName() }, inputPieceName)
     }
-
 
     String getMostLikelyCandidateStringInList(List<String> list, String candidat) {
         return list.findAll { distance.apply(candidat, it) >= 0 }
