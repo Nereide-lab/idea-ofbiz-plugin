@@ -64,7 +64,7 @@ test {
     systemProperty("idea.home.path", new File("${projectDir}/../").absolutePath)
     useJUnitPlatform()
     filter {
-        includeTestsMatching "fr.nereide.*"
+        includeTestsMatching "org.apache.ofbiz.*"
     }
 }
 

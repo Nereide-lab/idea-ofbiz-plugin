@@ -38,37 +38,37 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <!-- Project MiscUtils for file and DomElement recuperations -->
-        <projectService serviceInterface="fr.nereide.project.ProjectServiceInterface"
-                        serviceImplementation="fr.nereide.project.ProjectServiceImpl"/>
+        <projectService serviceInterface="org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface"
+                        serviceImplementation="org.apache.ofbiz.idea.plugin.project.ProjectServiceImpl"/>
 
         <!-- XML reference support -->
-        <psi.referenceContributor language="XML" implementation="fr.nereide.reference.contributor.XmlReferenceContributor"/>
-        <completion.contributor order="first" language="XML" implementationClass="fr.nereide.completion.contributor.XmlCompletionContributor"/>
+        <psi.referenceContributor language="XML" implementation="org.apache.ofbiz.idea.plugin.reference.contributor.XmlReferenceContributor"/>
+        <completion.contributor order="first" language="XML" implementationClass="org.apache.ofbiz.idea.plugin.completion.contributor.XmlCompletionContributor"/>
 
         <!-- Java reference support -->
-        <psi.referenceContributor language="JAVA" implementation="fr.nereide.reference.contributor.JavaReferenceContributor"/>
-        <completion.contributor order="first" language="JAVA" implementationClass="fr.nereide.completion.contributor.JavaCompletionContributor"/>
+        <psi.referenceContributor language="JAVA" implementation="org.apache.ofbiz.idea.plugin.reference.contributor.JavaReferenceContributor"/>
+        <completion.contributor order="first" language="JAVA" implementationClass="org.apache.ofbiz.idea.plugin.completion.contributor.JavaCompletionContributor"/>
 
         <!-- Groovy reference support -->
-        <psi.referenceContributor language="Groovy" implementation="fr.nereide.reference.contributor.GroovyReferenceContributor"/>
-        <completion.contributor order="first" language="Groovy" implementationClass="fr.nereide.completion.contributor.GroovyCompletionContributor"/>
+        <psi.referenceContributor language="Groovy" implementation="org.apache.ofbiz.idea.plugin.reference.contributor.GroovyReferenceContributor"/>
+        <completion.contributor order="first" language="Groovy" implementationClass="org.apache.ofbiz.idea.plugin.completion.contributor.GroovyCompletionContributor"/>
 
         <!-- Documentation -->
-        <documentationProvider implementation="fr.nereide.documentation.OfbizElementResolverForDocumentationProvider" order="first"/>
-        <lang.documentationProvider language="XML" implementationClass="fr.nereide.documentation.OfbizXmlDocumentationProvider"/>
-        <lang.documentationProvider language="JAVA" implementationClass="fr.nereide.documentation.OfbizJavaDocumentationProvider"/>
+        <documentationProvider implementation="org.apache.ofbiz.idea.plugin.documentation.OfbizElementResolverForDocumentationProvider" order="first"/>
+        <lang.documentationProvider language="XML" implementationClass="org.apache.ofbiz.idea.plugin.documentation.OfbizXmlDocumentationProvider"/>
+        <lang.documentationProvider language="JAVA" implementationClass="org.apache.ofbiz.idea.plugin.documentation.OfbizJavaDocumentationProvider"/>
 
         <!-- XML file description -->
-        <dom.fileMetaData implementation="fr.nereide.dom.ComponentFileDescription" rootTagName="ofbiz-component"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.ControllerFileDescription" rootTagName="site-conf"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.EntityModelFileDescription" rootTagName="entitymodel"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.ServiceDefFileDescription" rootTagName="services"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.UiLabelFileDescription" rootTagName="resource"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.FormFileDescription" rootTagName="forms"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.MenuFileDescription" rootTagName="menus"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.ScreenFileDescription" rootTagName="screens"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.CompoundFileDescription" rootTagName="compound-widgets"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.EntityEngineFileDescription" rootTagName="entity-config"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.idea.plugin.dom.ComponentFileDescription" rootTagName="ofbiz-component"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.idea.plugin.dom.ControllerFileDescription" rootTagName="site-conf"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.idea.plugin.dom.EntityModelFileDescription" rootTagName="entitymodel"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.idea.plugin.dom.ServiceDefFileDescription" rootTagName="services"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.idea.plugin.dom.UiLabelFileDescription" rootTagName="resource"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.idea.plugin.dom.FormFileDescription" rootTagName="forms"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.idea.plugin.dom.MenuFileDescription" rootTagName="menus"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.idea.plugin.dom.ScreenFileDescription" rootTagName="screens"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.idea.plugin.dom.CompoundFileDescription" rootTagName="compound-widgets"/>
+        <dom.fileMetaData implementation="org.apache.ofbiz.idea.plugin.dom.EntityEngineFileDescription" rootTagName="entity-config"/>
 
         <!-- Code inspections -->
         <localInspection language="XML"
@@ -79,6 +79,6 @@
                          groupKey="group.names.probable.bugs"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="fr.nereide.inspection.EmptyFileLocationInspection"/>
+                         implementationClass="org.apache.ofbiz.idea.plugin.inspection.EmptyFileLocationInspection"/>
     </extensions>
 </idea-plugin>
