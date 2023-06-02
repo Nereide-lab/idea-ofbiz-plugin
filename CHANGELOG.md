@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Fixed the recuperation of component dirs that brought back test directories and broke some references
 
+### Added
+- Added code inspection in xml for strings in location attribute that checks if there is indeed a file at the end of the path.
+
 ## [1.5.0] Entity fields completion update
 
 ### Added
