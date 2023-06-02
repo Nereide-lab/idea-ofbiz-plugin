@@ -1,10 +1,14 @@
 package fr.nereide.test.inspection
 
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
+import com.intellij.codeInsight.intention.IntentionAction
 import fr.nereide.inspection.EmptyFileLocationInspection
+import fr.nereide.inspection.InspectionBundle
 import fr.nereide.test.BaseOfbizPluginTestCase
 
 abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
+
+    private static final LOCATION_QUICKFIX_NAME = InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix')
 
     abstract String getLang()
 
@@ -24,15 +28,10 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         myFixture.configureByFile("${getLang()}/${getTestName(false)}.${getLang()}")
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         assertFalse(highlightInfos.isEmpty())
-
-        /* TODO : next step
-        // Get the quick fix action for comparing references inspection and apply it to the file
-        final IntentionAction action = myFixture.findSingleIntention(QUICK_FIX_NAME)
-        assertNotNull(action);
+        final IntentionAction action = myFixture.findSingleIntention(LOCATION_QUICKFIX_NAME)
+        assertNotNull(action)
         myFixture.launchAction(action)
-        // Verify the results
-        myFixture.checkResultByFile(testName + ".after.java");
-        */
+        myFixture.checkResultByFile("${getLang()}/${getTestName(false)}.after.${getLang()}")
     }
-
 }
+
