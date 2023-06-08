@@ -24,12 +24,13 @@ import com.intellij.util.xml.DomFileDescription
 import org.apache.ofbiz.idea.plugin.icons.PluginIcons
 import org.jetbrains.annotations.Nullable
 
-import javax.swing.Icon
+import javax.swing.*
+
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.XML_LANG_NS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.XML_LANG_NS_NAME
 
 class UiLabelFileDescription<S extends DomElement> extends DomFileDescription {
     private static final String rootTagName = "resource"
-    public static final String XML_LANG_NS = 'http://www.w3.org/XML/1998/namespace'
-    public static final String XML_LANG_NS_NAME = 'xml'
 
     UiLabelFileDescription() {
         super(UiLabelFile.class, rootTagName)

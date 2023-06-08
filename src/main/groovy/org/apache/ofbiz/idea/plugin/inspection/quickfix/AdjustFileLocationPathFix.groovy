@@ -105,6 +105,12 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
         return getMostLikelyCandidateStringInList(possibleDirs.collect { it.getName() }, inputPieceName)
     }
 
+    /**
+     * Uses apache Levenstein distance to find the closest dir or file name from what was inputed
+     * @param list
+     * @param candidat
+     * @return
+     */
     String getMostLikelyCandidateStringInList(List<String> list, String candidat) {
         return list.findAll { distance.apply(candidat, it) >= 0 }
                 .min { distance.apply(candidat, it) }

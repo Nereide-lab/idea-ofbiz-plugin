@@ -41,7 +41,7 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
 
     @Override
     PsiElement getCustomDocumentationElement(@NotNull Editor editor, @NotNull PsiFile file, @Nullable PsiElement contextElement, int targetOffset) {
-        // TODO : rajouter les autres types possibles
+        // TODO : Add other types ?
         PsiElement xmlAttr = PsiTreeUtil.getParentOfType(contextElement, XmlAttribute.class)
         /*************
          *    XML    *

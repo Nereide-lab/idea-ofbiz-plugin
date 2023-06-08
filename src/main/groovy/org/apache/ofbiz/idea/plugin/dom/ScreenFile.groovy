@@ -27,7 +27,6 @@ interface ScreenFile extends DomElement {
     @SubTagList("screen")
     List<Screen> getScreens()
 
-
     interface Screen extends DomElement {
         @NameValue
         @Stubbed

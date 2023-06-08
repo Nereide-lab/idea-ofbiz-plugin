@@ -40,7 +40,6 @@ interface EntityEngineFile extends DomElement {
 
         @SubTagList('group-map')
         List<DelegatorGroupMap> getGroupMaps()
-
     }
 
     interface DelegatorGroupMap extends DomElement {

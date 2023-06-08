@@ -17,10 +17,6 @@
  * under the License.
  */
 
-
-
-
-
 package org.apache.ofbiz.idea.plugin.test.documentation
 
 import com.intellij.codeInsight.documentation.DocumentationManager

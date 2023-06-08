@@ -32,12 +32,12 @@ import static com.intellij.patterns.XmlPatterns.xmlAttributeValue
 import static com.intellij.patterns.XmlPatterns.xmlFile
 import static com.intellij.patterns.XmlPatterns.xmlTag
 import static com.intellij.patterns.XmlTagPattern.Capture
-import static org.apache.ofbiz.idea.plugin.dom.CompoundFileDescription.FORM_NS_PREFIX
-import static org.apache.ofbiz.idea.plugin.dom.CompoundFileDescription.FORM_NS_URL
-import static org.apache.ofbiz.idea.plugin.dom.CompoundFileDescription.SCREEN_NS_PREFIX
-import static org.apache.ofbiz.idea.plugin.dom.CompoundFileDescription.SCREEN_NS_URL
-import static org.apache.ofbiz.idea.plugin.dom.CompoundFileDescription.SITE_CONF_NS_PREFIX
-import static org.apache.ofbiz.idea.plugin.dom.CompoundFileDescription.SITE_CONF_NS_URL
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.FORM_NS_PREFIX
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.FORM_NS_URL
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.SCREEN_NS_PREFIX
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.SCREEN_NS_URL
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.SITE_CONF_NS_PREFIX
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.SITE_CONF_NS_URL
 
 class OfbizXmlPatterns {
 

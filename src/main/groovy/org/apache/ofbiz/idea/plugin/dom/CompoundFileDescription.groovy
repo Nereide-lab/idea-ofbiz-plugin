@@ -22,23 +22,10 @@ package org.apache.ofbiz.idea.plugin.dom
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileDescription
 
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.*
+
 class CompoundFileDescription<S extends DomElement> extends DomFileDescription<CompoundFile> {
     private static final String rootTagName = "compound-widgets"
-
-    public static final String SITE_CONF_NS_URL = 'http://ofbiz.apache.org/Site-Conf'
-    public static final String SITE_CONF_NS = 'sc'
-    public static final String SITE_CONF_NS_PREFIX = 'sc:'
-
-    public static final String FORM_NS_URL = 'http://ofbiz.apache.org/Widget-Form'
-    public static final String FORM_NS = 'wf'
-    public static final String FORM_NS_PREFIX = 'wf:'
-
-    public static final String MENU_NS_URL = 'http://ofbiz.apache.org/Widget-Menu'
-    public static final String MENU_NS = 'wm'
-
-    public static final String SCREEN_NS_URL = 'http://ofbiz.apache.org/Widget-Screen'
-    public static final String SCREEN_NS = 'ws'
-    public static final String SCREEN_NS_PREFIX = 'ws:'
 
     CompoundFileDescription() { super(CompoundFile.class, rootTagName) }
 

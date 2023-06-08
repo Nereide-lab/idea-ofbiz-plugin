@@ -17,13 +17,13 @@
  * under the License.
  */
 
-package org.apache.ofbiz.idea.plugin.project.pattern
+package org.apache.ofbiz.idea.plugin.project
 
 import com.intellij.patterns.PsiJavaElementPattern
 import com.intellij.patterns.PsiJavaPatterns
 import com.intellij.psi.PsiLiteral
 
-class OfbizPatternConst {
+class OfbizPluginConst {
     // classes
     public static final String DISPATCH_CONTEXT_CLASS = 'org.apache.ofbiz.service.DispatchContext'
     public static final String LOCAL_DISPATCHER_CLASS = 'org.apache.ofbiz.service.LocalDispatcher'
@@ -40,6 +40,19 @@ class OfbizPatternConst {
     // Strings
     public static final String QUERY_FROM_STATEMENT = 'from('
     public static final String DYNAMIC_VIEW_ENTITY_CLASS_NAME = 'DynamicViewEntity'
+    public static final String SITE_CONF_NS_URL = 'http://ofbiz.apache.org/Site-Conf'
+    public static final String SITE_CONF_NS = 'sc'
+    public static final String SITE_CONF_NS_PREFIX = 'sc:'
+    public static final String FORM_NS_URL = 'http://ofbiz.apache.org/Widget-Form'
+    public static final String FORM_NS = 'wf'
+    public static final String FORM_NS_PREFIX = 'wf:'
+    public static final String MENU_NS_URL = 'http://ofbiz.apache.org/Widget-Menu'
+    public static final String MENU_NS = 'wm'
+    public static final String SCREEN_NS_URL = 'http://ofbiz.apache.org/Widget-Screen'
+    public static final String SCREEN_NS = 'ws'
+    public static final String SCREEN_NS_PREFIX = 'ws:'
+    public static final String XML_LANG_NS = 'http://www.w3.org/XML/1998/namespace'
+    public static final String XML_LANG_NS_NAME = 'xml'
 
     static Object makeMethodParameterPattern(PsiJavaElementPattern<? extends PsiLiteral, ?> elementPattern,
                                              String methodName, String className, int index) {

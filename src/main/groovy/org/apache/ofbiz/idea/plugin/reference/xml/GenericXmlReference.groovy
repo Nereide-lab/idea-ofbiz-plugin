@@ -38,7 +38,6 @@ import java.util.regex.Pattern
 
 class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
     private static final Logger LOG = Logger.getInstance(GenericXmlReference.class)
-    //String elementName
     final String ELEMENT_LIST_GETTER_METHOD
     final String ELEMENT_NAME_GETTER_METHOD
     final String ELEMENT_GETTER_METHOD
@@ -53,7 +52,6 @@ class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
         this.ELEMENT_LIST_GETTER_METHOD = ELEMENT_LIST_GETTER_METHOD
         this.ELEMENT_GETTER_METHOD = ELEMENT_GETTER_METHOD
         this.FILE_TYPE = FILE_TYPE
-        //this.getElement.getName() = setElementName(element)
     }
 
     @Override
@@ -64,7 +62,7 @@ class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
         if (containingTag) {
             PsiElement locationAttribute = containingTag.getAttribute('location')
             if (locationAttribute) {
-                //On va chercher dans le fichier ciblé
+                //search in targeted file
                 String locationAttributeValue = locationAttribute.getValue()
                 PsiFile targetedFile = FileHandlingUtils.getTargetFile(locationAttributeValue, structureService)
                 return FileHandlingUtils.getElementFromSpecificFile(targetedFile, dm, this.getElement().getValue(), this.FILE_TYPE,
@@ -72,16 +70,15 @@ class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
             } else if (isPageReferenceFromController(containingTag)) {
                 return resolveScreenInController(this.getElement(), structureService, dm)
             } else if (isInRightFile(this.getElement(), this.FILE_TYPE, dm)) {
-                // On regarde dans le fichier courant
+                // search in curent file
                 PsiFile currentFile = this.getElement().getContainingFile()
                 return FileHandlingUtils.getElementFromSpecificFile(currentFile, dm, this.getElement().getValue(), this.FILE_TYPE,
                         this.ELEMENT_NAME_GETTER_METHOD, this.ELEMENT_LIST_GETTER_METHOD)
             } else {
-                // Si on a pas de location, mais qu'on est pas dans un fichier pertinent => standard
+                // if no location but the file is not relevant => standard
                 return resolveStandard(structureService, this.getElement())
             }
         } else {
-            // Si pas de tag xml trouvé ou problème, on utilise la methode normale
             return resolveStandard(structureService, this.getElement())
         }
     }

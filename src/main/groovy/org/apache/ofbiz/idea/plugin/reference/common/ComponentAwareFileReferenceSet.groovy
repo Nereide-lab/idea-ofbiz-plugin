@@ -24,6 +24,7 @@ import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
@@ -33,7 +34,6 @@ import java.util.stream.Collectors
 
 class ComponentAwareFileReferenceSet extends FileReferenceSet {
 
-    //regex retournant le nom du composant
     public static final Pattern COMPONENT_NAME_PATTERN = Pattern.compile("component://([^/]*)/")
 
     ComponentAwareFileReferenceSet(@NotNull String str, @NotNull PsiElement element,
@@ -62,8 +62,8 @@ class ComponentAwareFileReferenceSet extends FileReferenceSet {
     }
 
     /**
-     * La fonction découpe le String de chemin de fichier et créée une référence pour chaque
-     * partie de l'url. Ainsi, on peut naviguer au ctrl click vers les dossiers aussi.
+     * Splits the paramater String into an string array. Then creates a file or dir reference
+     * towards each of the pieces, allowing nagivation to dirs as well
      * @param str
      * @param startInElement
      * @return
@@ -81,10 +81,7 @@ class ComponentAwareFileReferenceSet extends FileReferenceSet {
             if (componentBaseReference != null) {
                 referencesList.add(componentBaseReference)
             }
-            List<String> pathPieces = Arrays.asList(
-                    str.split("\\s*/\\s*")).stream()
-                    .filter { !it.equalsIgnoreCase("") && !it.equalsIgnoreCase("component:") }
-                    .collect(Collectors.toList())
+            List<String> pathPieces = FileHandlingUtils.splitPathToList(str)
 
             while (i < pathPieces.size()) {
                 String pathPiece = pathPieces[i]
@@ -107,8 +104,8 @@ class ComponentAwareFileReferenceSet extends FileReferenceSet {
 
     private static TextRange getRangeForSecondOccurrenceOfString(String str, String pathPiece) {
         new TextRange(
-            str.indexOf(pathPiece, str.indexOf(pathPiece) + 1) + 1,
-            str.indexOf(pathPiece, str.indexOf(pathPiece) + 1) + pathPiece.length() + 1)
+                str.indexOf(pathPiece, str.indexOf(pathPiece) + 1) + 1,
+                str.indexOf(pathPiece, str.indexOf(pathPiece) + 1) + pathPiece.length() + 1)
     }
 
     protected static FileReference createComponentBaseDirReference(FileReferenceSet set, int textRangeStart, int textRangeEnd,

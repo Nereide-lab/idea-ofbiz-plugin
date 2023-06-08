@@ -80,7 +80,7 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
         if (index > 10) return null
         GrReferenceExpression expression = findChildOfType(potentialLoop, GrReferenceExpression.class, true)
         PsiElement gvList = expression.resolve()
-        if (!gvList) { // on regarde au niveau du dessous
+        if (!gvList) { // look on the level below
             return getGVListVariablefromLoopInstruction(expression, index++)
         }
         return gvList

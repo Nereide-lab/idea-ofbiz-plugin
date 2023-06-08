@@ -37,7 +37,7 @@ import com.intellij.util.ArrayUtil
 import com.intellij.util.CommonProcessors
 import com.intellij.util.ProcessingContext
 import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
-import org.apache.ofbiz.idea.plugin.project.pattern.OfbizPatternConst
+import org.apache.ofbiz.idea.plugin.project.OfbizPluginConst
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
@@ -51,7 +51,7 @@ import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfTypeAsList
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import static org.apache.ofbiz.idea.plugin.dom.EntityModelFile.Entity
 import static org.apache.ofbiz.idea.plugin.dom.EntityModelFile.ViewEntity
-import static org.apache.ofbiz.idea.plugin.project.pattern.OfbizPatternConst.DYNAMIC_VIEW_ENTITY_CLASS_NAME
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.DYNAMIC_VIEW_ENTITY_CLASS_NAME
 import static org.apache.ofbiz.idea.plugin.project.worker.EntityWorker.getEntityFields
 import static org.apache.ofbiz.idea.plugin.project.worker.EntityWorker.getViewFields
 
@@ -141,7 +141,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         if (!usages) return null
         UsageInfo lastQuery = usages.stream().filter { usage ->
             def assign = getParentOfType(usage.element, getAssigmentClass())
-            assign && getAssigmentString(assign).contains(OfbizPatternConst.QUERY_FROM_STATEMENT)
+            assign && getAssigmentString(assign).contains(OfbizPluginConst.QUERY_FROM_STATEMENT)
         }.toList()?.last()
         if (!lastQuery) return
         def lastAssignExpr = getParentOfType(lastQuery.element, getAssigmentClass())
@@ -216,7 +216,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
      */
     static String getEntityNameFromQuery(PsiElement element, Class methodTypeClass) {
         PsiElement originMethod = getParentOfType(element, methodTypeClass)
-        if (originMethod && originMethod.text.contains(OfbizPatternConst.QUERY_FROM_STATEMENT)) {
+        if (originMethod && originMethod.text.contains(OfbizPluginConst.QUERY_FROM_STATEMENT)) {
             return getEntityNameFromDeclarationString(originMethod.text)
         }
         return null

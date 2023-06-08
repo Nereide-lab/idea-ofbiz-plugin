@@ -26,15 +26,15 @@ import org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.PsiJavaPatterns.psiMethod
 import static com.intellij.patterns.StandardPatterns.string
-import static OfbizPatternConst.DELEGATOR_CLASS
-import static OfbizPatternConst.DYNAMIC_VIEW_ENTITY_CLASS
-import static OfbizPatternConst.ENTITY_DATA_SERVICES_CLASS
-import static OfbizPatternConst.ENTITY_QUERY_CLASS
-import static OfbizPatternConst.GENERIC_ENTITY_CLASS
-import static OfbizPatternConst.LOCAL_DISPATCHER_CLASS
-import static OfbizPatternConst.MODEL_KEYMAP_CLASS
-import static OfbizPatternConst.UTIL_PROPERTIES_CLASS
-import static OfbizPatternConst.makeMethodParameterPattern
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.DELEGATOR_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.DYNAMIC_VIEW_ENTITY_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.ENTITY_DATA_SERVICES_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.ENTITY_QUERY_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.GENERIC_ENTITY_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.LOCAL_DISPATCHER_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.MODEL_KEYMAP_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.UTIL_PROPERTIES_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.makeMethodParameterPattern
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyElementPattern.Capture
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.groovyLiteralExpression
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.namedArgument
@@ -51,7 +51,7 @@ class OfbizGroovyPatterns {
             makeLocalDispatcherGroovyMethodPattern('runSyncIgnore', 0),
             makeLocalDispatcherGroovyMethodPattern('runSyncNewTrans', 0),
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('runService')),
-            //TODO : bétonner un peu pour éviter les soucis de référence non trouvée ?
+            //TODO : Strenghen the pattern to avoid unresolved references ?
             groovyLiteralExpression().withParent(namedArgument().withLabel('service')
             )
     ))

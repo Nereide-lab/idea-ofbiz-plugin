@@ -26,6 +26,7 @@ import com.intellij.util.xml.Namespace
 import com.intellij.util.xml.SubTagList
 import com.intellij.util.xml.TagValue
 import com.intellij.util.xmlb.annotations.Attribute
+import org.apache.ofbiz.idea.plugin.project.OfbizPluginConst
 
 interface UiLabelFile extends DomElement {
 
@@ -49,6 +50,6 @@ interface UiLabelFile extends DomElement {
         String getTagValue()
     }
 
-    @Namespace(UiLabelFileDescription.XML_LANG_NS_NAME)
+    @Namespace(OfbizPluginConst.XML_LANG_NS_NAME)
     interface XmlOfbizAttrValue<T> extends GenericAttributeValue<T> {}
 }

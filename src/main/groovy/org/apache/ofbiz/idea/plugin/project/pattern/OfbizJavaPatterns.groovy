@@ -27,17 +27,17 @@ import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.PsiJavaElementPattern.Capture
 import static com.intellij.patterns.PsiJavaPatterns.psiExpression
 import static com.intellij.patterns.PsiJavaPatterns.psiMethod
-import static OfbizPatternConst.DELEGATOR_CLASS
-import static OfbizPatternConst.DISPATCH_CONTEXT_CLASS
-import static OfbizPatternConst.DYNAMIC_VIEW_ENTITY_CLASS
-import static OfbizPatternConst.ENTITY_DATA_SERVICES_CLASS
-import static OfbizPatternConst.ENTITY_QUERY_CLASS
-import static OfbizPatternConst.GENERIC_ENTITY_CLASS
-import static OfbizPatternConst.LOCAL_DISPATCHER_CLASS
-import static OfbizPatternConst.MODEL_KEYMAP_CLASS
-import static OfbizPatternConst.SCRIPT_HELPER_CLASS
-import static OfbizPatternConst.UTIL_PROPERTIES_CLASS
-import static OfbizPatternConst.makeMethodParameterPattern
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.DELEGATOR_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.DISPATCH_CONTEXT_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.DYNAMIC_VIEW_ENTITY_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.ENTITY_DATA_SERVICES_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.ENTITY_QUERY_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.GENERIC_ENTITY_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.LOCAL_DISPATCHER_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.MODEL_KEYMAP_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.SCRIPT_HELPER_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.UTIL_PROPERTIES_CLASS
+import static org.apache.ofbiz.idea.plugin.project.OfbizPluginConst.makeMethodParameterPattern
 
 class OfbizJavaPatterns {
 

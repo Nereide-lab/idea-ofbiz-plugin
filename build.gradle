@@ -59,7 +59,7 @@ intellij {
     type = 'IC'
     version = '2023.1'
     plugins = [
-//               'JavaScript', Seulement dans la version ultimate.. C'est pénible
+//               'JavaScript', Ultimate only, TODO : add adaptative loading for community
                'com.intellij.java',
                'org.intellij.groovy',
                'org.intellij.intelliLang'
