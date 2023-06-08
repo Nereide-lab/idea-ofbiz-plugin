@@ -3,6 +3,7 @@ package org.apache.ofbiz.idea.plugin.project.worker
 import com.intellij.util.xml.DomElement
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.Entity
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.EntityField
+import org.apache.ofbiz.idea.plugin.dom.ServiceDefFile
 import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
 
 class ServiceWorker {
@@ -10,16 +11,16 @@ class ServiceWorker {
     final static String SERVICE_ATTR_TYPE = 'attribute-type'
     public static final ArrayList<String> IN_SERVICE_MODE = ['IN', 'INOUT']
 
-    static List<Map> getRequiredInAttributes(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service, ProjectServiceInterface ps) {
+    static List<Map> getRequiredInAttributes(ServiceDefFile.Service service, ProjectServiceInterface ps) {
         return getServiceInAttributes(service, ps, 'false')
     }
 
-    static List<Map> getOptionalInAttributes(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service, ProjectServiceInterface ps) {
+    static List<Map> getOptionalInAttributes(ServiceDefFile.Service service, ProjectServiceInterface ps) {
         return getServiceInAttributes(service, ps, 'true')
     }
 
-    private static ArrayList<Map> getServiceInAttributes(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service, ProjectServiceInterface ps, String optional) {
-        List<org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.ServiceAttribute> serviceAttributes = service.getAttributes()
+    private static ArrayList<Map> getServiceInAttributes(ServiceDefFile.Service service, ProjectServiceInterface ps, String optional) {
+        List<ServiceDefFile.ServiceAttribute> serviceAttributes = service.getAttributes()
         List<Map> paramListToReturn = []
         // Vanilla params
         paramListToReturn.addAll(serviceAttributes.stream()
@@ -33,10 +34,10 @@ class ServiceWorker {
             Entity usedEntity = ps.getEntity(defaultEntityName)
             List<EntityField> entityFields = usedEntity.getFields()
             List<String> pkFieldNames = getPkNamesList(usedEntity)
-            for (org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.ServiceAutoAttribute saa : service.getAutoAttributes()) {
+            for (ServiceDefFile.ServiceAutoAttribute saa : service.getAutoAttributes()) {
                 if (saa.getOptional().getValue() == optional) {
                     String includeType = saa.getInclude().getValue()
-                    List<org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.ServiceAttribute> fieldsToAdd = entityFields.stream().filter { it ->
+                    List<ServiceDefFile.ServiceAttribute> fieldsToAdd = entityFields.stream().filter { it ->
                         includeType == 'pk' ? isEntityPk(pkFieldNames, it) : !isEntityPk(pkFieldNames, it)
                     }.collect()
                     fieldsToAdd.forEach {
@@ -63,7 +64,7 @@ class ServiceWorker {
         return attrMap
     }
 
-    private static boolean isRequired(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.ServiceAttribute it) {
+    private static boolean isRequired(ServiceDefFile.ServiceAttribute it) {
         return !it.getOptional().getValue() || it.getOptional().getValue() == 'false'
     }
 

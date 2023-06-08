@@ -18,10 +18,11 @@
 package org.apache.ofbiz.idea.plugin.test.completion
 
 import com.intellij.codeInsight.completion.CompletionType
+import org.apache.ofbiz.idea.plugin.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
 @Ignore('Parent class, No tests here')
-class BaseComplTestCase extends org.apache.ofbiz.idea.plugin.test.BaseOfbizPluginTestCase {
+class BaseComplTestCase extends BaseOfbizPluginTestCase {
 
     protected String getFileType() { return null }
 

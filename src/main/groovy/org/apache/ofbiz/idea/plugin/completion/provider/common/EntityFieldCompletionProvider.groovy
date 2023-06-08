@@ -18,6 +18,7 @@ import com.intellij.util.ArrayUtil
 import com.intellij.util.CommonProcessors
 import com.intellij.util.ProcessingContext
 import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.pattern.OfbizPatternConst
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
@@ -121,7 +122,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         if (!usages) return null
         UsageInfo lastQuery = usages.stream().filter { usage ->
             def assign = getParentOfType(usage.element, getAssigmentClass())
-            assign && getAssigmentString(assign).contains(org.apache.ofbiz.idea.plugin.project.pattern.OfbizPatternConst.QUERY_FROM_STATEMENT)
+            assign && getAssigmentString(assign).contains(OfbizPatternConst.QUERY_FROM_STATEMENT)
         }.toList()?.last()
         if (!lastQuery) return
         def lastAssignExpr = getParentOfType(lastQuery.element, getAssigmentClass())
@@ -196,7 +197,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
      */
     static String getEntityNameFromQuery(PsiElement element, Class methodTypeClass) {
         PsiElement originMethod = getParentOfType(element, methodTypeClass)
-        if (originMethod && originMethod.text.contains(org.apache.ofbiz.idea.plugin.project.pattern.OfbizPatternConst.QUERY_FROM_STATEMENT)) {
+        if (originMethod && originMethod.text.contains(OfbizPatternConst.QUERY_FROM_STATEMENT)) {
             return getEntityNameFromDeclarationString(originMethod.text)
         }
         return null

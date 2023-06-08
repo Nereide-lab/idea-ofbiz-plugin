@@ -27,6 +27,7 @@ import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomManager
 import org.apache.ofbiz.idea.plugin.dom.CompoundFile
 import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.worker.CompoundWorker
 import org.apache.ofbiz.idea.plugin.reference.common.ComponentAwareFileReferenceSet
 
 import java.util.regex.Matcher
@@ -58,7 +59,7 @@ class FileHandlingUtils {
                 isCpd = true
             }
             // TODO : There is certainly a better way to do that..
-            List<DomElement> elementsInFile = isCpd ? org.apache.ofbiz.idea.plugin.project.worker.CompoundWorker.getDomElementListFromCompound(domFile, listGetterMethod, fileType)
+            List<DomElement> elementsInFile = isCpd ? CompoundWorker.getDomElementListFromCompound(domFile, listGetterMethod, fileType)
                     : domFile.getRootElement()."$listGetterMethod"()
             for (DomElement element : elementsInFile) {
                 if (element."$elementNameGetter"().getValue().equalsIgnoreCase(wantedElementName)) {

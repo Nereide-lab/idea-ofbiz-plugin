@@ -18,9 +18,15 @@
 package org.apache.ofbiz.idea.plugin.test.reference
 
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import org.apache.ofbiz.idea.plugin.reference.common.ServiceReference
+import org.apache.ofbiz.idea.plugin.reference.xml.DatasourceReference
+import org.apache.ofbiz.idea.plugin.reference.xml.FormReference
 import org.apache.ofbiz.idea.plugin.reference.xml.GroovyServiceDefReference
 import org.apache.ofbiz.idea.plugin.reference.xml.JavaMethodReference
 import org.apache.ofbiz.idea.plugin.reference.xml.MenuReference
+import org.apache.ofbiz.idea.plugin.reference.xml.RequestMapReference
+import org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference
+import org.apache.ofbiz.idea.plugin.reference.xml.ViewMapReference
 
 class TestReferenceInXml extends BaseReferenceTestCase {
 
@@ -44,19 +50,19 @@ class TestReferenceInXml extends BaseReferenceTestCase {
 //    }
 
     void testScreenInCurrentFileReference() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference.class, 'FindFacility', false)
+        doTest(ScreenReference.class, 'FindFacility', false)
     }
 
     void testScreenInDistantFileReference() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference.class, 'viewprofile', false)
+        doTest(ScreenReference.class, 'viewprofile', false)
     }
 
     void testScreenReferenceFromViewMap() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference.class, 'viewprofile', false)
+        doTest(ScreenReference.class, 'viewprofile', false)
     }
 
     void testFormReferenceFromScreen() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.FormReference.class, 'FooForm')
+        doTest(FormReference.class, 'FooForm')
     }
 
     void testFileReferenceFromScreen() {
@@ -64,15 +70,15 @@ class TestReferenceInXml extends BaseReferenceTestCase {
     }
 
     void testFormReferenceFromForm() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.FormReference.class, 'FooForm')
+        doTest(FormReference.class, 'FooForm')
     }
 
     void testRequestMapReferenceFromForm() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.RequestMapReference.class, 'fooRequest')
+        doTest(RequestMapReference.class, 'fooRequest')
     }
 
     void testViewMapReferenceFromRequestMap() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ViewMapReference.class, 'MyHome')
+        doTest(ViewMapReference.class, 'MyHome')
     }
 
     void testMenuReferenceFromScreen() {
@@ -88,10 +94,10 @@ class TestReferenceInXml extends BaseReferenceTestCase {
     }
 
     void testServiceDefReferenceFromServiceGroup() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.ServiceReference.class, 'SmileSmileSmile')
+        doTest(ServiceReference.class, 'SmileSmileSmile')
     }
 
     void testDataSourceReferenceFromDelegator() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.DatasourceReference.class, 'localderby')
+        doTest(DatasourceReference.class, 'localderby')
     }
 }

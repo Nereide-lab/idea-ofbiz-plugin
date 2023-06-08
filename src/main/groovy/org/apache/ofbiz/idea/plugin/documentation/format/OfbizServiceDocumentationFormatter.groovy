@@ -2,7 +2,9 @@ package org.apache.ofbiz.idea.plugin.documentation.format
 
 import com.intellij.openapi.util.text.HtmlBuilder
 import com.intellij.openapi.util.text.StringUtil
+import org.apache.ofbiz.idea.plugin.dom.ServiceDefFile
 import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.MiscUtils
 
 import static com.intellij.lang.documentation.DocumentationMarkup.*
 import static com.intellij.openapi.util.text.HtmlChunk.*
@@ -10,7 +12,7 @@ import static org.apache.ofbiz.idea.plugin.project.worker.ServiceWorker.*
 
 class OfbizServiceDocumentationFormatter extends OfbizCommonDocumentationFormatter {
 
-    static Element formatServiceDefinition(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service) {
+    static Element formatServiceDefinition(ServiceDefFile.Service service) {
         HtmlBuilder definitionBuilder = new HtmlBuilder()
         // Ligne 1
         definitionBuilder.append(text("<service name=\"${service.getName()}\"").bold())
@@ -37,19 +39,19 @@ class OfbizServiceDocumentationFormatter extends OfbizCommonDocumentationFormatt
                 .br()
 
         // ligne 3
-        definitionBuilder.append(text("Defined in component ${org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getComponentName(service)}"))
+        definitionBuilder.append(text("Defined in component ${MiscUtils.getComponentName(service)}"))
         return definitionBuilder.wrapWith("pre").wrapWith(DEFINITION_ELEMENT)
     }
 
 
-    static Element formatServiceDescription(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service) {
+    static Element formatServiceDescription(ServiceDefFile.Service service) {
         HtmlBuilder descriptionContentBuilder = new HtmlBuilder()
         descriptionContentBuilder.append(text('Description: ').bold())
                 .append(text(StringUtil.notNullize(service.getDescription().getValue(), 'No service description found')))
         return descriptionContentBuilder.wrapWith(CONTENT_ELEMENT)
     }
 
-    static Element formatServiceAttributes(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service, ProjectServiceInterface ps) {
+    static Element formatServiceAttributes(ServiceDefFile.Service service, ProjectServiceInterface ps) {
         HtmlBuilder attributesBuilder = new HtmlBuilder()
         attributesBuilder.append(text("Service parameters"))
                 .br()
@@ -66,7 +68,7 @@ class OfbizServiceDocumentationFormatter extends OfbizCommonDocumentationFormatt
                 .wrapWith(CONTENT_ELEMENT)
     }
 
-    static void formatAttributeListForDisplay(boolean required, org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service, ProjectServiceInterface ps, attributesBuilder) {
+    static void formatAttributeListForDisplay(boolean required, ServiceDefFile.Service service, ProjectServiceInterface ps, attributesBuilder) {
         List<Map> optionalAttributes = required ? getRequiredInAttributes(service, ps) : getOptionalInAttributes(service, ps)
         optionalAttributes.forEach {
             HtmlBuilder attrBuilder = new HtmlBuilder()
@@ -79,7 +81,7 @@ class OfbizServiceDocumentationFormatter extends OfbizCommonDocumentationFormatt
         }
     }
 
-    static Element formatServiceImplements(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service) {
+    static Element formatServiceImplements(ServiceDefFile.Service service) {
         List implementsList = service.getImplements()
         HtmlBuilder implementsBuilder = new HtmlBuilder()
         implementsBuilder.append(text("Implements:").bold()).append(nbsp())
@@ -91,7 +93,7 @@ class OfbizServiceDocumentationFormatter extends OfbizCommonDocumentationFormatt
         return implementsBuilder.wrapWith(CONTENT_ELEMENT)
     }
 
-    static Element formatServiceGroupInvoke(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service) {
+    static Element formatServiceGroupInvoke(ServiceDefFile.Service service) {
         List invokedServices = service.getGroup().getInvokes()
         HtmlBuilder groupBuilder = new HtmlBuilder()
         groupBuilder.append(text("Service group invokes:").bold()).append(nbsp())

@@ -1,10 +1,11 @@
 package org.apache.ofbiz.idea.plugin.test.injection
 
 import com.intellij.psi.PsiElement
+import org.apache.ofbiz.idea.plugin.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
 @Ignore('Parent class, No tests here')
-class BaseInjectionTestCase extends org.apache.ofbiz.idea.plugin.test.BaseOfbizPluginTestCase {
+class BaseInjectionTestCase extends BaseOfbizPluginTestCase {
 
     protected doTest(Class expectedLang) {
         String file = "${this.getTestName(false)}.xml"

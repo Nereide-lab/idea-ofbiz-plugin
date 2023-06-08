@@ -37,10 +37,11 @@ package org.apache.ofbiz.idea.plugin.test.documentation
 import com.intellij.codeInsight.documentation.DocumentationManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
+import org.apache.ofbiz.idea.plugin.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
 @Ignore('Setup class, No tests here')
-class BaseDocumentationTestCase extends org.apache.ofbiz.idea.plugin.test.BaseOfbizPluginTestCase {
+class BaseDocumentationTestCase extends BaseOfbizPluginTestCase {
 
     @Override
     protected void setUp() {

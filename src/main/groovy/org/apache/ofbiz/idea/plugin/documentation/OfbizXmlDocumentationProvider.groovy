@@ -22,6 +22,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlToken
 import com.intellij.psi.xml.XmlTokenType
+import org.apache.ofbiz.idea.plugin.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
@@ -50,7 +51,7 @@ class OfbizXmlDocumentationProvider extends OfbizCommonDocumentationProvider {
             return (originalElement as XmlToken).getText()
         } else {
             try {
-                return org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getSafeTextValue(originalElement)
+                return MiscUtils.getSafeTextValue(originalElement)
             } catch (Exception e) {
                 LOG.warn("Could not find element name", e)
                 return null

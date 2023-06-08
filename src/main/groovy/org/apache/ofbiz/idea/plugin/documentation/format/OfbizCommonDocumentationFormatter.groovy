@@ -4,6 +4,7 @@ import com.intellij.openapi.util.text.HtmlBuilder
 import com.intellij.util.xml.DomElement
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.Entity
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.ViewEntity
+import org.apache.ofbiz.idea.plugin.project.utils.MiscUtils
 
 import static com.intellij.lang.documentation.DocumentationMarkup.DEFINITION_ELEMENT
 import static com.intellij.openapi.util.text.HtmlChunk.*
@@ -15,7 +16,7 @@ class OfbizCommonDocumentationFormatter {
         String containingFile = element.getXmlElement().getContainingFile().getName()
         docBuilder.append(text("Ofbiz ${elementType}: ${elementName}"))
                 .br()
-                .append(text("Defined in ${containingFile} [component: ${org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getComponentName(element)}]"))
+                .append(text("Defined in ${containingFile} [component: ${MiscUtils.getComponentName(element)}]"))
         return docBuilder.toString()
     }
 
@@ -35,7 +36,7 @@ class OfbizCommonDocumentationFormatter {
                 .br()
                 .append(text("Description: ${element.getDescription()}"))
                 .br()
-                .append(text("Defined in ${fileName}, [Component: ${org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getComponentName(element)}]"))
+                .append(text("Defined in ${fileName}, [Component: ${MiscUtils.getComponentName(element)}]"))
         return builder.wrapWith("pre").wrapWith(DEFINITION_ELEMENT)
     }
 }

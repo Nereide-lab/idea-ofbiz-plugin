@@ -3,10 +3,11 @@ package org.apache.ofbiz.idea.plugin.completion.provider.xml
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
+import org.apache.ofbiz.idea.plugin.completion.provider.common.EntityFieldCompletionProvider
 
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 
-class XmlEntityFieldsCompletionProvider extends org.apache.ofbiz.idea.plugin.completion.provider.common.EntityFieldCompletionProvider {
+class XmlEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
 
     @Override
     String getEntityNameFromPsiElement(PsiElement psiElement) {

@@ -9,6 +9,9 @@ import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
+import org.apache.ofbiz.idea.plugin.project.pattern.OfbizJavaPatterns
+import org.apache.ofbiz.idea.plugin.project.pattern.OfbizXmlPatterns
+import org.apache.ofbiz.idea.plugin.reference.common.EntityReference
 import org.apache.ofbiz.idea.plugin.reference.common.ServiceReference
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
@@ -26,19 +29,19 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
          *************/
         if (xmlAttr) {
             PsiElement xmlAttrValue = PsiTreeUtil.getChildOfType(xmlAttr, XmlAttributeValue)
-            if (org.apache.ofbiz.idea.plugin.project.pattern.OfbizXmlPatterns.SERVICE_DEF_CALL.accepts(xmlAttr)) {
+            if (OfbizXmlPatterns.SERVICE_DEF_CALL.accepts(xmlAttr)) {
                 return xmlAttrValue ? resolveService(xmlAttrValue) : null
-            } else if (org.apache.ofbiz.idea.plugin.project.pattern.OfbizXmlPatterns.ENTITY_OR_VIEW_CALL.accepts(xmlAttr)) {
+            } else if (OfbizXmlPatterns.ENTITY_OR_VIEW_CALL.accepts(xmlAttr)) {
                 return xmlAttrValue ? resolveEntityOrView(xmlAttrValue) : null
             }
         }
         /*************
          *    JAVA   *
          *************/
-        if (org.apache.ofbiz.idea.plugin.project.pattern.OfbizJavaPatterns.SERVICE_CALL.accepts(contextElement)) {
+        if (OfbizJavaPatterns.SERVICE_CALL.accepts(contextElement)) {
             return resolveService(PsiTreeUtil.getParentOfType(contextElement, PsiLiteralExpression.class))
         }
-        if (org.apache.ofbiz.idea.plugin.project.pattern.OfbizJavaPatterns.ENTITY_CALL.accepts(contextElement)) {
+        if (OfbizJavaPatterns.ENTITY_CALL.accepts(contextElement)) {
             return resolveEntityOrView(PsiTreeUtil.getParentOfType(contextElement, PsiLiteralExpression.class))
         }
         /*************
@@ -49,7 +52,7 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
     }
 
     private static PsiElement resolveEntityOrView(XmlAttributeValue attr) {
-        org.apache.ofbiz.idea.plugin.reference.common.EntityReference entity = new org.apache.ofbiz.idea.plugin.reference.common.EntityReference(attr)
+        EntityReference entity = new EntityReference(attr)
         return entity.resolve()
     }
 
@@ -64,7 +67,7 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
     }
 
     private static PsiElement resolveEntityOrView(PsiLiteralExpression expr) {
-        org.apache.ofbiz.idea.plugin.reference.common.EntityReference entity = new org.apache.ofbiz.idea.plugin.reference.common.EntityReference(expr)
+        EntityReference entity = new EntityReference(expr)
         return entity.resolve()
     }
 }

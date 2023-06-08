@@ -6,11 +6,14 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttribute
+import org.apache.ofbiz.idea.plugin.inspection.quickfix.AdjustFileLocationPathFix
+import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
 class EmptyFileLocationInspection extends LocalInspectionTool {
 
-    private final org.apache.ofbiz.idea.plugin.inspection.quickfix.AdjustFileLocationPathFix myQuickFix = new org.apache.ofbiz.idea.plugin.inspection.quickfix.AdjustFileLocationPathFix()
+    private final AdjustFileLocationPathFix myQuickFix = new AdjustFileLocationPathFix()
 
     @Override
     boolean isEnabledByDefault() {
@@ -32,8 +35,8 @@ class EmptyFileLocationInspection extends LocalInspectionTool {
                 }
 
                 //Actual control
-                org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface ps = attribute.getOriginalElement().getProject().getService(org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface.class)
-                if (!org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils.getTargetFile(attrValue, ps)) {
+                ProjectServiceInterface ps = attribute.getOriginalElement().getProject().getService(ProjectServiceInterface.class)
+                if (!FileHandlingUtils.getTargetFile(attrValue, ps)) {
                     holder.registerProblem(
                             attribute,
                             InspectionBundle.message('inspection.location.target.file.not.found.display.descriptor'),

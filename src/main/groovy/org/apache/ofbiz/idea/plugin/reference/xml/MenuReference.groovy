@@ -19,6 +19,7 @@ package org.apache.ofbiz.idea.plugin.reference.xml
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
+import org.apache.ofbiz.idea.plugin.dom.MenuFile
 import org.jetbrains.annotations.Nullable
 
 class MenuReference extends GenericXmlReference {
@@ -29,7 +30,7 @@ class MenuReference extends GenericXmlReference {
                 "getMenus",
                 "getName",
                 "getMenu",
-                org.apache.ofbiz.idea.plugin.dom.MenuFile.class)
+                MenuFile.class)
     }
 
     @Nullable

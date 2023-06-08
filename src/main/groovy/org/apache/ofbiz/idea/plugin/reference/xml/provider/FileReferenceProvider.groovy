@@ -24,6 +24,7 @@ import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.converters.ClassValueConverterImpl
+import org.apache.ofbiz.idea.plugin.reference.common.ComponentAwareFileReferenceSet
 import org.jetbrains.annotations.NotNull
 
 class FileReferenceProvider extends PsiReferenceProvider {
@@ -35,7 +36,7 @@ class FileReferenceProvider extends PsiReferenceProvider {
                     .getClassValueConverter()
                     .createReferences(null, element, null) ?: PsiReference.EMPTY_ARRAY
         } else {
-            return org.apache.ofbiz.idea.plugin.reference.common.ComponentAwareFileReferenceSet
+            return ComponentAwareFileReferenceSet
                     .createSet(element, true, true, false)
                     .getAllReferences() ?: PsiReference.EMPTY_ARRAY
         }

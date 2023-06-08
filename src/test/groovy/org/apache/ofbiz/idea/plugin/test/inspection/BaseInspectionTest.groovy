@@ -2,10 +2,13 @@ package org.apache.ofbiz.idea.plugin.test.inspection
 
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
+import org.apache.ofbiz.idea.plugin.inspection.EmptyFileLocationInspection
+import org.apache.ofbiz.idea.plugin.inspection.InspectionBundle
+import org.apache.ofbiz.idea.plugin.test.BaseOfbizPluginTestCase
 
-abstract class BaseInspectionTest extends org.apache.ofbiz.idea.plugin.test.BaseOfbizPluginTestCase {
+abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
 
-    private static final LOCATION_QUICKFIX_NAME = org.apache.ofbiz.idea.plugin.inspection.InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix')
+    private static final LOCATION_QUICKFIX_NAME = InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix')
 
     abstract String getLang()
 
@@ -13,7 +16,7 @@ abstract class BaseInspectionTest extends org.apache.ofbiz.idea.plugin.test.Base
     protected void setUp() {
         super.setUp()
         myFixture.copyDirectoryToProject('assets', '')
-        myFixture.enableInspections(new org.apache.ofbiz.idea.plugin.inspection.EmptyFileLocationInspection())
+        myFixture.enableInspections(new EmptyFileLocationInspection())
     }
 
     @Override

@@ -6,8 +6,9 @@ import com.intellij.psi.PsiForeachStatement
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiVariable
+import org.apache.ofbiz.idea.plugin.completion.provider.common.EntityFieldCompletionProvider
 
-abstract class JavaEntityFieldsCompletionProvider extends org.apache.ofbiz.idea.plugin.completion.provider.common.EntityFieldCompletionProvider {
+abstract class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
 
     /**
      * Get the entity name from a for statement

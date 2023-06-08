@@ -24,6 +24,10 @@ import com.intellij.codeInsight.completion.PrioritizedLookupElement
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.util.ProcessingContext
+import org.apache.ofbiz.idea.plugin.dom.ServiceDefFile
+import org.apache.ofbiz.idea.plugin.icons.PluginIcons
+import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
 
 class ServiceNameCompletionProvider extends CompletionProvider<CompletionParameters> {
@@ -32,13 +36,13 @@ class ServiceNameCompletionProvider extends CompletionProvider<CompletionParamet
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
 
-        org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface.class)
+        ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
         List servicesNames = structureService.getAllServices()
 
-        for (org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service : servicesNames) {
+        for (ServiceDefFile.Service service : servicesNames) {
             LookupElement lookupElement = LookupElementBuilder.create(service.getName())
-                    .withIcon(org.apache.ofbiz.idea.plugin.icons.PluginIcons.SERVICE_ICON)
-                    .withTailText(" Component:${org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getComponentName(service)}" as String, true)
+                    .withIcon(PluginIcons.SERVICE_ICON)
+                    .withTailText(" Component:${MiscUtils.getComponentName(service)}" as String, true)
             result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
         }
     }

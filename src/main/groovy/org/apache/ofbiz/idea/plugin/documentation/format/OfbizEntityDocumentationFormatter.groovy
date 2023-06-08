@@ -7,6 +7,7 @@ import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.Entity
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.EntityField
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.ExtendEntity
 import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.MiscUtils
 
 import static com.intellij.lang.documentation.DocumentationMarkup.*
 import static com.intellij.openapi.util.text.HtmlChunk.*
@@ -26,7 +27,7 @@ class OfbizEntityDocumentationFormatter extends OfbizCommonDocumentationFormatte
             HtmlBuilder extendBuilder = new HtmlBuilder()
                     .append(text("Extended ").bold())
                     .nbsp()
-                    .append(text("in file ${fileName} [component ${org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getComponentName(it)}]"))
+                    .append(text("in file ${fileName} [component ${MiscUtils.getComponentName(it)}]"))
                     .append(text(', with fields: '))
                     .append(formatExtendFields(extendedFields))
             builder.append(extendBuilder)

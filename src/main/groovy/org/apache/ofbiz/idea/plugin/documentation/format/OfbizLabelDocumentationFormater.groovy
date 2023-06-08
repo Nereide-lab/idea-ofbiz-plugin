@@ -3,6 +3,7 @@ package org.apache.ofbiz.idea.plugin.documentation.format
 import com.intellij.openapi.util.text.HtmlBuilder
 import org.apache.ofbiz.idea.plugin.dom.UiLabelFile.Property
 import org.apache.ofbiz.idea.plugin.dom.UiLabelFile.PropertyValue
+import org.apache.ofbiz.idea.plugin.project.utils.MiscUtils
 
 import static com.intellij.lang.documentation.DocumentationMarkup.CONTENT_ELEMENT
 import static com.intellij.lang.documentation.DocumentationMarkup.DEFINITION_ELEMENT
@@ -16,7 +17,7 @@ class OfbizLabelDocumentationFormater extends OfbizCommonDocumentationFormatter 
         HtmlBuilder docBuilder = new HtmlBuilder()
                 .append(text("Property key=\"${property.getKey()}\"").bold())
                 .br()
-                .append(text("Defined in ${fileName}, [Component: ${org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getComponentName(property)}]"))
+                .append(text("Defined in ${fileName}, [Component: ${MiscUtils.getComponentName(property)}]"))
         return docBuilder
                 .wrapWith("pre")
                 .wrapWith(DEFINITION_ELEMENT)

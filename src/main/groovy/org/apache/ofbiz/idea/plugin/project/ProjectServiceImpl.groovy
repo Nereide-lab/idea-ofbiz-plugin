@@ -24,14 +24,20 @@ import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomService
 import org.apache.ofbiz.idea.plugin.dom.ComponentFile
+import org.apache.ofbiz.idea.plugin.dom.CompoundFile
+import org.apache.ofbiz.idea.plugin.dom.ControllerFile
 import org.apache.ofbiz.idea.plugin.dom.EntityEngineFile
 import org.apache.ofbiz.idea.plugin.dom.EntityEngineFile.Datasource
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.Entity
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.ViewEntity
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.ExtendEntity
+import org.apache.ofbiz.idea.plugin.dom.FormFile
+import org.apache.ofbiz.idea.plugin.dom.MenuFile
 import org.apache.ofbiz.idea.plugin.dom.ScreenFile
 import org.apache.ofbiz.idea.plugin.dom.ScreenFile.Screen
+import org.apache.ofbiz.idea.plugin.dom.ServiceDefFile
+import org.apache.ofbiz.idea.plugin.dom.UiLabelFile
 
 import static java.util.stream.Collectors.*
 
@@ -42,12 +48,12 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         this.project = project
     }
 
-    org.apache.ofbiz.idea.plugin.dom.ControllerFile.RequestMap getRequestMap(String name) {
-        return getClassMatchingProjectDomElement(org.apache.ofbiz.idea.plugin.dom.ControllerFile.class, project, name, "getRequestMaps", "getUri")
+    ControllerFile.RequestMap getRequestMap(String name) {
+        return getClassMatchingProjectDomElement(ControllerFile.class, project, name, "getRequestMaps", "getUri")
     }
 
-    org.apache.ofbiz.idea.plugin.dom.ControllerFile.ViewMap getViewMap(String name) {
-        return getClassMatchingProjectDomElement(org.apache.ofbiz.idea.plugin.dom.ControllerFile.class, project, name, "getViewMaps", "getName")
+    ControllerFile.ViewMap getViewMap(String name) {
+        return getClassMatchingProjectDomElement(ControllerFile.class, project, name, "getViewMaps", "getName")
     }
 
     Entity getEntity(String name) {
@@ -66,32 +72,32 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getAllElementOfSpecificType(EntityModelFile.class, "getViewEntities")
     }
 
-    org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service getService(String name) {
-        return getMatchingElementFromXmlFiles(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.class, "getServices", "getName", name)
+    ServiceDefFile.Service getService(String name) {
+        return getMatchingElementFromXmlFiles(ServiceDefFile.class, "getServices", "getName", name)
     }
 
-    List<org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service> getAllServices() {
-        return getAllElementOfSpecificType(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.class, "getServices")
+    List<ServiceDefFile.Service> getAllServices() {
+        return getAllElementOfSpecificType(ServiceDefFile.class, "getServices")
     }
 
-    org.apache.ofbiz.idea.plugin.dom.UiLabelFile.Property getProperty(String name) {
-        return getMatchingElementFromXmlFiles(org.apache.ofbiz.idea.plugin.dom.UiLabelFile.class, "getProperties", "getKey", name)
+    UiLabelFile.Property getProperty(String name) {
+        return getMatchingElementFromXmlFiles(UiLabelFile.class, "getProperties", "getKey", name)
     }
 
-    org.apache.ofbiz.idea.plugin.dom.FormFile.Grid getGrid(String name) {
-        return getMatchingElementFromXmlFiles(org.apache.ofbiz.idea.plugin.dom.FormFile.class, "getGrids", "getName", name)
+    FormFile.Grid getGrid(String name) {
+        return getMatchingElementFromXmlFiles(FormFile.class, "getGrids", "getName", name)
     }
 
-    org.apache.ofbiz.idea.plugin.dom.FormFile.Form getForm(String name) {
-        return getMatchingElementFromXmlFiles(org.apache.ofbiz.idea.plugin.dom.FormFile.class, "getForms", "getName", name)
+    FormFile.Form getForm(String name) {
+        return getMatchingElementFromXmlFiles(FormFile.class, "getForms", "getName", name)
     }
 
     Screen getScreen(String name) {
         return getMatchingElementFromXmlFiles(ScreenFile.class, "getScreens", "getName", name)
     }
 
-    org.apache.ofbiz.idea.plugin.dom.MenuFile.Menu getMenu(String name) {
-        return getMatchingElementFromXmlFiles(org.apache.ofbiz.idea.plugin.dom.MenuFile.class, "getMenus", "getName", name)
+    MenuFile.Menu getMenu(String name) {
+        return getMatchingElementFromXmlFiles(MenuFile.class, "getMenus", "getName", name)
     }
 
     Datasource getDatasource(String name) {
@@ -180,7 +186,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         relevantFile.forEach {
             relevantDomBlocs << it.getRootElement()
         }
-        List<org.apache.ofbiz.idea.plugin.dom.CompoundFile> cpdFiles = DomService.getInstance().getFileElements(org.apache.ofbiz.idea.plugin.dom.CompoundFile.class, project, GlobalSearchScope.allScope(project)) as List<org.apache.ofbiz.idea.plugin.dom.CompoundFile>
+        List<CompoundFile> cpdFiles = DomService.getInstance().getFileElements(CompoundFile.class, project, GlobalSearchScope.allScope(project)) as List<CompoundFile>
         cpdFiles.forEach {
             relevantDomBlocs << it.getRootElement().getSiteConf()
         }

@@ -1,10 +1,14 @@
 package org.apache.ofbiz.idea.plugin.test.service
 
+import org.apache.ofbiz.idea.plugin.dom.ServiceDefFile
+import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.worker.ServiceWorker
+
 class TestServiceAttributes extends BaseServiceTest {
 
     void testVanillaServiceAttributes() {
-        org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface ps = myFixture.getProject().getService(org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface.class)
-        org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service = ps.getService('ping')
+        ProjectServiceInterface ps = myFixture.getProject().getService(ProjectServiceInterface.class)
+        ServiceDefFile.Service service = ps.getService('ping')
         List<String> requiredAttributes = geRequiredAttrNames(service, ps)
         List<String> optionalAttributes = getOptionalAttrNames(service, ps)
         assertContainsElements(requiredAttributes, ['hello', 'world'])
@@ -13,8 +17,8 @@ class TestServiceAttributes extends BaseServiceTest {
 
     void testEntityAutoAttributesAllOptional() {
         final List EXPECTED_OPTIONALS = ['rifle', 'knife', 'mapId']
-        org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface ps = myFixture.getProject().getService(org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface.class)
-        org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service = ps.getService('createNavezgane')
+        ProjectServiceInterface ps = myFixture.getProject().getService(ProjectServiceInterface.class)
+        ServiceDefFile.Service service = ps.getService('createNavezgane')
         List<String> requiredAttributes = geRequiredAttrNames(service, ps)
         List<String> optionalAttributes = getOptionalAttrNames(service, ps)
         assertEmpty(requiredAttributes)
@@ -24,8 +28,8 @@ class TestServiceAttributes extends BaseServiceTest {
     void testEntityAutoAttributes() {
         final List EXPECTED_REQUIRED = ['slaves', 'nemesis']
         final List EXPECTED_OPTIONALS = ['tooth', 'blood', 'magic']
-        org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface ps = myFixture.getProject().getService(org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface.class)
-        org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service = ps.getService('killDracula')
+        ProjectServiceInterface ps = myFixture.getProject().getService(ProjectServiceInterface.class)
+        ServiceDefFile.Service service = ps.getService('killDracula')
         List<String> requiredAttributes = geRequiredAttrNames(service, ps)
         List<String> optionalAttributes = getOptionalAttrNames(service, ps)
         assertContainsElements(requiredAttributes, EXPECTED_REQUIRED)
@@ -34,13 +38,13 @@ class TestServiceAttributes extends BaseServiceTest {
         assertDoesntContain(optionalAttributes, EXPECTED_REQUIRED)
     }
 
-    private static List<String> geRequiredAttrNames(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service, org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface ps) {
-        org.apache.ofbiz.idea.plugin.project.worker.ServiceWorker.getRequiredInAttributes(service, ps)
-                .stream().map { it.get(org.apache.ofbiz.idea.plugin.project.worker.ServiceWorker.SERVICE_ATTR_NAME) }.collect()
+    private static List<String> geRequiredAttrNames(ServiceDefFile.Service service, ProjectServiceInterface ps) {
+        ServiceWorker.getRequiredInAttributes(service, ps)
+                .stream().map { it.get(ServiceWorker.SERVICE_ATTR_NAME) }.collect()
     }
 
-    private static List<String> getOptionalAttrNames(org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service, org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface ps) {
-        org.apache.ofbiz.idea.plugin.project.worker.ServiceWorker.getOptionalInAttributes(service, ps)
-                .stream().map { it.get(org.apache.ofbiz.idea.plugin.project.worker.ServiceWorker.SERVICE_ATTR_NAME) }.collect()
+    private static List<String> getOptionalAttrNames(ServiceDefFile.Service service, ProjectServiceInterface ps) {
+        ServiceWorker.getOptionalInAttributes(service, ps)
+                .stream().map { it.get(ServiceWorker.SERVICE_ATTR_NAME) }.collect()
     }
 }

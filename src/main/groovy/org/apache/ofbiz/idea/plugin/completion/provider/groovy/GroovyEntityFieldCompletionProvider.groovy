@@ -21,6 +21,8 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiVariable
+import org.apache.ofbiz.idea.plugin.completion.provider.common.EntityFieldCompletionProvider
+import org.apache.ofbiz.idea.plugin.project.pattern.OfbizGroovyPatterns
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrForStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrLoopStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
@@ -35,7 +37,7 @@ import static com.intellij.psi.util.PsiTreeUtil.findChildOfType
 import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 
-abstract class GroovyEntityFieldCompletionProvider extends org.apache.ofbiz.idea.plugin.completion.provider.common.EntityFieldCompletionProvider {
+abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider {
     private static final Logger LOG = Logger.getInstance(GroovyEntityFieldCompletionProvider.class)
 
     /**
@@ -54,7 +56,7 @@ abstract class GroovyEntityFieldCompletionProvider extends org.apache.ofbiz.idea
                 return retrieveEntityOfViewNameFromOldFashionedLoop(oldFashionedLoop)
             }
             GrReferenceExpression potentialLoop = getPotentialLoop(initialElement)
-            if (potentialLoop && org.apache.ofbiz.idea.plugin.project.pattern.OfbizGroovyPatterns.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
+            if (potentialLoop && OfbizGroovyPatterns.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
                 PsiElement gvList = getGVListVariablefromLoopInstruction(potentialLoop, 0)
                 assert gvList instanceof GrVariable
                 return retrieveEntityOrViewNameFromGrVariable(gvList)

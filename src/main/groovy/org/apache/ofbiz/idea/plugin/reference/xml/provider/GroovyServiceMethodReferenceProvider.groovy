@@ -5,6 +5,8 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiReference
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
+import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils
 import org.apache.ofbiz.idea.plugin.reference.xml.GroovyServiceDefReference
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.GroovyFile
@@ -13,10 +15,10 @@ class GroovyServiceMethodReferenceProvider extends JavaMethodReferenceProvider {
 
     @Override
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface ps = element.getProject().getService(org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface.class)
+        ProjectServiceInterface ps = element.getProject().getService(ProjectServiceInterface.class)
         String locationAttr = getClassLocation(element)
         if (!locationAttr) return PsiReference.EMPTY_ARRAY
-        PsiFile targetedFile = org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils.getTargetFile(locationAttr, ps)
+        PsiFile targetedFile = FileHandlingUtils.getTargetFile(locationAttr, ps)
         if (!targetedFile || !(targetedFile instanceof GroovyFile)) return PsiReference.EMPTY_ARRAY
         return new GroovyServiceDefReference(element as XmlAttributeValue,
                 (targetedFile as GroovyFile).getScriptClass(),

@@ -20,16 +20,17 @@ package org.apache.ofbiz.idea.plugin.completion.contributor
 import com.intellij.codeInsight.completion.CompletionType
 import org.apache.ofbiz.idea.plugin.completion.provider.xml.EntityNameCompletionProvider
 import org.apache.ofbiz.idea.plugin.completion.provider.xml.XmlEntityFieldsCompletionProvider
+import org.apache.ofbiz.idea.plugin.project.pattern.OfbizXmlPatterns
 
 class XmlCompletionContributor extends OfbizBaseCompletionContributor {
     XmlEntityFieldsCompletionProvider xmlEntityFieldsCompletionProvider
 
     XmlCompletionContributor() {
         xmlEntityFieldsCompletionProvider = new XmlEntityFieldsCompletionProvider()
-        this.extend(CompletionType.BASIC, org.apache.ofbiz.idea.plugin.project.pattern.OfbizXmlPatterns.ENTITY_OR_VIEW_CALL_COMPL, entityOrViewNameCompletionProvider)
-        this.extend(CompletionType.BASIC, org.apache.ofbiz.idea.plugin.project.pattern.OfbizXmlPatterns.SERVICE_DEF_CALL_COMPL, serviceNameCompletionProvider)
-        this.extend(CompletionType.BASIC, org.apache.ofbiz.idea.plugin.project.pattern.OfbizXmlPatterns.ENTITY_FIELD_COMPL, xmlEntityFieldsCompletionProvider)
-        this.extend(CompletionType.BASIC, org.apache.ofbiz.idea.plugin.project.pattern.OfbizXmlPatterns.ENTITY_FIELD_IN_DATALOAD_COMPL, xmlEntityFieldsCompletionProvider)
-        this.extend(CompletionType.BASIC, org.apache.ofbiz.idea.plugin.project.pattern.OfbizXmlPatterns.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_OR_VIEW_CALL_COMPL, entityOrViewNameCompletionProvider)
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.SERVICE_DEF_CALL_COMPL, serviceNameCompletionProvider)
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_COMPL, xmlEntityFieldsCompletionProvider)
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_IN_DATALOAD_COMPL, xmlEntityFieldsCompletionProvider)
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
     }
 }

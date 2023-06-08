@@ -17,6 +17,9 @@
 
 package org.apache.ofbiz.idea.plugin.test.reference
 
+import org.apache.ofbiz.idea.plugin.reference.common.EntityReference
+import org.apache.ofbiz.idea.plugin.reference.common.ServiceReference
+
 class TestReferenceInGroovy extends BaseReferenceTestCase {
 
     @Override
@@ -28,22 +31,22 @@ class TestReferenceInGroovy extends BaseReferenceTestCase {
     protected String getExtension() { return 'groovy' }
 
     void testGroovyEntityReferenceWithFindMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'Lobster')
+        doTest(EntityReference.class, 'Lobster')
     }
 
     void testGroovyViewEntityReferenceWithFindMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'Zaun')
+        doTest(EntityReference.class, 'Zaun')
     }
 
     void testGroovyEntityReferenceWithFromMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'PickleRick')
+        doTest(EntityReference.class, 'PickleRick')
     }
 
     void testGroovyServiceReferenceWithRunCall() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.ServiceReference.class, 'pivot')
+        doTest(ServiceReference.class, 'pivot')
     }
 
     void testEntityReferenceWithMakeValueMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'Zaun')
+        doTest(EntityReference.class, 'Zaun')
     }
 }

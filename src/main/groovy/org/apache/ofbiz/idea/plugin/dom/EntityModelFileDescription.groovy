@@ -19,6 +19,7 @@ package org.apache.ofbiz.idea.plugin.dom
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileDescription
+import org.apache.ofbiz.idea.plugin.icons.PluginIcons
 import org.jetbrains.annotations.Nullable
 
 import javax.swing.Icon
@@ -32,6 +33,6 @@ class EntityModelFileDescription<S extends DomElement> extends DomFileDescriptio
 
     @Nullable
     Icon getFileIcon(int flags) {
-        return org.apache.ofbiz.idea.plugin.icons.PluginIcons.ENTITY_FILE_ICON
+        return PluginIcons.ENTITY_FILE_ICON
     }
 }

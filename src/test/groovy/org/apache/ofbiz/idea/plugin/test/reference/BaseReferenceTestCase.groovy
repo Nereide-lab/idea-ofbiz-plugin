@@ -19,10 +19,11 @@ package org.apache.ofbiz.idea.plugin.test.reference
 
 import com.intellij.psi.PsiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
+import org.apache.ofbiz.idea.plugin.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
 @Ignore('Setup class, No tests here')
-class BaseReferenceTestCase extends org.apache.ofbiz.idea.plugin.test.BaseOfbizPluginTestCase {
+class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
 
     static final String BASE_TEST_DIR = 'src/test/resources/testData/reference'
 

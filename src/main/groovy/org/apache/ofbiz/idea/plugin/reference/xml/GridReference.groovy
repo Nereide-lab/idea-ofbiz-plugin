@@ -2,6 +2,7 @@ package org.apache.ofbiz.idea.plugin.reference.xml
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
+import org.apache.ofbiz.idea.plugin.dom.FormFile
 import org.jetbrains.annotations.Nullable
 
 class GridReference extends GenericXmlReference {
@@ -10,7 +11,7 @@ class GridReference extends GenericXmlReference {
                 "getGrids",
                 "getName",
                 "getGrid",
-                org.apache.ofbiz.idea.plugin.dom.FormFile.class)
+                FormFile.class)
     }
 
     @Nullable

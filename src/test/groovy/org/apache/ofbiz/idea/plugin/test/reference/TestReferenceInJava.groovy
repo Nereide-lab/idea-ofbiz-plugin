@@ -17,6 +17,9 @@
 
 package org.apache.ofbiz.idea.plugin.test.reference
 
+import org.apache.ofbiz.idea.plugin.reference.common.EntityReference
+import org.apache.ofbiz.idea.plugin.reference.common.ServiceReference
+
 class TestReferenceInJava extends BaseReferenceTestCase {
 
     @Override
@@ -28,42 +31,42 @@ class TestReferenceInJava extends BaseReferenceTestCase {
     protected String getExtension() { return 'java' }
 
     void testEntityReferenceWithFindMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'HyruleCastle')
+        doTest(EntityReference.class, 'HyruleCastle')
     }
 
     void testEntityReferenceWithFindOneMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'PiltoverData')
+        doTest(EntityReference.class, 'PiltoverData')
     }
 
     void testEntityReferenceWithFindListMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'Enderman')
+        doTest(EntityReference.class, 'Enderman')
     }
 
     void testEntityReferenceWithFindAllMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'TwoFlowers')
+        doTest(EntityReference.class, 'TwoFlowers')
     }
 
     void testEntityReferenceWithAddMemberEntityMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'WeWereOnABreak')
+        doTest(EntityReference.class, 'WeWereOnABreak')
     }
 
     void testEntityReferenceWithFromMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'Rick')
+        doTest(EntityReference.class, 'Rick')
     }
 
     void testEntityReferenceWithMakeValueMethod() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'PickleRick')
+        doTest(EntityReference.class, 'PickleRick')
     }
 
     void testServiceReferenceWithRunSync() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.ServiceReference.class, 'pivot')
+        doTest(ServiceReference.class, 'pivot')
     }
 
     void testServiceReferenceWithMakeValidContext() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.ServiceReference.class, 'pivot')
+        doTest(ServiceReference.class, 'pivot')
     }
 
     void testServiceReferenceWithSchedule() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.ServiceReference.class, 'pivot')
+        doTest(ServiceReference.class, 'pivot')
     }
 }

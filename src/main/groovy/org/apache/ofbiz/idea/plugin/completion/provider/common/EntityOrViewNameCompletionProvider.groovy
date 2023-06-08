@@ -26,6 +26,9 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.util.ProcessingContext
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.Entity
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.ViewEntity
+import org.apache.ofbiz.idea.plugin.icons.PluginIcons
+import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
 
 class EntityOrViewNameCompletionProvider extends CompletionProvider<CompletionParameters> {
@@ -34,27 +37,27 @@ class EntityOrViewNameCompletionProvider extends CompletionProvider<CompletionPa
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
 
-        org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface.class)
+        ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
         addEntitiesLookup(structureService, result)
         addViewEntitiesLookups(structureService, result)
     }
 
-    static void addEntitiesLookup(org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface structureService, CompletionResultSet result) {
+    static void addEntitiesLookup(ProjectServiceInterface structureService, CompletionResultSet result) {
         List entities = structureService.getAllEntities()
         for (Entity entity : entities) {
             LookupElement lookupElement = LookupElementBuilder.create(entity.getEntityName())
-                    .withIcon(org.apache.ofbiz.idea.plugin.icons.PluginIcons.ENTITY_ICON)
-                    .withTailText(" Component:${org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getComponentName(entity)}" as String, true)
+                    .withIcon(PluginIcons.ENTITY_ICON)
+                    .withTailText(" Component:${MiscUtils.getComponentName(entity)}" as String, true)
             result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
         }
     }
 
-    static void addViewEntitiesLookups(org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface structureService, CompletionResultSet result) {
+    static void addViewEntitiesLookups(ProjectServiceInterface structureService, CompletionResultSet result) {
         List viewEntities = structureService.getAllViewEntities()
         for (ViewEntity view : viewEntities) {
             LookupElement lookupElement = LookupElementBuilder.create(view.getEntityName())
-                    .withIcon(org.apache.ofbiz.idea.plugin.icons.PluginIcons.VIEW_ENTITY_ICON)
-                    .withTailText(" Component:${org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getComponentName(view)}" as String, true)
+                    .withIcon(PluginIcons.VIEW_ENTITY_ICON)
+                    .withTailText(" Component:${MiscUtils.getComponentName(view)}" as String, true)
             result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
         }
     }

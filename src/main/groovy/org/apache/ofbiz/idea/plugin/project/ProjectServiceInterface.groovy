@@ -19,17 +19,22 @@ package org.apache.ofbiz.idea.plugin.project
 
 import com.intellij.psi.PsiDirectory
 import org.apache.ofbiz.idea.plugin.dom.ComponentFile
+import org.apache.ofbiz.idea.plugin.dom.ControllerFile
 import org.apache.ofbiz.idea.plugin.dom.EntityEngineFile.Datasource
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.Entity
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.ExtendEntity
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.ViewEntity
+import org.apache.ofbiz.idea.plugin.dom.FormFile
+import org.apache.ofbiz.idea.plugin.dom.MenuFile
 import org.apache.ofbiz.idea.plugin.dom.ScreenFile.Screen
+import org.apache.ofbiz.idea.plugin.dom.ServiceDefFile
+import org.apache.ofbiz.idea.plugin.dom.UiLabelFile
 
 interface ProjectServiceInterface {
 
-    org.apache.ofbiz.idea.plugin.dom.ControllerFile.RequestMap getRequestMap(String name)
+    ControllerFile.RequestMap getRequestMap(String name)
 
-    org.apache.ofbiz.idea.plugin.dom.ControllerFile.ViewMap getViewMap(String name)
+    ControllerFile.ViewMap getViewMap(String name)
 
     Entity getEntity(String name)
 
@@ -39,19 +44,19 @@ interface ProjectServiceInterface {
 
     List<ViewEntity> getAllViewEntities()
 
-    org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service getService(String name)
+    ServiceDefFile.Service getService(String name)
 
-    List<org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service> getAllServices()
+    List<ServiceDefFile.Service> getAllServices()
 
-    org.apache.ofbiz.idea.plugin.dom.FormFile.Grid getGrid(String name)
+    FormFile.Grid getGrid(String name)
 
-    org.apache.ofbiz.idea.plugin.dom.FormFile.Form getForm(String name)
+    FormFile.Form getForm(String name)
 
-    org.apache.ofbiz.idea.plugin.dom.UiLabelFile.Property getProperty(String name)
+    UiLabelFile.Property getProperty(String name)
 
     Screen getScreen(String name)
 
-    org.apache.ofbiz.idea.plugin.dom.MenuFile.Menu getMenu(String name)
+    MenuFile.Menu getMenu(String name)
 
     PsiDirectory getComponentDir(String name)
 

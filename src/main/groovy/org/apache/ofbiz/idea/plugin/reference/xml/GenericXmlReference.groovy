@@ -29,6 +29,7 @@ import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomManager
 import org.apache.ofbiz.idea.plugin.dom.ScreenFile
 import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -63,15 +64,15 @@ class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
             if (locationAttribute) {
                 //On va chercher dans le fichier ciblé
                 String locationAttributeValue = locationAttribute.getValue()
-                PsiFile targetedFile = org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils.getTargetFile(locationAttributeValue, structureService)
-                return org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils.getElementFromSpecificFile(targetedFile, dm, this.getElement().getValue(), this.FILE_TYPE,
+                PsiFile targetedFile = FileHandlingUtils.getTargetFile(locationAttributeValue, structureService)
+                return FileHandlingUtils.getElementFromSpecificFile(targetedFile, dm, this.getElement().getValue(), this.FILE_TYPE,
                         this.ELEMENT_NAME_GETTER_METHOD, this.ELEMENT_LIST_GETTER_METHOD)
             } else if (isPageReferenceFromController(containingTag)) {
                 return resolveScreenInController(this.getElement(), structureService, dm)
             } else if (isInRightFile(this.getElement(), this.FILE_TYPE, dm)) {
                 // On regarde dans le fichier courant
                 PsiFile currentFile = this.getElement().getContainingFile()
-                return org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils.getElementFromSpecificFile(currentFile, dm, this.getElement().getValue(), this.FILE_TYPE,
+                return FileHandlingUtils.getElementFromSpecificFile(currentFile, dm, this.getElement().getValue(), this.FILE_TYPE,
                         this.ELEMENT_NAME_GETTER_METHOD, this.ELEMENT_LIST_GETTER_METHOD)
             } else {
                 // Si on a pas de location, mais qu'on est pas dans un fichier pertinent => standard
@@ -123,8 +124,8 @@ class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
         String screenName = getScreenName(element)
         String stringValue = element.getValue()
         String fileComponentLocation = stringValue.substring(0, stringValue.length() - screenName.length() - 1)
-        PsiFile targetedFile = org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils.getTargetFile(fileComponentLocation, structureService)
-        return org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils.getElementFromSpecificFile(targetedFile, dm, screenName, ScreenFile.class,
+        PsiFile targetedFile = FileHandlingUtils.getTargetFile(fileComponentLocation, structureService)
+        return FileHandlingUtils.getElementFromSpecificFile(targetedFile, dm, screenName, ScreenFile.class,
                 "getName", "getScreens")
     }
 

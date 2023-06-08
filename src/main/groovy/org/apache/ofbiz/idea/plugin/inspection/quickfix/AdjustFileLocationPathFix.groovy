@@ -9,6 +9,9 @@ import com.intellij.psi.PsiFileSystemItem
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import org.apache.commons.text.similarity.LevenshteinDistance
+import org.apache.ofbiz.idea.plugin.inspection.InspectionBundle
+import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
 class AdjustFileLocationPathFix implements LocalQuickFix {
@@ -22,7 +25,7 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
 
     @Override
     String getName() {
-        return org.apache.ofbiz.idea.plugin.inspection.InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix')
+        return InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix')
     }
 
     @Override
@@ -34,8 +37,8 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
     void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
         XmlAttribute attr = descriptor.getPsiElement() as XmlAttribute
         XmlAttributeValue val = attr.getValueElement()
-        org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface ps = descriptor.getPsiElement().getProject().getService(org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface.class)
-        List<String> pathList = org.apache.ofbiz.idea.plugin.project.utils.FileHandlingUtils.splitPathToList(val.value)
+        ProjectServiceInterface ps = descriptor.getPsiElement().getProject().getService(ProjectServiceInterface.class)
+        List<String> pathList = FileHandlingUtils.splitPathToList(val.value)
         StringBuilder correctionAttempt = new StringBuilder().append('component://')
 
         String componentNameInput = pathList.first()

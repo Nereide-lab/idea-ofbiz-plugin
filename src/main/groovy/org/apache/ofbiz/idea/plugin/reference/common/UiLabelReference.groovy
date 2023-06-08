@@ -21,6 +21,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.util.xml.DomElement
 import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.MiscUtils
 import org.jetbrains.annotations.Nullable
 
 class UiLabelReference extends PsiReferenceBase<PsiElement> {
@@ -31,7 +32,7 @@ class UiLabelReference extends PsiReferenceBase<PsiElement> {
     @Nullable
     PsiElement resolve() {
         ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = structureService.getProperty(org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getUiLabelSafeValue(this.getValue()))
+        DomElement definition = structureService.getProperty(MiscUtils.getUiLabelSafeValue(this.getValue()))
         return definition != null ? definition.getXmlElement() : null
     }
 }

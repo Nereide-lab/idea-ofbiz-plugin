@@ -23,8 +23,10 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlTag
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.Entity
 import org.apache.ofbiz.idea.plugin.dom.EntityModelFile.ViewEntity
+import org.apache.ofbiz.idea.plugin.dom.ServiceDefFile
 import org.apache.ofbiz.idea.plugin.dom.UiLabelFile.Property
 import org.apache.ofbiz.idea.plugin.project.ProjectServiceInterface
+import org.apache.ofbiz.idea.plugin.project.utils.MiscUtils
 
 import static org.apache.ofbiz.idea.plugin.documentation.format.OfbizCommonDocumentationFormatter.*
 import static org.apache.ofbiz.idea.plugin.documentation.format.OfbizServiceDocumentationFormatter.*
@@ -56,7 +58,7 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
                 String viewName = structureService.getViewEntity(elementName).getEntityName().getValue()
                 return viewName ? generateViewDoc(viewName, structureService) : 'View not found'
             case 'property':
-                String propertyName = structureService.getProperty(org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getUiLabelSafeValue(elementName)).getKey().getValue()
+                String propertyName = structureService.getProperty(MiscUtils.getUiLabelSafeValue(elementName)).getKey().getValue()
                 return propertyName ? generateUiLabelDoc(propertyName, structureService) : 'UiLabel not found'
             default: return null
         }
@@ -71,7 +73,7 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
             case 'service':
                 return generateServiceQuickNavigateDoc(structureService, elementName)
             case 'property':
-                return generatePropertyQuickNavigateDoc(org.apache.ofbiz.idea.plugin.project.utils.MiscUtils.getUiLabelSafeValue(elementName), structureService)
+                return generatePropertyQuickNavigateDoc(MiscUtils.getUiLabelSafeValue(elementName), structureService)
             default: return null
         }
     }
@@ -86,7 +88,7 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
 
 
     static String generateServiceDoc(String serviceName, ProjectServiceInterface ps) {
-        org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service = ps.getService(serviceName)
+        ServiceDefFile.Service service = ps.getService(serviceName)
         HtmlBuilder docBuilder = new HtmlBuilder()
                 .append(formatServiceDefinition(service))
                 .append(formatServiceDescription(service))
@@ -145,7 +147,7 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
     }
 
     static String generateServiceQuickNavigateDoc(ProjectServiceInterface structureService, String elementName) {
-        org.apache.ofbiz.idea.plugin.dom.ServiceDefFile.Service service = structureService.getService(elementName)
+        ServiceDefFile.Service service = structureService.getService(elementName)
         return formatNavigateDocWithDomElement(service, 'service', elementName)
     }
 

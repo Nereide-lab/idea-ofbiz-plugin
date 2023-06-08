@@ -1,8 +1,15 @@
 package org.apache.ofbiz.idea.plugin.test.reference
 
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import org.apache.ofbiz.idea.plugin.reference.common.EntityReference
+import org.apache.ofbiz.idea.plugin.reference.common.ServiceReference
+import org.apache.ofbiz.idea.plugin.reference.xml.FormReference
+import org.apache.ofbiz.idea.plugin.reference.xml.GridReference
 import org.apache.ofbiz.idea.plugin.reference.xml.JavaMethodReference
 import org.apache.ofbiz.idea.plugin.reference.xml.MenuReference
+import org.apache.ofbiz.idea.plugin.reference.xml.RequestMapReference
+import org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference
+import org.apache.ofbiz.idea.plugin.reference.xml.ViewMapReference
 
 class TestReferenceInXmlCompound extends BaseReferenceTestCase {
 
@@ -20,27 +27,27 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     //=====================================
 
     void testCpdFormReferenceFromCpdScreen() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.FormReference.class, 'FooForm')
+        doTest(FormReference.class, 'FooForm')
     }
 
     void testCpdGridReferenceFromCpdScreen() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.GridReference.class, 'MyCompoundElement')
+        doTest(GridReference.class, 'MyCompoundElement')
     }
 
     void testCpdScreenReferenceFromCpdScreen() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference.class, 'BarScreen')
+        doTest(ScreenReference.class, 'BarScreen')
     }
 
     void testCpdScreenDecoratorReferenceFromCpdScreen() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference.class, 'FooDecoratorScreen')
+        doTest(ScreenReference.class, 'FooDecoratorScreen')
     }
 
     void testExternalFormRefFromCpdScreen() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.FormReference.class, 'OneFormAmongOthers')
+        doTest(FormReference.class, 'OneFormAmongOthers')
     }
 
     void testExternalScreenRefFromCpdScreen() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference.class, 'MundaneScreen')
+        doTest(ScreenReference.class, 'MundaneScreen')
     }
 
     void testCpdMenuRefFromCpdScreen() {
@@ -52,7 +59,7 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     }
 
     void testEntityRefFromCpdScreen() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.EntityReference.class, 'Entito')
+        doTest(EntityReference.class, 'Entito')
     }
 
     void testFileRefFromCpdScreen() {
@@ -60,11 +67,11 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     }
 
     void testCpdScreenRefFromExtScreen() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference.class, 'MyScreenInCpd', false)
+        doTest(ScreenReference.class, 'MyScreenInCpd', false)
     }
 
     void testCpdFormRefFromExtScreen() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.FormReference.class, 'MyFormInCpd', false)
+        doTest(FormReference.class, 'MyFormInCpd', false)
     }
 
     //=====================================
@@ -72,15 +79,15 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     //=====================================
 
     void testCpdRequestMapRefFromCpdForm() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.RequestMapReference.class, 'MyFooRequest')
+        doTest(RequestMapReference.class, 'MyFooRequest')
     }
 
     void testCpdScreenRefFromCpdFieldForm() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference.class, 'MyPitaScreen', false)
+        doTest(ScreenReference.class, 'MyPitaScreen', false)
     }
 
     void testCpdFormRefFromCpdFieldForm() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.FormReference.class, 'MyPitaForm')
+        doTest(FormReference.class, 'MyPitaForm')
     }
 
     void testCpdMenuRefFromCpdFieldForm() {
@@ -92,11 +99,11 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     //=====================================
 
     void testCpdViewMapRefFromCpdRequestMap() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ViewMapReference.class, 'myFooResponseInCpd')
+        doTest(ViewMapReference.class, 'myFooResponseInCpd')
     }
 
     void testServiceRefFromCpdRequestMap() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.common.ServiceReference.class, 'DonateToQuadratureDuNet')
+        doTest(ServiceReference.class, 'DonateToQuadratureDuNet')
     }
 
     void testJavaEventRefFromCpdRequestMap() {
@@ -108,6 +115,6 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     //=====================================
 
     void testCpdScreenRefFromCpdViewMap() {
-        doTest(org.apache.ofbiz.idea.plugin.reference.xml.ScreenReference.class, 'MyFooScreenInCpd', false)
+        doTest(ScreenReference.class, 'MyFooScreenInCpd', false)
     }
 }

@@ -19,6 +19,7 @@ package org.apache.ofbiz.idea.plugin.reference.xml
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
+import org.apache.ofbiz.idea.plugin.dom.FormFile
 import org.jetbrains.annotations.Nullable
 
 class FormReference extends GenericXmlReference {
@@ -28,7 +29,7 @@ class FormReference extends GenericXmlReference {
                 "getForms",
                 "getName",
                 "getForm",
-                org.apache.ofbiz.idea.plugin.dom.FormFile.class)
+                FormFile.class)
     }
 
     @Nullable
