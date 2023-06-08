@@ -26,12 +26,12 @@ import com.intellij.util.xml.SubTagList
 interface ComponentFile extends DomElement {
     @Attribute("name")
     @Stubbed
-    GenericAttributeValue<String> getName();
+    GenericAttributeValue<String> getName()
 
     @SubTagList("entity-resource")
-    List<EntityModelFile> getEntityResources();
+    List<EntityModelFile> getEntityResources()
 
     @SubTagList("service-resource")
-    List<ServiceDefFile> getServiceResources();
+    List<ServiceDefFile> getServiceResources()
 
 }

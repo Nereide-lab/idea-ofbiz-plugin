@@ -1,4 +1,4 @@
-package org.apache.ofbiz.idea.plugin.inspection;
+package org.apache.ofbiz.idea.plugin.inspection
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.Nls
