@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.2]
+
+### Added
+- Updated to Intellij version 23.2
+- Updated Intellij gradle plugin
+
 ## [1.5.1]
 
 ### Fixed
@@ -20,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.4.8]
 
 ### Fixed
-- Fixed security issues metionned in https://youtrack.jetbrains.com/issue/IDEA-317841/Upgrading-plugin-from-2022.3-to-2023.1-breaks-language-injection-tests
+- Fixed security issues mentioned in https://youtrack.jetbrains.com/issue/IDEA-317841/Upgrading-plugin-from-2022.3-to-2023.1-breaks-language-injection-tests
 
 ### Changed
 - Updated to 223.1 version

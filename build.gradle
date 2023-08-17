@@ -10,7 +10,7 @@ static def definedInPluginXml(String key) {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '1.13.3'
+    id 'org.jetbrains.intellij' version '1.15.0'
     id 'groovy'
     id 'java'
     id 'org.jetbrains.changelog' version '1.2.1'
@@ -38,7 +38,7 @@ java {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     type = 'IC'
-    version = '2023.1'
+    version = '2023.2'
     plugins = [
 //               'JavaScript', Seulement dans la version ultimate.. C'est pénible
                'com.intellij.java',
