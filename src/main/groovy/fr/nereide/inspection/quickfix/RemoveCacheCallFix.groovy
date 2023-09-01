@@ -23,8 +23,9 @@ import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiIdentifier
 import com.intellij.psi.PsiReferenceParameterList
-import com.intellij.psi.PsiWhiteSpace
+import com.intellij.psi.util.PsiTreeUtil
 import fr.nereide.inspection.InspectionBundle
 import org.jetbrains.annotations.NotNull
 
@@ -42,22 +43,21 @@ class RemoveCacheCallFix implements LocalQuickFix {
 
     @Override
     void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        PsiElement cacheElement = descriptor.getPsiElement()
-        // TODO : clean up this
-        deleteElementsBeforeCache(cacheElement)
-        deleteElementsAfterCache(cacheElement)
-        cacheElement.delete()
-    }
+        PsiIdentifier cacheExpr = descriptor.getPsiElement() as PsiIdentifier
 
-    static void deleteElementsBeforeCache(PsiElement cache) {
-        PsiElement prev = cache.getPrevSibling()
-        while ((prev != null) && !(prev instanceof PsiReferenceParameterList) &&
-                !(prev instanceof PsiWhiteSpace) && !(prev.text == '.')) {
-            prev = prev.prevSibling
-            prev?.nextSibling?.delete()
+        // delete before ('.' carac and optional empty list)
+        PsiElement prevEl = PsiTreeUtil.prevLeaf(cacheExpr, false)
+        PsiElement elToDelete
+        while (prevEl && ((prevEl instanceof PsiReferenceParameterList) || (prevEl.text == '.'))) {
+            elToDelete = prevEl
+            prevEl = PsiTreeUtil.prevLeaf(prevEl)
+            elToDelete.delete()
         }
-    }
+        // delete parenthesis after
+        PsiElement elAfter = PsiTreeUtil.nextLeaf(cacheExpr).getParent()
+        elAfter.delete()
 
-    static void deleteElementsAfterCache(PsiElement cache) {
+        // delete cache expr
+        cacheExpr.delete()
     }
 }

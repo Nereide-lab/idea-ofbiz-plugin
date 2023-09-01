@@ -20,24 +20,19 @@
 package fr.nereide.inspection
 
 import com.intellij.codeInspection.LocalInspectionTool
-import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.JavaElementVisitor
-import com.intellij.psi.JavaPsiFacade
-import com.intellij.psi.PsiClass
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiElementVisitor
-import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiMethodCallExpression
-import com.intellij.psi.PsiReferenceExpression
+import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
-import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
 import fr.nereide.dom.EntityModelFile
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
 import fr.nereide.project.ProjectServiceInterface
-import fr.nereide.project.pattern.OfbizPatternConst
 import org.jetbrains.annotations.NotNull
+
+import static com.intellij.codeInspection.ProblemHighlightType.WARNING
+import static fr.nereide.completion.provider.common.EntityFieldCompletionProvider.getEntityNameFromDeclarationString
+import static fr.nereide.inspection.InspectionBundle.message
+import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_QUERY_CLASS
 
 class CacheOnNeverCacheEntityInspection extends LocalInspectionTool {
 
@@ -54,13 +49,17 @@ class CacheOnNeverCacheEntityInspection extends LocalInspectionTool {
         return new JavaElementVisitor() {
             @Override
             void visitReferenceExpression(PsiReferenceExpression exp) {
-                PsiElement method = exp.resolve()
-                if (!method || !method instanceof PsiMethod) return
-                method = method as PsiMethod
+                PsiMethod method
+                try {
+                    if (!exp.resolve() || !exp.resolve() instanceof PsiMethod) return
+                    method = exp.resolve() as PsiMethod
+                } catch (ClassCastException ignored) {
+                    return
+                }
 
                 if (!isCacheFromEntityQuery(method)) return
-                PsiMethodCallExpression query = PsiTreeUtil.getParentOfType(exp, PsiMethodCallExpression)
-                String entityName = EntityFieldCompletionProvider.getEntityNameFromDeclarationString(query.text)
+                PsiMethodCallExpression query = PsiTreeUtil.getParentOfType(exp, PsiMethodCallExpression.class)
+                String entityName = getEntityNameFromDeclarationString(query.text)
                 if (!entityName) return
 
                 ProjectServiceInterface service = exp.getProject().getService(ProjectServiceInterface.class)
@@ -70,24 +69,24 @@ class CacheOnNeverCacheEntityInspection extends LocalInspectionTool {
                 String neverCache = entity.getNeverCache() ?: ''
                 if (!neverCache || neverCache != 'true') return
 
-                List<PsiMethodCallExpression> parents = PsiTreeUtil.collectParents(exp, PsiMethodCallExpression.class, false,
-                        el -> { el instanceof PsiMethod })
-                PsiMethodCallExpression fullQuery = parents.find { it.nextSibling.text == ';' }
-                if (!fullQuery) return
-
-                holder.registerProblem(fullQuery,
-                        InspectionBundle.message('inspection.entity.cache.on.never.cache.display.descriptor'),
-                        ProblemHighlightType.WARNING,
+                PsiIdentifier cachePsiEl = exp.lastChild as PsiIdentifier
+                holder.registerProblem(cachePsiEl,
+                        message('inspection.entity.cache.on.never.cache.display.descriptor'),
+                        WARNING,
                         myQuickFix
                 )
             }
-
         }
     }
 
+    /**
+     * Checks if the cache call really is OFBiz's
+     * @param method
+     * @return
+     */
     static boolean isCacheFromEntityQuery(PsiMethod method) {
         PsiClass entityQueryClass = JavaPsiFacade.getInstance(method.getProject())
-                .findClass(OfbizPatternConst.ENTITY_QUERY_CLASS, GlobalSearchScope.allScope(method.getProject()))
+                .findClass(ENTITY_QUERY_CLASS, GlobalSearchScope.allScope(method.getProject()))
         return entityQueryClass.getMethods().contains(method) && method.getName() == 'cache'
     }
 }
