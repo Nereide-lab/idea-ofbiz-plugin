@@ -1,5 +1,6 @@
 package fr.nereide.project.worker
 
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.util.xml.DomElement
 import fr.nereide.project.ProjectServiceInterface
@@ -8,6 +9,7 @@ import static fr.nereide.dom.EntityModelFile.*
 
 class EntityWorker {
 
+    private static final Logger LOG = Logger.getInstance(EntityWorker.class)
     /**
      * Returns a String list of all entity fields
      * @param entity
@@ -89,6 +91,7 @@ class EntityWorker {
         Entity entity = service.getEntity(entityName)
         if (!entity) {
             ViewEntity view = service.getViewEntity(entityName)
+            if (!view) return false
             List<ViewEntityMember> members = view.getMemberEntities()
             return members.any {
                 entityOrViewHasNeverCacheTrueAttr(it.getEntityName().getValue(), project)
