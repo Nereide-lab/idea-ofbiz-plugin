@@ -20,12 +20,21 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
     }
 
     protected void doTest(String intention) {
+        doTest(intention, null, true)
+    }
+
+    protected void doTest(String intention, String desc, boolean mustFind) {
         myFixture.configureByFile("${getLang()}/${getTestName(false)}.${getLang()}")
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
-        assertFalse(highlightInfos.isEmpty())
-        final IntentionAction action = myFixture.findSingleIntention(intention)
-        assertNotNull(action)
-        myFixture.launchAction(action)
-        myFixture.checkResultByFile("${getLang()}/${getTestName(false)}.after.${getLang()}")
+        if (mustFind) {
+            assertFalse(highlightInfos.isEmpty())
+            final IntentionAction action = myFixture.findSingleIntention(intention)
+            assertNotNull(action)
+            myFixture.launchAction(action)
+            myFixture.checkResultByFile("${getLang()}/${getTestName(false)}.after.${getLang()}")
+        } else {
+            List highlightDescs = highlightInfos.collect { it.description }
+            assertFalse highlightDescs.contains(desc)
+        }
     }
 }

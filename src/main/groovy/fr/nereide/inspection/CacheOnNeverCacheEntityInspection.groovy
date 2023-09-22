@@ -58,6 +58,8 @@ class CacheOnNeverCacheEntityInspection extends LocalInspectionTool {
                 }
 
                 if (!isCacheFromEntityQuery(method)) return
+                if (cacheCallHasFalseParameter(exp)) return
+
                 PsiMethodCallExpression query = PsiTreeUtil.getParentOfType(exp, PsiMethodCallExpression.class)
                 String entityName = getEntityNameFromDeclarationString(query.text)
                 if (!entityName) return
@@ -76,6 +78,27 @@ class CacheOnNeverCacheEntityInspection extends LocalInspectionTool {
                         myQuickFix
                 )
             }
+        }
+    }
+
+    /**
+     * Checks the value of the parameter of the cache method.
+     * Returns true as default so that the analysis doesn't continue
+     * @param exp
+     * @return true
+     */
+    static boolean cacheCallHasFalseParameter(PsiReferenceExpression exp) {
+        try {
+            PsiExpressionList[] paramsListEl = PsiTreeUtil.getChildrenOfType(exp.getParent(), PsiExpressionList.class)
+            List<PsiExpression> cacheParams = paramsListEl[0].getExpressions()
+            PsiLiteralExpression cacheParam = cacheParams[0] as PsiLiteralExpression
+            if (!cacheParam) return false
+            if (PsiTypes.booleanType() == cacheParam.getType() && cacheParam.getValue() == Boolean.FALSE) {
+                return true
+            }
+            return false
+        } catch (Exception ignored) {
+            return true
         }
     }
 

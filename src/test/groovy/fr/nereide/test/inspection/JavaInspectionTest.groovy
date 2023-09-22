@@ -40,4 +40,11 @@ class JavaInspectionTest extends BaseInspectionTest {
         myFixture.enableInspections(new CacheOnNeverCacheEntityInspection())
         doTest(intention)
     }
+
+    void testCacheOnNeverCacheEntityWithFalseParameter() {
+        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
+        String desc = InspectionBundle.message('inspection.entity.cache.on.never.cache.display.descriptor')
+        myFixture.enableInspections(new CacheOnNeverCacheEntityInspection())
+        doTest(intention, desc, false)
+    }
 }
