@@ -1,5 +1,6 @@
 package fr.nereide.project.worker
 
+import com.intellij.openapi.project.Project
 import com.intellij.util.xml.DomElement
 import fr.nereide.project.ProjectServiceInterface
 
@@ -82,4 +83,19 @@ class EntityWorker {
             "${prefix ?: ''}${field.getName()}"
         }.toList() as List<String>
     }
+
+    static boolean entityOrViewHasNeverCacheTrueAttr(String entityName, Project project) {
+        ProjectServiceInterface service = project.getService(ProjectServiceInterface.class)
+        Entity entity = service.getEntity(entityName)
+        if (!entity) {
+            ViewEntity view = service.getViewEntity(entityName)
+            List<ViewEntityMember> members = view.getMemberEntities()
+            return members.any {
+                entityOrViewHasNeverCacheTrueAttr(it.getEntityName().getValue(), project)
+            }
+        }
+        String neverCache = entity.getNeverCache() ?: ''
+        return neverCache ? neverCache == 'true' : false
+    }
+
 }

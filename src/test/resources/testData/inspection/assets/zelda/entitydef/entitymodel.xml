@@ -6,4 +6,8 @@
     <entity entity-name="MyNeverCachedEntity" package-name="org.apache.ofbiz" never-cache="true">
         <field name="foo" type="id"/>
     </entity>
+
+    <view-entity entity-name="MyNeverCachedView">
+        <member-entity entity-alias="MNCE" entity-name="MyNeverCachedEntity"/>
+    </view-entity>
 </entitymodel>

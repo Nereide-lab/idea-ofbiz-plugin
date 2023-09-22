@@ -24,9 +24,8 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
-import fr.nereide.dom.EntityModelFile
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.worker.EntityWorker
 import org.jetbrains.annotations.NotNull
 
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
@@ -63,13 +62,7 @@ class CacheOnNeverCacheEntityInspection extends LocalInspectionTool {
                 PsiMethodCallExpression query = PsiTreeUtil.getParentOfType(exp, PsiMethodCallExpression.class)
                 String entityName = getEntityNameFromDeclarationString(query.text)
                 if (!entityName) return
-
-                ProjectServiceInterface service = exp.getProject().getService(ProjectServiceInterface.class)
-                EntityModelFile.Entity entity = service.getEntity(entityName)
-                if (!entity) return
-
-                String neverCache = entity.getNeverCache() ?: ''
-                if (!neverCache || neverCache != 'true') return
+                if (!EntityWorker.entityOrViewHasNeverCacheTrueAttr(entityName, exp.getProject())) return
 
                 PsiIdentifier cachePsiEl = exp.lastChild as PsiIdentifier
                 holder.registerProblem(cachePsiEl,
