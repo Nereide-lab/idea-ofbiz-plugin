@@ -1,6 +1,6 @@
 package fr.nereide.test.inspection
 
-import fr.nereide.inspection.EmptyFileLocationInspection
+import fr.nereide.inspection.xml.EmptyFileLocationInspection
 import fr.nereide.inspection.InspectionBundle
 
 class XmlInspectionTest extends BaseInspectionTest {

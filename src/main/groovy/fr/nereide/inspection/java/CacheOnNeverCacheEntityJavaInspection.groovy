@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package fr.nereide.inspection
+package fr.nereide.inspection.java
 
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
@@ -33,7 +33,7 @@ import static fr.nereide.completion.provider.common.EntityFieldCompletionProvide
 import static fr.nereide.inspection.InspectionBundle.message
 import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_QUERY_CLASS
 
-class CacheOnNeverCacheEntityInspection extends LocalInspectionTool {
+class CacheOnNeverCacheEntityJavaInspection extends LocalInspectionTool {
 
     private final RemoveCacheCallFix myQuickFix = new RemoveCacheCallFix()
 

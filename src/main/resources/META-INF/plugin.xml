@@ -79,7 +79,7 @@
                          groupKey="group.names.probable.bugs"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="fr.nereide.inspection.EmptyFileLocationInspection"/>
+                         implementationClass="fr.nereide.inspection.xml.EmptyFileLocationInspection"/>
 
         <localInspection language="JAVA"
                          bundle="messages.InspectionBundle"
@@ -89,6 +89,6 @@
                          groupKey="group.names.code.style.issues"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="fr.nereide.inspection.CacheOnNeverCacheEntityInspection"/>
+                         implementationClass="fr.nereide.inspection.java.CacheOnNeverCacheEntityJavaInspection"/>
     </extensions>
 </idea-plugin>

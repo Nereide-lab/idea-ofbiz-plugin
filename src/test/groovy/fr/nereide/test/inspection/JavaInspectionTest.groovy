@@ -19,10 +19,17 @@
 
 package fr.nereide.test.inspection
 
-import fr.nereide.inspection.CacheOnNeverCacheEntityInspection
+
+import fr.nereide.inspection.java.CacheOnNeverCacheEntityJavaInspection
 import fr.nereide.inspection.InspectionBundle
 
 class JavaInspectionTest extends BaseInspectionTest {
+
+    CacheOnNeverCacheEntityJavaInspection myCacheInsp = new CacheOnNeverCacheEntityJavaInspection()
+
+    JavaInspectionTest() {
+        myCacheInsp = new CacheOnNeverCacheEntityJavaInspection()
+    }
 
     @Override
     String getLang() {
@@ -31,26 +38,26 @@ class JavaInspectionTest extends BaseInspectionTest {
 
     void testCacheOnNeverCacheEntity() {
         String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        myFixture.enableInspections(new CacheOnNeverCacheEntityInspection())
+        myFixture.enableInspections(myCacheInsp)
         doTest(intention)
     }
 
     void testCacheOnNeverCacheEntityWithTrueParameter() {
         String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        myFixture.enableInspections(new CacheOnNeverCacheEntityInspection())
+        myFixture.enableInspections(myCacheInsp)
         doTest(intention)
     }
 
     void testCacheOnNeverCacheEntityWithFalseParameter() {
         String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
         String desc = InspectionBundle.message('inspection.entity.cache.on.never.cache.display.descriptor')
-        myFixture.enableInspections(new CacheOnNeverCacheEntityInspection())
+        myFixture.enableInspections(myCacheInsp)
         doTest(intention, desc, false)
     }
 
     void testCacheOnViewIncludingNeverCacheEntity() {
         String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        myFixture.enableInspections(new CacheOnNeverCacheEntityInspection())
+        myFixture.enableInspections(myCacheInsp)
         doTest(intention)
     }
 }
