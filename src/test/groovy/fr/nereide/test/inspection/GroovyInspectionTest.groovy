@@ -22,4 +22,9 @@ class GroovyInspectionTest extends BaseInspectionTest {
         doTest(intention)
     }
 
+    void testCacheOnNeverCacheEntityIGroovyScript() {
+        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
+        myFixture.enableInspections(myCacheInsp)
+        doTest(intention)
+    }
 }
