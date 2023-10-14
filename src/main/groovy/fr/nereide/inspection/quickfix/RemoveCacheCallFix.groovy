@@ -23,11 +23,16 @@ import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiIdentifier
-import com.intellij.psi.PsiReferenceParameterList
-import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.PsiMethodCallExpression
+import com.intellij.psi.PsiReferenceExpression
 import fr.nereide.inspection.InspectionBundle
+import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.path.GrMethodCallExpression
+
+import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
+import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 
 class RemoveCacheCallFix implements LocalQuickFix {
 
@@ -43,21 +48,20 @@ class RemoveCacheCallFix implements LocalQuickFix {
 
     @Override
     void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        PsiIdentifier cacheExpr = descriptor.getPsiElement() as PsiIdentifier
+        PsiElement cacheExpr = descriptor.getPsiElement()
 
-        // delete before ('.' carac and optional empty list)
-        PsiElement prevEl = PsiTreeUtil.prevLeaf(cacheExpr, false)
-        PsiElement elToDelete
-        while (prevEl && ((prevEl instanceof PsiReferenceParameterList) || (prevEl.text == '.'))) {
-            elToDelete = prevEl
-            prevEl = PsiTreeUtil.prevLeaf(prevEl)
-            elToDelete.delete()
+        Class methodClass = PsiMethodCallExpression.class
+        Class refClass = PsiReferenceExpression.class
+
+        if (MiscUtils.isGroovy(cacheExpr)) {
+            methodClass = GrMethodCallExpression.class
+            refClass = GrReferenceExpression.class
         }
-        // delete parenthesis after
-        PsiElement elAfter = PsiTreeUtil.nextLeaf(cacheExpr).getParent()
-        elAfter.delete()
 
-        // delete cache expr
-        cacheExpr.delete()
+        def methodCallWithCache = getParentOfType(cacheExpr, methodClass)
+        def tempExpr = getChildOfType(methodCallWithCache, refClass)
+        def methodCallWithoutCache = getChildOfType(tempExpr, methodClass)
+
+        methodCallWithCache.replace(methodCallWithoutCache)
     }
 }

@@ -21,17 +21,12 @@ package fr.nereide.inspection.java
 
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.*
-import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.JavaElementVisitor
+import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.PsiReferenceExpression
+import fr.nereide.inspection.common.InspectionUtil
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
-import fr.nereide.project.worker.EntityWorker
 import org.jetbrains.annotations.NotNull
-
-import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static fr.nereide.completion.provider.common.EntityFieldCompletionProvider.getEntityNameFromDeclarationString
-import static fr.nereide.inspection.InspectionBundle.message
-import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_QUERY_CLASS
 
 class CacheOnNeverCacheEntityJavaInspection extends LocalInspectionTool {
 
@@ -48,61 +43,8 @@ class CacheOnNeverCacheEntityJavaInspection extends LocalInspectionTool {
         return new JavaElementVisitor() {
             @Override
             void visitReferenceExpression(PsiReferenceExpression exp) {
-                PsiMethod method
-                try {
-                    if (!exp.resolve() || !exp.resolve() instanceof PsiMethod) return
-                    method = exp.resolve() as PsiMethod
-                } catch (ClassCastException ignored) {
-                    return
-                }
-
-                if (!isCacheFromEntityQuery(method)) return
-                if (cacheCallHasFalseParameter(exp)) return
-
-                PsiMethodCallExpression query = PsiTreeUtil.getParentOfType(exp, PsiMethodCallExpression.class)
-                String entityName = getEntityNameFromDeclarationString(query.text)
-                if (!entityName) return
-                if (!EntityWorker.entityOrViewHasNeverCacheTrueAttr(entityName, exp.getProject())) return
-
-                PsiIdentifier cachePsiEl = exp.lastChild as PsiIdentifier
-                holder.registerProblem(cachePsiEl,
-                        message('inspection.entity.cache.on.never.cache.display.descriptor'),
-                        WARNING,
-                        myQuickFix
-                )
+                InspectionUtil.checkAndRegisterCacheOnNeverCacheEntity(exp, holder, myQuickFix)
             }
         }
-    }
-
-    /**
-     * Checks the value of the parameter of the cache method.
-     * Returns true as default so that the analysis doesn't continue
-     * @param exp
-     * @return true
-     */
-    static boolean cacheCallHasFalseParameter(PsiReferenceExpression exp) {
-        try {
-            PsiExpressionList[] paramsListEl = PsiTreeUtil.getChildrenOfType(exp.getParent(), PsiExpressionList.class)
-            List<PsiExpression> cacheParams = paramsListEl[0].getExpressions()
-            PsiLiteralExpression cacheParam = cacheParams[0] as PsiLiteralExpression
-            if (!cacheParam) return false
-            if (PsiTypes.booleanType() == cacheParam.getType() && cacheParam.getValue() == Boolean.FALSE) {
-                return true
-            }
-            return false
-        } catch (Exception ignored) {
-            return true
-        }
-    }
-
-    /**
-     * Checks if the cache call really is OFBiz's
-     * @param method
-     * @return
-     */
-    static boolean isCacheFromEntityQuery(PsiMethod method) {
-        PsiClass entityQueryClass = JavaPsiFacade.getInstance(method.getProject())
-                .findClass(ENTITY_QUERY_CLASS, GlobalSearchScope.allScope(method.getProject()))
-        return entityQueryClass.getMethods().contains(method) && method.getName() == 'cache'
     }
 }

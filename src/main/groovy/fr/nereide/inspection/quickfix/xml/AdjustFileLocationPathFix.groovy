@@ -1,4 +1,4 @@
-package fr.nereide.inspection.quickfix
+package fr.nereide.inspection.quickfix.xml
 
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
