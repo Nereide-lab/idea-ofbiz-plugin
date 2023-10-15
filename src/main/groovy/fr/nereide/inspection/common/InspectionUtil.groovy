@@ -1,21 +1,26 @@
 package fr.nereide.inspection.common
 
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
-import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.worker.EntityWorker
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.arguments.GrArgumentList
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
 
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
 import static fr.nereide.completion.provider.common.EntityFieldCompletionProvider.getEntityNameFromDeclarationString
 import static fr.nereide.inspection.InspectionBundle.message
 import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_QUERY_CLASS
+import static fr.nereide.project.utils.MiscUtils.isGroovy
 
 class InspectionUtil {
 
+    private static final Logger LOG = Logger.getInstance(InspectionUtil.class)
 
     /**
      * Checks the value of the parameter of the cache method.
@@ -25,14 +30,25 @@ class InspectionUtil {
      */
     static boolean cacheCallHasFalseParameter(PsiElement exp) {
         try {
-            PsiExpressionList[] paramsListEl = PsiTreeUtil.getChildrenOfType(exp.getParent(), PsiExpressionList.class)
-            List<PsiExpression> cacheParams = paramsListEl[0].getExpressions()
-            PsiLiteralExpression cacheParam = cacheParams[0] as PsiLiteralExpression
-            if (!cacheParam) return false
-            if (PsiTypes.booleanType() == cacheParam.getType() && cacheParam.getValue() == Boolean.FALSE) {
-                return true
+            if(isGroovy(exp)) {
+                GrArgumentList paramsListEl = PsiTreeUtil.getChildOfType(exp.getParent(), GrArgumentList.class)
+                GrExpression[] cacheParams = paramsListEl.getExpressionArguments()
+                if(!cacheParams) return
+                GrLiteral cacheParam = cacheParams[0] as GrLiteral
+                if (cacheParam && cacheParam.getValue() == Boolean.FALSE) {
+                    return true
+                }
+                return false
+            } else {
+                PsiExpressionList[] paramsListEl = PsiTreeUtil.getChildrenOfType(exp.getParent(), PsiExpressionList.class)
+                List<PsiExpression> cacheParams = paramsListEl[0].getExpressions()
+                PsiLiteralExpression cacheParam = cacheParams[0] as PsiLiteralExpression
+                if (!cacheParam) return false
+                if (PsiTypes.booleanType() == cacheParam.getType() && cacheParam.getValue() == Boolean.FALSE) {
+                    return true
+                }
+                return false
             }
-            return false
         } catch (Exception ignored) {
             return true
         }
@@ -49,10 +65,9 @@ class InspectionUtil {
         return entityQueryClass.getMethods().contains(method) && method.getName() == 'cache'
     }
 
-
     static void checkAndRegisterCacheOnNeverCacheEntity(PsiElement exp, ProblemsHolder holder, RemoveCacheCallFix myQuickFix) {
         PsiMethod method
-        Class methodCallClass = MiscUtils.isGroovy(exp) ? GrMethodCall.class : PsiMethodCallExpression.class
+        Class methodCallClass = isGroovy(exp) ? GrMethodCall.class : PsiMethodCallExpression.class
         try {
             if (!exp.resolve() || !exp.resolve() instanceof PsiMethod) return
             method = exp.resolve() as PsiMethod

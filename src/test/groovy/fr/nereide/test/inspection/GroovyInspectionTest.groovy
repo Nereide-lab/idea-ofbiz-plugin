@@ -27,4 +27,17 @@ class GroovyInspectionTest extends BaseInspectionTest {
         myFixture.enableInspections(myCacheInsp)
         doTest(intention)
     }
+
+    void testCacheOnNeverCacheEntityIGroovyScriptWithTrueParameter() {
+        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
+        myFixture.enableInspections(myCacheInsp)
+        doTest(intention)
+    }
+
+    void testCacheOnNeverCacheEntityIGroovyScriptWithFalseParameter() {
+        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
+        myFixture.enableInspections(myCacheInsp)
+        String desc = InspectionBundle.message('inspection.entity.cache.on.never.cache.display.descriptor')
+        doTest(intention, desc, false)
+    }
 }
