@@ -30,10 +30,10 @@ class InspectionUtil {
      */
     static boolean cacheCallHasFalseParameter(PsiElement exp) {
         try {
-            if(isGroovy(exp)) {
+            if (isGroovy(exp)) {
                 GrArgumentList paramsListEl = PsiTreeUtil.getChildOfType(exp.getParent(), GrArgumentList.class)
                 GrExpression[] cacheParams = paramsListEl.getExpressionArguments()
-                if(!cacheParams) return
+                if (!cacheParams) return
                 GrLiteral cacheParam = cacheParams[0] as GrLiteral
                 if (cacheParam && cacheParam.getValue() == Boolean.FALSE) {
                     return true
