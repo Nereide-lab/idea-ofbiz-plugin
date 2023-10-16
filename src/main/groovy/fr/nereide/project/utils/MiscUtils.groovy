@@ -68,4 +68,13 @@ class MiscUtils {
     static String getSafeTextValue(PsiElement originalElement) {
         originalElement.getText().replaceAll('"', '').replaceAll('\'', '')
     }
+
+    /**
+     * Tests the PsiElement parameter and returns true if the element is groovy language
+     * @param el
+     * @return
+     */
+    static boolean isGroovy(PsiElement el) {
+        return el.language.ID == 'Groovy'
+    }
 }

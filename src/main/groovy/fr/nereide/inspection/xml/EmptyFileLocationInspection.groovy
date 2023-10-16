@@ -1,4 +1,4 @@
-package fr.nereide.inspection
+package fr.nereide.inspection.xml
 
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemHighlightType
@@ -6,7 +6,8 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttribute
-import fr.nereide.inspection.quickfix.AdjustFileLocationPathFix
+import fr.nereide.inspection.InspectionBundle
+import fr.nereide.inspection.quickfix.xml.AdjustFileLocationPathFix
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull

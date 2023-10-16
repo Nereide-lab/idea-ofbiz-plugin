@@ -79,6 +79,25 @@
                          groupKey="group.names.probable.bugs"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="fr.nereide.inspection.EmptyFileLocationInspection"/>
+                         implementationClass="fr.nereide.inspection.xml.EmptyFileLocationInspection"/>
+
+        <localInspection language="JAVA"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.entity.cache.on.never.cache.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.code.style.issues"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.java.CacheOnNeverCacheEntityJavaInspection"/>
+        <localInspection language="Groovy"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.entity.cache.on.never.cache.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.code.style.issues"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.groovy.CacheOnNeverCacheEntityGroovyInspection"/>
     </extensions>
 </idea-plugin>

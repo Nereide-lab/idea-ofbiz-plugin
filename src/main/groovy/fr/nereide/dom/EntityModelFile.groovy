@@ -45,6 +45,9 @@ interface EntityModelFile extends DomElement {
         @SubTag("description")
         GenericDomValue<String> getDescription()
 
+        @Attribute("never-cache")
+        GenericAttributeValue<String> getNeverCache()
+
         @Attribute("package-name")
         GenericAttributeValue<String> getPackageName()
 
