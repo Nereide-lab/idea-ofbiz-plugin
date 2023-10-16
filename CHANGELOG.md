@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.4]
+
+### Added
+- Updated Intellij gradle plugin from 15 to 16
+- Added inspection on cache call on a never-cache entity
+
 ## [1.5.3]
 
 ### Added

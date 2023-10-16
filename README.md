@@ -41,6 +41,9 @@ For OFBiz properties (AKA UiLabels), the english message in the property will be
 Plugin now supports Language injection :
 - Injects groovy in relevant locations in xml files
 
+#### CODE INSPECTION
+Plugin now has some code inspection capabilities (cache call and xml location for now)
+
 **Feel free to contribute !**
 ## CONTRIBUTE
 Clone this repo, and you can get started here : [DOCS](https://plugins.jetbrains.com/docs/intellij/basics.html)
