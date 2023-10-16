@@ -62,6 +62,7 @@ class InspectionUtil {
     static boolean isCacheFromEntityQuery(PsiMethod method) {
         PsiClass entityQueryClass = JavaPsiFacade.getInstance(method.getProject())
                 .findClass(ENTITY_QUERY_CLASS, GlobalSearchScope.allScope(method.getProject()))
+        if(!entityQueryClass) return false
         return entityQueryClass.getMethods().contains(method) && method.getName() == 'cache'
     }
 
