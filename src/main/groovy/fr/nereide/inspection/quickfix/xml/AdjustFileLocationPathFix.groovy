@@ -25,7 +25,7 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
 
     @Override
     String getName() {
-        return InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix')
+        return InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix.fixpath')
     }
 
     @Override

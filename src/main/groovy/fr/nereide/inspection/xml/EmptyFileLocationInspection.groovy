@@ -8,13 +8,15 @@ import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttribute
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.quickfix.xml.AdjustFileLocationPathFix
+import fr.nereide.inspection.quickfix.xml.CreateFileAtLocationFix
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
 class EmptyFileLocationInspection extends LocalInspectionTool {
 
-    private final AdjustFileLocationPathFix myQuickFix = new AdjustFileLocationPathFix()
+    private final AdjustFileLocationPathFix myChangePathQuickFix = new AdjustFileLocationPathFix()
+    private final CreateFileAtLocationFix myCreateFileQuickFix = new CreateFileAtLocationFix()
 
     @Override
     boolean isEnabledByDefault() {
@@ -42,7 +44,8 @@ class EmptyFileLocationInspection extends LocalInspectionTool {
                             attribute,
                             InspectionBundle.message('inspection.location.target.file.not.found.display.descriptor'),
                             ProblemHighlightType.WARNING,
-                            myQuickFix
+                            myChangePathQuickFix,
+                            ps.getComponentDir(FileHandlingUtils.splitPathToList(attrValue)[0]) ? myCreateFileQuickFix : null
                     )
                 }
             }
