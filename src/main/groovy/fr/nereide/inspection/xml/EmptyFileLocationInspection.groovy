@@ -3,6 +3,7 @@ package fr.nereide.inspection.xml
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttribute
@@ -45,10 +46,15 @@ class EmptyFileLocationInspection extends LocalInspectionTool {
                             InspectionBundle.message('inspection.location.target.file.not.found.display.descriptor'),
                             ProblemHighlightType.WARNING,
                             myChangePathQuickFix,
-                            ps.getComponentDir(FileHandlingUtils.splitPathToList(attrValue)[0]) ? myCreateFileQuickFix : null
+                            doesComponentExists(ps, attrValue) ? myCreateFileQuickFix : null
                     )
                 }
             }
+
         }
+    }
+
+    private static PsiDirectory doesComponentExists(ProjectServiceInterface ps, String attrValue) {
+        return ps.getComponentDir(FileHandlingUtils.splitPathToList(attrValue)[0])
     }
 }

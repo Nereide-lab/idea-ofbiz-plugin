@@ -9,6 +9,7 @@ import com.intellij.psi.xml.XmlAttribute
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.FileHandlingUtils
+import fr.nereide.ui.dialog.FileCreateDialog
 import org.jetbrains.annotations.NotNull
 
 class CreateFileAtLocationFix implements LocalQuickFix {
@@ -28,9 +29,9 @@ class CreateFileAtLocationFix implements LocalQuickFix {
         XmlAttribute attr = descriptor.getPsiElement() as XmlAttribute
         String val = attr.getValueElement().getValue()
         List<String> dirsInPath = FileHandlingUtils.splitPathToList(val)
-        ProjectServiceInterface ps = attr.getProject().getService(ProjectServiceInterface.class)
+        ProjectServiceInterface ps = project.getService(ProjectServiceInterface.class)
         PsiDirectory compoDir = ps.getComponentDir(dirsInPath.first())
-        if(!compoDir) return
+        if (!compoDir) return
 
         PsiDirectory current = compoDir
         String fileName = dirsInPath.last()
@@ -41,9 +42,18 @@ class CreateFileAtLocationFix implements LocalQuickFix {
             current.createSubdirectory(dir)
             current = current.findSubdirectory(dir)
         }
+
+        // Appel d'une fenetre qui demande le type de fichier à créer
+
+//        if (!new FileCreateDialog(project).showAndGet()) {
+//            return
+//        }
+
+        // Si anulation, alors on créé pas
         PsiFile file = current.createFile(fileName)
 
-        // différents cas à traiter dans le cas de la creation de fichier
+        // Sinon, on affecte le template au fichier
+
         // Screen
         // Form
         // Menu
