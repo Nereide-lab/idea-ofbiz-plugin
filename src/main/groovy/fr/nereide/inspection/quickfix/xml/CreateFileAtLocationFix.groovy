@@ -6,10 +6,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttribute
+import fr.nereide.editor.actions.CreateOfbizFileAction
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.FileHandlingUtils
-import fr.nereide.ui.dialog.FileCreateDialog
+
 import org.jetbrains.annotations.NotNull
 
 class CreateFileAtLocationFix implements LocalQuickFix {
@@ -33,31 +34,25 @@ class CreateFileAtLocationFix implements LocalQuickFix {
         PsiDirectory compoDir = ps.getComponentDir(dirsInPath.first())
         if (!compoDir) return
 
+        // ask creation confirm
+        def dial = new CreateOfbizFileAction(project)
+        if (!dial.showAndGet()) {
+            return
+        }
+        String fileType = dial.getFileType()
+
         PsiDirectory current = compoDir
         String fileName = dirsInPath.last()
 
         dirsInPath.remove(dirsInPath.first())
         dirsInPath.remove(dirsInPath.last())
         dirsInPath.each { String dir ->
-            current.createSubdirectory(dir)
+            if(!current.findSubdirectory(dir)) {
+                current.createSubdirectory(dir)
+            }
             current = current.findSubdirectory(dir)
         }
 
-        // Appel d'une fenetre qui demande le type de fichier à créer
-
-//        if (!new FileCreateDialog(project).showAndGet()) {
-//            return
-//        }
-
-        // Si anulation, alors on créé pas
         PsiFile file = current.createFile(fileName)
-
-        // Sinon, on affecte le template au fichier
-
-        // Screen
-        // Form
-        // Menu
-        // Fichier groovy
-        // html template (ftl)
     }
 }
