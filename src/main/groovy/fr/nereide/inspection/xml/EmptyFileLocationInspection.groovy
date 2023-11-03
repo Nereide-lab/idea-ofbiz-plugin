@@ -34,7 +34,7 @@ class EmptyFileLocationInspection extends LocalInspectionTool {
                     return
                 }
                 String attrValue = attribute.getValue()
-                if (!attrValue.startsWith('component://')) {
+                if (!attrValue.startsWith('component://') || attrValue.contains('${')) {
                     return
                 }
 
