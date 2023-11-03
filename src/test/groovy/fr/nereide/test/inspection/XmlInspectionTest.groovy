@@ -7,9 +7,16 @@ class XmlInspectionTest extends BaseInspectionTest {
 
     String getLang() { return 'xml' }
 
-    void testNoGroovyServiceFileFoundInspection() {
-        String intention = InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix')
+    void testNoGroovyServiceFileFoundInspectionFileFix() {
+        String intention = InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix.fixpath')
         myFixture.enableInspections(new EmptyFileLocationInspection())
-        doTest(intention)
+        doFileFixTest(intention)
+    }
+
+    void testNoGroovyServiceFileFoundInspectionFileCreate() {
+        String intention = InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix.createfile')
+        myFixture.enableInspections(new EmptyFileLocationInspection())
+        String location = "zelda/webcommon/WEB-INF/zelda-controller.xml"
+        doFileCreateTest(intention, location, true)
     }
 }

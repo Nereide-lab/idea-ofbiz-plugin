@@ -38,7 +38,8 @@ java {
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     type = 'IC'
-    version = 'LATEST-EAP-SNAPSHOT'
+    version = '2023.2'
+//    version = 'LATEST-EAP-SNAPSHOT'
     plugins = [
 //               'JavaScript', Seulement dans la version ultimate.. C'est pénible
                'com.intellij.java',
