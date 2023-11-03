@@ -6,14 +6,14 @@ import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.PropertyKey;
 
-public class EditorBundle extends DynamicBundle {
+public class OfbizEditorBundle extends DynamicBundle {
 
-    private static final EditorBundle ourInstance = new EditorBundle();
+    private static final OfbizEditorBundle ourInstance = new OfbizEditorBundle();
 
     @NonNls
-    public static final String BUNDLE = "messages.EditorBundle";
+    public static final String BUNDLE = "messages.OfbizEditorBundle";
 
-    private EditorBundle() {
+    private OfbizEditorBundle() {
         super(BUNDLE);
     }
 

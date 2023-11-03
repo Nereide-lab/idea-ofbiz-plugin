@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.DocumentAdapter;
-import fr.nereide.editor.EditorBundle;
+import fr.nereide.editor.OfbizEditorBundle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,21 +12,24 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import java.awt.*;
 
+/**
+ * Ui dialog class used for selecting the file type to create.
+ * Offers choices for each file type of OFBiz
+ */
 public class CreateOfbizFileAction extends DialogWrapper {
 
-    private final String[] FILE_TYPES = {"Blank", "Groovy", "Screen", "Menu", "Form", "Controller", "Freemarker"};
     private JPanel myRoot;
 
     private JLabel myFileTypeLabel;
     private ComboBox<String> myFileTypeComboBox;
 
-    public CreateOfbizFileAction(@Nullable Project project) {
+    public CreateOfbizFileAction(@Nullable Project project, String[] listChoices) {
         super(project, false);
-        setTitle(EditorBundle.message("editor.action.create.ofbiz.file.title"));
-        myFileTypeLabel.setText(EditorBundle.message("editor.action.create.ofbiz.file.select"));
-        myFileTypeComboBox.setModel(new DefaultComboBoxModel<>(FILE_TYPES));
+        setTitle(OfbizEditorBundle.message("editor.action.create.ofbiz.file.title"));
+        myFileTypeLabel.setText(OfbizEditorBundle.message("editor.action.create.ofbiz.file.select"));
+        myFileTypeComboBox.setModel(new DefaultComboBoxModel<>(listChoices));
         myFileTypeComboBox.setEditable(true);
-        myFileTypeComboBox.setSelectedItem("Blank");
+        myFileTypeComboBox.setSelectedItem("");
         addUpdateListener(myFileTypeComboBox);
 
         updateOkAction();

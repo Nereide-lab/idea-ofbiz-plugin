@@ -17,10 +17,16 @@
 
 package fr.nereide.project.utils
 
+import com.intellij.ide.fileTemplates.FileTemplate
+import com.intellij.ide.fileTemplates.FileTemplateManager
+import com.intellij.lang.xml.XMLLanguage
 import com.intellij.openapi.diagnostic.Logger
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiFileFactory
+import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlFile
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
@@ -107,4 +113,64 @@ class FileHandlingUtils {
                 .collect(Collectors.toList())
     }
 
+
+    /**
+     * Creates a file from a template depending on the file type in parameter
+     * @param project
+     * @param fileType
+     * @param attr the XML attribute that is used to create the file from
+     * @param fileName
+     * @param targetDir
+     * @return the created PsiFile
+     */
+    static PsiFile createFileFromTemplate(Project project, String fileType, XmlAttribute attr, String fileName,
+                                          PsiDirectory targetDir) {
+        PsiFile fileToAdd
+        FileTemplate template
+        Properties templateProperties = new Properties()
+        FileTemplateManager ftm = FileTemplateManager.getInstance(project)
+        switch (fileType) {
+            case 'Screen':
+                template = ftm.getCodeTemplate('ScreenFileTemplate.xml')
+                String elName = getNameAttrIfAny(attr)
+                if (elName) templateProperties.setProperty('SCREEN_NAME', elName)
+                fileToAdd = makeXmlFileFromTemplateAndProps(project, fileName, templateProperties, template)
+                targetDir.add(fileToAdd)
+                break
+            case 'Menus':
+                template = ftm.getCodeTemplate('MenuFileTemplate.xml')
+                String elName = getNameAttrIfAny(attr)
+                if (elName) templateProperties.setProperty('MENU_NAME', elName)
+                fileToAdd = makeXmlFileFromTemplateAndProps(project, fileName, templateProperties, template)
+                targetDir.add(fileToAdd)
+                break
+            case 'Form':
+                template = ftm.getCodeTemplate('FormFileTemplate.xml')
+                String elName = getNameAttrIfAny(attr)
+                if (elName) templateProperties.setProperty('FORM_NAME', elName)
+                fileToAdd = makeXmlFileFromTemplateAndProps(project, fileName, templateProperties, template)
+                targetDir.add(fileToAdd)
+                break
+            case 'Controller':
+                template = ftm.getCodeTemplate('ControllerFileTemplate.xml')
+                fileToAdd = makeXmlFileFromTemplateAndProps(project, fileName, templateProperties, template)
+                targetDir.add(fileToAdd)
+                break
+            default:
+                fileToAdd = targetDir.createFile(fileName)
+                break
+        }
+        return fileToAdd
+    }
+
+    private static String getNameAttrIfAny(XmlAttribute attr) {
+        XmlAttribute nameAttr = attr.getParent().getAttribute('name')
+        return nameAttr?.value
+    }
+
+    private static PsiFile makeXmlFileFromTemplateAndProps(Project project, String fileName,
+                                                           Properties templateProperties, FileTemplate template) {
+        String templateText = templateProperties ? template.getText(templateProperties) : template.getText()
+        return PsiFileFactory.getInstance(project).createFileFromText(fileName, XMLLanguage.INSTANCE, templateText)
+    }
 }
