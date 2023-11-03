@@ -137,7 +137,7 @@ class FileHandlingUtils {
                 fileToAdd = makeXmlFileFromTemplateAndProps(project, fileName, templateProperties, template)
                 targetDir.add(fileToAdd)
                 break
-            case 'Menus':
+            case 'Menu':
                 template = ftm.getCodeTemplate('MenuFileTemplate.xml')
                 String elName = getNameAttrIfAny(attr)
                 if (elName) templateProperties.setProperty('MENU_NAME', elName)

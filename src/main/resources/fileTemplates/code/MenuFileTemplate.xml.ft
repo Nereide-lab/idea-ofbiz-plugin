@@ -22,9 +22,9 @@ under the License.
     xmlns="http://ofbiz.apache.org/Widget-Menu"
        xsi:schemaLocation="http://ofbiz.apache.org/Widget-Menu http://ofbiz.apache.org/dtds/widget-menu.xsd">
 
-    <menu name="${MENU_NAME}" title="${uiLabelMap.}"
+    <menu name="${MENU_NAME}" title=""
           extends="CommonAppBarMenu" extends-resource="component://common/widget/CommonMenus.xml">
-        <menu-item name="" title="${uiLabelMap.}">
+        <menu-item name="" title="">
             <link target=""/>
         </menu-item>
     </menu>
