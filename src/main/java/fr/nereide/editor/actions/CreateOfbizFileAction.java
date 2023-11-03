@@ -29,7 +29,7 @@ public class CreateOfbizFileAction extends DialogWrapper {
         myFileTypeLabel.setText(OfbizEditorBundle.message("editor.action.create.ofbiz.file.select"));
         myFileTypeComboBox.setModel(new DefaultComboBoxModel<>(listChoices));
         myFileTypeComboBox.setEditable(true);
-        myFileTypeComboBox.setSelectedItem("");
+        myFileTypeComboBox.setSelectedItem("Blank");
         addUpdateListener(myFileTypeComboBox);
 
         updateOkAction();

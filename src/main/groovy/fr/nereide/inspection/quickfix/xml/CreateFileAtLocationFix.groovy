@@ -58,12 +58,12 @@ class CreateFileAtLocationFix implements LocalQuickFix {
         if (isTest) {
             fileToAdd = FileHandlingUtils.createFileFromTemplate(project, null, attr, fileName, current)
         } else {
-            String[] choices = ['Screen', 'Menu', 'Form', 'Controller']
+            String[] choices = ['Blank', 'Screen', 'Menu', 'Form', 'Controller']
             CreateOfbizFileAction dial = new CreateOfbizFileAction(project, choices)
             if (!dial.showAndGet()) return
             fileToAdd = FileHandlingUtils.createFileFromTemplate(project, dial.getFileType(), attr, fileName, current)
         }
-        fileToAdd.navigate(true)
+        if (fileToAdd) fileToAdd.navigate(true)
     }
 
 }
