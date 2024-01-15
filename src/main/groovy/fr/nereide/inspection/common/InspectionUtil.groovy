@@ -5,6 +5,9 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.*
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.xml.XmlAttribute
+import com.intellij.psi.xml.XmlFile
+import com.intellij.psi.xml.XmlTag
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
 import fr.nereide.project.worker.EntityWorker
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.arguments.GrArgumentList
@@ -62,7 +65,7 @@ class InspectionUtil {
     static boolean isCacheFromEntityQuery(PsiMethod method) {
         PsiClass entityQueryClass = JavaPsiFacade.getInstance(method.getProject())
                 .findClass(ENTITY_QUERY_CLASS, GlobalSearchScope.allScope(method.getProject()))
-        if(!entityQueryClass) return false
+        if (!entityQueryClass) return false
         return entityQueryClass.getMethods().contains(method) && method.getName() == 'cache'
     }
 
@@ -90,5 +93,20 @@ class InspectionUtil {
                 WARNING,
                 myQuickFix
         )
+    }
+
+    static boolean fileHasElementWithSameName(XmlFile file, String root, String namespace, XmlAttribute attr) {
+        return fileHasElementWithSameName(file, root, namespace, attr.value)
+    }
+
+    static boolean fileHasElementWithSameName(XmlFile file, String root, String namespace, String attr) {
+        List<XmlTag> subTags
+        XmlTag rootTag = file.getRootTag()
+        if (rootTag.getName() == 'compound-widgets') {
+            subTags = rootTag.findSubTags(root, namespace)?[0].getSubTags()
+        } else {
+            subTags = rootTag.getSubTags()
+        }
+        return subTags.any { XmlTag tag -> tag.getAttribute('name') && tag.getAttribute('name').value == attr }
     }
 }

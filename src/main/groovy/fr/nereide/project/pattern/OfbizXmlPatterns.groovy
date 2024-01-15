@@ -1,26 +1,18 @@
 package fr.nereide.project.pattern
 
-import com.intellij.patterns.ElementPattern
 import com.intellij.patterns.PsiElementPattern
-import com.intellij.patterns.StandardPatterns
 import com.intellij.patterns.XmlAttributeValuePattern
 import com.intellij.patterns.XmlFilePattern
-import com.intellij.psi.PsiElement
+import com.intellij.patterns.XmlTagPattern
+import org.intellij.plugins.intelliLang.inject.config.ui.XmlTagPanel
+import org.kohsuke.rngom.binary.ElementPattern
 
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.StandardPatterns.string
 import static com.intellij.patterns.XmlNamedElementPattern.XmlAttributePattern
-import static com.intellij.patterns.XmlPatterns.xmlAttribute
-import static com.intellij.patterns.XmlPatterns.xmlAttributeValue
-import static com.intellij.patterns.XmlPatterns.xmlFile
-import static com.intellij.patterns.XmlPatterns.xmlTag
+import static com.intellij.patterns.XmlPatterns.*
 import static com.intellij.patterns.XmlTagPattern.Capture
-import static fr.nereide.dom.CompoundFileDescription.FORM_NS_PREFIX
-import static fr.nereide.dom.CompoundFileDescription.FORM_NS_URL
-import static fr.nereide.dom.CompoundFileDescription.SCREEN_NS_PREFIX
-import static fr.nereide.dom.CompoundFileDescription.SCREEN_NS_URL
-import static fr.nereide.dom.CompoundFileDescription.SITE_CONF_NS_PREFIX
-import static fr.nereide.dom.CompoundFileDescription.SITE_CONF_NS_URL
+import static fr.nereide.dom.CompoundFileDescription.*
 
 class OfbizXmlPatterns {
 
@@ -58,17 +50,17 @@ class OfbizXmlPatterns {
     )
 
     public static final XmlAttributeValuePattern FORM_CALL = xmlAttributeValue().andOr(
-            xmlAttributeValue().withParent(nameAttr().withParent(includeFormTag())),
-            xmlAttributeValue().withParent(extendsAttr().withParent(formTag())),
-            xmlAttributeValue().withParent(nameAttr().withParent(includeFormTagInFormNs())),
-            xmlAttributeValue().withParent(nameAttr().withParent(formTagInScreenNs())),
+            xmlAttributeValue().withParent(nameAttr().withParent(includeFormTag())).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(extendsAttr().withParent(formTag())).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(nameAttr().withParent(includeFormTagInFormNs())).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(nameAttr().withParent(formTagInScreenNs())).andNot(dynamicElement()),
     )
 
     public static final XmlAttributeValuePattern GRID_CALL = xmlAttributeValue().andOr(
-            xmlAttributeValue().withParent(nameAttr().withParent(includeGridTag())),
-            xmlAttributeValue().withParent(extendsAttr().withParent(gridTag())),
-            xmlAttributeValue().withParent(nameAttr().withParent(gridTagInFormNs())),
-            xmlAttributeValue().withParent(nameAttr().withParent(gridTagInScreenNs()))
+            xmlAttributeValue().withParent(nameAttr().withParent(includeGridTag())).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(extendsAttr().withParent(gridTag())).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(nameAttr().withParent(gridTagInFormNs())).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(nameAttr().withParent(gridTagInScreenNs())).andNot(dynamicElement())
     )
 
     public static final XmlAttributeValuePattern MENU_CALL = xmlAttributeValue().andOr(
@@ -88,11 +80,11 @@ class OfbizXmlPatterns {
     public static final XmlAttributeValuePattern SCREEN_CALL = xmlAttributeValue().andOr(
             xmlAttributeValue().withParent(pageAttr().withParent(viewMapTag().withChild(typeScreenAttrValue()))),
             xmlAttributeValue().withParent(pageAttr().withParent(viewMapInSiteConfNs().withChild(typeScreenAttrValue()))),
-            xmlAttributeValue().withParent(nameAttr().withParent(decoratorScreenTag())),
-            xmlAttributeValue().withParent(nameAttr().withParent(includeScreenTag())),
-            xmlAttributeValue().withParent(nameAttr().withParent(includeScreenInScreenNs())),
-            xmlAttributeValue().withParent(nameAttr().withParent(includeScreenInFormNs())),
-            xmlAttributeValue().withParent(nameAttr().withParent(decoratorScreenTagInScreenNs()))
+            xmlAttributeValue().withParent(nameAttr().withParent(decoratorScreenTag())).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(nameAttr().withParent(includeScreenTag())).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(nameAttr().withParent(includeScreenInScreenNs())).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(nameAttr().withParent(includeScreenInFormNs())).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(nameAttr().withParent(decoratorScreenTagInScreenNs())).andNot(dynamicElement())
     )
 
     public static final XmlAttributeValuePattern GROOVY_SERVICE_METHOD = xmlAttributeValue().andOr(
@@ -139,6 +131,10 @@ class OfbizXmlPatterns {
         return xmlTag().withName(tagName)
     }
 
+    static Capture makeTagPatternWithNotCond(String tagName, XmlTagPattern notPattern) {
+        return xmlTag().withName(tagName).andNot(notPattern)
+    }
+
     static XmlFilePattern.Capture entityEngineXmlFile() { xmlFile().withRootTag(entityEngineXmlTag()) }
 
     static XmlAttributePattern pageAttr() { return makeAttrPattern('page') }
@@ -175,7 +171,10 @@ class OfbizXmlPatterns {
 
     static XmlAttributePattern serviceTypeAttrValue() { return makeAttrAndValPattern('type', 'service') }
 
-    static Capture decoratorScreenTag() { return makeTagPattern('decorator-screen') }
+    static Capture decoratorScreenTag() {
+        return makeTagPatternWithNotCond('decorator-screen',
+                xmlTag().withChild(xmlAttribute('location').withValue(string().contains('${'))))
+    }
 
     static Capture viewMapTag() { return makeTagPattern('view-map') }
 
@@ -262,4 +261,9 @@ class OfbizXmlPatterns {
     static Capture responseTagInSiteConfNs() {
         return xmlTag().withName("${SITE_CONF_NS_PREFIX}response").withNamespace(SITE_CONF_NS_URL)
     }
+
+    static XmlAttributeValuePattern dynamicElement() {
+        xmlAttributeValue().withValue(string().contains('${'))
+    }
+
 }
