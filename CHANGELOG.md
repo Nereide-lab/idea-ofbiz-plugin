@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+- Fixed a test that broke when switching to latest EAP version (groovy resolving issue)
+
 ## [1.5.7]
 ### Added
 - Adds 'path' attribute to checked files locations

@@ -20,6 +20,7 @@ package fr.nereide.completion.provider.groovy
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiExpression
+import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiVariable
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
 import fr.nereide.project.pattern.OfbizGroovyPatterns
@@ -78,7 +79,7 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
         if (index > 10) return null
         GrReferenceExpression expression = findChildOfType(potentialLoop, GrReferenceExpression.class, true)
         PsiElement gvList = expression.resolve()
-        if (!gvList) { // on regarde au niveau du dessous
+        if (!gvList || gvList instanceof PsiMethod) { // on regarde au niveau du dessous
             return getGVListVariablefromLoopInstruction(expression, index++)
         }
         return gvList
