@@ -30,11 +30,11 @@ class EmptyFileLocationInspection extends LocalInspectionTool {
         return new XmlElementVisitor() {
             @Override
             void visitXmlAttribute(@NotNull XmlAttribute attribute) {
-                if (attribute.getName() != 'location') {
+                if (!attribute.getName() || !(['path', 'location'].contains(attribute.getName()))) {
                     return
                 }
                 String attrValue = attribute.getValue()
-                if (!attrValue.startsWith('component://') || attrValue.contains('${')) {
+                if (!attrValue || (!attrValue.startsWith('component://')) || (attrValue.contains('${'))) {
                     return
                 }
 

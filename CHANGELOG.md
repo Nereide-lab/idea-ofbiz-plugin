@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.7]
+### Added
+- Adds 'path' attribute to checked files locations
+- Adds form not found inspection with quickfix
+- Adds screen not found inspection
+### Fixed
+- Removes the dynamic elements or elements with dynamic location from patterns
+
 ## [1.5.6]
 ### Added
 - Added an option to create a file on file not found detection

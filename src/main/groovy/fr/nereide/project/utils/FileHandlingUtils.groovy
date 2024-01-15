@@ -80,9 +80,10 @@ class FileHandlingUtils {
      * return the file targeted by string of type "component://..."
      * @param componentPathToFile
      * @param structureService
-     * @return PsiFile if foud or null
+     * @return PsiFile if found or null
      */
     static PsiFile getTargetFile(String componentPathToFile, ProjectServiceInterface structureService) {
+        if (!componentPathToFile) return null
         Matcher componentMatcher = ComponentAwareFileReferenceSet.COMPONENT_NAME_PATTERN.matcher(componentPathToFile)
 
         if (componentMatcher.find() && componentMatcher.groupCount() != 0) {

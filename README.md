@@ -42,7 +42,10 @@ Plugin now supports Language injection :
 - Injects groovy in relevant locations in xml files
 
 #### CODE INSPECTION
-Plugin now has some code inspection capabilities (cache call and xml location for now)
+- Useless cache call
+- Screen not found at specified location
+- Form not found at specified location
+- File not found at specified location
 
 **Feel free to contribute !**
 ## CONTRIBUTE
