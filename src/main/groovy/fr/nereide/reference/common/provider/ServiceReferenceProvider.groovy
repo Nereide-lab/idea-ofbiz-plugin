@@ -29,8 +29,6 @@ class ServiceReferenceProvider extends PsiReferenceProvider {
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        ServiceReference service = new ServiceReference(element)
-        PsiReference[] reference = (PsiReference) service
-        return reference ?: PsiReference.EMPTY_ARRAY
+        return new ServiceReference(element)
     }
 }

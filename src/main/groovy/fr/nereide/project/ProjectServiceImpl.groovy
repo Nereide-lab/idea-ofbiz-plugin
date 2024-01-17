@@ -83,6 +83,19 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getMatchingElementFromXmlFiles(ServiceDefFile.class, "getServices", "getName", name)
     }
 
+    List<Service> getServices(String name) {
+        List toReturn = []
+        List<DomFileElement<ServiceDefFile>> serviceDefFiles = DomService.getInstance().getFileElements(ServiceDefFile.class, project, GlobalSearchScope.allScope(project))
+        for (DomFileElement<ServiceDefFile> serviceDefFile : serviceDefFiles) {
+            List<DomElement> servicesDomElements = serviceDefFile.getRootElement().getServices()
+            List matching = servicesDomElements.findAll { service ->
+                service.getName().getValue().equalsIgnoreCase(name)
+            }
+            if (matching) toReturn.addAll(matching)
+        }
+        return toReturn
+    }
+
     List<Service> getAllServices() {
         return getAllElementOfSpecificType(ServiceDefFile.class, "getServices")
     }

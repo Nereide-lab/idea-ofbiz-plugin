@@ -17,7 +17,9 @@
 
 package fr.nereide.test.reference
 
+import com.intellij.psi.PsiPolyVariantReference
 import com.intellij.psi.PsiReference
+import com.intellij.psi.ResolveResult
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
@@ -41,7 +43,7 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
     protected void setUp() {
         super.setUp()
         myFixture.copyDirectoryToProject('assets', '')
-        if(getDestination()) {
+        if (getDestination()) {
             String file = "${this.getTestName(false)}.${getExtension()}"
             myFixture.moveFile(file, getDestination())
         }
@@ -52,6 +54,10 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
     }
 
     protected void doTest(Class expectedRefType, String expectedRefValueName, boolean strict) {
+        doTest(expectedRefType, expectedRefValueName, strict, false)
+    }
+
+    protected void doTest(Class expectedRefType, String expectedRefValueName, boolean strict, boolean multiExpected) {
         String file = "${this.getTestName(false)}.${getExtension()}"
         myFixture.configureByFile(file)
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
@@ -67,7 +73,12 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
         } else {
             assert ref.getElement().getText().contains(expectedRefValueName)
         }
-        assertNotNull "Reference for $expectedRefValueName not found", ref.resolve()
+        if (multiExpected) {
+            ResolveResult[] resolves = (ref as PsiPolyVariantReference).multiResolve(false)
+            assert "Multi reference for $expectedRefValueName not found", resolves.size() > 1
+        } else {
+            assertNotNull "Reference for $expectedRefValueName not found", ref.resolve()
+        }
     }
 
     /**
