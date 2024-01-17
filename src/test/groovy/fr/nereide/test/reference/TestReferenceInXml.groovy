@@ -100,4 +100,8 @@ class TestReferenceInXml extends BaseReferenceTestCase {
     void testDataSourceReferenceFromDelegator() {
         doTest(DatasourceReference.class, 'localderby')
     }
+
+    void testServiceDefReferenceWithMultipleImplementations() {
+        doTest(ServiceReference.class, 'MidnightInMe', true, true)
+    }
 }

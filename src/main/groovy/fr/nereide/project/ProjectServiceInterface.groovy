@@ -48,6 +48,8 @@ interface ProjectServiceInterface {
 
     Service getService(String name)
 
+    List<Service> getServices(String name)
+
     List<Service> getAllServices()
 
     Grid getGrid(String name)

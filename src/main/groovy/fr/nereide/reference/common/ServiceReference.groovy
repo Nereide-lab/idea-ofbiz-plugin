@@ -18,21 +18,28 @@
 package fr.nereide.reference.common
 
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiReferenceBase
-import com.intellij.psi.xml.XmlAttributeValue
-import com.intellij.util.xml.DomElement
+import com.intellij.psi.PsiElementResolveResult
+import com.intellij.psi.PsiPolyVariantReferenceBase
+import com.intellij.psi.ResolveResult
 import fr.nereide.project.ProjectServiceInterface
-import org.jetbrains.annotations.Nullable
 
-class ServiceReference extends PsiReferenceBase<PsiElement> {
+import static fr.nereide.dom.ServiceDefFile.Service
+
+class ServiceReference extends PsiPolyVariantReferenceBase<PsiElement> {
+
     ServiceReference(PsiElement element) {
         super(element)
     }
 
-    @Nullable
-    PsiElement resolve() {
+    @Override
+    ResolveResult[] multiResolve(boolean incompleteCode) {
+        List<ResolveResult> results = []
         ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = structureService.getService(this.getValue())
-        return definition != null ? definition.getXmlElement() : null
+        List<Service> definitions = structureService.getServices(this.getValue())
+        if (!definitions) return ResolveResult.EMPTY_ARRAY
+        for (Service service : definitions) {
+            results << new PsiElementResolveResult(service.getXmlElement())
+        }
+        return results.toArray(new ResolveResult[definitions.size()])
     }
 }
