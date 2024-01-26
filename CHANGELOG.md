@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.5.9]
 ### Fixed
 - [#2] Fixes references in xml labels in case there is not only a label in the attribute value.
 

@@ -10,7 +10,7 @@ static def definedInPluginXml(String key) {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '1.16.0'
+    id 'org.jetbrains.intellij' version '1.17.0'
     id 'groovy'
     id 'java'
     id 'org.jetbrains.changelog' version '1.2.1'
@@ -47,6 +47,9 @@ intellij {
                'org.intellij.intelliLang'
     ]
 }
+
+// disables the buildSearchableOptions task, useless unless you handle UI options
+buildSearchableOptions.enabled = false
 
 /**
  * Refreshes the plugin.xml file for deployment
