@@ -98,6 +98,13 @@ class TestDocumentationInXml extends BaseDocumentationTestCase {
         assertCorrectQuickNavigateInfo(element, originalElement)
     }
 
+    void testQuickNavigateInfoOnPropertyInNotSimpleTitleInXml() {
+        myFixture.configureByFile('xml/QuickNavigateInfoOnPropertyInNotSimpleTitleInXml.xml')
+        final PsiElement element = myFixture.getElementAtCaret()
+        final PsiElement originalElement = myFixture.findElementByText('${uiLabelMap.TestMyFooLabel}', XmlAttributeValue.class)
+        assertCorrectQuickNavigateInfo(element, originalElement)
+    }
+
     void testHoverDocOnPropertyInXml() {
         myFixture.configureByFile('xml/HoverDocOnPropertyInXml.xml')
         final PsiElement element = myFixture.getElementAtCaret()

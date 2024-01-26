@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Licensed to the Apache Software Foundation (ASF) under one
   ~ or more contributor license agreements.  See the NOTICE file
@@ -15,15 +16,10 @@
   ~ under the License.
   -->
 
-<resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/ofbiz-properties.xsd">
-
-    <property key="TestPivooot">
-        <value xml:lang="en">Pivooooot</value>
-        <value xml:lang="fr">Pivooooooottee</value>
-    </property>
-
-    <property key="TestMyFooLabel">
-        <value xml:lang="en">foo</value>
-        <value xml:lang="fr">bar</value>
-    </property>
-</resource>
+<menus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://ofbiz.apache.org/Widget-Menu"
+       xsi:schemaLocation="http://ofbiz.apache.org/Widget-Menu http://ofbiz.apache.org/dtds/widget-menu.xsd">
+    <menu name="Foo">
+        <menu-item name="Bar" title="${uiLabelMap.Test<caret>MyFooLabel} and some other ${String}">
+        </menu-item>
+    </menu>
+</menus>

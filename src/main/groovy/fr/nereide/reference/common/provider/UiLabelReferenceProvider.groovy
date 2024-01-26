@@ -17,6 +17,7 @@
 
 package fr.nereide.reference.common.provider
 
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
@@ -28,7 +29,13 @@ class UiLabelReferenceProvider extends PsiReferenceProvider {
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        UiLabelReference property = new UiLabelReference(element)
+        UiLabelReference property
+        String labelValue = element.text.replaceAll('"', '')
+        if (labelValue.startsWith('${')) {
+            property = new UiLabelReference(element, new TextRange(element.text.indexOf('.') + 1, element.text.indexOf('}')))
+        } else {
+            property = new UiLabelReference(element)
+        }
         PsiReference[] reference = (PsiReference) property
         return reference ?: PsiReference.EMPTY_ARRAY
     }

@@ -19,6 +19,7 @@ package fr.nereide.test.reference
 
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import fr.nereide.reference.common.ServiceReference
+import fr.nereide.reference.common.UiLabelReference
 import fr.nereide.reference.xml.DatasourceReference
 import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.GroovyServiceDefReference
@@ -103,5 +104,13 @@ class TestReferenceInXml extends BaseReferenceTestCase {
 
     void testServiceDefReferenceWithMultipleImplementations() {
         doTest(ServiceReference.class, 'MidnightInMe', true, true)
+    }
+
+    void testUiLabelPropertyInTitle() {
+        doTest(UiLabelReference.class, 'Baptiste')
+    }
+
+    void testUiLabelPropertyInTitleWithOtherString() {
+        doTest(UiLabelReference.class, 'PasBaptiste')
     }
 }
