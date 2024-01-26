@@ -60,6 +60,8 @@ interface ProjectServiceInterface {
 
     Screen getScreen(String name)
 
+    List<Screen> getAllScreens()
+
     Menu getMenu(String name)
 
     PsiDirectory getComponentDir(String name)

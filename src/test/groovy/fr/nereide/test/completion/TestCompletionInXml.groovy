@@ -68,4 +68,9 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected)
     }
+
+    void testScreenNameCompletionInSameFile() {
+        List<String> expected = ['ScottScreen']
+        doTest(expected)
+    }
 }

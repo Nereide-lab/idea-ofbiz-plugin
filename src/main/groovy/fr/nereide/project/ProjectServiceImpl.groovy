@@ -116,6 +116,10 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getMatchingElementFromXmlFiles(ScreenFile.class, "getScreens", "getName", name)
     }
 
+    List<Screen> getAllScreens() {
+        return getAllElementOfSpecificType(ScreenFile.class, "getScreens")
+    }
+
     Menu getMenu(String name) {
         return getMatchingElementFromXmlFiles(MenuFile.class, "getMenus", "getName", name)
     }

@@ -4,8 +4,6 @@ import com.intellij.patterns.PsiElementPattern
 import com.intellij.patterns.XmlAttributeValuePattern
 import com.intellij.patterns.XmlFilePattern
 import com.intellij.patterns.XmlTagPattern
-import org.intellij.plugins.intelliLang.inject.config.ui.XmlTagPanel
-import org.kohsuke.rngom.binary.ElementPattern
 
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.StandardPatterns.string
