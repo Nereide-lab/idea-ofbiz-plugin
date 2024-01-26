@@ -68,8 +68,7 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
         }
         assert expectedRefType.isAssignableFrom(ref.getClass())
         if (strict) {
-            assertEquals expectedRefValueName, ref.getElement().getName() ?
-                    ref.getElement().getName() : getSafeTextInReference(ref) as String
+            assertEquals expectedRefValueName, ref.getValue() ?: getSafeTextInReference(ref) as String
         } else {
             assert ref.getElement().getText().contains(expectedRefValueName)
         }

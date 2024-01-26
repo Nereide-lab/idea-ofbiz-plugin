@@ -47,7 +47,12 @@ class OfbizXmlDocumentationProvider extends OfbizCommonDocumentationProvider {
 
     private static String getElementName(PsiElement originalElement) {
         if (originalElement instanceof XmlAttributeValue) {
-            return (originalElement as XmlAttributeValue).getValue()
+            String val = (originalElement as XmlAttributeValue).getValue()
+            if (val.contains('${')) {
+                return val.substring(val.indexOf('.') + 1, val.indexOf('}'))
+            } else {
+                return val
+            }
         } else if (originalElement instanceof XmlToken && (originalElement as XmlToken).getTokenType().equals(XmlTokenType.XML_ATTRIBUTE_VALUE_TOKEN)) {
             return (originalElement as XmlToken).getText()
         } else {
