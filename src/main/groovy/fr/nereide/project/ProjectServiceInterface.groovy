@@ -18,6 +18,7 @@
 package fr.nereide.project
 
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.dom.ComponentFile
 import fr.nereide.dom.ControllerFile.RequestMap
 import fr.nereide.dom.ControllerFile.ViewMap
@@ -75,4 +76,6 @@ interface ProjectServiceInterface {
     List<ExtendEntity> getAllExtendsEntity()
 
     Datasource getDatasource(String name)
+
+    List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue psiElement)
 }

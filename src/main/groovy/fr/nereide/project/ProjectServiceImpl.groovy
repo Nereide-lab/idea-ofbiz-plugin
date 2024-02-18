@@ -20,33 +20,27 @@ package fr.nereide.project
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlFile
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
+import com.intellij.util.xml.DomManager
 import com.intellij.util.xml.DomService
-import fr.nereide.dom.ComponentFile
-import fr.nereide.dom.CompoundFile
-import fr.nereide.dom.ControllerFile
-import fr.nereide.dom.ControllerFile.ViewMap
+import fr.nereide.dom.*
 import fr.nereide.dom.ControllerFile.RequestMap
-import fr.nereide.dom.EntityEngineFile
+import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.EntityEngineFile.Datasource
-import fr.nereide.dom.EntityModelFile
 import fr.nereide.dom.EntityModelFile.Entity
-import fr.nereide.dom.EntityModelFile.ViewEntity
 import fr.nereide.dom.EntityModelFile.ExtendEntity
-import fr.nereide.dom.FormFile
+import fr.nereide.dom.EntityModelFile.ViewEntity
 import fr.nereide.dom.FormFile.Form
 import fr.nereide.dom.FormFile.Grid
-import fr.nereide.dom.MenuFile
 import fr.nereide.dom.MenuFile.Menu
-import fr.nereide.dom.ScreenFile
 import fr.nereide.dom.ScreenFile.Screen
-import fr.nereide.dom.ServiceDefFile
 import fr.nereide.dom.ServiceDefFile.Service
-import fr.nereide.dom.UiLabelFile
 import fr.nereide.dom.UiLabelFile.Property
 
-import static java.util.stream.Collectors.*
+import static java.util.stream.Collectors.toList
 
 class ProjectServiceImpl implements ProjectServiceInterface {
     private final Project project
@@ -118,6 +112,12 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     List<Screen> getAllScreens() {
         return getAllElementOfSpecificType(ScreenFile.class, "getScreens")
+    }
+
+    List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue myVal) {
+        DomManager dm = DomManager.getDomManager(myVal.getProject())
+        DomFileElement<ScreenFile> foo = dm.getFileElement(myVal.getContainingFile() as XmlFile, ScreenFile.class)
+        return foo.getRootElement().getScreens()
     }
 
     Menu getMenu(String name) {
