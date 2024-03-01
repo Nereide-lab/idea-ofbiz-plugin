@@ -23,14 +23,16 @@ class ScreenNameCompletionProvider extends CompletionProvider<CompletionParamete
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
         ProjectServiceInterface ps = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
         PsiElement myElement = parameters.getPosition()
-        List<Screen> screens = []
+        List<Screen> screens
         XmlAttributeValue myAttrValue = myElement as XmlAttributeValue
         XmlTag parentTag = PsiTreeUtil.getParentOfType(myAttrValue, XmlTag.class)
-        if (!parentTag.getAttribute('location')) {
-            screens = ps.getAllScreenFromCurrentFileFromElement(myAttrValue)
+        if (parentTag.getAttribute('location')) {
+            XmlAttributeValue screenLocationAttr = parentTag.getAttribute('location').getValueElement()
+            screens = ps.getScreensFromScreenFile(screenLocationAttr)
         } else {
-            screens = ps.getAllScreens()
+            screens = ps.getAllScreenFromCurrentFileFromElement(myAttrValue)
         }
+
         screens.each { Screen screen ->
             LookupElement lookupElement = LookupElementBuilder.create(screen.getName().getValue() as String)
                     .withTailText(" Component:${MiscUtils.getComponentName(screen as Screen)}" as String, true)

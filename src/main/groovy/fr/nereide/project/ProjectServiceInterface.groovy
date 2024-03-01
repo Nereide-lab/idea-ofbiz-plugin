@@ -78,4 +78,6 @@ interface ProjectServiceInterface {
     Datasource getDatasource(String name)
 
     List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue psiElement)
+
+    List<Screen> getScreensFromScreenFile(XmlAttributeValue screenLocation)
 }

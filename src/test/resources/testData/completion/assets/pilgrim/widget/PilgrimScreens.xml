@@ -24,4 +24,6 @@ under the License.
 
     <screen name="NopeScreen"/>
 
+    <screen name="YepScreen"/>
+
 </screens>

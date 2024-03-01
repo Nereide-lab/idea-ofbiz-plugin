@@ -19,6 +19,7 @@ package fr.nereide.project
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiFile
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlFile
@@ -39,6 +40,7 @@ import fr.nereide.dom.MenuFile.Menu
 import fr.nereide.dom.ScreenFile.Screen
 import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.dom.UiLabelFile.Property
+import fr.nereide.project.utils.FileHandlingUtils
 
 import static java.util.stream.Collectors.toList
 
@@ -117,6 +119,13 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue myVal) {
         DomManager dm = DomManager.getDomManager(myVal.getProject())
         DomFileElement<ScreenFile> foo = dm.getFileElement(myVal.getContainingFile() as XmlFile, ScreenFile.class)
+        return foo.getRootElement().getScreens()
+    }
+
+    List<Screen> getScreensFromScreenFile(XmlAttributeValue screenLocationAttr) {
+        PsiFile file = FileHandlingUtils.getTargetFile(screenLocationAttr.getValue(), this)
+        DomManager dm = DomManager.getDomManager(screenLocationAttr.getProject())
+        DomFileElement<ScreenFile> foo = dm.getFileElement(file as XmlFile, ScreenFile.class)
         return foo.getRootElement().getScreens()
     }
 

@@ -79,4 +79,12 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> notExpected = ['NopeScreen']
         doTest(expected, notExpected)
     }
+
+    void testScreenNameCompletionInDistantFileWithLocationAttribute() {
+        List<String> expected = ['NopeScreen', 'YepScreen']
+        List<String> notExpected = ['Grabla']
+        doTest(expected, notExpected)
+    }
+
+    // TODO add cpd case tests
 }
