@@ -18,7 +18,10 @@
 package fr.nereide.project
 
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.util.xml.DomManager
 import fr.nereide.dom.ComponentFile
 import fr.nereide.dom.ControllerFile.RequestMap
 import fr.nereide.dom.ControllerFile.ViewMap
@@ -34,6 +37,29 @@ import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.dom.UiLabelFile.Property
 
 interface ProjectServiceInterface {
+
+
+    /**
+     * retrieves a specified DomElement from a psi file
+     * The dom implementation of the file MUST exist.
+     * @param file the file to search the element in
+     * @param dm A DomManager
+     * @param wantedElementName the name of the element to look for
+     * @param fileType the DomFileElement of the file to search in
+     * @param elementNameGetter the name of the method to get a particuliar element
+     * @param listGetterMethod the name of the method that gets all the elements
+     * @return
+     */
+    PsiElement getElementFromSpecificFile(PsiFile file, DomManager dm, String wantedElementName, Class fileType,
+                                                 String elementNameGetter, String listGetterMethod)
+
+    /**
+     * return the file targeted by string of type "component://..."
+     * @param componentPathToFile
+     * @param structureService
+     * @return PsiFile if found or null
+     */
+    PsiFile getPsiFileAtLocation(String componentPathToFile)
 
     RequestMap getRequestMap(String name)
 

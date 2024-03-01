@@ -13,7 +13,6 @@ import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.quickfix.xml.CreateScreenInScreenFileQuickFix
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizXmlPatterns
-import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
 import static fr.nereide.inspection.common.InspectionUtil.fileHasElementWithSameName
@@ -42,7 +41,7 @@ class ScreenNotFoundInFileLocation extends LocalInspectionTool {
                 String targetFileLocation
                 boolean isController
                 (targetFileLocation, isController) = getControllerSafeLocationAttr(locationAttribute ?: attribute)
-                PsiFile targetFile = FileHandlingUtils.getTargetFile(targetFileLocation, ps)
+                PsiFile targetFile = ps.getPsiFileAtLocation(targetFileLocation)
 
                 if (!targetFile) targetFile = attribute.getContainingFile()
                 if (!targetFile || !(targetFile instanceof XmlFile)) return

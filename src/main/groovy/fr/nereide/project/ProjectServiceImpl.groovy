@@ -19,6 +19,7 @@ package fr.nereide.project
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.xml.XmlAttributeValue
@@ -41,6 +42,10 @@ import fr.nereide.dom.ScreenFile.Screen
 import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.dom.UiLabelFile.Property
 import fr.nereide.project.utils.FileHandlingUtils
+import fr.nereide.project.worker.CompoundWorker
+import fr.nereide.reference.common.ComponentAwareFileReferenceSet
+
+import java.util.regex.Matcher
 
 import static java.util.stream.Collectors.toList
 
@@ -123,7 +128,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     List<Screen> getScreensFromScreenFile(XmlAttributeValue screenLocationAttr) {
-        PsiFile file = FileHandlingUtils.getTargetFile(screenLocationAttr.getValue(), this)
+        PsiFile file = getPsiFileAtLocation(screenLocationAttr.getValue())
         DomManager dm = DomManager.getDomManager(screenLocationAttr.getProject())
         DomFileElement<ScreenFile> foo = dm.getFileElement(file as XmlFile, ScreenFile.class)
         return foo.getRootElement().getScreens()
@@ -240,5 +245,49 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         }.collect(toList())
         // TODO : Right now we only return the first element found. We'll have to add control for the right component
         return domEls.size() > 0 ? domEls[0] : null
+    }
+
+
+    PsiFile getPsiFileAtLocation(String componentPathToFile) {
+        if (!componentPathToFile) return null
+        Matcher componentMatcher = ComponentAwareFileReferenceSet.COMPONENT_NAME_PATTERN.matcher(componentPathToFile)
+
+        if (componentMatcher.find() && componentMatcher.groupCount() != 0) {
+            List<String> pathPieces = FileHandlingUtils.splitPathToList(componentPathToFile)
+
+            PsiDirectory currentDir = getComponentDir(pathPieces.first())
+            try {
+                for (int i = 1; i < pathPieces.size() - 1; i++) {
+                    currentDir = currentDir.findSubdirectory(pathPieces.get(i))
+                }
+            } catch (NullPointerException ignored) {
+                return null
+            }
+            PsiFile file = currentDir.findFile(pathPieces.last())
+            return file
+        }
+        return null
+    }
+
+    PsiElement getElementFromSpecificFile(PsiFile file, DomManager dm, String wantedElementName, Class fileType,
+                                                 String elementNameGetter, String listGetterMethod) {
+        if (file instanceof XmlFile) {
+            DomFileElement domFile = dm.getFileElement(file, fileType)
+            boolean isCpd = false
+            if (!domFile) {
+                domFile = dm.getFileElement(file, CompoundFile.class)
+                if (!domFile) return null
+                isCpd = true
+            }
+            // TODO : There is certainly a better way to do that..
+            List<DomElement> elementsInFile = isCpd ? CompoundWorker.getDomElementListFromCompound(domFile, listGetterMethod, fileType)
+                    : domFile.getRootElement()."$listGetterMethod"()
+            for (DomElement element : elementsInFile) {
+                if (element."$elementNameGetter"().getValue().equalsIgnoreCase(wantedElementName)) {
+                    return element.getXmlElement()
+                }
+            }
+        }
+        return null
     }
 }

@@ -13,7 +13,6 @@ import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.quickfix.xml.CreateFormInFormFileQuickFix
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizXmlPatterns
-import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
 import static fr.nereide.inspection.common.InspectionUtil.fileHasElementWithSameName
@@ -41,10 +40,10 @@ class FormNotFoundInFileLocation extends LocalInspectionTool {
                 XmlAttribute extendsLocationAttribute = attribute.getParent().getAttribute('extends-resource')
                 PsiFile targetFile
                 if (locationAttribute) {
-                    targetFile = FileHandlingUtils.getTargetFile(locationAttribute.value, ps)
+                    targetFile = ps.getPsiFileAtLocation(locationAttribute.value)
                 } else if (extendsLocationAttribute) {
                     if (extendsLocationAttribute.value.contains('$')) return // dynamic case, just ignore it
-                    targetFile = FileHandlingUtils.getTargetFile(extendsLocationAttribute.value, ps)
+                    targetFile = ps.getPsiFileAtLocation(extendsLocationAttribute.value)
                 } else {
                     targetFile = attribute.getContainingFile()
                 }

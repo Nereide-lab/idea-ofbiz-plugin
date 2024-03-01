@@ -29,7 +29,6 @@ import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomManager
 import fr.nereide.dom.ScreenFile
 import fr.nereide.project.ProjectServiceInterface
-import fr.nereide.project.utils.FileHandlingUtils
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -56,7 +55,7 @@ class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
 
     @Override
     PsiElement resolve() {
-        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
+        ProjectServiceInterface ps = this.getElement().getProject().getService(ProjectServiceInterface.class)
         DomManager dm = DomManager.getDomManager(this.getElement().getProject())
         XmlTag containingTag = (XmlTag) getTag(this.getElement())
         if (containingTag) {
@@ -64,29 +63,29 @@ class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
             if (locationAttribute) {
                 //On va chercher dans le fichier ciblé
                 String locationAttributeValue = locationAttribute.getValue()
-                PsiFile targetedFile = FileHandlingUtils.getTargetFile(locationAttributeValue, structureService)
-                return FileHandlingUtils.getElementFromSpecificFile(targetedFile, dm, this.getElement().getValue(), this.FILE_TYPE,
+                PsiFile targetedFile = ps.getPsiFileAtLocation(locationAttributeValue)
+                return ps.getElementFromSpecificFile(targetedFile, dm, this.getElement().getValue(), this.FILE_TYPE,
                         this.ELEMENT_NAME_GETTER_METHOD, this.ELEMENT_LIST_GETTER_METHOD)
             } else if (isPageReferenceFromController(containingTag)) {
-                return resolveScreenInController(this.getElement(), structureService, dm)
+                return resolveScreenInController(this.getElement(),  ps, dm)
             } else if (isInRightFile(this.getElement(), this.FILE_TYPE, dm)) {
                 // On regarde dans le fichier courant
                 PsiFile currentFile = this.getElement().getContainingFile()
-                return FileHandlingUtils.getElementFromSpecificFile(currentFile, dm, this.getElement().getValue(), this.FILE_TYPE,
+                return ps.getElementFromSpecificFile(currentFile, dm, this.getElement().getValue(), this.FILE_TYPE,
                         this.ELEMENT_NAME_GETTER_METHOD, this.ELEMENT_LIST_GETTER_METHOD)
             } else {
                 // Si on a pas de location, mais qu'on est pas dans un fichier pertinent => standard
-                return resolveStandard(structureService, this.getElement())
+                return resolveStandard( ps, this.getElement())
             }
         } else {
             // Si pas de tag xml trouvé ou problème, on utilise la methode normale
-            return resolveStandard(structureService, this.getElement())
+            return resolveStandard( ps, this.getElement())
         }
     }
 
-    private XmlElement resolveStandard(ProjectServiceInterface structureService, def element) {
+    private XmlElement resolveStandard(ProjectServiceInterface ps, def element) {
         String elementGetterMethod = this.ELEMENT_GETTER_METHOD
-        DomElement definition = structureService."$elementGetterMethod"(element.getValue())
+        DomElement definition = ps."$elementGetterMethod"(element.getValue())
         return definition != null ? definition.getXmlElement() : null
     }
 
@@ -120,12 +119,12 @@ class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
         return (containingTag.getAttribute('page') != null)
     }
 
-    static PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface structureService, DomManager dm) {
+    static PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface ps, DomManager dm) {
         String screenName = getScreenName(element)
         String stringValue = element.getValue()
         String fileComponentLocation = stringValue.substring(0, stringValue.length() - screenName.length() - 1)
-        PsiFile targetedFile = FileHandlingUtils.getTargetFile(fileComponentLocation, structureService)
-        return FileHandlingUtils.getElementFromSpecificFile(targetedFile, dm, screenName, ScreenFile.class,
+        PsiFile targetedFile = ps.getPsiFileAtLocation(fileComponentLocation)
+        return ps.getElementFromSpecificFile(targetedFile, dm, screenName, ScreenFile.class,
                 "getName", "getScreens")
     }
 
