@@ -18,24 +18,32 @@
 package fr.nereide.reference.xml
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
-import fr.nereide.dom.MenuFile
-import org.jetbrains.annotations.Nullable
+import com.intellij.psi.xml.XmlTag
+import fr.nereide.dom.FormFile
 
 class MenuReference extends GenericXmlReference {
 
+    Class fileType = FormFile.class
 
     MenuReference(XmlAttributeValue menuName, boolean soft) {
-        super(menuName, soft,
-                "getMenus",
-                "getName",
-                "getMenu",
-                MenuFile.class)
+        super(menuName, soft)
     }
 
-    @Nullable
     PsiElement resolve() {
-        super.resolve()
+        XmlTag containingTag = (XmlTag) getTag(this.getElement())
+        if (!containingTag) {
+            return null
+        }
+        PsiElement locationAttribute = containingTag.getAttribute('location')
+        if (locationAttribute) {
+            String locationAttributeValue = locationAttribute.getValue()
+            return ps.getMenuFromFileAtLocation(dm, locationAttributeValue, this.getValue()).getXmlElement()
+        } else if (isInRightFile(this.getElement(), fileType, dm)) {
+            PsiFile currentFile = this.getElement().getContainingFile()
+            return ps.getMenuFromPsiFile(dm, currentFile, this.getElement().getValue()).getXmlElement()
+        }
+        return null
     }
-
 }

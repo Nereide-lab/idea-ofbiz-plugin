@@ -18,7 +18,6 @@
 package fr.nereide.project
 
 import com.intellij.psi.PsiDirectory
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.xml.DomManager
@@ -39,26 +38,6 @@ import fr.nereide.dom.UiLabelFile.Property
 interface ProjectServiceInterface {
 
 
-    /**
-     * retrieves a specified DomElement from a psi file
-     * The dom implementation of the file MUST exist.
-     * @param file the file to search the element in
-     * @param dm A DomManager
-     * @param wantedElementName the name of the element to look for
-     * @param fileType the DomFileElement of the file to search in
-     * @param elementNameGetter the name of the method to get a particuliar element
-     * @param listGetterMethod the name of the method that gets all the elements
-     * @return
-     */
-    PsiElement getElementFromSpecificFile(PsiFile file, DomManager dm, String wantedElementName, Class fileType,
-                                                 String elementNameGetter, String listGetterMethod)
-
-    /**
-     * return the file targeted by string of type "component://..."
-     * @param componentPathToFile
-     * @param structureService
-     * @return PsiFile if found or null
-     */
     PsiFile getPsiFileAtLocation(String componentPathToFile)
 
     RequestMap getRequestMap(String name)
@@ -79,17 +58,7 @@ interface ProjectServiceInterface {
 
     List<Service> getAllServices()
 
-    Grid getGrid(String name)
-
-    Form getForm(String name)
-
     Property getProperty(String name)
-
-    Screen getScreen(String name)
-
-    List<Screen> getAllScreens()
-
-    Menu getMenu(String name)
 
     PsiDirectory getComponentDir(String name)
 
@@ -99,11 +68,26 @@ interface ProjectServiceInterface {
 
     List<ExtendEntity> getExtendEntityListForEntity(String entityName)
 
-    List<ExtendEntity> getAllExtendsEntity()
-
     Datasource getDatasource(String name)
 
     List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue psiElement)
 
     List<Screen> getScreensFromScreenFile(XmlAttributeValue screenLocation)
+
+    Screen getScreenFromFileAtLocation(DomManager dm, String componentPathToFile, String screenName)
+
+    Screen getScreenFromPsiFile(DomManager dm, PsiFile file, String screenName)
+
+    Form getFormFromFileAtLocation(DomManager dm, String componentPathToFile, String formName)
+
+    Form getFormFromPsiFile(DomManager dm, PsiFile file, String formName)
+
+    Grid getGridFromFileAtLocation(DomManager dm, String componentPathToFile, String formName)
+
+    Grid getGridFromPsiFile(DomManager dm, PsiFile file, String formName)
+
+    Menu getMenuFromFileAtLocation(DomManager dm, String componentPathToFile, String menuName)
+
+    Menu getMenuFromPsiFile(DomManager dm, PsiFile file, String menuName)
+
 }

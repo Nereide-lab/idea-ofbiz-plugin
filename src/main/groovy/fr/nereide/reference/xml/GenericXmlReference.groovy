@@ -17,7 +17,6 @@
 
 package fr.nereide.reference.xml
 
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiReferenceBase
@@ -25,68 +24,18 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
-import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomManager
-import fr.nereide.dom.ScreenFile
 import fr.nereide.project.ProjectServiceInterface
 
-import java.util.regex.Matcher
-import java.util.regex.Pattern
+abstract class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
 
-class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
-    private static final Logger LOG = Logger.getInstance(GenericXmlReference.class)
-    //String elementName
-    final String ELEMENT_LIST_GETTER_METHOD
-    final String ELEMENT_NAME_GETTER_METHOD
-    final String ELEMENT_GETTER_METHOD
-    final Class FILE_TYPE
+    DomManager dm
+    ProjectServiceInterface ps
 
-    GenericXmlReference(XmlAttributeValue element, boolean soft, String ELEMENT_LIST_GETTER_METHOD,
-                        String ELEMENT_NAME_GETTER_METHOD,
-                        String ELEMENT_GETTER_METHOD,
-                        Class FILE_TYPE) {
+    GenericXmlReference(XmlAttributeValue element, boolean soft) {
         super(element, soft)
-        this.ELEMENT_NAME_GETTER_METHOD = ELEMENT_NAME_GETTER_METHOD
-        this.ELEMENT_LIST_GETTER_METHOD = ELEMENT_LIST_GETTER_METHOD
-        this.ELEMENT_GETTER_METHOD = ELEMENT_GETTER_METHOD
-        this.FILE_TYPE = FILE_TYPE
-        //this.getElement.getName() = setElementName(element)
-    }
-
-    @Override
-    PsiElement resolve() {
-        ProjectServiceInterface ps = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomManager dm = DomManager.getDomManager(this.getElement().getProject())
-        XmlTag containingTag = (XmlTag) getTag(this.getElement())
-        if (containingTag) {
-            PsiElement locationAttribute = containingTag.getAttribute('location')
-            if (locationAttribute) {
-                //On va chercher dans le fichier ciblé
-                String locationAttributeValue = locationAttribute.getValue()
-                PsiFile targetedFile = ps.getPsiFileAtLocation(locationAttributeValue)
-                return ps.getElementFromSpecificFile(targetedFile, dm, this.getElement().getValue(), this.FILE_TYPE,
-                        this.ELEMENT_NAME_GETTER_METHOD, this.ELEMENT_LIST_GETTER_METHOD)
-            } else if (isPageReferenceFromController(containingTag)) {
-                return resolveScreenInController(this.getElement(),  ps, dm)
-            } else if (isInRightFile(this.getElement(), this.FILE_TYPE, dm)) {
-                // On regarde dans le fichier courant
-                PsiFile currentFile = this.getElement().getContainingFile()
-                return ps.getElementFromSpecificFile(currentFile, dm, this.getElement().getValue(), this.FILE_TYPE,
-                        this.ELEMENT_NAME_GETTER_METHOD, this.ELEMENT_LIST_GETTER_METHOD)
-            } else {
-                // Si on a pas de location, mais qu'on est pas dans un fichier pertinent => standard
-                return resolveStandard( ps, this.getElement())
-            }
-        } else {
-            // Si pas de tag xml trouvé ou problème, on utilise la methode normale
-            return resolveStandard( ps, this.getElement())
-        }
-    }
-
-    private XmlElement resolveStandard(ProjectServiceInterface ps, def element) {
-        String elementGetterMethod = this.ELEMENT_GETTER_METHOD
-        DomElement definition = ps."$elementGetterMethod"(element.getValue())
-        return definition != null ? definition.getXmlElement() : null
+        dm = DomManager.getDomManager(element.getProject())
+        ps = element.getProject().getService(ProjectServiceInterface.class)
     }
 
     /**
@@ -94,7 +43,7 @@ class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
      * @param xmlelement
      * @return
      */
-    private static PsiElement getTag(XmlElement xmlelement) {
+    protected static PsiElement getTag(XmlElement xmlelement) {
         int i = 0
         PsiElement parent = xmlelement.getParent()
         while (i < 5 && !(parent instanceof XmlTag)) {
@@ -106,37 +55,13 @@ class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
     /**
      * Checks that the XmlElement we want reference on is in a file where it would be defined
      * @param value
-     * @param FILE_TYPE
+     * @param fileType
      * @param dm
      * @return
      */
-    static boolean isInRightFile(XmlAttributeValue value, Class FILE_TYPE, DomManager dm) {
+    static boolean isInRightFile(XmlAttributeValue value, Class fileType, DomManager dm) {
         PsiFile currentFile = value.getContainingFile() as XmlFile
-        return dm.getFileElement(currentFile, FILE_TYPE) != null
+        return dm.getFileElement(currentFile, fileType) != null
     }
 
-    static boolean isPageReferenceFromController(XmlTag containingTag) {
-        return (containingTag.getAttribute('page') != null)
-    }
-
-    static PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface ps, DomManager dm) {
-        String screenName = getScreenName(element)
-        String stringValue = element.getValue()
-        String fileComponentLocation = stringValue.substring(0, stringValue.length() - screenName.length() - 1)
-        PsiFile targetedFile = ps.getPsiFileAtLocation(fileComponentLocation)
-        return ps.getElementFromSpecificFile(targetedFile, dm, screenName, ScreenFile.class,
-                "getName", "getScreens")
-    }
-
-    /**
-     * For the case of screen name in controller
-     * @param name
-     * @return
-     */
-    private static String getScreenName(XmlAttributeValue name) {
-        //regex that gets the screen name
-        final Pattern SCREEN_NAME_PATTERN = Pattern.compile("[^#]*\$")
-        Matcher matcher = SCREEN_NAME_PATTERN.matcher(name.getValue())
-        return matcher.find() ? matcher.group(0) : null
-    }
 }

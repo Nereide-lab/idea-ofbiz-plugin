@@ -19,7 +19,6 @@ package fr.nereide.project
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.xml.XmlAttributeValue
@@ -42,7 +41,6 @@ import fr.nereide.dom.ScreenFile.Screen
 import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.dom.UiLabelFile.Property
 import fr.nereide.project.utils.FileHandlingUtils
-import fr.nereide.project.worker.CompoundWorker
 import fr.nereide.reference.common.ComponentAwareFileReferenceSet
 
 import java.util.regex.Matcher
@@ -105,37 +103,17 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getMatchingElementFromXmlFiles(UiLabelFile.class, "getProperties", "getKey", name)
     }
 
-    Grid getGrid(String name) {
-        return getMatchingElementFromXmlFiles(FormFile.class, "getGrids", "getName", name)
-    }
-
-    Form getForm(String name) {
-        return getMatchingElementFromXmlFiles(FormFile.class, "getForms", "getName", name)
-    }
-
-    Screen getScreen(String name) {
-        return getMatchingElementFromXmlFiles(ScreenFile.class, "getScreens", "getName", name)
-    }
-
-    List<Screen> getAllScreens() {
-        return getAllElementOfSpecificType(ScreenFile.class, "getScreens")
-    }
-
     List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue myVal) {
         DomManager dm = DomManager.getDomManager(myVal.getProject())
-        DomFileElement<ScreenFile> foo = dm.getFileElement(myVal.getContainingFile() as XmlFile, ScreenFile.class)
-        return foo.getRootElement().getScreens()
+        DomFileElement<ScreenFile> screenFile = dm.getFileElement(myVal.getContainingFile() as XmlFile, ScreenFile.class)
+        return screenFile.getRootElement().getScreens()
     }
 
     List<Screen> getScreensFromScreenFile(XmlAttributeValue screenLocationAttr) {
         PsiFile file = getPsiFileAtLocation(screenLocationAttr.getValue())
         DomManager dm = DomManager.getDomManager(screenLocationAttr.getProject())
-        DomFileElement<ScreenFile> foo = dm.getFileElement(file as XmlFile, ScreenFile.class)
-        return foo.getRootElement().getScreens()
-    }
-
-    Menu getMenu(String name) {
-        return getMatchingElementFromXmlFiles(MenuFile.class, "getMenus", "getName", name)
+        DomFileElement<ScreenFile> screenFile = dm.getFileElement(file as XmlFile, ScreenFile.class)
+        return screenFile.getRootElement().getScreens()
     }
 
     Datasource getDatasource(String name) {
@@ -164,11 +142,6 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return extendList.stream().filter {
             it.getEntityName().getValue() == entityName
         }.collect() as List<ExtendEntity>
-    }
-
-    @Override
-    List<ExtendEntity> getAllExtendsEntity() {
-        return getAllElementOfSpecificType(EntityModelFile.class, "getExtendEntities")
     }
 
     @Override
@@ -269,25 +242,88 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return null
     }
 
-    PsiElement getElementFromSpecificFile(PsiFile file, DomManager dm, String wantedElementName, Class fileType,
-                                                 String elementNameGetter, String listGetterMethod) {
-        if (file instanceof XmlFile) {
-            DomFileElement domFile = dm.getFileElement(file, fileType)
-            boolean isCpd = false
-            if (!domFile) {
-                domFile = dm.getFileElement(file, CompoundFile.class)
-                if (!domFile) return null
-                isCpd = true
-            }
-            // TODO : There is certainly a better way to do that..
-            List<DomElement> elementsInFile = isCpd ? CompoundWorker.getDomElementListFromCompound(domFile, listGetterMethod, fileType)
-                    : domFile.getRootElement()."$listGetterMethod"()
-            for (DomElement element : elementsInFile) {
-                if (element."$elementNameGetter"().getValue().equalsIgnoreCase(wantedElementName)) {
-                    return element.getXmlElement()
+    List<DomElement> getDomElementListFromFileAtLocation(DomManager dm, String componentPathToFile, Class fileType,
+                                                         String wantedElement) {
+        PsiFile psiFile = getPsiFileAtLocation(componentPathToFile)
+        DomElement domFile
+        switch (fileType) {
+            case MenuFile.class:
+                domFile = dm.getFileElement(psiFile as XmlFile, MenuFile.class)
+                if (domFile) return domFile.getRootElement().menus
+                domFile = dm.getFileElement(psiFile as XmlFile, CompoundFile.class)
+                return domFile.getRootElement().menus.menus
+            case ScreenFile.class:
+                domFile = dm.getFileElement(psiFile as XmlFile, ScreenFile.class)
+                if (domFile) return domFile.getRootElement().screens
+                domFile = dm.getFileElement(psiFile as XmlFile, CompoundFile.class)
+                return domFile.getRootElement().screens.screens
+            case FormFile.class:
+                domFile = dm.getFileElement(psiFile as XmlFile, FormFile.class)
+                if (domFile) return domFile.getRootElement().forms
+                domFile = dm.getFileElement(psiFile as XmlFile, CompoundFile.class)
+                if (wantedElement == 'GRID') {
+                    return domFile.getRootElement().forms.grids
                 }
-            }
+                return domFile.getRootElement().forms.forms
         }
         return null
     }
+
+    List<Screen> getScreenListFromFileAtLocation(DomManager dm, String componentPathToFile) {
+        return getDomElementListFromFileAtLocation(dm, componentPathToFile, ScreenFile.class, null)
+    }
+
+    List<Form> getFormListFromFileAtLocation(DomManager dm, String componentPathToFile) {
+        return getDomElementListFromFileAtLocation(dm, componentPathToFile, FormFile.class, null)
+    }
+
+    List<Grid> getGridListFromFileAtLocation(DomManager dm, String componentPathToFile) {
+        return getDomElementListFromFileAtLocation(dm, componentPathToFile, FormFile.class, 'GRID')
+    }
+
+    List<Menu> getMenuListFromFileAtLocation(DomManager dm, String componentPathToFile) {
+        return getDomElementListFromFileAtLocation(dm, componentPathToFile, MenuFile.class, null)
+    }
+
+    Screen getScreenFromFileAtLocation(DomManager dm, String componentPathToFile, String screenName) {
+        List<Screen> screens = getScreenListFromFileAtLocation(dm, componentPathToFile)
+        return screens.find { it.getName().getValue() == screenName }
+    }
+
+    Screen getScreenFromPsiFile(DomManager dm, PsiFile file, String screenName) {
+        DomFileElement<ScreenFile> domFile = dm.getFileElement(file as XmlFile, ScreenFile.class)
+        return domFile.getRootElement().getScreens().find { it.getName().getValue() == screenName }
+    }
+
+
+    Form getFormFromFileAtLocation(DomManager dm, String componentPathToFile, String formName) {
+        List<Form> forms = getFormListFromFileAtLocation(dm, componentPathToFile)
+        return forms.find { it.getName().getValue() == formName }
+    }
+
+    Form getFormFromPsiFile(DomManager dm, PsiFile file, String formName) {
+        DomFileElement<FormFile> domFile = dm.getFileElement(file as XmlFile, FormFile.class)
+        return domFile.getRootElement().getForms().find { it.getName().getValue() == formName }
+    }
+
+    Grid getGridFromFileAtLocation(DomManager dm, String componentPathToFile, String formName) {
+        List<Grid> grids = getGridListFromFileAtLocation(dm, componentPathToFile)
+        return grids.find { it.getName().getValue() == formName }
+    }
+
+    Grid getGridFromPsiFile(DomManager dm, PsiFile file, String formName) {
+        DomFileElement<FormFile> domFile = dm.getFileElement(file as XmlFile, FormFile.class)
+        return domFile.getRootElement().getGrids().find { it.getName().getValue() == formName }
+    }
+
+    Menu getMenuFromFileAtLocation(DomManager dm, String componentPathToFile, String menuName) {
+        List<Menu> menus = getMenuListFromFileAtLocation(dm, componentPathToFile)
+        return menus.find { it.getName().getValue() == menuName }
+    }
+
+    Menu getMenuFromPsiFile(DomManager dm, PsiFile file, String menuName) {
+        DomFileElement<MenuFile> domFile = dm.getFileElement(file as XmlFile, MenuFile.class)
+        return domFile.getRootElement().getMenus().find { it.getName().getValue() == menuName }
+    }
+
 }

@@ -18,22 +18,58 @@
 package fr.nereide.reference.xml
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlTag
+import com.intellij.util.xml.DomManager
 import fr.nereide.dom.ScreenFile
-import org.jetbrains.annotations.Nullable
+import fr.nereide.project.ProjectServiceInterface
+
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class ScreenReference extends GenericXmlReference {
 
+    Class fileType = ScreenFile.class
+
     ScreenReference(XmlAttributeValue screenName, boolean soft) {
-        super(screenName, soft,
-                "getScreens",
-                "getName",
-                "getScreen",
-                ScreenFile.class)
+        super(screenName, soft)
     }
 
-    @Nullable
     PsiElement resolve() {
-        super.resolve()
+        XmlTag containingTag = (XmlTag) getTag(this.getElement())
+        if (!containingTag) {
+            return null
+        }
+        PsiElement locationAttribute = containingTag.getAttribute('location')
+        if (locationAttribute) {
+            String locationAttributeValue = locationAttribute.getValue()
+            return ps.getScreenFromFileAtLocation(dm, locationAttributeValue, this.getValue()).getXmlElement()
+        } else if (isPageReferenceFromController(containingTag)) {
+            return resolveScreenInController(this.getElement(), ps, dm)
+        } else if (isInRightFile(this.getElement(), fileType, dm)) {
+            PsiFile currentFile = this.getElement().getContainingFile()
+            return ps.getScreenFromPsiFile(dm, currentFile, this.getElement().getValue()).getXmlElement()
+        }
+        return null
+    }
+
+    static boolean isPageReferenceFromController(XmlTag containingTag) {
+        return (containingTag.getAttribute('page') != null)
+    }
+
+    // TODO : passer par un RangeInElement
+    static PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface ps, DomManager dm) {
+        String screenName = getScreenNameFromControllerString(element)
+        String controllerStringValue = element.getValue()
+        String fileComponentLocation = controllerStringValue.substring(0, controllerStringValue.length() - screenName.length() - 1)
+        return ps.getScreenFromFileAtLocation(dm, fileComponentLocation, screenName).getXmlElement()
+    }
+
+    private static String getScreenNameFromControllerString(XmlAttributeValue name) {
+        //regex that gets the screen name
+        final Pattern SCREEN_NAME_PATTERN = Pattern.compile("[^#]*\$")
+        Matcher matcher = SCREEN_NAME_PATTERN.matcher(name.getValue())
+        return matcher.find() ? matcher.group(0) : null
     }
 }
