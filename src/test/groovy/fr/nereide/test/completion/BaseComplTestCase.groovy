@@ -24,12 +24,20 @@ import org.junit.Ignore
 @Ignore('Parent class, No tests here')
 class BaseComplTestCase extends BaseOfbizPluginTestCase {
 
-    protected String getFileType() { return null }
+    static final String BASE_TEST_DIR = 'src/test/resources/testData/completion'
+
+    protected String getDestination() { return null }
+
+    protected String getFileType() { return 'xml' }
 
     @Override
     protected void setUp() {
         super.setUp()
         myFixture.copyDirectoryToProject('assets', '')
+        if (getDestination()) {
+            String file = "${this.getTestName(false)}.${getFileType()}"
+            myFixture.moveFile(file, getDestination())
+        }
     }
 
     @Override
@@ -42,7 +50,7 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
     }
 
     protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups) {
-        String file = "${getFileType()}/${this.getTestName(false)}.${getFileType()}"
+        String file = "${this.getTestName(false)}.${getFileType()}"
         myFixture.configureByFile(file)
         myFixture.complete(CompletionType.BASIC)
         List<String> lookupElementStrings = myFixture.getLookupElementStrings()

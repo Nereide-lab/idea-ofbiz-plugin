@@ -113,7 +113,10 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         PsiFile file = getPsiFileAtLocation(screenLocationAttr.getValue())
         DomManager dm = DomManager.getDomManager(screenLocationAttr.getProject())
         DomFileElement<ScreenFile> screenFile = dm.getFileElement(file as XmlFile, ScreenFile.class)
-        return screenFile.getRootElement().getScreens()
+        if (screenFile) {
+            return screenFile.getRootElement().getScreens()
+        }
+        return dm.getFileElement(file as XmlFile, CompoundFile.class).getRootElement().getScreens().getScreens()
     }
 
     Datasource getDatasource(String name) {
@@ -325,5 +328,4 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         DomFileElement<MenuFile> domFile = dm.getFileElement(file as XmlFile, MenuFile.class)
         return domFile.getRootElement().getMenus().find { it.getName().getValue() == menuName }
     }
-
 }

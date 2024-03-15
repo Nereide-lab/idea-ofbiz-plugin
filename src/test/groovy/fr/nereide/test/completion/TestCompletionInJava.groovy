@@ -21,6 +21,11 @@ class TestCompletionInJava extends BaseComplTestCase {
 
     String getFileType() { return 'java' }
 
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/java"
+    }
+
     /**
      * {@code EntityQuery.from("<caret>"); }
      */

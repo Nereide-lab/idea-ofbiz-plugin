@@ -19,6 +19,11 @@ package fr.nereide.test.completion
 
 class TestCompletionInXml extends BaseComplTestCase {
 
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/xml"
+    }
+
     String getFileType() { return 'xml' }
 
     void testEntityCompletionInXmlFile() {

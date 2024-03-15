@@ -1,0 +1,18 @@
+<compound-widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:sc="http://ofbiz.apache.org/Site-Conf"
+                  xmlns:wf="http://ofbiz.apache.org/Widget-Form"
+                  xmlns:wm="http://ofbiz.apache.org/Widget-Menu"
+                  xmlns:ws="http://ofbiz.apache.org/Widget-Screen"
+                  xsi:noNamespaceSchemaLocation="../../../../../framework/widget/dtd/compound-widgets.xsd">
+
+    <sc:site-conf> </sc:site-conf>
+
+    <ws:screens>
+    </ws:screens>
+
+    <wm:menus> </wm:menus>
+
+    <wf:forms>
+    </wf:forms>
+
+</compound-widgets>

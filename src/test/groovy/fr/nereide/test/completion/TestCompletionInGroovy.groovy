@@ -20,6 +20,11 @@ package fr.nereide.test.completion
 
 class TestCompletionInGroovy extends BaseComplTestCase {
 
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/groovy"
+    }
+
     String getFileType() { return 'groovy' }
 
     /**
