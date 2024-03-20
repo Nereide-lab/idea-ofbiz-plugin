@@ -27,7 +27,9 @@ import org.jetbrains.annotations.Nullable
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import java.util.stream.Collectors
+
+import static fr.nereide.project.utils.XmlUtils.getParentTag
+import static fr.nereide.project.utils.XmlUtils.isPageReferenceFromController
 
 class ComponentAwareFileReferenceSet extends FileReferenceSet {
 
@@ -48,15 +50,7 @@ class ComponentAwareFileReferenceSet extends FileReferenceSet {
         int offset = range.getStartOffset()
         String text = range.substring(element.getText())
 
-        return new ComponentAwareFileReferenceSet(text, element, offset, null, true, endingSlashNotAllowed) {
-            protected boolean isUrlEncoded() {
-                return urlEncoded
-            }
-
-            protected boolean isSoft() {
-                return soft
-            }
-        }
+        return new ComponentAwareFileReferenceSet(text, element, offset, null, true, endingSlashNotAllowed)
     }
 
     /**
@@ -70,24 +64,26 @@ class ComponentAwareFileReferenceSet extends FileReferenceSet {
         Matcher componentMatcher = COMPONENT_NAME_PATTERN.matcher(str)
 
         if (componentMatcher.find() && componentMatcher.groupCount() != 0) {
-            List<FileReference> referencesList = new ArrayList<>()
             String component = componentMatcher.group(1)
             int i = 0 // Position index in path reference string
-
             FileReference componentBaseReference = createComponentBaseDirReference(this,
                     componentMatcher.start(1), componentMatcher.end(1), i++, component)
+
+            List<FileReference> referencesList = []
             if (componentBaseReference != null) {
-                referencesList.add(componentBaseReference)
+                referencesList << componentBaseReference
             }
-            List<String> pathPieces = Arrays.asList(
-                    str.split("\\s*/\\s*")).stream()
-                    .filter { !it.equalsIgnoreCase("") && !it.equalsIgnoreCase("component:") }
-                    .collect(Collectors.toList())
+
+            List<String> pathPieces = str.split("\\s*/\\s*")
+                    .findAll { String fileElement -> fileElement && !fileElement.equalsIgnoreCase("component:") }
+                    .collect { it.contains('#') ? it.substring(0, it.lastIndexOf('#')) : it }
+                    .toList()
 
             while (i < pathPieces.size()) {
                 String pathPiece = pathPieces[i]
-                TextRange pathPosition = pathPiece.equals(component)
-                        ? getRangeForSecondOccurrenceOfString(str, pathPiece) : getRangeForUniqueString(str, pathPiece)
+                TextRange pathPosition = pathPiece.equals(component) ?
+                        getRangeForSecondOccurrenceOfString(str, pathPiece) :
+                        getRangeForUniqueString(str, pathPiece)
                 FileReference reference = this.createFileReference(pathPosition, i++, pathPiece)
                 if (reference != null) {
                     referencesList.add(reference)
@@ -100,13 +96,15 @@ class ComponentAwareFileReferenceSet extends FileReferenceSet {
     }
 
     private static TextRange getRangeForUniqueString(String str, String pathPiece) {
-        new TextRange(str.indexOf(pathPiece) + 1, str.indexOf(pathPiece) + pathPiece.length() + 1)
+        int start = str.indexOf(pathPiece) + 1
+        int end = str.indexOf(pathPiece) + pathPiece.length() + 1
+        return new TextRange(start, end)
     }
 
     private static TextRange getRangeForSecondOccurrenceOfString(String str, String pathPiece) {
-        new TextRange(
-            str.indexOf(pathPiece, str.indexOf(pathPiece) + 1) + 1,
-            str.indexOf(pathPiece, str.indexOf(pathPiece) + 1) + pathPiece.length() + 1)
+        int start = str.indexOf(pathPiece, str.indexOf(pathPiece) + 1) + 1
+        int end = str.indexOf(pathPiece, str.indexOf(pathPiece) + 1) + pathPiece.length() + 1
+        return new TextRange(start, end)
     }
 
     protected static FileReference createComponentBaseDirReference(FileReferenceSet set, int textRangeStart, int textRangeEnd,

@@ -23,6 +23,9 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
 import fr.nereide.dom.FormFile
 
+import static fr.nereide.project.utils.XmlUtils.getParentTag
+import static fr.nereide.project.utils.XmlUtils.isInRightFile
+
 class FormReference extends GenericXmlReference {
 
     Class fileType = FormFile.class
@@ -32,7 +35,7 @@ class FormReference extends GenericXmlReference {
     }
 
     PsiElement resolve() {
-        XmlTag containingTag = (XmlTag) getTag(this.getElement())
+        XmlTag containingTag = (XmlTag) getParentTag(this.getElement())
         if (!containingTag) {
             return null
         }

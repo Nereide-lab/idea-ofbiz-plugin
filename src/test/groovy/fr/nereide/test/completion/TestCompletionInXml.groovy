@@ -90,6 +90,4 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> notExpected = ['Grabla']
         doTest(expected, notExpected)
     }
-
-    // TODO add cpd case tests
 }

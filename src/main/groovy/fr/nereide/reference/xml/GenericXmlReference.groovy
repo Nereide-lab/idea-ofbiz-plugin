@@ -17,13 +17,9 @@
 
 package fr.nereide.reference.xml
 
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.xml.XmlAttributeValue
-import com.intellij.psi.xml.XmlElement
-import com.intellij.psi.xml.XmlFile
-import com.intellij.psi.xml.XmlTag
 import com.intellij.util.xml.DomManager
 import fr.nereide.project.ProjectServiceInterface
 
@@ -32,36 +28,16 @@ abstract class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
     DomManager dm
     ProjectServiceInterface ps
 
-    GenericXmlReference(XmlAttributeValue element, boolean soft) {
-        super(element, soft)
+    GenericXmlReference(XmlAttributeValue element, TextRange textRange, boolean soft) {
+        super(element, textRange, soft)
         dm = DomManager.getDomManager(element.getProject())
         ps = element.getProject().getService(ProjectServiceInterface.class)
     }
 
-    /**
-     * returns the xml tag parent of xml element or null if not found
-     * @param xmlelement
-     * @return
-     */
-    protected static PsiElement getTag(XmlElement xmlelement) {
-        int i = 0
-        PsiElement parent = xmlelement.getParent()
-        while (i < 5 && !(parent instanceof XmlTag)) {
-            parent = parent.getParent()
-        }
-        return parent instanceof XmlTag ? parent : null
-    }
-
-    /**
-     * Checks that the XmlElement we want reference on is in a file where it would be defined
-     * @param value
-     * @param fileType
-     * @param dm
-     * @return
-     */
-    static boolean isInRightFile(XmlAttributeValue value, Class fileType, DomManager dm) {
-        PsiFile currentFile = value.getContainingFile() as XmlFile
-        return dm.getFileElement(currentFile, fileType) != null
+    GenericXmlReference(XmlAttributeValue element, boolean soft) {
+        super(element, soft)
+        dm = DomManager.getDomManager(element.getProject())
+        ps = element.getProject().getService(ProjectServiceInterface.class)
     }
 
 }

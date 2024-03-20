@@ -22,6 +22,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
 import fr.nereide.dom.FormFile
+import fr.nereide.project.utils.XmlUtils
 
 class MenuReference extends GenericXmlReference {
 
@@ -32,7 +33,7 @@ class MenuReference extends GenericXmlReference {
     }
 
     PsiElement resolve() {
-        XmlTag containingTag = (XmlTag) getTag(this.getElement())
+        XmlTag containingTag = (XmlTag) XmlUtils.getParentTag(this.getElement())
         if (!containingTag) {
             return null
         }
@@ -40,7 +41,7 @@ class MenuReference extends GenericXmlReference {
         if (locationAttribute) {
             String locationAttributeValue = locationAttribute.getValue()
             return ps.getMenuFromFileAtLocation(dm, locationAttributeValue, this.getValue()).getXmlElement()
-        } else if (isInRightFile(this.getElement(), fileType, dm)) {
+        } else if (XmlUtils.isInRightFile(this.getElement(), fileType, dm)) {
             PsiFile currentFile = this.getElement().getContainingFile()
             return ps.getMenuFromPsiFile(dm, currentFile, this.getElement().getValue()).getXmlElement()
         }

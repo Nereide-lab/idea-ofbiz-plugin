@@ -17,6 +17,7 @@
 
 package fr.nereide.reference.xml
 
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
@@ -25,19 +26,22 @@ import com.intellij.util.xml.DomManager
 import fr.nereide.dom.ScreenFile
 import fr.nereide.project.ProjectServiceInterface
 
-import java.util.regex.Matcher
-import java.util.regex.Pattern
+import static fr.nereide.project.utils.XmlUtils.*
 
 class ScreenReference extends GenericXmlReference {
 
     Class fileType = ScreenFile.class
+
+    ScreenReference(XmlAttributeValue screenName, TextRange textRange, boolean soft) {
+        super(screenName, textRange, soft)
+    }
 
     ScreenReference(XmlAttributeValue screenName, boolean soft) {
         super(screenName, soft)
     }
 
     PsiElement resolve() {
-        XmlTag containingTag = (XmlTag) getTag(this.getElement())
+        XmlTag containingTag = (XmlTag) getParentTag(this.getElement())
         if (!containingTag) {
             return null
         }
@@ -54,10 +58,6 @@ class ScreenReference extends GenericXmlReference {
         return null
     }
 
-    static boolean isPageReferenceFromController(XmlTag containingTag) {
-        return (containingTag.getAttribute('page') != null)
-    }
-
     // TODO : passer par un RangeInElement
     static PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface ps, DomManager dm) {
         String screenName = getScreenNameFromControllerString(element)
@@ -66,10 +66,4 @@ class ScreenReference extends GenericXmlReference {
         return ps.getScreenFromFileAtLocation(dm, fileComponentLocation, screenName).getXmlElement()
     }
 
-    private static String getScreenNameFromControllerString(XmlAttributeValue name) {
-        //regex that gets the screen name
-        final Pattern SCREEN_NAME_PATTERN = Pattern.compile("[^#]*\$")
-        Matcher matcher = SCREEN_NAME_PATTERN.matcher(name.getValue())
-        return matcher.find() ? matcher.group(0) : null
-    }
 }
