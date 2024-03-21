@@ -19,7 +19,7 @@ class TestCompletionInXmlCpd extends BaseComplTestCase {
         doTest(['GregsScreen', 'KelvinScreen'])
     }
 
-//    void testScreenCompletionInIncludeScreenInCpdFromController() {
-//        doTest(['HufftonScreen', 'VirginiaScreen'])
-//    }
+    void testScreenCompletionInIncludeScreenInCpdFromController() {
+        doTest(['HufftonScreen', 'VirginiaScreen'])
+    }
 }

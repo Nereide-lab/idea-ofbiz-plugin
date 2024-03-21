@@ -20,6 +20,7 @@ package fr.nereide.project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlElement
 import com.intellij.util.xml.DomManager
 import fr.nereide.dom.ComponentFile
 import fr.nereide.dom.ControllerFile.RequestMap
@@ -72,7 +73,7 @@ interface ProjectServiceInterface {
 
     List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue psiElement)
 
-    List<Screen> getScreensFromScreenFile(XmlAttributeValue screenLocation)
+    List<Screen> getScreensFromScreenFileAtLocation(XmlElement screenLocation, boolean isController)
 
     Screen getScreenFromFileAtLocation(DomManager dm, String componentPathToFile, String screenName)
 

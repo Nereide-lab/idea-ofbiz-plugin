@@ -22,6 +22,7 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
@@ -109,9 +110,16 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return screenFile.getRootElement().getScreens()
     }
 
-    List<Screen> getScreensFromScreenFile(XmlAttributeValue screenLocationAttr) {
-        PsiFile file = getPsiFileAtLocation(screenLocationAttr.getValue())
-        DomManager dm = DomManager.getDomManager(screenLocationAttr.getProject())
+    List<Screen> getScreensFromScreenFileAtLocation(XmlElement screenLocation, boolean isController) {
+        DomManager dm = DomManager.getDomManager(screenLocation.getProject())
+        String location
+        if (isController) {
+            String locationText = screenLocation.text
+            location = locationText.substring(0, locationText.lastIndexOf('#'))
+        } else {
+            location = (screenLocation as XmlAttributeValue).getValue()
+        }
+        PsiFile file = getPsiFileAtLocation(location)
         DomFileElement<ScreenFile> screenFile = dm.getFileElement(file as XmlFile, ScreenFile.class)
         if (screenFile) {
             return screenFile.getRootElement().getScreens()
