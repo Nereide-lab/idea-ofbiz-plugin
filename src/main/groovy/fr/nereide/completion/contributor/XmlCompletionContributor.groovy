@@ -18,10 +18,7 @@
 package fr.nereide.completion.contributor
 
 import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.xml.EntityNameCompletionProvider
-import fr.nereide.completion.provider.xml.MenuNameCompletionProvider
-import fr.nereide.completion.provider.xml.ScreenNameCompletionProvider
-import fr.nereide.completion.provider.xml.XmlEntityFieldsCompletionProvider
+import fr.nereide.completion.provider.xml.*
 import fr.nereide.project.pattern.OfbizXmlPatterns
 
 import static com.intellij.patterns.PlatformPatterns.psiElement
@@ -38,5 +35,6 @@ class XmlCompletionContributor extends OfbizBaseCompletionContributor {
         this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
         this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.SCREEN_CALL), new ScreenNameCompletionProvider())
         this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.MENU_CALL), new MenuNameCompletionProvider())
+        this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.FORM_CALL), new FormNameCompletionProvider())
     }
 }

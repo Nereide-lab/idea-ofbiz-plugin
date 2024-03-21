@@ -83,6 +83,8 @@ interface ProjectServiceInterface {
 
     Form getFormFromPsiFile(DomManager dm, PsiFile file, String formName)
 
+    List<Form> getFormListFromFileAtLocation(DomManager dm, String componentPathToFile)
+
     Grid getGridFromFileAtLocation(DomManager dm, String componentPathToFile, String formName)
 
     Grid getGridFromPsiFile(DomManager dm, PsiFile file, String formName)

@@ -94,4 +94,23 @@ class TestCompletionInXml extends BaseComplTestCase {
     void testMenuNameCompletionInScreenWithLocation() {
         doTest(['MyFirstPilMenu', 'MySecondPilMenu'])
     }
+
+    void testFormNameCompletionInScreenWithLocation() {
+        doTest(['CreateEnderMan', 'CreateCreeper'])
+    }
+
+//    void testFormNameCompletionInFormWithLocation() {
+//    }
+//
+//    void testFormNameCompletionInFormWithoutLocation() {
+//    }
+//
+//    void testTargetCompletionInForm() {
+//    }
+//
+//    void testTargetCompletionInLink() {
+//    }
+//
+//    void testViewMapNameCompletionInRequestMap() {
+//    }
 }
