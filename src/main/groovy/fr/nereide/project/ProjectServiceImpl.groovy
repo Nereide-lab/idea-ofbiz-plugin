@@ -306,7 +306,6 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return domFile.getRootElement().getScreens().find { it.getName().getValue() == screenName }
     }
 
-
     Form getFormFromFileAtLocation(DomManager dm, String componentPathToFile, String formName) {
         List<Form> forms = getFormListFromFileAtLocation(dm, componentPathToFile)
         return forms.find { it.getName().getValue() == formName }

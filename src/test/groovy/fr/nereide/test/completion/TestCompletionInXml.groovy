@@ -90,4 +90,8 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> notExpected = ['Grabla']
         doTest(expected, notExpected)
     }
+
+    void testMenuNameCompletionInScreenWithLocation() {
+        doTest(['MyFirstPilMenu', 'MySecondPilMenu'])
+    }
 }

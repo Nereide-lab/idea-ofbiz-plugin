@@ -89,6 +89,8 @@ interface ProjectServiceInterface {
 
     Menu getMenuFromFileAtLocation(DomManager dm, String componentPathToFile, String menuName)
 
+    List<Menu> getMenuListFromFileAtLocation(DomManager dm, String componentPathToFile)
+
     Menu getMenuFromPsiFile(DomManager dm, PsiFile file, String menuName)
 
 }
