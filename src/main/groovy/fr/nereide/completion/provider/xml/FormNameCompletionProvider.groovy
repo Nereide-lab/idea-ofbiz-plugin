@@ -38,7 +38,7 @@ class FormNameCompletionProvider extends CompletionProvider<CompletionParameters
             forms = ps.getFormListFromFileAtLocation(DomManager.getDomManager(menuLocationAttr.getProject()),
                     menuLocationAttr.getValue())
         } else {
-            forms = []
+            forms = ps.getAllFormsFromCurrentFileFromElement(myAttrValue)
         }
 
         forms.each { Form form ->

@@ -104,6 +104,12 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getMatchingElementFromXmlFiles(UiLabelFile.class, "getProperties", "getKey", name)
     }
 
+    List<Form> getAllFormsFromCurrentFileFromElement(XmlAttributeValue myVal) {
+        DomManager dm = DomManager.getDomManager(myVal.getProject())
+        DomFileElement<FormFile> screenFile = dm.getFileElement(myVal.getContainingFile() as XmlFile, FormFile.class)
+        return screenFile.getRootElement().getForms()
+    }
+
     List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue myVal) {
         DomManager dm = DomManager.getDomManager(myVal.getProject())
         DomFileElement<ScreenFile> screenFile = dm.getFileElement(myVal.getContainingFile() as XmlFile, ScreenFile.class)

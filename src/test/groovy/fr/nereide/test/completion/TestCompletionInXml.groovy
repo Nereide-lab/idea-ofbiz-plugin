@@ -99,11 +99,13 @@ class TestCompletionInXml extends BaseComplTestCase {
         doTest(['CreateEnderMan', 'CreateCreeper'])
     }
 
-//    void testFormNameCompletionInFormWithLocation() {
-//    }
-//
-//    void testFormNameCompletionInFormWithoutLocation() {
-//    }
+    void testFormNameCompletionInFormWithLocation() {
+        doTest(['CreateEnderMan', 'CreateCreeper'])
+    }
+
+    void testFormNameCompletionInFormWithoutLocation() {
+        doTest(['ThaumCraft', 'ArsMagicka'], ['CreateEnderMan', 'CreateCreeper'])
+    }
 //
 //    void testTargetCompletionInForm() {
 //    }

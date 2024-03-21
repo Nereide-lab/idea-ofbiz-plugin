@@ -22,4 +22,24 @@ class TestCompletionInXmlCpd extends BaseComplTestCase {
     void testScreenCompletionInIncludeScreenInCpdFromController() {
         doTest(['HufftonScreen', 'VirginiaScreen'])
     }
+
+//    TODO
+//    void testFormNameCompletionInScreenWithLocationInCpd() {
+//    }
+//
+//    void testFormNameCompletionInFormWithLocationInCpd() {
+//    }
+//
+//    void testFormNameCompletionInFormWithoutLocationInCpd() {
+//    }
+//
+//    void testTargetCompletionInFormInCpd() {
+//    }
+//
+//    void testTargetCompletionInLinkInCpd() {
+//    }
+//
+//    void testViewMapNameCompletionInRequestMapInCpd() {
+//    }
 }
+
