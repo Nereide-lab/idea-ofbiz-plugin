@@ -23,15 +23,13 @@ class TestCompletionInXmlCpd extends BaseComplTestCase {
         doTest(['HufftonScreen', 'VirginiaScreen'])
     }
 
-//    TODO
-//    void testFormNameCompletionInScreenWithLocationInCpd() {
-//    }
-//
-//    void testFormNameCompletionInFormWithLocationInCpd() {
-//    }
-//
-//    void testFormNameCompletionInFormWithoutLocationInCpd() {
-//    }
+    void testFormNameCompletionInCpdScreenWithLocationInCpd() {
+        doTest(['AFormThatisCompletioned', 'AnOtherFormThatisCompletioned'])
+    }
+
+    void testFormNameCompletionInCpdFormWithLocationOutCpd() {
+        doTest(['SomeDistantForestForm', 'SomeOtherDistantForestForm'])
+    }
 //
 //    void testTargetCompletionInFormInCpd() {
 //    }
