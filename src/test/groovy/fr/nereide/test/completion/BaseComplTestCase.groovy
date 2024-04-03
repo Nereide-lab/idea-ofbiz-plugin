@@ -34,10 +34,6 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
     protected void setUp() {
         super.setUp()
         myFixture.copyDirectoryToProject('assets', '')
-        if (getDestination()) {
-            String file = "${this.getTestName(false)}.${getFileType()}"
-            myFixture.moveFile(file, getDestination())
-        }
     }
 
     @Override
@@ -45,12 +41,24 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
         return "src/test/resources/testData/completion"
     }
 
-    protected void doTest(List<String> expectedLookups) {
-        doTest(expectedLookups, null)
+    protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups) {
+        doTest(expectedLookups, notExpectedLookups, false)
     }
 
-    protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups) {
+    protected void doTest(List<String> expectedLookups, boolean move) {
+        doTest(expectedLookups, null, move)
+    }
+
+    protected void doTest(List<String> expectedLookups) {
+        doTest(expectedLookups, null,)
+    }
+
+    protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups, boolean move) {
         String file = "${this.getTestName(false)}.${getFileType()}"
+        if (move && getDestination()) {
+            myFixture.moveFile(file, getDestination())
+            file = "${getDestination()}/$file"
+        }
         myFixture.configureByFile(file)
         myFixture.complete(CompletionType.BASIC)
         List<String> lookupElementStrings = myFixture.getLookupElementStrings()

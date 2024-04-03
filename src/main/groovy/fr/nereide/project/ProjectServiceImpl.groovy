@@ -42,6 +42,7 @@ import fr.nereide.dom.ScreenFile.Screen
 import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.dom.UiLabelFile.Property
 import fr.nereide.project.utils.FileHandlingUtils
+import fr.nereide.project.utils.MiscUtils
 import fr.nereide.reference.common.ComponentAwareFileReferenceSet
 
 import java.util.regex.Matcher
@@ -340,5 +341,20 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     Menu getMenuFromPsiFile(DomManager dm, PsiFile file, String menuName) {
         DomFileElement<MenuFile> domFile = dm.getFileElement(file as XmlFile, MenuFile.class)
         return domFile.getRootElement().getMenus().find { it.getName().getValue() == menuName }
+    }
+
+    List<RequestMap> getComponentRequestMaps(String componentName, Project project) {
+        List controllerFiles = DomService.getInstance()
+                .getFileElements(ControllerFile.class, project, GlobalSearchScope.allScope(project))
+        if (!controllerFiles) return null
+        controllerFiles = controllerFiles.findAll { DomFileElement<ControllerFile> controllerFile ->
+            MiscUtils.getComponentName(controllerFile) == componentName
+        }
+        List<RequestMap> controllerRequests = []
+        // TODO : Use a search scope. Cleaner but i can't make it work now.
+        controllerFiles.each { DomFileElement<ControllerFile> controllerFile ->
+            controllerRequests.addAll(controllerFile.getRootElement().getRequestMaps())
+        }
+        return controllerRequests
     }
 }

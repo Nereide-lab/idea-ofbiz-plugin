@@ -17,6 +17,7 @@
 
 package fr.nereide.project
 
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
@@ -96,5 +97,7 @@ interface ProjectServiceInterface {
     List<Menu> getMenuListFromFileAtLocation(DomManager dm, String componentPathToFile)
 
     Menu getMenuFromPsiFile(DomManager dm, PsiFile file, String menuName)
+
+    List<RequestMap> getComponentRequestMaps(String componentName, Project project)
 
 }

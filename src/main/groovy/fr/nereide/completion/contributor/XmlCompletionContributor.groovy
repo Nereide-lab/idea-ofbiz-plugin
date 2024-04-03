@@ -36,5 +36,6 @@ class XmlCompletionContributor extends OfbizBaseCompletionContributor {
         this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.SCREEN_CALL), new ScreenNameCompletionProvider())
         this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.MENU_CALL), new MenuNameCompletionProvider())
         this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.FORM_CALL), new FormNameCompletionProvider())
+        this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.URI_CALL), new RequestUriCompletionProvider())
     }
 }

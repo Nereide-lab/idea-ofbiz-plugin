@@ -12,7 +12,7 @@ class TestCompletionInXmlCpd extends BaseComplTestCase {
     protected String getDestination() { return MOVE_TO }
 
     void testScreenCompletionInIncludeScreenInCpd() {
-        doTest(['Kelvin'])
+        doTest(['Kelvin'], true)
     }
 
     void testScreenCompletionInIncludeDistantScreenInCpd() {
@@ -20,11 +20,11 @@ class TestCompletionInXmlCpd extends BaseComplTestCase {
     }
 
     void testScreenCompletionInIncludeScreenInCpdFromController() {
-        doTest(['HufftonScreen', 'VirginiaScreen'])
+        doTest(['HufftonScreen', 'VirginiaScreen'], true)
     }
 
     void testFormNameCompletionInCpdScreenWithLocationInCpd() {
-        doTest(['AFormThatisCompletioned', 'AnOtherFormThatisCompletioned'])
+        doTest(['AFormThatisCompletioned', 'AnOtherFormThatisCompletioned'], true)
     }
 
     void testFormNameCompletionInCpdFormWithLocationOutCpd() {
