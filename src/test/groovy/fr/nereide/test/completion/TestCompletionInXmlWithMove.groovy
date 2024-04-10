@@ -15,10 +15,15 @@ class TestCompletionInXmlWithMove extends BaseComplTestCase {
         doTest(['someTarget', 'some-other/target'], true)
     }
 
-//
-//    void testTargetCompletionInLink() {
-//    }
-//
+    void testTargetCompletionInScreenLink() {
+        doTest(['someTarget', 'some-other/target'], true)
+    }
 
-
+//    void testTargetCompletionInFormLink() { }
+//
+//    void testTargetCompletionInMenuLink() { }
+//
+//    void testTargetCompletionInFormLinkInCpd() { }
+//
+//    void testTargetCompletionInMenuLinkInCpd() { }
 }

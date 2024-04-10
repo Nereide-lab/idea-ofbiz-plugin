@@ -9,8 +9,11 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
+import com.intellij.psi.xml.XmlFile
 import com.intellij.util.ProcessingContext
+import com.intellij.util.xml.DomManager
 import fr.nereide.dom.FormFile
+import fr.nereide.dom.ScreenFile
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
@@ -30,14 +33,23 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
         } catch (ClassCastException ignored) {
             myAttrValue = myElement as XmlElement
         }
-        String componentName = MiscUtils.getComponentName(myElement, FormFile.class)
+        DomManager dm = DomManager.getDomManager(myElement.getProject())
+        Class clazz
+        XmlFile myFile = myAttrValue.getContainingFile() as XmlFile
+        if (!myFile) return
+        if (dm.getFileElement(myFile, FormFile.class)) {
+            clazz = FormFile.class
+        } else if (dm.getFileElement(myFile, ScreenFile.class)) {
+            clazz = ScreenFile.class
+        } else {
+            return
+        }
+        String componentName = MiscUtils.getComponentName(myAttrValue, clazz)
         List<RequestMap> uris = ps.getComponentRequestMaps(componentName, myAttrValue.getProject())
         uris.each { RequestMap req ->
             LookupElement lookupElement = LookupElementBuilder.create(req.getUri().getValue())
                     .withTailText(" Component:${MiscUtils.getComponentName(req)}" as String, true)
             result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
         }
-
-
     }
 }
