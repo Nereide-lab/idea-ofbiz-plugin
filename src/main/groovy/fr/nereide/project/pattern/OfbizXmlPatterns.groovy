@@ -18,7 +18,12 @@ class OfbizXmlPatterns {
     //       PATTERNS
     //============================================
     public static final XmlAttributeValuePattern URI_CALL = xmlAttributeValue().withParent(
-            targetAttr().withParent(xmlTag().andOr(formTag(), formTagWithFormNs(), linkTag()))
+            targetAttr().withParent(xmlTag().andOr(
+                    formTag(),
+                    formTagWithFormNs(),
+                    linkTag(),
+                    hyperlinkTag()
+            ))
     )
 
     public static final XmlAttributeValuePattern RESPONSE_CALL = xmlAttributeValue().andOr(
@@ -185,6 +190,8 @@ class OfbizXmlPatterns {
     static Capture eventTag() { return makeTagPattern('event') }
 
     static Capture linkTag() { return makeTagPattern('link') }
+
+    static Capture hyperlinkTag() { return makeTagPattern('hyperlink') }
 
     static Capture screenletTag() { return makeTagPattern('screenlet') }
 
