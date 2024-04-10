@@ -23,7 +23,9 @@ class TestCompletionInXmlWithMove extends BaseComplTestCase {
         doTest(['someTarget', 'some-other/target'], true)
     }
 
-//    void testTargetCompletionInMenuLink() { }
+    void testTargetCompletionInMenuLink() {
+        doTest(['someTarget', 'some-other/target'], true)
+    }
 
 //    void testTargetCompletionInFormLinkInCpd() { }
 

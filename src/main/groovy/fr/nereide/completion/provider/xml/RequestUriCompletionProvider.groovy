@@ -13,6 +13,7 @@ import com.intellij.psi.xml.XmlFile
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.DomManager
 import fr.nereide.dom.FormFile
+import fr.nereide.dom.MenuFile
 import fr.nereide.dom.ScreenFile
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
@@ -41,6 +42,8 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
             clazz = FormFile.class
         } else if (dm.getFileElement(myFile, ScreenFile.class)) {
             clazz = ScreenFile.class
+        } else if (dm.getFileElement(myFile, MenuFile.class)) {
+            clazz = MenuFile.class
         } else {
             return
         }
