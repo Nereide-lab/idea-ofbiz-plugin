@@ -2,4 +2,9 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/ofbiz-component.xsd">
 
+    <webapp name="pilgrim"
+            server="default-server"
+            location="webapp/pilgrim"
+            mount-point="/pilgrim"/>
+
 </ofbiz-component>

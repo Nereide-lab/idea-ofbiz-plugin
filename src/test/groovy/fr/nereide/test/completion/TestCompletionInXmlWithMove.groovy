@@ -27,6 +27,14 @@ class TestCompletionInXmlWithMove extends BaseComplTestCase {
         doTest(['someTarget', 'some-other/target'], true)
     }
 
+    void testTargetCompletionInFormHyperlinkTargetWithInterAppLinkType() {
+        doTest(['/zelda/control/zeldaWebappUri',
+                '/link/control/linkWebappUri',
+                '/pilgrim/control/someTarget',
+                '/pilgrim/control/some-other/target'],
+                true)
+    }
+
 //    void testTargetCompletionInFormLinkInCpd() { }
 
 //    void testTargetCompletionInFormLinkInCpd() { }
