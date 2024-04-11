@@ -372,34 +372,36 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         Map result = [:]
         allWebapps.forEach { Webapp webapp ->
             try {
-                String componentName = MiscUtils.getComponentName(webapp)
                 String mountPoint = webapp.getMountPoint().getValue()
-                String location = webapp.getLocation().getValue() //
-                PsiDirectory directoryToSearch = getComponentDir(componentName)
-
-                String webappDirName = location.substring(location.indexOf('/') + 1, location.length())
-
-                directoryToSearch = directoryToSearch
-                        .findSubdirectory('webapp')
-                        .findSubdirectory(webappDirName)
-                        .findSubdirectory('WEB-INF')
-
-                List controllerFiles = DomService.getInstance().getFileElements(
-                        ControllerFile.class,
-                        myElement.project,
-                        GlobalSearchScopesCore.directoryScope(directoryToSearch, true))
-                List requestsUris = []
-                controllerFiles.each { DomFileElement<ControllerFile> controllerFile ->
-                    List requests = controllerFile.getRootElement().getRequestMaps()
-                    requests.each { RequestMap request ->
-                        requestsUris << request.uri.value
-                    }
-                }
-                result.put(mountPoint, requestsUris)
+                result.put(mountPoint, getAllWebappMountPointUris(webapp, myElement))
             } catch (NullPointerException ignored) {
                 return []
             }
         }
         return result
+    }
+
+    private List getAllWebappMountPointUris(Webapp webapp, PsiElement myElement) {
+        String componentName = MiscUtils.getComponentName(webapp)
+        String location = webapp.getLocation().getValue() //
+        PsiDirectory directoryToSearch = getComponentDir(componentName)
+        String webappDirName = location.substring(location.indexOf('/') + 1, location.length())
+        directoryToSearch = directoryToSearch
+                .findSubdirectory('webapp')
+                .findSubdirectory(webappDirName)
+                .findSubdirectory('WEB-INF')
+
+        List controllerFiles = DomService.getInstance().getFileElements(
+                ControllerFile.class,
+                myElement.project,
+                GlobalSearchScopesCore.directoryScope(directoryToSearch, true))
+        List requestsUris = []
+        controllerFiles.each { DomFileElement<ControllerFile> controllerFile ->
+            List requests = controllerFile.getRootElement().getRequestMaps()
+            requests.each { RequestMap request ->
+                requestsUris << request.uri.value
+            }
+        }
+        return requestsUris
     }
 }
