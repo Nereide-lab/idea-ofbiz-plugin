@@ -19,6 +19,7 @@ package fr.nereide.project
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
@@ -38,7 +39,6 @@ import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.dom.UiLabelFile.Property
 
 interface ProjectServiceInterface {
-
 
     PsiFile getPsiFileAtLocation(String componentPathToFile)
 
@@ -100,4 +100,5 @@ interface ProjectServiceInterface {
 
     List<RequestMap> getComponentRequestMaps(String componentName, Project project)
 
+    Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement)
 }

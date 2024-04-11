@@ -19,8 +19,10 @@ package fr.nereide.project
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.search.GlobalSearchScope
+import com.intellij.psi.search.GlobalSearchScopesCore
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
@@ -29,6 +31,7 @@ import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomManager
 import com.intellij.util.xml.DomService
 import fr.nereide.dom.*
+import fr.nereide.dom.ComponentFile.Webapp
 import fr.nereide.dom.ControllerFile.RequestMap
 import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.EntityEngineFile.Datasource
@@ -47,6 +50,7 @@ import fr.nereide.reference.common.ComponentAwareFileReferenceSet
 
 import java.util.regex.Matcher
 
+import static com.intellij.psi.search.GlobalSearchScopesCore.DirectoryScope.*
 import static java.util.stream.Collectors.toList
 
 class ProjectServiceImpl implements ProjectServiceInterface {
@@ -356,5 +360,46 @@ class ProjectServiceImpl implements ProjectServiceInterface {
             controllerRequests.addAll(controllerFile.getRootElement().getRequestMaps())
         }
         return controllerRequests
+    }
+
+    Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement) {
+        List<ComponentFileDescription> allComponents = getAllComponentsFiles()
+        List<Webapp> allWebapps = []
+        allComponents.each { def compoFile ->
+            allWebapps.addAll(compoFile.getRootElement().getWebapps())
+        }
+
+        Map result = [:]
+        allWebapps.forEach { Webapp webapp ->
+            try {
+                String componentName = MiscUtils.getComponentName(webapp)
+                String mountPoint = webapp.getMountPoint().getValue()
+                String location = webapp.getLocation().getValue() //
+                PsiDirectory directoryToSearch = getComponentDir(componentName)
+
+                String webappDirName = location.substring(location.indexOf('/') + 1, location.length())
+
+                directoryToSearch = directoryToSearch
+                        .findSubdirectory('webapp')
+                        .findSubdirectory(webappDirName)
+                        .findSubdirectory('WEB-INF')
+
+                List controllerFiles = DomService.getInstance().getFileElements(
+                        ControllerFile.class,
+                        myElement.project,
+                        GlobalSearchScopesCore.directoryScope(directoryToSearch, true))
+                List requestsUris = []
+                controllerFiles.each { DomFileElement<ControllerFile> controllerFile ->
+                    List requests = controllerFile.getRootElement().getRequestMaps()
+                    requests.each { RequestMap request ->
+                        requestsUris << request.uri.value
+                    }
+                }
+                result.put(mountPoint, requestsUris)
+            } catch (NullPointerException ignored) {
+                return []
+            }
+        }
+        return result
     }
 }

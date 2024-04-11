@@ -17,6 +17,7 @@ import fr.nereide.dom.MenuFile
 import fr.nereide.dom.ScreenFile
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
+import fr.nereide.project.utils.XmlUtils
 import org.jetbrains.annotations.NotNull
 
 import static fr.nereide.dom.ControllerFile.RequestMap
@@ -47,12 +48,28 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
         } else {
             return
         }
-        String componentName = MiscUtils.getComponentName(myAttrValue, clazz)
-        List<RequestMap> uris = ps.getComponentRequestMaps(componentName, myAttrValue.getProject())
-        uris.each { RequestMap req ->
-            LookupElement lookupElement = LookupElementBuilder.create(req.getUri().getValue())
-                    .withTailText(" Component:${MiscUtils.getComponentName(req)}" as String, true)
-            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
+
+        String targetType = XmlUtils.getParentTag(myAttrValue)?.getAttribute('target-type')?.getValue()
+        if (!targetType) targetType = XmlUtils.getParentTag(myAttrValue)?.getAttribute('url-mode')?.getValue()
+
+        if (targetType && targetType == 'inter-app') {
+            Map<String, List<String>> mountPointAndRequestMaps = ps.getAllMountPointsAndRequestMaps(myElement)
+            mountPointAndRequestMaps.forEach { String mountPoint, List uris ->
+                uris.forEach { uri ->
+                    String lookupValue = "$mountPoint/control/$uri"
+                    LookupElement lookupElement = LookupElementBuilder.create(lookupValue)
+                    result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
+                }
+            }
+        } else {
+            String componentName = MiscUtils.getComponentName(myAttrValue, clazz)
+            List<RequestMap> uris = ps.getComponentRequestMaps(componentName, myAttrValue.getProject())
+            uris.each { RequestMap req ->
+                LookupElement lookupElement = LookupElementBuilder.create(req.getUri().getValue())
+                        .withTailText(" Component:${MiscUtils.getComponentName(req)}" as String, true)
+                result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
+            }
         }
+
     }
 }

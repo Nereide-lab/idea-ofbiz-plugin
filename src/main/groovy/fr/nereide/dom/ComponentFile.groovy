@@ -20,18 +20,45 @@ package fr.nereide.dom
 import com.intellij.util.xml.Attribute
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.GenericAttributeValue
+import com.intellij.util.xml.NameValue
 import com.intellij.util.xml.Stubbed
 import com.intellij.util.xml.SubTagList
 
 interface ComponentFile extends DomElement {
     @Attribute("name")
     @Stubbed
-    GenericAttributeValue<String> getName();
+    GenericAttributeValue<String> getName()
 
     @SubTagList("entity-resource")
-    List<EntityModelFile> getEntityResources();
+    List<EntityModelFile> getEntityResources()
 
     @SubTagList("service-resource")
-    List<ServiceDefFile> getServiceResources();
+    List<ServiceDefFile> getServiceResources()
 
+    @SubTagList("webapp")
+    List<Webapp> getWebapps()
+
+    interface Webapp extends DomElement {
+        @NameValue
+        @Attribute("name")
+        GenericAttributeValue<String> getName()
+
+        @Attribute("title")
+        GenericAttributeValue<String> getTitle()
+
+        @Attribute("server")
+        GenericAttributeValue<String> getServer()
+
+        @Attribute("location")
+        GenericAttributeValue<String> getLocation()
+
+        @Attribute("base-permission")
+        GenericAttributeValue<String> getBasePermission()
+
+        @Attribute("app-shortcut-screen")
+        GenericAttributeValue<String> getAppShortcutScreen()
+
+        @Attribute("mount-point")
+        GenericAttributeValue<String> getMountPoint()
+    }
 }
