@@ -12,6 +12,7 @@ import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.DomManager
+import fr.nereide.dom.CompoundFile
 import fr.nereide.dom.FormFile
 import fr.nereide.dom.MenuFile
 import fr.nereide.dom.ScreenFile
@@ -45,6 +46,8 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
             clazz = ScreenFile.class
         } else if (dm.getFileElement(myFile, MenuFile.class)) {
             clazz = MenuFile.class
+        } else if (dm.getFileElement(myFile, CompoundFile.class)) {
+            clazz = CompoundFile.class
         } else {
             return
         }
@@ -70,6 +73,5 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
                 result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
             }
         }
-
     }
 }

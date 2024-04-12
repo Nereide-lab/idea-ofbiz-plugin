@@ -348,16 +348,22 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     List<RequestMap> getComponentRequestMaps(String componentName, Project project) {
-        List controllerFiles = DomService.getInstance()
-                .getFileElements(ControllerFile.class, project, GlobalSearchScope.allScope(project))
+        PsiDirectory compoDir = getComponentDir(componentName)
+        List controllerFiles = DomService.getInstance().getFileElements(
+                ControllerFile.class, project,
+                GlobalSearchScopesCore.directoryScope(compoDir, true))
         if (!controllerFiles) return null
-        controllerFiles = controllerFiles.findAll { DomFileElement<ControllerFile> controllerFile ->
-            MiscUtils.getComponentName(controllerFile) == componentName
-        }
         List<RequestMap> controllerRequests = []
-        // TODO : Use a search scope. Cleaner but i can't make it work now.
         controllerFiles.each { DomFileElement<ControllerFile> controllerFile ->
             controllerRequests.addAll(controllerFile.getRootElement().getRequestMaps())
+        }
+        List cpdControllers = DomService.getInstance().getFileElements(
+                CompoundFile.class, project,
+                GlobalSearchScopesCore.directoryScope(compoDir, true))
+        if (cpdControllers) {
+            cpdControllers.forEach { DomFileElement<CompoundFile> cpdController ->
+                controllerRequests.addAll(cpdController.rootElement.siteConf.requestMaps)
+            }
         }
         return controllerRequests
     }

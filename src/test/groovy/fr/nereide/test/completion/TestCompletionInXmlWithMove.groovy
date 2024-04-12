@@ -35,9 +35,17 @@ class TestCompletionInXmlWithMove extends BaseComplTestCase {
                 true)
     }
 
-//    void testTargetCompletionInFormLinkInCpd() { }
+    void testTargetCompletionInFormHyperLinkInCpd() {
+        doTest(['someTarget', 'some-other/target', 'SomeRequestInCpd1', 'SomeRequestInCpd2'], true)
+    }
+
+//    void testTargetCompletionInFormHyperLinkInterAppInCpd() { }
 
 //    void testTargetCompletionInFormLinkInCpd() { }
+
+//    void testTargetCompletionInFormLinkInterAppInCpd() { }
 
 //    void testTargetCompletionInMenuLinkInCpd() { }
+
+//    void testTargetCompletionInMenuLinkInterAppInCpd() { }
 }
