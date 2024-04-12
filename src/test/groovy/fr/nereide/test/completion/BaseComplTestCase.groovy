@@ -50,7 +50,7 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
     }
 
     protected void doTest(List<String> expectedLookups) {
-        doTest(expectedLookups, null,)
+        doTest(expectedLookups, null)
     }
 
     protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups, boolean move) {
