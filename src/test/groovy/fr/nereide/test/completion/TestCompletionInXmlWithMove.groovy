@@ -39,7 +39,16 @@ class TestCompletionInXmlWithMove extends BaseComplTestCase {
         doTest(['someTarget', 'some-other/target', 'SomeRequestInCpd1', 'SomeRequestInCpd2'], true)
     }
 
-//    void testTargetCompletionInFormHyperLinkInterAppInCpd() { }
+    void testTargetCompletionInFormHyperLinkInterAppInCpd() {
+        // Ugly but couldn't find a better solution for the tests than insert a file during it...
+        myFixture.copyFileToProject("misc/testController.xml", "pilgrim/webapp/pilgrim/WEB-INF/testController.xml")
+        doTest(['/zelda/control/zeldaWebappUri',
+                '/link/control/linkWebappUri',
+                '/pilgrim/control/someTarget',
+                '/pilgrim/control/some-other/target',
+                '/pilgrim/control/SomeRequestInCpd1',
+                '/pilgrim/control/SomeRequestInCpd2'], true)
+    }
 
 //    void testTargetCompletionInFormLinkInCpd() { }
 

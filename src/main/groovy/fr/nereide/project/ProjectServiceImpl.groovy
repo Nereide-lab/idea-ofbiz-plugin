@@ -32,6 +32,7 @@ import com.intellij.util.xml.DomManager
 import com.intellij.util.xml.DomService
 import fr.nereide.dom.*
 import fr.nereide.dom.ComponentFile.Webapp
+import fr.nereide.dom.ControllerFile.Include
 import fr.nereide.dom.ControllerFile.RequestMap
 import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.EntityEngineFile.Datasource
@@ -356,13 +357,14 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         List<RequestMap> controllerRequests = []
         controllerFiles.each { DomFileElement<ControllerFile> controllerFile ->
             controllerRequests.addAll(controllerFile.getRootElement().getRequestMaps())
+            // TODO add includes (impact tests accordlingly)
         }
-        List cpdControllers = DomService.getInstance().getFileElements(
+        List cpdFiles = DomService.getInstance().getFileElements(
                 CompoundFile.class, project,
                 GlobalSearchScopesCore.directoryScope(compoDir, true))
-        if (cpdControllers) {
-            cpdControllers.forEach { DomFileElement<CompoundFile> cpdController ->
-                controllerRequests.addAll(cpdController.rootElement.siteConf.requestMaps)
+        if (cpdFiles) {
+            cpdFiles.forEach { DomFileElement<CompoundFile> cpdFile ->
+                controllerRequests.addAll(cpdFile.rootElement.siteConf.requestMaps)
             }
         }
         return controllerRequests
@@ -391,6 +393,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         String componentName = MiscUtils.getComponentName(webapp)
         String location = webapp.getLocation().getValue() //
         PsiDirectory directoryToSearch = getComponentDir(componentName)
+        DomManager dm = DomManager.getDomManager(myElement.getProject())
         String webappDirName = location.substring(location.indexOf('/') + 1, location.length())
         directoryToSearch = directoryToSearch
                 .findSubdirectory('webapp')
@@ -402,12 +405,31 @@ class ProjectServiceImpl implements ProjectServiceInterface {
                 myElement.project,
                 GlobalSearchScopesCore.directoryScope(directoryToSearch, true))
         List requestsUris = []
-        controllerFiles.each { DomFileElement<ControllerFile> controllerFile ->
-            List requests = controllerFile.getRootElement().getRequestMaps()
+        controllerFiles.each { controllerFile ->
+            List requests = []
+            requests.addAll(controllerFile.getRootElement().getRequestMaps())
+            requests.addAll(getRequestsFromImports(dm, controllerFile.getRootElement()))
             requests.each { RequestMap request ->
                 requestsUris << request.uri.value
             }
         }
         return requestsUris
+    }
+
+    List<RequestMap> getRequestsFromImports(DomManager dm, ControllerFile controllerFile) {
+        List result = []
+        if (controllerFile.getIncludes()) {
+            List<Include> includes = controllerFile.getIncludes()
+            includes.forEach { Include include ->
+                String includeLocation = include.getLocation().getValue()
+                XmlFile file = getPsiFileAtLocation(includeLocation) as XmlFile
+                if (dm.getFileElement(file, ControllerFile.class)) {
+                    result.addAll((dm.getFileElement(file, ControllerFile.class)).rootElement.requestMaps)
+                } else if (dm.getFileElement(file, CompoundFile.class)) {
+                    result.addAll((dm.getFileElement(file, CompoundFile.class)).rootElement.siteConf?.requestMaps)
+                }
+            }
+        }
+        return result
     }
 }
