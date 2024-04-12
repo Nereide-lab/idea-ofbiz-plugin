@@ -30,14 +30,5 @@ class TestCompletionInXmlCpd extends BaseComplTestCase {
     void testFormNameCompletionInCpdFormWithLocationOutCpd() {
         doTest(['SomeDistantForestForm', 'SomeOtherDistantForestForm'])
     }
-//
-//    void testTargetCompletionInFormInCpd() {
-//    }
-//
-//    void testTargetCompletionInLinkInCpd() {
-//    }
-//
-//    void testViewMapNameCompletionInRequestMapInCpd() {
-//    }
 }
 
