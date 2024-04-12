@@ -1,0 +1,10 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <completion.contributor order="first" language="XML"
+                                implementationClass="fr.nereide.completion.contributor.XmlCompletionContributor"/>
+        <completion.contributor order="first" language="JAVA"
+                                implementationClass="fr.nereide.completion.contributor.JavaCompletionContributor"/>
+        <completion.contributor order="first" language="Groovy"
+                                implementationClass="fr.nereide.completion.contributor.GroovyCompletionContributor"/>
+    </extensions>
+</idea-plugin>

@@ -18,22 +18,35 @@
 package fr.nereide.reference.xml
 
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlTag
 import fr.nereide.dom.FormFile
-import org.jetbrains.annotations.Nullable
+
+import static fr.nereide.project.utils.XmlUtils.getParentTag
+import static fr.nereide.project.utils.XmlUtils.isInRightFile
 
 class FormReference extends GenericXmlReference {
 
+    Class fileType = FormFile.class
+
     FormReference(XmlAttributeValue formName, boolean soft) {
-        super(formName, soft,
-                "getForms",
-                "getName",
-                "getForm",
-                FormFile.class)
+        super(formName, soft)
     }
 
-    @Nullable
     PsiElement resolve() {
-        super.resolve()
+        XmlTag containingTag = (XmlTag) getParentTag(this.getElement())
+        if (!containingTag) {
+            return null
+        }
+        PsiElement locationAttribute = containingTag.getAttribute('location')
+        if (locationAttribute) {
+            String locationAttributeValue = locationAttribute.getValue()
+            return ps.getFormFromFileAtLocation(dm, locationAttributeValue, this.getValue()).getXmlElement()
+        } else if (isInRightFile(this.getElement(), fileType, dm)) {
+            PsiFile currentFile = this.getElement().getContainingFile()
+            return ps.getFormFromPsiFile(dm, currentFile, this.getElement().getValue()).getXmlElement()
+        }
+        return null
     }
 }

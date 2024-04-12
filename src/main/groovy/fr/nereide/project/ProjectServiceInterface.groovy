@@ -17,7 +17,13 @@
 
 package fr.nereide.project
 
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
+import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlElement
+import com.intellij.util.xml.DomManager
 import fr.nereide.dom.ComponentFile
 import fr.nereide.dom.ControllerFile.RequestMap
 import fr.nereide.dom.ControllerFile.ViewMap
@@ -33,6 +39,8 @@ import fr.nereide.dom.ServiceDefFile.Service
 import fr.nereide.dom.UiLabelFile.Property
 
 interface ProjectServiceInterface {
+
+    PsiFile getPsiFileAtLocation(String componentPathToFile)
 
     RequestMap getRequestMap(String name)
 
@@ -52,15 +60,7 @@ interface ProjectServiceInterface {
 
     List<Service> getAllServices()
 
-    Grid getGrid(String name)
-
-    Form getForm(String name)
-
     Property getProperty(String name)
-
-    Screen getScreen(String name)
-
-    Menu getMenu(String name)
 
     PsiDirectory getComponentDir(String name)
 
@@ -70,7 +70,35 @@ interface ProjectServiceInterface {
 
     List<ExtendEntity> getExtendEntityListForEntity(String entityName)
 
-    List<ExtendEntity> getAllExtendsEntity()
-
     Datasource getDatasource(String name)
+
+    List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue psiElement)
+
+    List<Screen> getScreensFromScreenFileAtLocation(XmlElement screenLocation, boolean isController)
+
+    Screen getScreenFromFileAtLocation(DomManager dm, String componentPathToFile, String screenName)
+
+    Screen getScreenFromPsiFile(DomManager dm, PsiFile file, String screenName)
+
+    Form getFormFromFileAtLocation(DomManager dm, String componentPathToFile, String formName)
+
+    Form getFormFromPsiFile(DomManager dm, PsiFile file, String formName)
+
+    List<Form> getFormListFromFileAtLocation(DomManager dm, String componentPathToFile)
+
+    List<Form> getAllFormsFromCurrentFileFromElement(XmlAttributeValue myVal)
+
+    Grid getGridFromFileAtLocation(DomManager dm, String componentPathToFile, String formName)
+
+    Grid getGridFromPsiFile(DomManager dm, PsiFile file, String formName)
+
+    Menu getMenuFromFileAtLocation(DomManager dm, String componentPathToFile, String menuName)
+
+    List<Menu> getMenuListFromFileAtLocation(DomManager dm, String componentPathToFile)
+
+    Menu getMenuFromPsiFile(DomManager dm, PsiFile file, String menuName)
+
+    List<RequestMap> getComponentRequestMaps(String componentName, Project project)
+
+    Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement)
 }

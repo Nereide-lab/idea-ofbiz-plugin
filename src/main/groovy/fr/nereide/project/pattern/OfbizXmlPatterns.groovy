@@ -4,8 +4,6 @@ import com.intellij.patterns.PsiElementPattern
 import com.intellij.patterns.XmlAttributeValuePattern
 import com.intellij.patterns.XmlFilePattern
 import com.intellij.patterns.XmlTagPattern
-import org.intellij.plugins.intelliLang.inject.config.ui.XmlTagPanel
-import org.kohsuke.rngom.binary.ElementPattern
 
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.StandardPatterns.string
@@ -20,7 +18,11 @@ class OfbizXmlPatterns {
     //       PATTERNS
     //============================================
     public static final XmlAttributeValuePattern URI_CALL = xmlAttributeValue().withParent(
-            targetAttr().withParent(xmlTag().andOr(formTag(), formTagWithFormNs()))
+            targetAttr().withParent(xmlTag().andOr(
+                    formTag(), formTagWithFormNs(),
+                    linkTag(), linkTagInFormNs(), linkTagInScreenNs(), linkTagInMenuNs(),
+                    hyperlinkTag(), hyperlinkTagInFormNs()
+            ))
     )
 
     public static final XmlAttributeValuePattern RESPONSE_CALL = xmlAttributeValue().andOr(
@@ -185,6 +187,20 @@ class OfbizXmlPatterns {
     static Capture includeMenuTag() { return makeTagPattern('include-menu') }
 
     static Capture eventTag() { return makeTagPattern('event') }
+
+    static Capture linkTag() { return makeTagPattern('link') }
+
+    static Capture linkTagInFormNs() { return makeTagPattern("${FORM_NS_PREFIX}link").withNamespace(FORM_NS_URL) }
+
+    static Capture linkTagInScreenNs() { return makeTagPattern("${SCREEN_NS_PREFIX}link").withNamespace(SCREEN_NS_URL) }
+
+    static Capture linkTagInMenuNs() { return makeTagPattern("${MENU_NS_PREFIX}link").withNamespace(MENU_NS_URL) }
+
+    static Capture hyperlinkTag() { return makeTagPattern('hyperlink') }
+
+    static Capture hyperlinkTagInFormNs() {
+        return makeTagPattern("${FORM_NS_PREFIX}hyperlink").withNamespace(FORM_NS_URL)
+    }
 
     static Capture screenletTag() { return makeTagPattern('screenlet') }
 

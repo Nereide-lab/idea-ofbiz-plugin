@@ -20,8 +20,12 @@ package fr.nereide.project.utils
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.util.xml.DomElement
+import com.intellij.util.xml.DomFileElement
+import com.intellij.util.xml.DomManager
+import fr.nereide.dom.ComponentFile
 
 class MiscUtils {
 
@@ -31,22 +35,48 @@ class MiscUtils {
      * @return
      */
     static String getComponentName(DomElement element) {
+        DomManager dm = DomManager.getDomManager(element.getXmlElement().getProject())
         PsiFile file = element.getXmlElement().getContainingFile()
-        PsiDirectory dir = file.getParent()
-
+        PsiDirectory dir = file.originalFile.getParent()
         try {
-            for (def i = 0; i < 10; i++) {
-                XmlFile compoFile = dir.findFile('ofbiz-component.xml') as XmlFile
-                if (!compoFile) {
-                    dir = dir.getParent()
-                } else {
-                    return dir.getName()
-                }
-            }
-            return null
+            return findComponentName(dir, dm)
         } catch (NullPointerException ignored) {
             return null
         }
+    }
+
+    static String getComponentName(PsiElement element) {
+        DomManager dm = DomManager.getDomManager(element.getProject())
+        PsiFile file = element.getContainingFile()
+        PsiDirectory dir = file.originalFile.getParent()
+        try {
+            return findComponentName(dir, dm)
+        } catch (NullPointerException ignored) {
+            return null
+        }
+    }
+
+    static String getComponentName(XmlElement element, Class myClassFile) {
+        DomManager dm = DomManager.getDomManager(element.getProject())
+        DomFileElement<DomElement> myFile = dm.getFileElement((element.getContainingFile() as XmlFile), myClassFile)
+        PsiDirectory dir = myFile.originalFile.parent
+        try {
+            return findComponentName(dir, dm)
+        } catch (NullPointerException ignored) {
+            return null
+        }
+    }
+
+    private static String findComponentName(PsiDirectory dir, DomManager dm) {
+        for (def i = 0; i < 10; i++) {
+            XmlFile compoFile = dir.findFile('ofbiz-component.xml') as XmlFile
+            if (!compoFile) {
+                dir = dir.getParent()
+            } else {
+                return dm.getFileElement(compoFile, ComponentFile.class)?.getRootElement()?.getName()?.getValue()
+            }
+        }
+        return null
     }
 
     /**

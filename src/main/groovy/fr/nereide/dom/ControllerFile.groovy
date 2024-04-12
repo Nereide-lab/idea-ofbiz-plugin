@@ -30,7 +30,7 @@ interface ControllerFile extends DomElement {
     @SubTagList("request-map")
     List<RequestMap> getRequestMaps()
 
-    interface RequestMap extends ControllerFile {
+    interface RequestMap extends DomElement {
         @NameValue
         @Attribute("uri")
         GenericAttributeValue<String> getUri()
@@ -41,14 +41,20 @@ interface ControllerFile extends DomElement {
     @SubTagList("view-map")
     List<ViewMap> getViewMaps()
 
-    interface ViewMap extends ControllerFile {
+    interface ViewMap extends DomElement {
         @NameValue
         @Attribute("name")
         GenericAttributeValue<String> getName()
 
         @Attribute("type")
         GenericAttributeValue<String> getType()
-
     }
 
+    @SubTagList("include")
+    List<Include> getIncludes()
+
+    interface Include extends DomElement {
+        @Attribute("location")
+        GenericAttributeValue<String> getLocation()
+    }
 }

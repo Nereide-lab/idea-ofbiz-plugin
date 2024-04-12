@@ -24,7 +24,11 @@ import org.junit.Ignore
 @Ignore('Parent class, No tests here')
 class BaseComplTestCase extends BaseOfbizPluginTestCase {
 
-    protected String getFileType() { return null }
+    static final String BASE_TEST_DIR = 'src/test/resources/testData/completion'
+
+    protected String getDestination() { return null }
+
+    protected String getFileType() { return 'xml' }
 
     @Override
     protected void setUp() {
@@ -37,12 +41,24 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
         return "src/test/resources/testData/completion"
     }
 
+    protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups) {
+        doTest(expectedLookups, notExpectedLookups, false)
+    }
+
+    protected void doTest(List<String> expectedLookups, boolean move) {
+        doTest(expectedLookups, null, move)
+    }
+
     protected void doTest(List<String> expectedLookups) {
         doTest(expectedLookups, null)
     }
 
-    protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups) {
-        String file = "${getFileType()}/${this.getTestName(false)}.${getFileType()}"
+    protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups, boolean move) {
+        String file = "${this.getTestName(false)}.${getFileType()}"
+        if (move && getDestination()) {
+            myFixture.moveFile(file, getDestination())
+            file = "${getDestination()}/$file"
+        }
         myFixture.configureByFile(file)
         myFixture.complete(CompletionType.BASIC)
         List<String> lookupElementStrings = myFixture.getLookupElementStrings()

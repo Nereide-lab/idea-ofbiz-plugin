@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://ofbiz.apache.org/Site-Conf"
+           xsi:schemaLocation="http://ofbiz.apache.org/Site-Conf http://ofbiz.apache.org/dtds/site-conf.xsd">
+
+    <request-map uri="someTarget"></request-map>
+    <request-map uri="some-other/target"></request-map>
+
+</site-conf>

@@ -19,6 +19,11 @@ package fr.nereide.test.completion
 
 class TestCompletionInXml extends BaseComplTestCase {
 
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/xml"
+    }
+
     String getFileType() { return 'xml' }
 
     void testEntityCompletionInXmlFile() {
@@ -68,4 +73,40 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected)
     }
+
+    void testScreenNameCompletionInSameFile() {
+        List<String> expected = ['ScottScreen']
+        doTest(expected)
+    }
+
+    void testScreenNameCompletionInSameFileWithOtherScreensInOtherFiles() {
+        List<String> expected = ['PilgrimScreen']
+        List<String> notExpected = ['NopeScreen']
+        doTest(expected, notExpected)
+    }
+
+    void testScreenNameCompletionInDistantFileWithLocationAttribute() {
+        List<String> expected = ['NopeScreen', 'YepScreen']
+        List<String> notExpected = ['Grabla']
+        doTest(expected, notExpected)
+    }
+
+    void testMenuNameCompletionInScreenWithLocation() {
+        doTest(['MyFirstPilMenu', 'MySecondPilMenu'])
+    }
+
+    void testFormNameCompletionInScreenWithLocation() {
+        doTest(['CreateEnderMan', 'CreateCreeper'])
+    }
+
+    void testFormNameCompletionInFormWithLocation() {
+        doTest(['CreateEnderMan', 'CreateCreeper'])
+    }
+
+    void testFormNameCompletionInFormWithoutLocation() {
+        doTest(['ThaumCraft', 'ArsMagicka'], ['CreateEnderMan', 'CreateCreeper'])
+    }
+
+//    void testViewMapNameCompletionInRequestMap() {
+//    }
 }

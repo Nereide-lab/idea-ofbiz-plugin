@@ -4,7 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [Unreleased] The completion update: Completion EVERYWHERE
+### Added
+- [#4] Added Completion in xml for Forms names
+- [#4] Added Completion in xml for Screen names
+- [#4] Added Completion in xml for Menus names
+- [#4] Added Completion in xml for target uris
+- Created a dedicated file for completion contributors
+
+### Changed
+- Made some changes in the Project structure interface object for more readability
+- Switched back to separated Reference objects for screen, menus, and forms to increase readability
+### Fixed
+- Fixed a small typo with folder references in component based references
+
 
 ## [1.5.9]
 ### Fixed

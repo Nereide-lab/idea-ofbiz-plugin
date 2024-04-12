@@ -17,23 +17,53 @@
 
 package fr.nereide.reference.xml
 
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlTag
+import com.intellij.util.xml.DomManager
 import fr.nereide.dom.ScreenFile
-import org.jetbrains.annotations.Nullable
+import fr.nereide.project.ProjectServiceInterface
+
+import static fr.nereide.project.utils.XmlUtils.*
 
 class ScreenReference extends GenericXmlReference {
 
-    ScreenReference(XmlAttributeValue screenName, boolean soft) {
-        super(screenName, soft,
-                "getScreens",
-                "getName",
-                "getScreen",
-                ScreenFile.class)
+    Class fileType = ScreenFile.class
+
+    ScreenReference(XmlAttributeValue screenName, TextRange textRange, boolean soft) {
+        super(screenName, textRange, soft)
     }
 
-    @Nullable
-    PsiElement resolve() {
-        super.resolve()
+    ScreenReference(XmlAttributeValue screenName, boolean soft) {
+        super(screenName, soft)
     }
+
+    PsiElement resolve() {
+        XmlTag containingTag = (XmlTag) getParentTag(this.getElement())
+        if (!containingTag) {
+            return null
+        }
+        PsiElement locationAttribute = containingTag.getAttribute('location')
+        if (locationAttribute) {
+            String locationAttributeValue = locationAttribute.getValue()
+            return ps.getScreenFromFileAtLocation(dm, locationAttributeValue, this.getValue()).getXmlElement()
+        } else if (isPageReferenceFromController(containingTag)) {
+            return resolveScreenInController(this.getElement(), ps, dm)
+        } else if (isInRightFile(this.getElement(), fileType, dm)) {
+            PsiFile currentFile = this.getElement().getContainingFile()
+            return ps.getScreenFromPsiFile(dm, currentFile, this.getElement().getValue()).getXmlElement()
+        }
+        return null
+    }
+
+    // TODO : passer par un RangeInElement
+    static PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface ps, DomManager dm) {
+        String screenName = getScreenNameFromControllerString(element)
+        String controllerStringValue = element.getValue()
+        String fileComponentLocation = controllerStringValue.substring(0, controllerStringValue.length() - screenName.length() - 1)
+        return ps.getScreenFromFileAtLocation(dm, fileComponentLocation, screenName).getXmlElement()
+    }
+
 }

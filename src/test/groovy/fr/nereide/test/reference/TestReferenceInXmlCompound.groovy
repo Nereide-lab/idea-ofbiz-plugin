@@ -110,10 +110,6 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
         doTest(JavaMethodReference.class, 'login')
     }
 
-    //=====================================
-    //         REQUEST MAP TESTS
-    //=====================================
-
     void testCpdScreenRefFromCpdViewMap() {
         doTest(ScreenReference.class, 'MyFooScreenInCpd', false)
     }

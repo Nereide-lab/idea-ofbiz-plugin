@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ofbiz-component name="zelda"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/ofbiz-component.xsd">
+
+    <webapp name="zelda"
+            server="default-server"
+            location="webapp/zelda"
+            mount-point="/zelda"/>
+
+    <webapp name="link"
+            server="default-server"
+            location="webapp/link"
+            mount-point="/link"/>
+
+</ofbiz-component>

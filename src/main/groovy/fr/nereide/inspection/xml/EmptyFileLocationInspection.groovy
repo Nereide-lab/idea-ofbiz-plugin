@@ -40,7 +40,7 @@ class EmptyFileLocationInspection extends LocalInspectionTool {
 
                 //Actual control
                 ProjectServiceInterface ps = attribute.getOriginalElement().getProject().getService(ProjectServiceInterface.class)
-                if (!FileHandlingUtils.getTargetFile(attrValue, ps)) {
+                if (!ps.getPsiFileAtLocation(attrValue)) {
                     holder.registerProblem(
                             attribute,
                             InspectionBundle.message('inspection.location.target.file.not.found.display.descriptor'),
