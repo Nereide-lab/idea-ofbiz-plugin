@@ -66,7 +66,18 @@ class TestCompletionInXmlWithMove extends BaseComplTestCase {
                 '/pilgrim/control/SomeRequestInCpd2c'], true)
     }
 
-//    void testTargetCompletionInMenuLinkInCpd() { }
+    void testTargetCompletionInMenuLinkInCpd() {
+        doTest(['someTarget', 'some-other/target', 'SomeRequestInCpd1d', 'SomeRequestInCpd2d'], true)
+    }
 
-//    void testTargetCompletionInMenuLinkInterAppInCpd() { }
+    void testTargetCompletionInMenuLinkInterAppInCpd() {
+        myFixture.copyFileToProject("misc/${getTestName(false)}.xml",
+                "pilgrim/webapp/pilgrim/WEB-INF/testController.xml")
+        doTest(['/zelda/control/zeldaWebappUri',
+                '/link/control/linkWebappUri',
+                '/pilgrim/control/someTarget',
+                '/pilgrim/control/some-other/target',
+                '/pilgrim/control/SomeRequestInCpd1d',
+                '/pilgrim/control/SomeRequestInCpd2d'], true)
+    }
 }

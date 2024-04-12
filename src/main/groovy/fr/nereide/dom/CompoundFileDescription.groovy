@@ -16,6 +16,7 @@ class CompoundFileDescription<S extends DomElement> extends DomFileDescription<C
 
     public static final String MENU_NS_URL = 'http://ofbiz.apache.org/Widget-Menu'
     public static final String MENU_NS = 'wm'
+    public static final String MENU_NS_PREFIX = 'wm:'
 
     public static final String SCREEN_NS_URL = 'http://ofbiz.apache.org/Widget-Screen'
     public static final String SCREEN_NS = 'ws'
