@@ -14,6 +14,7 @@ import static fr.nereide.project.pattern.OfbizPatternConst.DYNAMIC_VIEW_ENTITY_C
 import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_DATA_SERVICES_CLASS
 import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_QUERY_CLASS
 import static fr.nereide.project.pattern.OfbizPatternConst.GENERIC_ENTITY_CLASS
+import static fr.nereide.project.pattern.OfbizPatternConst.GENERIC_VALUE_CLASS
 import static fr.nereide.project.pattern.OfbizPatternConst.LOCAL_DISPATCHER_CLASS
 import static fr.nereide.project.pattern.OfbizPatternConst.MODEL_KEYMAP_CLASS
 import static fr.nereide.project.pattern.OfbizPatternConst.SCRIPT_HELPER_CLASS
@@ -46,6 +47,7 @@ class OfbizJavaPatterns {
             makeEntityQueryJavaMethodParameterPattern('from', 0),
             makeDynamicViewEntityJavaMethodParameterPattern('addMemberEntity', 1),
             makeEntityDataServiceJavaMethodParameterPattern('makeGenericValue', 1),
+            makeGenericValueJavaMethodParameterPattern('getRelated', 0)
     )
 
     public static final PsiElementPattern LABEL_CALL = psiElement().andOr(
@@ -114,6 +116,10 @@ class OfbizJavaPatterns {
 
     static Capture<PsiLiteralExpression> makeGenericEntityJavaMethodParameterPattern(String methodName, int index) {
         return makeJavaMethodParameterPattern(methodName, GENERIC_ENTITY_CLASS, index)
+    }
+
+    static Capture<PsiLiteralExpression> makeGenericValueJavaMethodParameterPattern(String methodName, int index) {
+        return makeJavaMethodParameterPattern(methodName, GENERIC_VALUE_CLASS, index)
     }
 
     static Capture<PsiLiteralExpression> makeLocalDispatcherJavaMethodParameterPattern(String methodName, int index) {
