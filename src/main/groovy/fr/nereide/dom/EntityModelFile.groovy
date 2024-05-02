@@ -58,7 +58,7 @@ interface EntityModelFile extends DomElement {
         List<EntityPrimKey> getPrimKeys()
 
         @SubTagList("relation")
-        List<RelationTag> getRelations()
+        List<EntityRelation> getRelations()
     }
 
     interface ViewEntity extends DomElement {
@@ -87,10 +87,10 @@ interface EntityModelFile extends DomElement {
         List<Alias> getAliases()
 
         @SubTagList("view-link")
-        List<RelationTag> getViewLinks()
+        List<EntityRelation> getViewLinks()
     }
 
-    interface RelationTag extends DomElement {
+    interface EntityRelation extends DomElement {
         @NameValue
         @Attribute("fk-name")
         GenericAttributeValue<String> getFkName()
@@ -98,9 +98,11 @@ interface EntityModelFile extends DomElement {
         @Attribute("type")
         GenericAttributeValue<String> getType()
 
-        @NameValue
         @Attribute("rel-entity-name")
         GenericAttributeValue<String> getRelEntityName()
+
+        @Attribute("title")
+        GenericAttributeValue<String> getTitle()
 
         @SubTagList("key-map")
         List<RelationKeyMap> getKeyMaps()
