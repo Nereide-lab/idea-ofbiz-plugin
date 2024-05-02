@@ -51,15 +51,15 @@ class TestReferenceInXml extends BaseReferenceTestCase {
 //    }
 
     void testScreenInCurrentFileReference() {
-        doTest(ScreenReference.class, 'FindFacility', false)
+        doTest(ScreenReference.class, 'FindFacility')
     }
 
     void testScreenInDistantFileReference() {
-        doTest(ScreenReference.class, 'viewprofile', false)
+        doTest(ScreenReference.class, 'viewprofile')
     }
 
     void testScreenReferenceFromViewMap() {
-        doTest(ScreenReference.class, 'viewprofile', false)
+        doTest(ScreenReference.class, 'viewprofile')
     }
 
     void testFormReferenceFromScreen() {
@@ -67,7 +67,7 @@ class TestReferenceInXml extends BaseReferenceTestCase {
     }
 
     void testFileReferenceFromScreen() {
-        doTest(FileReference.class, 'FooScript', false)
+        doTest(FileReference.class, 'FooScript')
     }
 
     void testFormReferenceFromForm() {
@@ -103,7 +103,7 @@ class TestReferenceInXml extends BaseReferenceTestCase {
     }
 
     void testServiceDefReferenceWithMultipleImplementations() {
-        doTest(ServiceReference.class, 'MidnightInMe', true, true)
+        doTest(ServiceReference.class, 'MidnightInMe', true)
     }
 
     void testUiLabelPropertyInTitle() {

@@ -17,10 +17,20 @@
 
 package fr.nereide.test.reference
 
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiPolyVariantReference
 import com.intellij.psi.PsiReference
 import com.intellij.psi.ResolveResult
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
+import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
+import com.intellij.util.xml.DomElement
+import com.intellij.util.xml.DomManager
+import fr.nereide.reference.common.EntityReference
+import fr.nereide.reference.common.UiLabelReference
+import fr.nereide.reference.xml.GroovyServiceDefReference
+import fr.nereide.reference.xml.JavaMethodReference
+import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
@@ -50,14 +60,10 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
     }
 
     protected void doTest(Class expectedRefType, String expectedRefValueName) {
-        doTest(expectedRefType, expectedRefValueName, true)
+        doTest(expectedRefType, expectedRefValueName, false)
     }
 
-    protected void doTest(Class expectedRefType, String expectedRefValueName, boolean strict) {
-        doTest(expectedRefType, expectedRefValueName, strict, false)
-    }
-
-    protected void doTest(Class expectedRefType, String expectedRefValueName, boolean strict, boolean multiExpected) {
+    protected void doTest(Class expectedRefType, String expectedRefValueName, boolean multiExpected) {
         String file = "${this.getTestName(false)}.${getExtension()}"
         myFixture.configureByFile(file)
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
@@ -67,17 +73,37 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
             assertNoOtherRefType(multiRef, expectedRefType)
         }
         assert expectedRefType.isAssignableFrom(ref.getClass())
-        if (strict) {
-            assertEquals expectedRefValueName, ref.getValue() ?: getSafeTextInReference(ref) as String
-        } else {
-            assert ref.getElement().getText().contains(expectedRefValueName)
-        }
+        PsiElement resolve
         if (multiExpected) {
             ResolveResult[] resolves = (ref as PsiPolyVariantReference).multiResolve(false)
             assert "Multi reference for $expectedRefValueName not found", resolves.size() > 1
+            resolve = resolves[0].getElement()
         } else {
-            assertNotNull "Reference for $expectedRefValueName not found", ref.resolve()
+            resolve = ref.resolve()
+            assertNotNull "Reference for $expectedRefValueName not found", resolve
         }
+
+        String refValueName = ''
+        if (ref instanceof FileReference) {
+            String fileName = (ref as FileReference).resolve().getName()
+            refValueName = fileName.substring(0, fileName.indexOf('.'))
+        } else if (ref instanceof JavaMethodReference || ref instanceof GroovyServiceDefReference) {
+            refValueName = (resolve as PsiMethod).getName()
+        } else {
+            DomManager dm = DomManager.getDomManager(myFixture.getProject())
+            DomElement foo = dm.getDomElement(resolve)
+            if (ref instanceof UiLabelReference) {
+                refValueName = foo.getKey()
+            } else if (ref instanceof EntityReference) {
+                refValueName = foo.getEntityName()
+            } else if (ref instanceof RequestMapReference) {
+                refValueName = foo.getUri()
+            } else { // default
+                refValueName = foo.getName()
+            }
+        }
+        assert refValueName == expectedRefValueName
+
     }
 
     /**
@@ -93,9 +119,4 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
                 .toList().size() == 0
     }
 
-    static String getSafeTextInReference(PsiReference ref) {
-        ref.getElement().getText()
-                .replaceAll('"', '')
-                .replaceAll('\'', '')
-    }
 }

@@ -55,6 +55,6 @@ class TestReferenceInGroovy extends BaseReferenceTestCase {
     }
 
     void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
-        doTest(EntityReference.class, 'Matata1', false)
+        doTest(EntityReference.class, 'Matata1')
     }
 }

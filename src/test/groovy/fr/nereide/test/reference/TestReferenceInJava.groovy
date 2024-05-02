@@ -76,6 +76,6 @@ class TestReferenceInJava extends BaseReferenceTestCase {
     }
 
     void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
-        doTest(EntityReference.class, 'Matata3', false)
+        doTest(EntityReference.class, 'Matata3')
     }
 }

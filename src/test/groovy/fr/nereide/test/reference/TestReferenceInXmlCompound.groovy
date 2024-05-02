@@ -63,15 +63,15 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     }
 
     void testFileRefFromCpdScreen() {
-        doTest(FileReference.class, 'footemplate', false)
+        doTest(FileReference.class, 'footemplate')
     }
 
     void testCpdScreenRefFromExtScreen() {
-        doTest(ScreenReference.class, 'MyScreenInCpd', false)
+        doTest(ScreenReference.class, 'MyScreenInCpd')
     }
 
     void testCpdFormRefFromExtScreen() {
-        doTest(FormReference.class, 'MyFormInCpd', false)
+        doTest(FormReference.class, 'MyFormInCpd')
     }
 
     //=====================================
@@ -83,7 +83,7 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     }
 
     void testCpdScreenRefFromCpdFieldForm() {
-        doTest(ScreenReference.class, 'MyPitaScreen', false)
+        doTest(ScreenReference.class, 'MyPitaScreen')
     }
 
     void testCpdFormRefFromCpdFieldForm() {
@@ -111,6 +111,6 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     }
 
     void testCpdScreenRefFromCpdViewMap() {
-        doTest(ScreenReference.class, 'MyFooScreenInCpd', false)
+        doTest(ScreenReference.class, 'MyFooScreenInCpd')
     }
 }
