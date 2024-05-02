@@ -47,7 +47,8 @@ class OfbizJavaPatterns {
             makeEntityQueryJavaMethodParameterPattern('from', 0),
             makeDynamicViewEntityJavaMethodParameterPattern('addMemberEntity', 1),
             makeEntityDataServiceJavaMethodParameterPattern('makeGenericValue', 1),
-            makeGenericValueJavaMethodParameterPattern('getRelated', 0)
+            makeGenericValueJavaMethodParameterPattern('getRelated', 0),
+            makeGenericValueJavaMethodParameterPattern('getRelatedOne', 0)
     )
 
     public static final PsiElementPattern LABEL_CALL = psiElement().andOr(

@@ -41,6 +41,7 @@ class OfbizGroovyPatterns {
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('makeValue')),
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('findOne')),
             makeGenericValueGroovyMethodParameterPattern('getRelated', 0),
+            makeGenericValueGroovyMethodParameterPattern('getRelatedOne', 0),
     ))
 
     public static final PsiElementPattern LABEL_CALL = psiElement().andOr(
