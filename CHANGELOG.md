@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Updated the reference tests to get rid of the `strict` parameter.
 
+### Fixed
+- Reactivated the xml groovy injection tests
+
 ## [1.6.0] The completion update: Completion EVERYWHERE
 ### Added
 - [#4] Added Completion in xml for Forms names
