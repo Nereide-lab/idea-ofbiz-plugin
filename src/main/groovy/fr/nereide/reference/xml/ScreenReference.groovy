@@ -58,11 +58,11 @@ class ScreenReference extends GenericXmlReference {
         return null
     }
 
-    // TODO : passer par un RangeInElement
-    static PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface ps, DomManager dm) {
+    PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface ps, DomManager dm) {
         String screenName = getScreenNameFromControllerString(element)
         String controllerStringValue = element.getValue()
         String fileComponentLocation = controllerStringValue.substring(0, controllerStringValue.length() - screenName.length() - 1)
+        this.setRangeInElement(new TextRange(controllerStringValue.indexOf('#'), controllerStringValue.length()))
         return ps.getScreenFromFileAtLocation(dm, fileComponentLocation, screenName).getXmlElement()
     }
 

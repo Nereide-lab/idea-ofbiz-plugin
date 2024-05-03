@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Reactivated the xml groovy injection tests
+- Checks a todo in screen references in view maps
 
 ## [1.6.0] The completion update: Completion EVERYWHERE
 ### Added
