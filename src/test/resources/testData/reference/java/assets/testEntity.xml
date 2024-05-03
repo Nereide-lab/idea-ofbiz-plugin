@@ -17,4 +17,17 @@
 
     <entity entity-name="PickleRick"></entity>
 
+    <entity entity-name="Hakuna2">
+        <relation type="one" fk-name="HAKUNA_MATATA" rel-entity-name="Matata2">
+            <key-map field-name=""/>
+        </relation>
+    </entity>
+    <entity entity-name="Matata2"></entity>
+
+    <entity entity-name="Hakuna3">
+        <relation type="one" fk-name="HAKUNA_MATATA" title="Haku" rel-entity-name="Matata3">
+            <key-map field-name=""/>
+        </relation>
+    </entity>
+    <entity entity-name="Matata3"></entity>
 </entitymodel>

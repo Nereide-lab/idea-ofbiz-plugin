@@ -70,4 +70,12 @@ class TestReferenceInJava extends BaseReferenceTestCase {
     void testServiceReferenceWithSchedule() {
         doTest(ServiceReference.class, 'pivot')
     }
+
+    void testEntityReferenceWithGetRelatedMethodWithoutTitleOnTargetEntity() {
+        doTest(EntityReference.class, 'Matata2')
+    }
+
+    void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
+        doTest(EntityReference.class, 'Matata3')
+    }
 }

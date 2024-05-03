@@ -7,15 +7,7 @@ import org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.PsiJavaPatterns.psiMethod
 import static com.intellij.patterns.StandardPatterns.string
-import static fr.nereide.project.pattern.OfbizPatternConst.DELEGATOR_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.DYNAMIC_VIEW_ENTITY_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_DATA_SERVICES_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_QUERY_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.GENERIC_ENTITY_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.LOCAL_DISPATCHER_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.MODEL_KEYMAP_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.UTIL_PROPERTIES_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.makeMethodParameterPattern
+import static fr.nereide.project.pattern.OfbizPatternConst.*
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyElementPattern.Capture
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.groovyLiteralExpression
 import static org.jetbrains.plugins.groovy.lang.psi.patterns.GroovyPatterns.namedArgument
@@ -47,7 +39,9 @@ class OfbizGroovyPatterns {
             makeEntityDataServicesGroovyParameterPattern('makeGenericValue', 1),
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('from')),
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('makeValue')),
-            groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('findOne'))
+            groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('findOne')),
+            makeGenericValueGroovyMethodParameterPattern('getRelated', 0),
+            makeGenericValueGroovyMethodParameterPattern('getRelatedOne', 0),
     ))
 
     public static final PsiElementPattern LABEL_CALL = psiElement().andOr(
@@ -139,6 +133,10 @@ class OfbizGroovyPatterns {
 
     static Capture<GrLiteral> makeEntityDataServicesGroovyParameterPattern(String methodName, int index) {
         return makeGroovyMethodParameterPattern(methodName, ENTITY_DATA_SERVICES_CLASS, index)
+    }
+
+    static Capture<GrLiteral> makeGenericValueGroovyMethodParameterPattern(String methodName, int index) {
+        return makeGroovyMethodParameterPattern(methodName, GENERIC_VALUE_CLASS, index)
     }
 
     static Capture<GrLiteral> makeUtilPropertiesGroovyMethodPattern(String methodName, int index) {

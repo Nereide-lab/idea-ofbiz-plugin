@@ -1,16 +1,18 @@
 package fr.nereide.documentation.format
 
 import com.intellij.openapi.util.text.HtmlBuilder
-import fr.nereide.dom.EntityModelFile.EntityPrimKey
-import fr.nereide.dom.EntityModelFile.RelationTag
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.EntityField
+import fr.nereide.dom.EntityModelFile.EntityPrimKey
 import fr.nereide.dom.EntityModelFile.ExtendEntity
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
 
-import static com.intellij.lang.documentation.DocumentationMarkup.*
-import static com.intellij.openapi.util.text.HtmlChunk.*
+import static com.intellij.lang.documentation.DocumentationMarkup.CONTENT_ELEMENT
+import static com.intellij.lang.documentation.DocumentationMarkup.GRAYED_ELEMENT
+import static com.intellij.openapi.util.text.HtmlChunk.Element
+import static com.intellij.openapi.util.text.HtmlChunk.text
+import static fr.nereide.dom.EntityModelFile.EntityRelation
 
 class OfbizEntityDocumentationFormatter extends OfbizCommonDocumentationFormatter {
 
@@ -58,7 +60,7 @@ class OfbizEntityDocumentationFormatter extends OfbizCommonDocumentationFormatte
     static Element formatEntityRelations(String entityName, ProjectServiceInterface ps) {
         HtmlBuilder builder = new HtmlBuilder()
         Entity entity = ps.getEntity(entityName)
-        List<RelationTag> relations = entity.getRelations()
+        List<EntityRelation> relations = entity.getRelations()
 
         builder.append(text("Related to:").bold()).nbsp()
         HtmlBuilder relListBuilder = new HtmlBuilder()

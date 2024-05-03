@@ -20,6 +20,7 @@ package fr.nereide.reference.common
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.util.xml.DomElement
+import fr.nereide.dom.EntityModelFile.EntityRelation
 import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.Nullable
 
@@ -30,9 +31,21 @@ class EntityReference extends PsiReferenceBase<PsiElement> {
 
     @Nullable
     PsiElement resolve() {
-        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = structureService.getEntity(this.getValue())
-        if (!definition) definition = structureService.getViewEntity(this.getValue())
+        ProjectServiceInterface ps = this.getElement().getProject().getService(ProjectServiceInterface.class)
+        DomElement definition = ps.getEntity(this.getValue())
+        if (!definition) definition = ps.getViewEntity(this.getValue())
+        if (!definition) definition = ps.getEntity(getEntityNameFromGetRelated(ps))
         return definition != null ? definition.getXmlElement() : null
+    }
+
+    String getEntityNameFromGetRelated(ProjectServiceInterface ps) {
+        String wantedString = this.getValue()
+        if (!wantedString) return null
+        List<EntityRelation> relations = ps.getAllEntityRelations()
+        EntityRelation matchingRel = relations.find { EntityRelation rel ->
+            wantedString == rel.getTitle().getValue() + rel.getRelEntityName().getValue()
+        }
+        if (!matchingRel) return null
+        return matchingRel.getRelEntityName().getValue()
     }
 }

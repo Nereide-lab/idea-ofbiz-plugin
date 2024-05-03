@@ -49,4 +49,12 @@ class TestReferenceInGroovy extends BaseReferenceTestCase {
     void testEntityReferenceWithMakeValueMethod() {
         doTest(EntityReference.class, 'Zaun')
     }
+
+    void testEntityReferenceWithGetRelatedMethodWithoutTitleOnTargetEntity() {
+        doTest(EntityReference.class, 'Matata')
+    }
+
+    void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
+        doTest(EntityReference.class, 'Matata1')
+    }
 }

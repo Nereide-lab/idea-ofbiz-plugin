@@ -37,6 +37,7 @@ import fr.nereide.dom.ControllerFile.RequestMap
 import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.EntityEngineFile.Datasource
 import fr.nereide.dom.EntityModelFile.Entity
+import fr.nereide.dom.EntityModelFile.EntityRelation
 import fr.nereide.dom.EntityModelFile.ExtendEntity
 import fr.nereide.dom.EntityModelFile.ViewEntity
 import fr.nereide.dom.FormFile.Form
@@ -51,7 +52,6 @@ import fr.nereide.reference.common.ComponentAwareFileReferenceSet
 
 import java.util.regex.Matcher
 
-import static com.intellij.psi.search.GlobalSearchScopesCore.DirectoryScope.*
 import static java.util.stream.Collectors.toList
 
 class ProjectServiceImpl implements ProjectServiceInterface {
@@ -429,6 +429,14 @@ class ProjectServiceImpl implements ProjectServiceInterface {
                     result.addAll((dm.getFileElement(file, CompoundFile.class)).rootElement.siteConf?.requestMaps)
                 }
             }
+        }
+        return result
+    }
+
+    List<EntityRelation> getAllEntityRelations() {
+        List<EntityRelation> result = []
+        getAllEntities().each { Entity entity ->
+            result.addAll(entity.getRelations())
         }
         return result
     }

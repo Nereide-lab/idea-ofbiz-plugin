@@ -28,6 +28,7 @@ import fr.nereide.dom.ComponentFile
 import fr.nereide.dom.ControllerFile.RequestMap
 import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.EntityEngineFile.Datasource
+import fr.nereide.dom.EntityModelFile.EntityRelation
 import fr.nereide.dom.EntityModelFile.Entity
 import fr.nereide.dom.EntityModelFile.ExtendEntity
 import fr.nereide.dom.EntityModelFile.ViewEntity
@@ -101,4 +102,6 @@ interface ProjectServiceInterface {
     List<RequestMap> getComponentRequestMaps(String componentName, Project project)
 
     Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement)
+
+    List<EntityRelation> getAllEntityRelations()
 }

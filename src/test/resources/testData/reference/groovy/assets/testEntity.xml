@@ -5,4 +5,17 @@
     <view-entity entity-name="Zaun"></view-entity>
     <entity entity-name="PickleRick"></entity>
 
+    <entity entity-name="Hakuna">
+        <relation type="one" fk-name="HAKUNA_MATATA" rel-entity-name="Matata">
+            <key-map field-name=""/>
+        </relation>
+    </entity>
+    <entity entity-name="Matata"> </entity>
+
+    <entity entity-name="Hakuna1">
+        <relation type="one" fk-name="HAKUNA_MATATA" title="Haku" rel-entity-name="Matata1">
+            <key-map field-name=""/>
+        </relation>
+    </entity>
+    <entity entity-name="Matata1"> </entity>
 </entitymodel>
