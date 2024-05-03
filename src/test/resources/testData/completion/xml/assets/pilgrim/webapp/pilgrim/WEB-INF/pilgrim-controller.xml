@@ -3,6 +3,8 @@
            xmlns="http://ofbiz.apache.org/Site-Conf"
            xsi:schemaLocation="http://ofbiz.apache.org/Site-Conf http://ofbiz.apache.org/dtds/site-conf.xsd">
 
+    <include location="component://zelda/webapp/zelda/WEB-INF/testController.xml"/>
+
     <request-map uri="someTarget"></request-map>
     <request-map uri="some-other/target"></request-map>
 

@@ -350,16 +350,26 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     List<RequestMap> getComponentRequestMaps(String componentName, Project project) {
         PsiDirectory compoDir = getComponentDir(componentName)
-        List controllerFiles = DomService.getInstance().getFileElements(
+        DomService domService = DomService.getInstance()
+        DomManager dm = DomManager.getDomManager(project)
+        List controllerFiles = domService.getFileElements(
                 ControllerFile.class, project,
                 GlobalSearchScopesCore.directoryScope(compoDir, true))
         if (!controllerFiles) return null
         List<RequestMap> controllerRequests = []
         controllerFiles.each { DomFileElement<ControllerFile> controllerFile ->
             controllerRequests.addAll(controllerFile.getRootElement().getRequestMaps())
-            // TODO add includes (impact tests accordlingly)
+            List<Include> includes = controllerFile.getRootElement().getIncludes()
+            if (includes) {
+                includes.forEach { Include include ->
+                    XmlFile file = getPsiFileAtLocation(include.getLocation().getValue()) as XmlFile
+                    if (dm.getFileElement(file, ControllerFile.class)) {
+                        controllerRequests.addAll(dm.getFileElement(file, ControllerFile.class).getRootElement().getRequestMaps())
+                    }
+                }
+            }
         }
-        List cpdFiles = DomService.getInstance().getFileElements(
+        List cpdFiles = domService.getFileElements(
                 CompoundFile.class, project,
                 GlobalSearchScopesCore.directoryScope(compoDir, true))
         if (cpdFiles) {

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - [#7] Added the patterns in groovy and java to allow entity references with getRelatedMethod
 - [#7] Adds the relevant EntityRelation thingies
+- [#NA] Adds the included URIS to uri completion
 
 ### Changed
 - Updated the reference tests to get rid of the `strict` parameter.

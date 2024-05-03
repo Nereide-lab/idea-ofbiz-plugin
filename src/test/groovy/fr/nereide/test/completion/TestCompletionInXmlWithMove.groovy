@@ -80,4 +80,13 @@ class TestCompletionInXmlWithMove extends BaseComplTestCase {
                 '/pilgrim/control/SomeRequestInCpd1d',
                 '/pilgrim/control/SomeRequestInCpd2d'], true)
     }
+
+    void testTargetCompletionInFormWithInclude() {
+        myFixture.copyFileToProject("misc/${getTestName(false)}.xml",
+                "zelda/webapp/zelda/WEB-INF/testController.xml")
+        doTest(['someTarget',
+                'some-other/target',
+                'myIncludedRequest1',
+                'myIncludedRequest2'], true)
+    }
 }
