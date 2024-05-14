@@ -23,13 +23,12 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
-import com.intellij.util.xml.DomManager
 import fr.nereide.dom.ComponentFile
 import fr.nereide.dom.ControllerFile.RequestMap
 import fr.nereide.dom.ControllerFile.ViewMap
 import fr.nereide.dom.EntityEngineFile.Datasource
-import fr.nereide.dom.EntityModelFile.EntityRelation
 import fr.nereide.dom.EntityModelFile.Entity
+import fr.nereide.dom.EntityModelFile.EntityRelation
 import fr.nereide.dom.EntityModelFile.ExtendEntity
 import fr.nereide.dom.EntityModelFile.ViewEntity
 import fr.nereide.dom.FormFile.Form
@@ -77,27 +76,27 @@ interface ProjectServiceInterface {
 
     List<Screen> getScreensFromScreenFileAtLocation(XmlElement screenLocation, boolean isController)
 
-    Screen getScreenFromFileAtLocation(DomManager dm, String componentPathToFile, String screenName)
+    Screen getScreenFromFileAtLocation(String componentPathToFile, String screenName)
 
-    Screen getScreenFromPsiFile(DomManager dm, PsiFile file, String screenName)
+    Screen getScreenFromPsiFile(PsiFile file, String screenName)
 
-    Form getFormFromFileAtLocation(DomManager dm, String componentPathToFile, String formName)
+    Form getFormFromFileAtLocation(String componentPathToFile, String formName)
 
-    Form getFormFromPsiFile(DomManager dm, PsiFile file, String formName)
+    Form getFormFromPsiFile(PsiFile file, String formName)
 
-    List<Form> getFormListFromFileAtLocation(DomManager dm, String componentPathToFile)
+    List<Form> getFormListFromFileAtLocation(String componentPathToFile)
 
     List<Form> getAllFormsFromCurrentFileFromElement(XmlAttributeValue myVal)
 
-    Grid getGridFromFileAtLocation(DomManager dm, String componentPathToFile, String formName)
+    Grid getGridFromFileAtLocation(String componentPathToFile, String formName)
 
-    Grid getGridFromPsiFile(DomManager dm, PsiFile file, String formName)
+    Grid getGridFromPsiFile(PsiFile file, String formName)
 
-    Menu getMenuFromFileAtLocation(DomManager dm, String componentPathToFile, String menuName)
+    Menu getMenuFromFileAtLocation(String componentPathToFile, String menuName)
 
-    List<Menu> getMenuListFromFileAtLocation(DomManager dm, String componentPathToFile)
+    List<Menu> getMenuListFromFileAtLocation(String componentPathToFile)
 
-    Menu getMenuFromPsiFile(DomManager dm, PsiFile file, String menuName)
+    Menu getMenuFromPsiFile(PsiFile file, String menuName)
 
     List<RequestMap> getComponentRequestMaps(String componentName, Project project)
 

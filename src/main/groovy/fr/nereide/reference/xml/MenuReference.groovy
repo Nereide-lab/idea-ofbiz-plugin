@@ -40,10 +40,10 @@ class MenuReference extends GenericXmlReference {
         PsiElement locationAttribute = containingTag.getAttribute('location')
         if (locationAttribute) {
             String locationAttributeValue = locationAttribute.getValue()
-            return ps.getMenuFromFileAtLocation(dm, locationAttributeValue, this.getValue()).getXmlElement()
+            return ps.getMenuFromFileAtLocation(locationAttributeValue, this.getValue()).getXmlElement()
         } else if (XmlUtils.isInRightFile(this.getElement(), fileType, dm)) {
             PsiFile currentFile = this.getElement().getContainingFile()
-            return ps.getMenuFromPsiFile(dm, currentFile, this.getElement().getValue()).getXmlElement()
+            return ps.getMenuFromPsiFile(currentFile, this.getElement().getValue()).getXmlElement()
         }
         return null
     }

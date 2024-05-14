@@ -48,22 +48,22 @@ class ScreenReference extends GenericXmlReference {
         PsiElement locationAttribute = containingTag.getAttribute('location')
         if (locationAttribute) {
             String locationAttributeValue = locationAttribute.getValue()
-            return ps.getScreenFromFileAtLocation(dm, locationAttributeValue, this.getValue()).getXmlElement()
+            return ps.getScreenFromFileAtLocation(locationAttributeValue, this.getValue()).getXmlElement()
         } else if (isPageReferenceFromController(containingTag)) {
-            return resolveScreenInController(this.getElement(), ps, dm)
+            return resolveScreenInController(this.getElement(), ps)
         } else if (isInRightFile(this.getElement(), fileType, dm)) {
             PsiFile currentFile = this.getElement().getContainingFile()
-            return ps.getScreenFromPsiFile(dm, currentFile, this.getElement().getValue()).getXmlElement()
+            return ps.getScreenFromPsiFile(currentFile, this.getElement().getValue()).getXmlElement()
         }
         return null
     }
 
-    PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface ps, DomManager dm) {
+    PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface ps) {
         String screenName = getScreenNameFromControllerString(element)
         String controllerStringValue = element.getValue()
         String fileComponentLocation = controllerStringValue.substring(0, controllerStringValue.length() - screenName.length() - 1)
         this.setRangeInElement(new TextRange(controllerStringValue.indexOf('#'), controllerStringValue.length()))
-        return ps.getScreenFromFileAtLocation(dm, fileComponentLocation, screenName).getXmlElement()
+        return ps.getScreenFromFileAtLocation(fileComponentLocation, screenName).getXmlElement()
     }
 
 }

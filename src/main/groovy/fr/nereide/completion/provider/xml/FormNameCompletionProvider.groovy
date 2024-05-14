@@ -35,8 +35,7 @@ class FormNameCompletionProvider extends CompletionProvider<CompletionParameters
         XmlTag parentTag = PsiTreeUtil.getParentOfType(myAttrValue, XmlTag.class)
         if (parentTag.getAttribute('location')) {
             XmlAttributeValue menuLocationAttr = parentTag.getAttribute('location').getValueElement()
-            forms = ps.getFormListFromFileAtLocation(DomManager.getDomManager(menuLocationAttr.getProject()),
-                    menuLocationAttr.getValue())
+            forms = ps.getFormListFromFileAtLocation(menuLocationAttr.getValue())
         } else {
             forms = ps.getAllFormsFromCurrentFileFromElement(myAttrValue)
         }

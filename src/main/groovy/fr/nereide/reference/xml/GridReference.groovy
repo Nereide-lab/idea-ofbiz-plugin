@@ -23,10 +23,10 @@ class GridReference extends GenericXmlReference {
         PsiElement locationAttribute = containingTag.getAttribute('location')
         if (locationAttribute) {
             String locationAttributeValue = locationAttribute.getValue()
-            return ps.getGridFromFileAtLocation(dm, locationAttributeValue, this.getValue()).getXmlElement()
+            return ps.getGridFromFileAtLocation(locationAttributeValue, this.getValue()).getXmlElement()
         } else if (XmlUtils.isInRightFile(this.getElement(), fileType, dm)) {
             PsiFile currentFile = this.getElement().getContainingFile()
-            return ps.getGridFromPsiFile(dm, currentFile, this.getElement().getValue()).getXmlElement()
+            return ps.getGridFromPsiFile(currentFile, this.getElement().getValue()).getXmlElement()
         }
         return null
     }

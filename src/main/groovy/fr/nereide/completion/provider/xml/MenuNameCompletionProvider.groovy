@@ -35,8 +35,7 @@ class MenuNameCompletionProvider extends CompletionProvider<CompletionParameters
         XmlTag parentTag = PsiTreeUtil.getParentOfType(myAttrValue, XmlTag.class)
         if (parentTag.getAttribute('location')) {
             XmlAttributeValue menuLocationAttr = parentTag.getAttribute('location').getValueElement()
-            menus = ps.getMenuListFromFileAtLocation(DomManager.getDomManager(menuLocationAttr.getProject()),
-                    menuLocationAttr.getValue())
+            menus = ps.getMenuListFromFileAtLocation(menuLocationAttr.getValue())
         } else {
             menus = []
         }

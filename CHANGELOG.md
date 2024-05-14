@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [#7] Added the patterns in groovy and java to allow entity references with getRelatedMethod
 - [#7] Adds the relevant EntityRelation thingies
 - [#NA] Adds the included URIS to uri completion
+- [#NA] Massive ProjectService refacto with built-in DomManager and DomService.
 
 ### Changed
 - Updated the reference tests to get rid of the `strict` parameter.
