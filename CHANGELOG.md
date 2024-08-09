@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.6.1]
 ### Added
 - [#7] Added the patterns in groovy and java to allow entity references with getRelatedMethod
 - [#7] Adds the relevant EntityRelation thingies
