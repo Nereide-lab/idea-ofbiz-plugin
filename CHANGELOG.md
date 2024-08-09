@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Updated the reference tests to get rid of the `strict` parameter.
+- Updated to be 2024.2 compliant
 
 ### Fixed
 - Reactivated the xml groovy injection tests
