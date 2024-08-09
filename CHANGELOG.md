@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.6.1]
 ### Added
 - [#7] Added the patterns in groovy and java to allow entity references with getRelatedMethod
 - [#7] Adds the relevant EntityRelation thingies
@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Updated the reference tests to get rid of the `strict` parameter.
+- Updated to be 2024.2 compliant
 
 ### Fixed
 - Reactivated the xml groovy injection tests

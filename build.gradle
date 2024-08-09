@@ -1,6 +1,8 @@
 import groovy.xml.XmlSlurper
 import groovy.xml.MarkupBuilder
 
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+
 def property(String key) { return project.findProperty(key).toString() }
 
 static def definedInPluginXml(String key) {
@@ -10,46 +12,41 @@ static def definedInPluginXml(String key) {
 }
 
 plugins {
-    id 'org.jetbrains.intellij' version '1.17.0'
+    id 'org.jetbrains.intellij.platform' version '2.0.1'
     id 'groovy'
     id 'java'
     id 'org.jetbrains.changelog' version '1.2.1'
 }
 
-apply plugin: 'org.jetbrains.changelog'
-
 repositories {
     mavenCentral()
+
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 dependencies {
-   implementation 'org.apache.groovy:groovy:4.0.13'
+    intellijPlatform {
+        intellijIdeaCommunity('2024.2')
+        bundledPlugins('com.intellij.java', 'org.intellij.groovy', 'org.intellij.intelliLang')
+        pluginVerifier()
+        zipSigner()
+        instrumentationTools()
+        testFramework(TestFrameworkType.Platform.INSTANCE)
+    }
+    implementation 'org.apache.groovy:groovy:4.0.13'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
-    testImplementation platform('org.junit:junit-bom:5.8.2')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine'
+    testImplementation("junit:junit:4.13.2")
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
 }
+
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
-
-// See https://github.com/JetBrains/gradle-intellij-plugin/
-intellij {
-    type = 'IC'
-//    version = '2023.2'
-    version = 'LATEST-EAP-SNAPSHOT'
-    plugins = [
-//               'JavaScript', Seulement dans la version ultimate.. C'est pénible
-               'com.intellij.java',
-               'org.intellij.groovy',
-               'org.intellij.intelliLang'
-    ]
-}
-
-// disables the buildSearchableOptions task, useless unless you handle UI options
-buildSearchableOptions.enabled = false
 
 /**
  * Refreshes the plugin.xml file for deployment
@@ -67,9 +64,7 @@ patchPluginXml {
 test {
     systemProperty("idea.home.path", new File("${projectDir}/../").absolutePath)
     useJUnitPlatform()
-    filter {
-        includeTestsMatching "fr.nereide.*"
-    }
+    useJUnit()
 }
 
 tasks {

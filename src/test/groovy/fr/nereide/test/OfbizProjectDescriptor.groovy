@@ -18,26 +18,20 @@
 package fr.nereide.test
 
 import com.intellij.openapi.application.WriteAction
+import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.projectRoots.Sdk
-import com.intellij.testFramework.IdeaTestUtil
+import com.intellij.testFramework.LightProjectDescriptor
 import com.intellij.testFramework.PsiTestUtil
-import com.intellij.testFramework.fixtures.DefaultLightProjectDescriptor
 import org.jetbrains.annotations.NotNull
 
-class OfbizProjectDescriptor extends DefaultLightProjectDescriptor {
-
-    @Override
-    Sdk getSdk() {
-        return IdeaTestUtil.getMockJdk11()
-    }
+class OfbizProjectDescriptor extends LightProjectDescriptor {
 
     @Override
     void setUpProject(@NotNull Project project, @NotNull SetupHandler handler) {
         super.setUpProject(project, handler)
         WriteAction.run(() -> {
-            def main = ModuleManager.getInstance(project).findModuleByName(TEST_MODULE_NAME)
+            Module main = ModuleManager.getInstance(project).findModuleByName(TEST_MODULE_NAME)
             PsiTestUtil.addLibrary(main, "lib/ofbiz.jar")
         })
     }

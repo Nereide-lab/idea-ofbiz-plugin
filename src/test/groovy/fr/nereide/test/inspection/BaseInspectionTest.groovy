@@ -103,7 +103,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
             final IntentionAction action = myFixture.findSingleIntention(intention)
             assertNotNull action
             myFixture.launchAction(action)
-            PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : getFile()
+            PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
             List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, getTagFilter())
             assert tags.any { XmlTag tag ->
                 tag.getAttribute('name')?.value == elName && tag.getName() == elType

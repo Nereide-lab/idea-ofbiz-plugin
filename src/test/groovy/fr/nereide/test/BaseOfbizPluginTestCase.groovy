@@ -18,11 +18,11 @@
 package fr.nereide.test
 
 import com.intellij.testFramework.LightProjectDescriptor
-import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase
+import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.junit.Ignore
 
 @Ignore('Parent class, No tests here')
-class BaseOfbizPluginTestCase extends LightJavaCodeInsightFixtureTestCase {
+class BaseOfbizPluginTestCase extends BasePlatformTestCase {
 
     @Override
     protected LightProjectDescriptor getProjectDescriptor() {
