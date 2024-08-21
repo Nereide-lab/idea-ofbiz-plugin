@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- [#NA]
+- [#NA] Added missing patterns for entity name with delegator class in groovy and XML
+
+### Changed
+- moved inspections declaration in dedicated file
 
 ## [1.6.1]
 ### Added
