@@ -40,6 +40,7 @@
     <depends config-file="ofbiz-xml-injections.xml">org.intellij.intelliLang</depends>
     <depends config-file="ofbiz-completion.xml">com.intellij</depends>
     <depends config-file="ofbiz-inspections.xml">com.intellij</depends>
+    <depends config-file="ofbiz-live-templates.xml">com.intellij</depends>
 
     <extensions defaultExtensionNs="com.intellij">
 
