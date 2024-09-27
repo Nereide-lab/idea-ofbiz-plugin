@@ -1,4 +1,4 @@
-package fr.nereide.liteTemplates
+package fr.nereide.liveTemplates
 
 import com.intellij.codeInsight.template.TemplateActionContext
 import com.intellij.codeInsight.template.TemplateContextType

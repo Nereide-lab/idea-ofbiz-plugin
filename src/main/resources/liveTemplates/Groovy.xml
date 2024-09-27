@@ -1,4 +1,4 @@
-<templateSet group="Ofbiz-Groovy">
+<templateSet group="Ofbiz Groovy">
   <template name="rs"
             value="run service: '$SERVICE$', with: [:]$END$"
             toReformat="false"
