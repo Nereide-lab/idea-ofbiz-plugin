@@ -97,4 +97,6 @@
         <field name="monica" type="id"/>
     </entity>
 
+    <entity entity-name="JobSandbox"></entity>
+
 </entitymodel>

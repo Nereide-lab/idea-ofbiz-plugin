@@ -20,4 +20,5 @@
           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
     <service name="SmileSmileSmile"> </service>
     <service name="MidnightInMe"> </service>
+    <service name="Croissance3000Service"> </service>
 </services>

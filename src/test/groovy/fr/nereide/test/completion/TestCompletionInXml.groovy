@@ -107,6 +107,8 @@ class TestCompletionInXml extends BaseComplTestCase {
         doTest(['ThaumCraft', 'ArsMagicka'], ['CreateEnderMan', 'CreateCreeper'])
     }
 
-//    void testViewMapNameCompletionInRequestMap() {
-//    }
+    void testServiceCompletionInXmlDataFile() {
+        List<String> expected = ['makeWitcher', 'makeHorse']
+        doTest(expected)
+    }
 }
