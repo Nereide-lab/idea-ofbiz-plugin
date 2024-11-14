@@ -4,14 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-
 ## [Unreleased]
+### Added
+
+## [1.6.2]
 ### Added
 - [#NA] Added missing patterns for entity name with delegator class in groovy and XML
 - [#10] Adds service name navigation and completion on serviceName attribute
 
 ### Changed
 - moved inspections declaration in dedicated file
+- Updated to intellij 243
 
 ## [1.6.1]
 ### Added
