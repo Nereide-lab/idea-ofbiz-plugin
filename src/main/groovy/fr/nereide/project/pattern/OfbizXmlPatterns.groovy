@@ -159,7 +159,7 @@ class OfbizXmlPatterns {
 
     static XmlAttributePattern relFieldNameAttr() { xmlAttribute('rel-field-name') }
 
-    static XmlAttributePattern serviceLikeAttr() { return xmlAttribute().withName('service', 'service-name') }
+    static XmlAttributePattern serviceLikeAttr() { return xmlAttribute().withName('service', 'service-name', 'serviceName') }
 
     static XmlAttributePattern groovyEngineAttrValue() { return makeAttrAndValPattern('engine', 'groovy') }
 

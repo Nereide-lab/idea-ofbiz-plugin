@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - [#NA] Added missing patterns for entity name with delegator class in groovy and XML
+- [#10] Adds service name navigation and completion on serviceName attribute
 
 ### Changed
 - moved inspections declaration in dedicated file
