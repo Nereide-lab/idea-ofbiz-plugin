@@ -22,7 +22,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.GlobalSearchScopesCore
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
@@ -31,29 +30,24 @@ import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomManager
 import com.intellij.util.xml.DomService
-import fr.nereide.dom.*
-import fr.nereide.dom.ComponentFile.Webapp
-import fr.nereide.dom.ControllerFile.Include
-import fr.nereide.dom.ControllerFile.RequestMap
-import fr.nereide.dom.ControllerFile.ViewMap
-import fr.nereide.dom.EntityEngineFile.Datasource
-import fr.nereide.dom.EntityModelFile.Entity
-import fr.nereide.dom.EntityModelFile.EntityRelation
-import fr.nereide.dom.EntityModelFile.ExtendEntity
-import fr.nereide.dom.EntityModelFile.ViewEntity
-import fr.nereide.dom.FormFile.Form
-import fr.nereide.dom.FormFile.Grid
-import fr.nereide.dom.MenuFile.Menu
-import fr.nereide.dom.ScreenFile.Screen
-import fr.nereide.dom.ServiceDefFile.Service
-import fr.nereide.dom.UiLabelFile.Property
+import fr.nereide.dom.element.Webapp
+import fr.nereide.dom.element.controller.*
+import fr.nereide.dom.element.entityengine.Datasource
+import fr.nereide.dom.element.entitymodel.*
+import fr.nereide.dom.element.form.Form
+import fr.nereide.dom.element.form.Grid
+import fr.nereide.dom.element.menu.Menu
+import fr.nereide.dom.element.screen.Screen
+import fr.nereide.dom.element.service.Service
+import fr.nereide.dom.element.uilabel.Property
+import fr.nereide.dom.file.*
 import fr.nereide.project.utils.FileHandlingUtils
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.reference.common.ComponentAwareFileReferenceSet
 
 import java.util.regex.Matcher
 
-import static java.util.stream.Collectors.toList
+import static com.intellij.psi.search.GlobalSearchScope.allScope
 
 class ProjectServiceImpl implements ProjectServiceInterface {
     private static final Logger LOG = Logger.getInstance(ProjectServiceImpl.class)
@@ -69,62 +63,85 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     RequestMap getRequestMap(String name) {
-        return getClassMatchingProjectDomElement(ControllerFile.class, project, name, "getRequestMaps", "getUri")
+        List<ControllerFile> relevantDomBlocs = getAllControllerFiles()
+        return relevantDomBlocs.collect { ControllerFile cf -> cf.requestMaps }
+                .flatten()
+                .find { RequestMap req -> req.uri?.value == name } as RequestMap
     }
 
     ViewMap getViewMap(String name) {
-        return getClassMatchingProjectDomElement(ControllerFile.class, project, name, "getViewMaps", "getName")
+        List<ControllerFile> relevantDomBlocs = getAllControllerFiles()
+        return relevantDomBlocs.collect { ControllerFile cf -> cf.viewMaps }
+                .flatten()
+                .find { ViewMap vm -> vm.name?.value == name } as ViewMap
+    }
+
+    private List<ControllerFile> getAllControllerFiles() {
+        return (
+                domService.getFileElements(ControllerFile.class, project, allScope(project))
+                        .collect { DomFileElement<ControllerFile> cf -> cf.rootElement }
+                        +
+                        domService.getFileElements(CompoundFile.class, project, allScope(project))
+                                .collect { DomFileElement<CompoundFile> cpd -> cpd.rootElement.siteConf }
+        )
     }
 
     Entity getEntity(String name) {
-        return getMatchingElementFromXmlFiles(EntityModelFile.class, "getEntities", "getEntityName", name)
+        return getAllEntities().find { Entity e -> e.entityName.value == name }
     }
 
     List<Entity> getAllEntities() {
-        return getAllElementOfSpecificType(EntityModelFile.class, "getEntities")
+        return domService.getFileElements(EntityModelFile.class, project, allScope(project))
+                .collect { DomFileElement<EntityModelFile> emf -> emf.rootElement.entities }
+                .flatten() as List<Entity>
     }
 
     ViewEntity getViewEntity(String name) {
-        return getMatchingElementFromXmlFiles(EntityModelFile.class, "getViewEntities", "getEntityName", name)
+        return getAllViewEntities().find { ViewEntity e -> e.entityName.value == name }
     }
 
     List<ViewEntity> getAllViewEntities() {
-        return getAllElementOfSpecificType(EntityModelFile.class, "getViewEntities")
+        return domService.getFileElements(EntityModelFile.class, project, allScope(project))
+                .collect { DomFileElement<EntityModelFile> emf -> emf.rootElement.viewEntities }
+                .flatten() as List<ViewEntity>
     }
 
     Service getService(String name) {
-        return getMatchingElementFromXmlFiles(ServiceDefFile.class, "getServices", "getName", name)
+        return getAllServices().find { Service s -> s.name.value == name } as Service
     }
 
     List<Service> getServices(String name) {
-        List toReturn = []
-        List<DomFileElement<ServiceDefFile>> serviceDefFiles = domService.getFileElements(ServiceDefFile.class, project, GlobalSearchScope.allScope(project))
-        for (DomFileElement<ServiceDefFile> serviceDefFile : serviceDefFiles) {
-            List<DomElement> servicesDomElements = serviceDefFile.getRootElement().getServices()
-            List matching = servicesDomElements.findAll { service ->
-                service.getName().getValue().equalsIgnoreCase(name)
-            }
-            if (matching) toReturn.addAll(matching)
-        }
-        return toReturn
+        return getAllServices().findAll { Service s -> s.name.value == name } as List<Service>
     }
 
     List<Service> getAllServices() {
-        return getAllElementOfSpecificType(ServiceDefFile.class, "getServices")
+        return domService.getFileElements(ServiceFile.class, project, allScope(project))
+                .collect { DomFileElement<ServiceFile> sdf -> sdf.rootElement.services }
+                .flatten() as List<Service>
     }
 
     Property getProperty(String name) {
-        return getMatchingElementFromXmlFiles(UiLabelFile.class, "getProperties", "getKey", name)
+        return domService.getFileElements(UiLabelFile.class, project, allScope(project))
+                .collect { DomFileElement<UiLabelFile> ulf -> ulf.rootElement.properties }
+                .flatten()
+                .find { Property p -> p.key.value == name } as Property
+    }
+
+    Datasource getDatasource(String name) {
+        return domService.getFileElements(EntityEngineFile.class, project, allScope(project))
+                .collect { DomFileElement<EntityEngineFile> eef -> eef.rootElement.datasources }
+                .flatten()
+                .find { Datasource d -> d.name.value == name } as Datasource
     }
 
     List<Form> getAllFormsFromCurrentFileFromElement(XmlAttributeValue myVal) {
         DomFileElement<FormFile> screenFile = domManager.getFileElement(myVal.getContainingFile() as XmlFile, FormFile.class)
-        return screenFile.getRootElement().getForms()
+        return screenFile.rootElement.forms
     }
 
     List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue myVal) {
         DomFileElement<ScreenFile> screenFile = domManager.getFileElement(myVal.getContainingFile() as XmlFile, ScreenFile.class)
-        return screenFile.getRootElement().getScreens()
+        return screenFile.rootElement.screens
     }
 
     List<Screen> getScreensFromScreenFileAtLocation(XmlElement screenLocation, boolean isController) {
@@ -143,19 +160,16 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return domManager.getFileElement(file as XmlFile, CompoundFile.class).getRootElement().getScreens().getScreens()
     }
 
-    Datasource getDatasource(String name) {
-        return getMatchingElementFromXmlFiles(EntityEngineFile.class, "getDatasources", "getName", name)
-    }
-
-    boolean isInTestDir(DomFileElement file) {
+    static boolean isInTestDir(DomFileElement file) {
         String dir = file.getFile().getContainingDirectory().toString()
         return dir.contains('/tests')
     }
 
     PsiDirectory getComponentDir(String name) {
-        List<ComponentFile> componentFiles = getAllComponentsFiles()
-        DomFileElement relevantComponent = componentFiles.stream().find { componentFile ->
-            componentFile.getRootElement().getName().getValue().equalsIgnoreCase(name)
+        List<DomFileElement<ComponentFile>> componentFiles = getAllComponentsFiles()
+        DomFileElement<ComponentFile> relevantComponent = componentFiles
+                .find { DomFileElement<ComponentFile> componentFile ->
+                    componentFile.rootElement.name.value.equalsIgnoreCase(name)
         }
         if (relevantComponent) {
             return relevantComponent.getFile().getContainingDirectory()
@@ -165,88 +179,27 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     @Override
     List<ExtendEntity> getExtendEntityListForEntity(String entityName) {
-        List<DomElement> extendList = getAllElementOfSpecificType(EntityModelFile.class, "getExtendEntities")
-        return extendList.stream().filter {
-            it.getEntityName().getValue() == entityName
-        }.collect() as List<ExtendEntity>
+        return domService.getFileElements(EntityModelFile.class, project, allScope(project))
+                .collect { DomFileElement<EntityModelFile> emf -> emf.rootElement.extendEntities }
+                .flatten()
+                .findAll { ExtendEntity ee -> ee.entityName.value == entityName }
+                .collect() as List<ExtendEntity>
+
     }
 
     @Override
-    List<ComponentFile> getAllComponentsFiles() {
-        return domService
-                .getFileElements(ComponentFile.class, project, GlobalSearchScope.allScope(project))
+    List<DomFileElement<ComponentFile>> getAllComponentsFiles() {
+        return domService.getFileElements(ComponentFile.class, project, allScope(project))
                 .findAll { !isInTestDir(it) }
-                .toList() as List<ComponentFile>
     }
 
     @Override
     List<String> getAllComponentsNames() {
-        return domService
-                .getFileElements(ComponentFile.class, project, GlobalSearchScope.allScope(project))
+        return domService.getFileElements(ComponentFile.class, project, allScope(project))
                 .findAll { !isInTestDir(it) }
                 .collect { it.getRootElement() }
                 .collect { it.name.value }
     }
-
-    private DomElement getMatchingElementFromXmlFiles(Class classFile,
-                                                      String elementListGetterMethod,
-                                                      String elementValueGetterName,
-                                                      String matchingValue) {
-        List<DomFileElement<?>> projectFiles = getClassMatchingProjectDomBlocs(classFile, this.project)
-        for (DomFileElement<?> projectFile : projectFiles) {
-            List<DomElement> elements = projectFile.getRootElement()."$elementListGetterMethod"()
-            for (DomElement element : elements) {
-                if (element."$elementValueGetterName"().getValue().equalsIgnoreCase(matchingValue)) return element
-            }
-        }
-        return null
-    }
-
-    private List<DomElement> getAllElementOfSpecificType(Class classFile, String elementListGetterMethod) {
-        List resultSet = []
-        List<DomFileElement<?>> projectFiles = getClassMatchingProjectDomBlocs(classFile, this.project)
-        for (DomFileElement<?> projectFile : projectFiles) {
-            List<DomElement> elements = projectFile.getRootElement()."$elementListGetterMethod"()
-            for (DomElement element : elements) {
-                resultSet << element
-            }
-        }
-        return resultSet
-    }
-
-    private List<DomFileElement> getClassMatchingProjectDomBlocs(Class classFile, Project project) {
-        return domService.getFileElements(classFile, project, GlobalSearchScope.allScope(project))
-    }
-
-    private List<DomElement> getClassMatchingProjectDomElementList(Class classFile, Project project, String elementListGetterMethod) {
-        List<DomFileElement> relevantFile = getClassMatchingProjectDomBlocs(classFile, project)
-        List<DomElement> relevantDomBlocs = []
-        relevantFile.forEach {
-            relevantDomBlocs << it.getRootElement()
-        }
-        List<CompoundFile> cpdFiles = domService.getFileElements(CompoundFile.class, project, GlobalSearchScope.allScope(project)) as List<CompoundFile>
-        cpdFiles.forEach {
-            relevantDomBlocs << it.getRootElement().getSiteConf()
-        }
-        List toReturn = []
-        relevantDomBlocs.forEach {
-            if (it."$elementListGetterMethod"()) {
-                toReturn.addAll(it."$elementListGetterMethod"())
-            }
-        }
-        return toReturn
-    }
-
-    private DomElement getClassMatchingProjectDomElement(Class classFile, Project project, String wantedName,
-                                                         String elementListGetterMethod, String elementNameGetterMethod) {
-        List<DomElement> relevantDomBlocs = getClassMatchingProjectDomElementList(classFile, project, elementListGetterMethod)
-        List<DomElement> domEls = relevantDomBlocs.stream().filter { DomElement it ->
-            wantedName.equalsIgnoreCase(it."$elementNameGetterMethod"().getValue())
-        }.collect(toList())
-        // TODO : Right now we only return the first element found. We'll have to add control for the right component
-        return domEls.size() > 0 ? domEls[0] : null
-    }
-
 
     PsiFile getPsiFileAtLocation(String componentPathToFile) {
         if (!componentPathToFile) return null
@@ -383,13 +336,11 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement) {
-        List<ComponentFileDescription> allComponents = getAllComponentsFiles()
-        List<Webapp> allWebapps = []
-        allComponents.each { def compoFile ->
-            allWebapps.addAll(compoFile.getRootElement().getWebapps())
-        }
+        List<Webapp> allWebapps = getAllComponentsFiles()
+                .collect { DomFileElement<ComponentFile> cptf -> cptf.rootElement.webapps }
+                .flatten() as List<Webapp>
 
-        Map result = [:]
+        Map<String, List<String>> result = [:]
         allWebapps.forEach { Webapp webapp ->
             try {
                 String mountPoint = webapp.getMountPoint().getValue()
@@ -419,7 +370,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
                 GlobalSearchScopesCore.directoryScope(directoryToSearch, true))
         List requestsUris = []
         controllerFiles.each { controllerFile ->
-            List requests = []
+            List<RequestMap> requests = []
             requests.addAll(controllerFile.getRootElement().getRequestMaps())
             requests.addAll(getRequestsFromImports(controllerFile.getRootElement()))
             requests.each { RequestMap request ->

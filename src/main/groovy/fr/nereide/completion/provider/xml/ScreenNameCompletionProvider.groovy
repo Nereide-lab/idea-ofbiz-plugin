@@ -12,12 +12,12 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
+import fr.nereide.dom.element.screen.Screen
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.utils.XmlUtils
 import org.jetbrains.annotations.NotNull
 
-import static fr.nereide.dom.ScreenFile.Screen
 
 class ScreenNameCompletionProvider extends CompletionProvider<CompletionParameters> {
 

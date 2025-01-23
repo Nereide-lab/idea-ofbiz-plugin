@@ -25,7 +25,7 @@ import com.intellij.psi.xml.XmlFile
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomManager
-import fr.nereide.dom.ComponentFile
+import fr.nereide.dom.file.ComponentFile
 
 class MiscUtils {
 

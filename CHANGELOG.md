@@ -5,7 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Added
+### Changed
+- Small type change in Project service impl
+- removes a todo in patterns (no other option at this point)
+- Various optimisations, groovy syntax changes, and codes candy
+- Big DOM files cleanup
 
 ## [1.6.2]
 ### Added

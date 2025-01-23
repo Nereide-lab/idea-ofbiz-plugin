@@ -17,6 +17,8 @@ import com.intellij.usageView.UsageInfo
 import com.intellij.util.ArrayUtil
 import com.intellij.util.CommonProcessors
 import com.intellij.util.ProcessingContext
+import fr.nereide.dom.element.entitymodel.Entity
+import fr.nereide.dom.element.entitymodel.ViewEntity
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizPatternConst
 import org.jetbrains.annotations.NotNull
@@ -30,8 +32,6 @@ import java.util.regex.Pattern
 import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfType
 import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfTypeAsList
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
-import static fr.nereide.dom.EntityModelFile.Entity
-import static fr.nereide.dom.EntityModelFile.ViewEntity
 import static fr.nereide.project.pattern.OfbizPatternConst.DYNAMIC_VIEW_ENTITY_CLASS_NAME
 import static fr.nereide.project.worker.EntityWorker.getEntityFields
 import static fr.nereide.project.worker.EntityWorker.getViewFields

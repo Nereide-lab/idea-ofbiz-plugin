@@ -2,7 +2,7 @@ package fr.nereide.documentation.format
 
 import com.intellij.openapi.util.text.HtmlBuilder
 import com.intellij.openapi.util.text.StringUtil
-import fr.nereide.dom.ServiceDefFile.Service
+import fr.nereide.dom.element.service.Service
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
 

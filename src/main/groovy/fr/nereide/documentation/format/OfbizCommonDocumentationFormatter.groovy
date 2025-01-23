@@ -2,8 +2,8 @@ package fr.nereide.documentation.format
 
 import com.intellij.openapi.util.text.HtmlBuilder
 import com.intellij.util.xml.DomElement
-import fr.nereide.dom.EntityModelFile.Entity
-import fr.nereide.dom.EntityModelFile.ViewEntity
+import fr.nereide.dom.element.entitymodel.Entity
+import fr.nereide.dom.element.entitymodel.ViewEntity
 import fr.nereide.project.utils.MiscUtils
 
 import static com.intellij.lang.documentation.DocumentationMarkup.DEFINITION_ELEMENT

@@ -8,7 +8,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlFile
-import fr.nereide.dom.CompoundFileDescription
+import fr.nereide.dom.filedesc.CompoundFileDescription
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.quickfix.xml.CreateScreenInScreenFileQuickFix
 import fr.nereide.project.ProjectServiceInterface

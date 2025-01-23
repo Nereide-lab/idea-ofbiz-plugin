@@ -24,9 +24,7 @@ class OfbizGroovyPatterns {
             makeLocalDispatcherGroovyMethodPattern('runSyncIgnore', 0),
             makeLocalDispatcherGroovyMethodPattern('runSyncNewTrans', 0),
             groovyLiteralExpression().methodCallParameter(0, psiMethod().withName('runService')),
-            //TODO : bétonner un peu pour éviter les soucis de référence non trouvée ?
-            groovyLiteralExpression().withParent(namedArgument().withLabel('service')
-            )
+            groovyLiteralExpression().withParent(namedArgument().withLabel('service'))
     ))
 
     public static final PsiElementPattern ENTITY_CALL = psiElement().inside(psiElement().andOr(

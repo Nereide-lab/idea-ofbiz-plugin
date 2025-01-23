@@ -1,7 +1,7 @@
 package fr.nereide.test.service
 
 
-import fr.nereide.dom.ServiceDefFile.Service
+import fr.nereide.dom.element.service.Service
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.worker.ServiceWorker
 
@@ -10,7 +10,7 @@ class TestServiceAttributes extends BaseServiceTest {
     void testVanillaServiceAttributes() {
         ProjectServiceInterface ps = myFixture.getProject().getService(ProjectServiceInterface.class)
         Service service = ps.getService('ping')
-        List<String> requiredAttributes = geRequiredAttrNames(service, ps)
+        List<String> requiredAttributes = getRequiredAttrNames(service, ps)
         List<String> optionalAttributes = getOptionalAttrNames(service, ps)
         assertContainsElements(requiredAttributes, ['hello', 'world'])
         assertContainsElements(optionalAttributes, ['bye'])
@@ -20,7 +20,7 @@ class TestServiceAttributes extends BaseServiceTest {
         final List EXPECTED_OPTIONALS = ['rifle', 'knife', 'mapId']
         ProjectServiceInterface ps = myFixture.getProject().getService(ProjectServiceInterface.class)
         Service service = ps.getService('createNavezgane')
-        List<String> requiredAttributes = geRequiredAttrNames(service, ps)
+        List<String> requiredAttributes = getRequiredAttrNames(service, ps)
         List<String> optionalAttributes = getOptionalAttrNames(service, ps)
         assertEmpty(requiredAttributes)
         assertContainsElements(optionalAttributes, EXPECTED_OPTIONALS)
@@ -31,7 +31,7 @@ class TestServiceAttributes extends BaseServiceTest {
         final List EXPECTED_OPTIONALS = ['tooth', 'blood', 'magic']
         ProjectServiceInterface ps = myFixture.getProject().getService(ProjectServiceInterface.class)
         Service service = ps.getService('killDracula')
-        List<String> requiredAttributes = geRequiredAttrNames(service, ps)
+        List<String> requiredAttributes = getRequiredAttrNames(service, ps)
         List<String> optionalAttributes = getOptionalAttrNames(service, ps)
         assertContainsElements(requiredAttributes, EXPECTED_REQUIRED)
         assertDoesntContain(requiredAttributes, EXPECTED_OPTIONALS)
@@ -39,7 +39,7 @@ class TestServiceAttributes extends BaseServiceTest {
         assertDoesntContain(optionalAttributes, EXPECTED_REQUIRED)
     }
 
-    private static List<String> geRequiredAttrNames(Service service, ProjectServiceInterface ps) {
+    private static List<String> getRequiredAttrNames(Service service, ProjectServiceInterface ps) {
         ServiceWorker.getRequiredInAttributes(service, ps)
                 .stream().map { it.get(ServiceWorker.SERVICE_ATTR_NAME) }.collect()
     }

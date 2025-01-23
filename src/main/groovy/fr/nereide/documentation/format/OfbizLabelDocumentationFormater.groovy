@@ -1,8 +1,8 @@
 package fr.nereide.documentation.format
 
 import com.intellij.openapi.util.text.HtmlBuilder
-import fr.nereide.dom.UiLabelFile.Property
-import fr.nereide.dom.UiLabelFile.PropertyValue
+import fr.nereide.dom.element.uilabel.Property
+import fr.nereide.dom.element.uilabel.PropertyValue
 import fr.nereide.project.utils.MiscUtils
 
 import static com.intellij.lang.documentation.DocumentationMarkup.CONTENT_ELEMENT

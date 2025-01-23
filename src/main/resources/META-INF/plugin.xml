@@ -55,15 +55,15 @@
         <lang.documentationProvider language="JAVA" implementationClass="fr.nereide.documentation.OfbizJavaDocumentationProvider"/>
 
         <!-- XML file description -->
-        <dom.fileMetaData implementation="fr.nereide.dom.ComponentFileDescription" rootTagName="ofbiz-component"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.ControllerFileDescription" rootTagName="site-conf"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.EntityModelFileDescription" rootTagName="entitymodel"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.ServiceDefFileDescription" rootTagName="services"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.UiLabelFileDescription" rootTagName="resource"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.FormFileDescription" rootTagName="forms"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.MenuFileDescription" rootTagName="menus"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.ScreenFileDescription" rootTagName="screens"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.CompoundFileDescription" rootTagName="compound-widgets"/>
-        <dom.fileMetaData implementation="fr.nereide.dom.EntityEngineFileDescription" rootTagName="entity-config"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.ComponentFileDescription" rootTagName="ofbiz-component"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.ControllerFileDescription" rootTagName="site-conf"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.EntityModelFileDescription" rootTagName="entitymodel"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.ServiceDefFileDescription" rootTagName="services"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.UiLabelFileDescription" rootTagName="resource"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.FormFileDescription" rootTagName="forms"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.MenuFileDescription" rootTagName="menus"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.ScreenFileDescription" rootTagName="screens"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.CompoundFileDescription" rootTagName="compound-widgets"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.EntityEngineFileDescription" rootTagName="entity-config"/>
     </extensions>
 </idea-plugin>

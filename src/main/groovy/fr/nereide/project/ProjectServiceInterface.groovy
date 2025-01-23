@@ -23,20 +23,20 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
-import fr.nereide.dom.ComponentFile
-import fr.nereide.dom.ControllerFile.RequestMap
-import fr.nereide.dom.ControllerFile.ViewMap
-import fr.nereide.dom.EntityEngineFile.Datasource
-import fr.nereide.dom.EntityModelFile.Entity
-import fr.nereide.dom.EntityModelFile.EntityRelation
-import fr.nereide.dom.EntityModelFile.ExtendEntity
-import fr.nereide.dom.EntityModelFile.ViewEntity
-import fr.nereide.dom.FormFile.Form
-import fr.nereide.dom.FormFile.Grid
-import fr.nereide.dom.MenuFile.Menu
-import fr.nereide.dom.ScreenFile.Screen
-import fr.nereide.dom.ServiceDefFile.Service
-import fr.nereide.dom.UiLabelFile.Property
+import fr.nereide.dom.element.controller.RequestMap
+import fr.nereide.dom.element.controller.ViewMap
+import fr.nereide.dom.element.entityengine.Datasource
+import fr.nereide.dom.element.entitymodel.Entity
+import fr.nereide.dom.element.entitymodel.EntityRelation
+import fr.nereide.dom.element.entitymodel.ExtendEntity
+import fr.nereide.dom.element.entitymodel.ViewEntity
+import fr.nereide.dom.element.form.Form
+import fr.nereide.dom.element.form.Grid
+import fr.nereide.dom.element.menu.Menu
+import fr.nereide.dom.element.screen.Screen
+import fr.nereide.dom.element.service.Service
+import fr.nereide.dom.element.uilabel.Property
+import fr.nereide.dom.file.ComponentFile
 
 interface ProjectServiceInterface {
 

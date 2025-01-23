@@ -1,10 +1,7 @@
 package fr.nereide.documentation.format
 
 import com.intellij.openapi.util.text.HtmlBuilder
-import fr.nereide.dom.EntityModelFile.Entity
-import fr.nereide.dom.EntityModelFile.EntityField
-import fr.nereide.dom.EntityModelFile.EntityPrimKey
-import fr.nereide.dom.EntityModelFile.ExtendEntity
+import fr.nereide.dom.element.entitymodel.*
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
 
@@ -12,7 +9,6 @@ import static com.intellij.lang.documentation.DocumentationMarkup.CONTENT_ELEMEN
 import static com.intellij.lang.documentation.DocumentationMarkup.GRAYED_ELEMENT
 import static com.intellij.openapi.util.text.HtmlChunk.Element
 import static com.intellij.openapi.util.text.HtmlChunk.text
-import static fr.nereide.dom.EntityModelFile.EntityRelation
 
 class OfbizEntityDocumentationFormatter extends OfbizCommonDocumentationFormatter {
 

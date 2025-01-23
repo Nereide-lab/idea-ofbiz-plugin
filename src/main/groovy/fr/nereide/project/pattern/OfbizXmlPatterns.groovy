@@ -10,7 +10,7 @@ import static com.intellij.patterns.StandardPatterns.string
 import static com.intellij.patterns.XmlNamedElementPattern.XmlAttributePattern
 import static com.intellij.patterns.XmlPatterns.*
 import static com.intellij.patterns.XmlTagPattern.Capture
-import static fr.nereide.dom.CompoundFileDescription.*
+import static fr.nereide.dom.filedesc.CompoundFileDescription.*
 
 class OfbizXmlPatterns {
 
