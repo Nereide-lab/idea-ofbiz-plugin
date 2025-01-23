@@ -22,8 +22,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
-import com.intellij.util.xml.DomManager
-import fr.nereide.dom.ScreenFile
+import fr.nereide.dom.file.ScreenFile
 import fr.nereide.project.ProjectServiceInterface
 
 import static fr.nereide.project.utils.XmlUtils.*

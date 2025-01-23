@@ -24,8 +24,8 @@ import com.intellij.codeInsight.completion.PrioritizedLookupElement
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.util.ProcessingContext
-import fr.nereide.dom.EntityModelFile.Entity
-import fr.nereide.dom.EntityModelFile.ViewEntity
+import fr.nereide.dom.element.entitymodel.Entity
+import fr.nereide.dom.element.entitymodel.ViewEntity
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
 import icons.PluginIcons

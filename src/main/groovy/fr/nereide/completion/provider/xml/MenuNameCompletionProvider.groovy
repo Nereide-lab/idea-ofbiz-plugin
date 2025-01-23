@@ -12,12 +12,11 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
-import com.intellij.util.xml.DomManager
+import fr.nereide.dom.element.menu.Menu
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
 
-import static fr.nereide.dom.MenuFile.Menu
 
 class MenuNameCompletionProvider extends CompletionProvider<CompletionParameters> {
 

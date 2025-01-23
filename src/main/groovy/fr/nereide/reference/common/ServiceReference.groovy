@@ -21,9 +21,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiElementResolveResult
 import com.intellij.psi.PsiPolyVariantReferenceBase
 import com.intellij.psi.ResolveResult
+import fr.nereide.dom.element.service.Service
 import fr.nereide.project.ProjectServiceInterface
-
-import static fr.nereide.dom.ServiceDefFile.Service
 
 class ServiceReference extends PsiPolyVariantReferenceBase<PsiElement> {
 

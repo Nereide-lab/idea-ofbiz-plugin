@@ -20,7 +20,6 @@ package fr.nereide.reference.common
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.util.xml.DomElement
-import fr.nereide.dom.EntityModelFile.EntityRelation
 import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.Nullable
 
@@ -41,8 +40,8 @@ class EntityReference extends PsiReferenceBase<PsiElement> {
     String getEntityNameFromGetRelated(ProjectServiceInterface ps) {
         String wantedString = this.getValue()
         if (!wantedString) return null
-        List<EntityRelation> relations = ps.getAllEntityRelations()
-        EntityRelation matchingRel = relations.find { EntityRelation rel ->
+        List<fr.nereide.dom.element.entitymodel.EntityRelation> relations = ps.getAllEntityRelations()
+        fr.nereide.dom.element.entitymodel.EntityRelation matchingRel = relations.find { fr.nereide.dom.element.entitymodel.EntityRelation rel ->
             wantedString == rel.getTitle().getValue() + rel.getRelEntityName().getValue()
         }
         if (!matchingRel) return null

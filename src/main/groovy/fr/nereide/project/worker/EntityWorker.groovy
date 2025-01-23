@@ -3,9 +3,8 @@ package fr.nereide.project.worker
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.util.xml.DomElement
+import fr.nereide.dom.element.entitymodel.*
 import fr.nereide.project.ProjectServiceInterface
-
-import static fr.nereide.dom.EntityModelFile.*
 
 class EntityWorker {
 
@@ -41,12 +40,12 @@ class EntityWorker {
                                       List<String> excludedFields, int index) {
         List<String> fieldsList = []
         if (index >= 10) return // infinite loop workaround
-        List<Alias> aliases = view.getAliases()
-        List<AliasAll> aliasAllList = view.getAliasAllList()
+        List<Alias> aliases = view.aliases
+        List<AliasAll> aliasAllList = view.aliasAlls
         if (aliasAllList) {
-            List<ViewEntityMember> members = view.getMemberEntities()
+            List<ViewEntityMember> members = view.memberEntities
             aliasAllList.each { aliasAllElmt ->
-                String currentPrefix = "${prefix ?: ''}${aliasAllElmt.getPrefix().getValue() ?: ''}" as String
+                String currentPrefix = "${prefix ?: ''}${aliasAllElmt.prefix.value ?: ''}" as String
                 String entityName = getEntityNameFromAlias(aliasAllElmt, members)
                 if (entityName) {
                     List<String> currentExcludedFields = getListOfExcludedFieldNames(aliasAllElmt)
@@ -68,22 +67,22 @@ class EntityWorker {
 
     static String getEntityNameFromAlias(AliasAll aliasAllElmt, List<ViewEntityMember> members) {
         String alias = aliasAllElmt.getEntityAlias()
-        return members.find { it.getEntityAlias().getValue() == alias }?.getEntityName()
+        return members.find { it.entityAlias.value == alias }?.entityName
     }
 
     static List<String> getListOfExcludedFieldNames(AliasAll aliasAllElmt) {
-        return aliasAllElmt.getAliasAllExcludes().collect { it.getField().getValue() }
+        return aliasAllElmt.getAliasAllExcludes().collect { it.field.value }
     }
 
 
-    static List<String> getFormatedFieldsName(aliases) {
+    static List<String> getFormatedFieldsName(List<Alias> aliases) {
         return getFormatedFieldsName(aliases, null)
     }
 
     static List<String> getFormatedFieldsName(List<DomElement> fields, String prefix) {
-        return fields.stream().map { DomElement field ->
+        return fields.collect { DomElement field ->
             "${prefix ?: ''}${field.getName()}"
-        }.toList() as List<String>
+        } as List<String>
     }
 
     static boolean entityOrViewHasNeverCacheTrueAttr(String entityName, Project project) {
@@ -97,7 +96,7 @@ class EntityWorker {
                 entityOrViewHasNeverCacheTrueAttr(it.getEntityName().getValue(), project)
             }
         }
-        String neverCache = entity.getNeverCache() ?: ''
+        String neverCache = entity.neverCache ?: ''
         return neverCache ? neverCache == 'true' : false
     }
 

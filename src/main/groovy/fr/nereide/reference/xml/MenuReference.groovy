@@ -21,7 +21,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
-import fr.nereide.dom.FormFile
+import fr.nereide.dom.file.FormFile
 import fr.nereide.project.utils.XmlUtils
 
 class MenuReference extends GenericXmlReference {

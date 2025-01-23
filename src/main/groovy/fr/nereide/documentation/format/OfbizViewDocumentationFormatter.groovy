@@ -2,7 +2,7 @@ package fr.nereide.documentation.format
 
 
 import com.intellij.openapi.util.text.HtmlChunk.Element
-import fr.nereide.dom.EntityModelFile.ViewEntity
+import fr.nereide.dom.element.entitymodel.ViewEntity
 
 class OfbizViewDocumentationFormatter extends OfbizCommonDocumentationFormatter {
 

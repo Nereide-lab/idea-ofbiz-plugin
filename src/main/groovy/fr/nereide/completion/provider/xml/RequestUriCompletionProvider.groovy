@@ -12,16 +12,15 @@ import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.DomManager
-import fr.nereide.dom.CompoundFile
-import fr.nereide.dom.FormFile
-import fr.nereide.dom.MenuFile
-import fr.nereide.dom.ScreenFile
+import fr.nereide.dom.element.controller.RequestMap
+import fr.nereide.dom.file.CompoundFile
+import fr.nereide.dom.file.FormFile
+import fr.nereide.dom.file.MenuFile
+import fr.nereide.dom.file.ScreenFile
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.utils.XmlUtils
 import org.jetbrains.annotations.NotNull
-
-import static fr.nereide.dom.ControllerFile.RequestMap
 
 class RequestUriCompletionProvider extends CompletionProvider<CompletionParameters> {
 

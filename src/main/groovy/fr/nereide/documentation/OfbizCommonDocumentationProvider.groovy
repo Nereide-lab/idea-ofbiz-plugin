@@ -21,10 +21,10 @@ import com.intellij.lang.documentation.AbstractDocumentationProvider
 import com.intellij.openapi.util.text.HtmlBuilder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlTag
-import fr.nereide.dom.EntityModelFile.Entity
-import fr.nereide.dom.EntityModelFile.ViewEntity
-import fr.nereide.dom.ServiceDefFile.Service
-import fr.nereide.dom.UiLabelFile.Property
+import fr.nereide.dom.element.entitymodel.Entity
+import fr.nereide.dom.element.entitymodel.ViewEntity
+import fr.nereide.dom.element.service.Service
+import fr.nereide.dom.element.uilabel.Property
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.MiscUtils
 
