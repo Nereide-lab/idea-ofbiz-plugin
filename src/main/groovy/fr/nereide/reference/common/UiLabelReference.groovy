@@ -40,4 +40,9 @@ class UiLabelReference extends PsiReferenceBase<PsiElement> {
         DomElement definition = structureService.getProperty(MiscUtils.getUiLabelSafeValue(this.getValue()))
         return definition != null ? definition.getXmlElement() : null
     }
+
+    boolean isSoft() {
+        return true
+    }
+
 }
