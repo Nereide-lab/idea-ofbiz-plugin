@@ -1,9 +1,10 @@
 package fr.nereide.test.inspection
 
-
+import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection
+import fr.nereide.inspection.xml.LabelNotFoundInXmlInspection
 import fr.nereide.inspection.xml.ScreenNotFoundInFileLocationInspection
 
 class XmlInspectionTest extends BaseInspectionTest {
@@ -120,5 +121,23 @@ class XmlInspectionTest extends BaseInspectionTest {
     //==============================
     // UILABEL TESTS
     //==============================
+
+    void testLabelNotFoundInScreenFile() {
+        // Given
+        String desc = InspectionBundle.message('inspection.label.not.found.display.descriptor')
+        myFixture.enableInspections(new LabelNotFoundInXmlInspection())
+        myFixture.configureByFile(testFile)
+        List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
+        List<String> highlightDescs = highlightInfos.collect { it.description }
+        assertFalse highlightInfos.isEmpty()
+        assert highlightDescs.contains(desc)
+
+//        findAndLaunchAction(intention)
+//        PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
+//        List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, getTagFilter())
+//        assert tags.any { XmlTag tag ->
+//            tag.getAttribute('name')?.value == elName && tag.getName() == elType
+//        }
+    }
 
 }
