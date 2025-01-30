@@ -15,14 +15,15 @@ class XmlInspectionTest extends BaseInspectionTest {
     void testNoGroovyServiceFileFoundInspectionFileFix() {
         String intention = InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix.fixpath')
         myFixture.enableInspections(new EmptyFileLocationInspection())
-        doFileFixTest(intention)
+        doInspectionThenQuickFixTestWithFileEdit(true, intention, null)
     }
 
     void testNoGroovyServiceFileFoundInspectionFileCreate() {
         String intention = InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix.createfile')
+        String description = InspectionBundle.message('inspection.location.target.file.not.found.display.descriptor')
         myFixture.enableInspections(new EmptyFileLocationInspection())
         String location = 'zelda/webcommon/WEB-INF/zelda-controller.xml'
-        doFileInspectionTest(intention, location, true)
+        doFileInspectionTestWithFileCreation(true, intention, description, location)
     }
 
     //==============================
@@ -42,7 +43,7 @@ class XmlInspectionTest extends BaseInspectionTest {
         myFixture.enableInspections(new ScreenNotFoundInFileLocation())
         String elementName = 'SomeOtherRandomScreen'
         String desc = InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor')
-        doScreenInspectionTest(intention, desc, elementName, true)
+        doScreenInspectionTest(intention, desc, null, elementName, true)
     }
 
     void testNoScreenFoundInTargetFileInForm() {
@@ -116,7 +117,7 @@ class XmlInspectionTest extends BaseInspectionTest {
         myFixture.enableInspections(new FormNotFoundInFileLocation())
         String elementName = 'IWantAFormInThisFile'
         String desc = InspectionBundle.message('inspection.form.not.found.on.target.display.descriptor')
-        doFormInspectionTest(intention, desc, elementName, true)
+        doFormInspectionTest(intention, desc, null, elementName, true)
     }
 
     void testNoFormFoundInTargetFileInScreen() {
@@ -133,4 +134,9 @@ class XmlInspectionTest extends BaseInspectionTest {
         String desc = InspectionBundle.message('inspection.form.not.found.on.target.display.descriptor')
         doFormInspectionTest(null, desc, null, null, false)
     }
+
+    //==============================
+    // UILABEL TESTS
+    //==============================
+
 }

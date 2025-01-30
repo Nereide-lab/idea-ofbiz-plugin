@@ -25,39 +25,31 @@ import fr.nereide.inspection.InspectionBundle
 
 class JavaInspectionTest extends BaseInspectionTest {
 
-    CacheOnNeverCacheEntityJavaInspection myCacheInsp = new CacheOnNeverCacheEntityJavaInspection()
-
-    JavaInspectionTest() {
-        myCacheInsp = new CacheOnNeverCacheEntityJavaInspection()
-    }
-
     @Override
     String getLang() {
         return 'java'
     }
 
+    void doNeverCacheTest(boolean mustFind) {
+        myFixture.enableInspections(new CacheOnNeverCacheEntityJavaInspection())
+        doInspectionThenQuickFixTestWithFileEdit(mustFind,
+                InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix'),
+                InspectionBundle.message('inspection.entity.cache.on.never.cache.display.descriptor'))
+    }
+
     void testCacheOnNeverCacheEntity() {
-        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        myFixture.enableInspections(myCacheInsp)
-        doFileFixTest(intention)
+        doNeverCacheTest(true)
     }
 
     void testCacheOnNeverCacheEntityWithTrueParameter() {
-        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        myFixture.enableInspections(myCacheInsp)
-        doFileFixTest(intention)
+        doNeverCacheTest(true)
     }
 
     void testCacheOnNeverCacheEntityWithFalseParameter() {
-        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        String desc = InspectionBundle.message('inspection.entity.cache.on.never.cache.display.descriptor')
-        myFixture.enableInspections(myCacheInsp)
-        doFileFixTest(intention, desc, false)
+        doNeverCacheTest(false)
     }
 
     void testCacheOnViewIncludingNeverCacheEntity() {
-        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        myFixture.enableInspections(myCacheInsp)
-        doFileFixTest(intention)
+        doNeverCacheTest(true)
     }
 }
