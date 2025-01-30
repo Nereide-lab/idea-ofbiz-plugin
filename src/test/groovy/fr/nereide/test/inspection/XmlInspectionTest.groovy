@@ -1,9 +1,10 @@
 package fr.nereide.test.inspection
 
+
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
 import fr.nereide.inspection.InspectionBundle
-import fr.nereide.inspection.xml.FormNotFoundInFileLocation
-import fr.nereide.inspection.xml.ScreenNotFoundInFileLocation
+import fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection
+import fr.nereide.inspection.xml.ScreenNotFoundInFileLocationInspection
 
 class XmlInspectionTest extends BaseInspectionTest {
 
@@ -29,110 +30,91 @@ class XmlInspectionTest extends BaseInspectionTest {
     //==============================
     // SCREEN TESTS
     //==============================
+    void doScreenNotFoundTest(boolean mustFind, String location, String elName) {
+        myFixture.enableInspections(new ScreenNotFoundInFileLocationInspection())
+        doInspectionThenQuickFixWithXmlElementCreate(mustFind,
+                InspectionBundle.message('inspection.screen.not.found.on.target.use.quickfix.create'),
+                InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor'),
+                location, elName, 'screen')
+    }
+
     void testNoScreenFoundInTargetFileInScreenWithLocationAttr() {
-        String intention = InspectionBundle.message('inspection.screen.not.found.on.target.use.quickfix.create')
-        myFixture.enableInspections(new ScreenNotFoundInFileLocation())
         String location = 'zelda/widget/ZeldaFoesScreens.xml'
         String elementName = 'HobegobelinScreen'
-        String desc = InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor')
-        doScreenInspectionTest(intention, desc, location, elementName, true)
+        doScreenNotFoundTest(true, location, elementName)
     }
 
     void testNoScreenFoundInTargetFileInScreenWithoutLocationAttr() {
-        String intention = InspectionBundle.message('inspection.screen.not.found.on.target.use.quickfix.create')
-        myFixture.enableInspections(new ScreenNotFoundInFileLocation())
         String elementName = 'SomeOtherRandomScreen'
-        String desc = InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor')
-        doScreenInspectionTest(intention, desc, null, elementName, true)
+        doScreenNotFoundTest(true, null, elementName)
     }
 
     void testNoScreenFoundInTargetFileInForm() {
-        String intention = InspectionBundle.message('inspection.screen.not.found.on.target.use.quickfix.create')
-        myFixture.enableInspections(new ScreenNotFoundInFileLocation())
         String location = 'zelda/widget/ZeldaFoesScreens.xml'
         String elementName = 'SomeZeldaScreenInForm'
-        String desc = InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor')
-        doScreenInspectionTest(intention, desc, location, elementName, true)
+        doScreenNotFoundTest(true, location, elementName)
     }
 
     void testNoScreenFoundInTargetFileInController() {
-        String intention = InspectionBundle.message('inspection.screen.not.found.on.target.use.quickfix.create')
-        myFixture.enableInspections(new ScreenNotFoundInFileLocation())
         String location = 'zelda/widget/ZeldaFoesScreens.xml'
         String elementName = 'SomeZeldaScreenInController'
-        String desc = InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor')
-        doScreenInspectionTest(intention, desc, location, elementName, true)
+        doScreenNotFoundTest(true, location, elementName)
     }
 
     void testScreenIsFoundWithoutWarningInController() {
-        myFixture.enableInspections(new ScreenNotFoundInFileLocation())
-        String desc = InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor')
-        doScreenInspectionTest(null, desc, null, null, false)
+        doScreenNotFoundTest(false, null, null)
     }
 
     void testDynamicScreenNameIsIgnored() {
-        myFixture.enableInspections(new ScreenNotFoundInFileLocation())
-        String desc = InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor')
-        doScreenInspectionTest(null, desc, null, null, false)
+        doScreenNotFoundTest(false, null, null)
     }
 
     void testScreenIsFoundInCompoundFileFromScreen() {
-        myFixture.enableInspections(new ScreenNotFoundInFileLocation())
-        String desc = InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor')
-        doScreenInspectionTestInCompound(null, desc, null, null, false)
+        doCpd()
+        doScreenNotFoundTest(false, null, null)
     }
 
-    /**
-     * Case of a screen called in a cpd, when this screen doesn't exists but there is a form with tha name
-     */
     void testScreenIsFoundInCompoundFileFromScreenWhenThereIsntButThereIsAFormWithSameName() {
-        String intention = InspectionBundle.message('inspection.screen.not.found.on.target.use.quickfix.create')
-        myFixture.enableInspections(new ScreenNotFoundInFileLocation())
-        String desc = InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor')
+        doCpd()
         String location = 'zelda/widget/ScreenIsFoundInCompoundFileFromScreenWhenThereIsntButThereIsAFormWithSameName.xml'
         String elementName = 'ILikeFairPhone'
-        doScreenInspectionTestInCompound(intention, desc, location, elementName, true)
+        doScreenNotFoundTest(true, location, elementName)
     }
 
     void testScreenAtDynamicLocationIsNoError() {
-        myFixture.enableInspections(new ScreenNotFoundInFileLocation())
-        String desc = InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor')
-        doScreenInspectionTest(null, desc, null, null, false)
+        doScreenNotFoundTest(false, null, null)
     }
 
     //==============================
     // FORMS TESTS
     //==============================
+    void doFormNotFoundTest(boolean mustFind, String location, String elName) {
+        myFixture.enableInspections(new FormNotFoundInFileLocationInspection())
+        doInspectionThenQuickFixWithXmlElementCreate(mustFind,
+                InspectionBundle.message('inspection.form.not.found.on.target.use.quickfix.create'),
+                InspectionBundle.message('inspection.form.not.found.on.target.display.descriptor'),
+                location, elName, 'form')
+    }
+
     void testNoFormFoundInTargetFileInForm() {
-        String intention = InspectionBundle.message('inspection.form.not.found.on.target.use.quickfix.create')
-        myFixture.enableInspections(new FormNotFoundInFileLocation())
         String location = 'zelda/widget/ZeldaFoesForms.xml'
         String elementName = 'MyZeldaFoesFormNotFound'
-        String desc = InspectionBundle.message('inspection.form.not.found.on.target.display.descriptor')
-        doFormInspectionTest(intention, desc, location, elementName, true)
+        doFormNotFoundTest(true, location, elementName)
     }
 
     void testNoFormFoundInSameFileInForm() {
-        String intention = InspectionBundle.message('inspection.form.not.found.on.target.use.quickfix.create')
-        myFixture.enableInspections(new FormNotFoundInFileLocation())
         String elementName = 'IWantAFormInThisFile'
-        String desc = InspectionBundle.message('inspection.form.not.found.on.target.display.descriptor')
-        doFormInspectionTest(intention, desc, null, elementName, true)
+        doFormNotFoundTest(true, null, elementName)
     }
 
     void testNoFormFoundInTargetFileInScreen() {
-        String intention = InspectionBundle.message('inspection.form.not.found.on.target.use.quickfix.create')
-        myFixture.enableInspections(new FormNotFoundInFileLocation())
         String location = 'zelda/widget/ZeldaFoesForms.xml'
         String elementName = 'AFormInADistantFileFormScreen'
-        String desc = InspectionBundle.message('inspection.form.not.found.on.target.display.descriptor')
-        doFormInspectionTest(intention, desc, location, elementName, true)
+        doFormNotFoundTest(true, location, elementName)
     }
 
     void testDynamicFormNameIsIgnored() {
-        myFixture.enableInspections(new FormNotFoundInFileLocation())
-        String desc = InspectionBundle.message('inspection.form.not.found.on.target.display.descriptor')
-        doFormInspectionTest(null, desc, null, null, false)
+        doFormNotFoundTest(false, null, null)
     }
 
     //==============================

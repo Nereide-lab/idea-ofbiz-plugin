@@ -26,44 +26,16 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         return "src/test/resources/testData/inspection"
     }
 
-    //#####################################
-    // TESTS OVERRIDES
-    //#####################################
-    protected void doScreenInspectionTestInCompound(String intention, String desc, String expectedFileLocation, String elName, boolean mustFind) {
-        String file = "xml/${this.getTestName(false)}.xml"
-        myFixture.moveFile(file, "zelda/widget")
-        doElementCreateTest(intention, desc, expectedFileLocation, elName, 'screen', mustFind)
-    }
-
-    protected void doScreenInspectionTest(String intention, String desc, String expectedFileLocation, String elName, boolean mustFind) {
-        doElementCreateTest(intention, desc, expectedFileLocation, elName, 'screen', mustFind)
-    }
-
-    protected void doFormInspectionTest(String intention, String desc, String expectedFileLocation, String elName, boolean mustFind) {
-        doElementCreateTest(intention, desc, expectedFileLocation, elName, 'form', mustFind)
-    }
-
-    //#####################################
-    // ACTUAL TESTS
-    //#####################################
-    protected void doElementCreateTest(String intention, String desc, String expectedFileLocation, String elName,
-                                       String elType, boolean mustFind) {
+    protected void doInspectionThenQuickFixWithXmlElementCreate(boolean mustFind, String intention, String desc, String expectedFileLocation,
+                                                                String elName, String elType) {
         myFixture.configureByFile(testFile)
-        List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
-        List<String> highlightDescs = highlightInfos.collect { it.description }
-        if (mustFind) {
-            assertFalse highlightInfos.isEmpty()
-            assert highlightDescs.contains(desc)
-            final IntentionAction action = myFixture.findSingleIntention(intention)
-            assertNotNull action
-            myFixture.launchAction(action)
-            PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
-            List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, getTagFilter())
-            assert tags.any { XmlTag tag ->
-                tag.getAttribute('name')?.value == elName && tag.getName() == elType
-            }
-        } else {
-            assertFalse highlightDescs.contains(desc)
+        doHighlightTests(mustFind, desc)
+        if (!mustFind) return
+        findAndLaunchAction(intention)
+        PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
+        List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, getTagFilter())
+        assert tags.any { XmlTag tag ->
+            tag.getAttribute('name')?.value == elName && tag.getName() == elType
         }
     }
 
@@ -109,6 +81,11 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
 
     String getTestFile() {
         return "${getLang()}/${getTestName(false)}.${getLang()}"
+    }
+
+    protected void doCpd() {
+        String file = "xml/${this.getTestName(false)}.xml"
+        myFixture.moveFile(file, "zelda/widget")
     }
 
     private PsiFile getExpectedFile(String expectedFileLocation) {
