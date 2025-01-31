@@ -22,6 +22,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.GlobalSearchScopesCore
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
@@ -170,7 +171,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         DomFileElement<ComponentFile> relevantComponent = componentFiles
                 .find { DomFileElement<ComponentFile> componentFile ->
                     componentFile.rootElement.name.value.equalsIgnoreCase(name)
-        }
+                }
         if (relevantComponent) {
             return relevantComponent.getFile().getContainingDirectory()
         }
@@ -401,5 +402,11 @@ class ProjectServiceImpl implements ProjectServiceInterface {
             result.addAll(entity.getRelations())
         }
         return result
+    }
+
+
+    List<UiLabelFile> getAllUiLabelFiles(Project project) {
+//        PsiDirectory directoryToSearch = getComponentDir(componentName)
+        return domService.getFileElements(UiLabelFile.class, project, allScope(project)) as List<UiLabelFile>
     }
 }

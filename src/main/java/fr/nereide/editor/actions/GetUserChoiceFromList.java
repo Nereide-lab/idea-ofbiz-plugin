@@ -13,24 +13,22 @@ import javax.swing.event.DocumentEvent;
 import java.awt.*;
 
 /**
- * Ui dialog class used for selecting the file type to create.
- * Offers choices for each file type of OFBiz
+ * Ui dialog class used for selecting a value in drop down
+ * Offers choices given in parameters
  */
-public class CreateOfbizFileAction extends DialogWrapper {
+public class GetUserChoiceFromList extends DialogWrapper {
 
     private JPanel myRoot;
+    private JLabel myTextLabel;
+    private ComboBox<String> myComboBox;
 
-    private JLabel myFileTypeLabel;
-    private ComboBox<String> myFileTypeComboBox;
-
-    public CreateOfbizFileAction(@Nullable Project project, String[] listChoices) {
+    public GetUserChoiceFromList(@Nullable Project project, String[] listChoices, String title, String text) {
         super(project, false);
-        setTitle(OfbizEditorBundle.message("editor.action.create.ofbiz.file.title"));
-        myFileTypeLabel.setText(OfbizEditorBundle.message("editor.action.create.ofbiz.file.select"));
-        myFileTypeComboBox.setModel(new DefaultComboBoxModel<>(listChoices));
-        myFileTypeComboBox.setEditable(true);
-        myFileTypeComboBox.setSelectedItem("Blank");
-        addUpdateListener(myFileTypeComboBox);
+        setTitle(title != null ? title : OfbizEditorBundle.message("editor.choice.title.default"));
+        myTextLabel.setText(text != null ? text : OfbizEditorBundle.message("editor.choice.select.default"));
+        myComboBox.setModel(new DefaultComboBoxModel<>(listChoices));
+        myComboBox.setEditable(true);
+        addUpdateListener(myComboBox);
 
         updateOkAction();
         init();
@@ -59,13 +57,13 @@ public class CreateOfbizFileAction extends DialogWrapper {
     }
 
     private void updateOkAction() {
-        getOKAction().setEnabled(getFileType() != null && !getFileType().isEmpty());
+        getOKAction().setEnabled(getComboBoxValue() != null && !getComboBoxValue().isEmpty());
     }
 
-    public String getFileType() {
-        final Object item = (myFileTypeComboBox.isEditable() ?
-                myFileTypeComboBox.getEditor().getItem() :
-                myFileTypeComboBox.getSelectedItem());
+    public String getComboBoxValue() {
+        final Object item = myComboBox.isEditable() ?
+                myComboBox.getEditor().getItem() :
+                myComboBox.getSelectedItem();
         if (item != null) {
             return ((String) item).trim();
         } else {

@@ -1,6 +1,7 @@
 package fr.nereide.test.inspection
 
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
+import com.intellij.codeInsight.intention.IntentionAction
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection
@@ -125,14 +126,17 @@ class XmlInspectionTest extends BaseInspectionTest {
     void testLabelNotFoundInScreenFile() {
         // Given
         String desc = InspectionBundle.message('inspection.label.not.found.display.descriptor')
+        String intention =
         myFixture.enableInspections(new LabelNotFoundInXmlInspection())
         myFixture.configureByFile(testFile)
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         List<String> highlightDescs = highlightInfos.collect { it.description }
         assertFalse highlightInfos.isEmpty()
         assert highlightDescs.contains(desc)
+        final IntentionAction action = myFixture.findSingleIntention(intention)
+        assertNotNull action
+        myFixture.launchAction(action)
 
-//        findAndLaunchAction(intention)
 //        PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
 //        List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, getTagFilter())
 //        assert tags.any { XmlTag tag ->

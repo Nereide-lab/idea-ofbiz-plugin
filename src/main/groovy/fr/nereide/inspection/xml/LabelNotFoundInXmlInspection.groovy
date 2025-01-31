@@ -7,6 +7,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttribute
 import fr.nereide.inspection.InspectionBundle
+import fr.nereide.inspection.quickfix.xml.CreateMissingLabelFix
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import org.jetbrains.annotations.NotNull
@@ -14,6 +15,8 @@ import org.jetbrains.annotations.NotNull
 import static fr.nereide.project.utils.MiscUtils.getUiLabelSafeValue
 
 class LabelNotFoundInXmlInspection extends LocalInspectionTool {
+
+    CreateMissingLabelFix myQuickFix = new CreateMissingLabelFix()
 
     @Override
     boolean isEnabledByDefault() {
@@ -34,8 +37,8 @@ class LabelNotFoundInXmlInspection extends LocalInspectionTool {
                     holder.registerProblem(
                             attribute,
                             InspectionBundle.message('inspection.label.not.found.display.descriptor'),
-                            ProblemHighlightType.WARNING, null)
-//                            new CreateFormInFormFileQuickFix(targetFile, attribute.value)
+                            ProblemHighlightType.WARNING,
+                            myQuickFix)
             }
         }
     }
