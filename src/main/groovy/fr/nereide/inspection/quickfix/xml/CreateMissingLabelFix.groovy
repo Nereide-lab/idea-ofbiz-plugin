@@ -5,12 +5,13 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.xml.XmlAttribute
 import fr.nereide.dom.file.UiLabelFile
-import fr.nereide.editor.OfbizEditorBundle
-import fr.nereide.editor.actions.GetUserChoiceFromList
+import fr.nereide.editor.actions.OfbizDialogBuilder
+import fr.nereide.editor.actions.OfbizSimpleListDialog
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.project.ProjectServiceInterface
 import org.jetbrains.annotations.NotNull
 
+import static fr.nereide.editor.OfbizEditorBundle.*
 import static fr.nereide.project.utils.MiscUtils.getComponentName
 
 class CreateMissingLabelFix implements LocalQuickFix {
@@ -32,27 +33,28 @@ class CreateMissingLabelFix implements LocalQuickFix {
         ProjectServiceInterface ps = project.getService(ProjectServiceInterface.class)
         XmlAttribute attr = descriptor.getPsiElement() as XmlAttribute
         String labelName = attr.getValue()
-        String[] choices = formatUiLabelFileListForDropDown(ps.getAllUiLabelFiles(project))
-        String modalTitle = OfbizEditorBundle.message("editor.action.create.label.title")
-        String modalText = OfbizEditorBundle.message("editor.action.create.label.file.select")
-        GetUserChoiceFromList dial = new GetUserChoiceFromList(project, choices, modalTitle, modalText)
+        OfbizSimpleListDialog dial = new OfbizDialogBuilder(project)
+                .from(formatUiLabelFileListForDropDown(ps.getAllUiLabelFiles(project)))
+                .title(message("editor.action.create.label.title"))
+                .text(message("editor.action.create.label.file.select"))
+                .get()
+
         if (!dial.showAndGet()) return
-        if(dial.getComboBoxValue()) return
-        createLabelInTargetFile(labelName, dial.getComboBoxValue())
-        // On a le nom du fichier
+        if (dial.getComboBoxValueOrKey()) return
+        createLabelInTargetFile(labelName, dial.getComboBoxValueOrKey() as UiLabelFile)
     }
 
-    static String[] formatUiLabelFileListForDropDown(List<UiLabelFile> uiLabelFileList) {
-        return uiLabelFileList.collect { file ->
-            "${file.xmlElement.containingFile.name} [${getComponentName(file)}]" as String
-        }.toArray()
+    static Map<String, Object> formatUiLabelFileListForDropDown(List<UiLabelFile> uiLabelFileList) {
+        Map result = [:]
+        uiLabelFileList.forEach { file ->
+            String componentName = getComponentName(file)
+            String fileName = file.xmlElement.containingFile.name
+            result << [("$fileName [$componentName]" as String): file]
+        }
+        return result
     }
 
-    /*
-    Est ce que juste le nom du fichier va suffire ?
-    Non
-     */
-    void createLabelInTargetFile(String labelName, String fileName) {
-
+    void createLabelInTargetFile(String labelName, UiLabelFile fileName) {
+        return
     }
 }

@@ -6,14 +6,15 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttribute
-import fr.nereide.editor.OfbizEditorBundle
-import fr.nereide.editor.actions.GetUserChoiceFromList
+import fr.nereide.editor.actions.OfbizDialogBuilder
+import fr.nereide.editor.actions.OfbizSimpleListDialog
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication
+import static fr.nereide.editor.OfbizEditorBundle.*
 
 class CreateFileAtLocationFix implements LocalQuickFix {
 
@@ -58,14 +59,15 @@ class CreateFileAtLocationFix implements LocalQuickFix {
         if (getApplication().isUnitTestMode()) {
             fileToAdd = FileHandlingUtils.createFileFromTemplate(project, null, attr, fileName, current)
         } else {
-            String[] choices = ['Blank', 'Screen', 'Menu', 'Form', 'Controller']
-            String modalTitle = OfbizEditorBundle.message("editor.action.create.ofbiz.file.title")
-            String modalText = OfbizEditorBundle.message("editor.action.create.ofbiz.file.select")
-            GetUserChoiceFromList dial = new GetUserChoiceFromList(project, choices, modalTitle, modalText)
+            OfbizSimpleListDialog dial = new OfbizDialogBuilder(project)
+                    .from(['Blank', 'Screen', 'Menu', 'Form', 'Controller'])
+                    .title(message("editor.action.create.ofbiz.file.title"))
+                    .text(message("editor.action.create.ofbiz.file.select"))
+                    .get()
             if (!dial.showAndGet()) return
-            fileToAdd = FileHandlingUtils.createFileFromTemplate(project, dial.getComboBoxValue(), attr, fileName, current)
+            String selected = dial.getComboBoxValueOrKey()
+            fileToAdd = FileHandlingUtils.createFileFromTemplate(project, selected, attr, fileName, current)
         }
         if (fileToAdd) fileToAdd.navigate(true)
     }
-
 }

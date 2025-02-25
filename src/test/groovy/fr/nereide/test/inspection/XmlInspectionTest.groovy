@@ -126,7 +126,7 @@ class XmlInspectionTest extends BaseInspectionTest {
     void testLabelNotFoundInScreenFile() {
         // Given
         String desc = InspectionBundle.message('inspection.label.not.found.display.descriptor')
-        String intention =
+        String intention = InspectionBundle.message('inspection.label.not.found.quickfix.create')
         myFixture.enableInspections(new LabelNotFoundInXmlInspection())
         myFixture.configureByFile(testFile)
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
