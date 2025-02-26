@@ -6,7 +6,7 @@
     <screen>
         <widgets>
             <decorator-section name="body">
-                <label text="${uiLabelMap.notExistingLabel}"/>
+                <label text="${uiLabelMap.notExist<caret>ingLabel}"/>
             </decorator-section>
         </widgets>
     </screen>

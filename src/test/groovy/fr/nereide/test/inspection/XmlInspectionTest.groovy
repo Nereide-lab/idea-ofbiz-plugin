@@ -3,10 +3,12 @@ package fr.nereide.test.inspection
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
-import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection
 import fr.nereide.inspection.xml.LabelNotFoundInXmlInspection
 import fr.nereide.inspection.xml.ScreenNotFoundInFileLocationInspection
+import fr.nereide.project.ProjectServiceInterface
+
+import static fr.nereide.inspection.InspectionBundle.*
 
 class XmlInspectionTest extends BaseInspectionTest {
 
@@ -16,14 +18,14 @@ class XmlInspectionTest extends BaseInspectionTest {
     // GROOVY TESTS
     //==============================
     void testNoGroovyServiceFileFoundInspectionFileFix() {
-        String intention = InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix.fixpath')
+        String intention = message('inspection.location.target.file.not.found.use.quickfix.fixpath')
         myFixture.enableInspections(new EmptyFileLocationInspection())
         doInspectionThenQuickFixTestWithFileEdit(true, intention, null)
     }
 
     void testNoGroovyServiceFileFoundInspectionFileCreate() {
-        String intention = InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix.createfile')
-        String description = InspectionBundle.message('inspection.location.target.file.not.found.display.descriptor')
+        String intention = message('inspection.location.target.file.not.found.use.quickfix.createfile')
+        String description = message('inspection.location.target.file.not.found.display.descriptor')
         myFixture.enableInspections(new EmptyFileLocationInspection())
         String location = 'zelda/webcommon/WEB-INF/zelda-controller.xml'
         doFileInspectionTestWithFileCreation(true, intention, description, location)
@@ -35,8 +37,8 @@ class XmlInspectionTest extends BaseInspectionTest {
     void doScreenNotFoundTest(boolean mustFind, String location, String elName) {
         myFixture.enableInspections(new ScreenNotFoundInFileLocationInspection())
         doInspectionThenQuickFixWithXmlElementCreate(mustFind,
-                InspectionBundle.message('inspection.screen.not.found.on.target.use.quickfix.create'),
-                InspectionBundle.message('inspection.screen.not.found.on.target.display.descriptor'),
+                message('inspection.screen.not.found.on.target.use.quickfix.create'),
+                message('inspection.screen.not.found.on.target.display.descriptor'),
                 location, elName, 'screen')
     }
 
@@ -72,12 +74,12 @@ class XmlInspectionTest extends BaseInspectionTest {
     }
 
     void testScreenIsFoundInCompoundFileFromScreen() {
-        doCpd()
+        doMove()
         doScreenNotFoundTest(false, null, null)
     }
 
     void testScreenIsFoundInCompoundFileFromScreenWhenThereIsntButThereIsAFormWithSameName() {
-        doCpd()
+        doMove()
         String location = 'zelda/widget/ScreenIsFoundInCompoundFileFromScreenWhenThereIsntButThereIsAFormWithSameName.xml'
         String elementName = 'ILikeFairPhone'
         doScreenNotFoundTest(true, location, elementName)
@@ -93,8 +95,8 @@ class XmlInspectionTest extends BaseInspectionTest {
     void doFormNotFoundTest(boolean mustFind, String location, String elName) {
         myFixture.enableInspections(new FormNotFoundInFileLocationInspection())
         doInspectionThenQuickFixWithXmlElementCreate(mustFind,
-                InspectionBundle.message('inspection.form.not.found.on.target.use.quickfix.create'),
-                InspectionBundle.message('inspection.form.not.found.on.target.display.descriptor'),
+                message('inspection.form.not.found.on.target.use.quickfix.create'),
+                message('inspection.form.not.found.on.target.display.descriptor'),
                 location, elName, 'form')
     }
 
@@ -124,11 +126,16 @@ class XmlInspectionTest extends BaseInspectionTest {
     //==============================
 
     void testLabelNotFoundInScreenFile() {
-        // Given
-        String desc = InspectionBundle.message('inspection.label.not.found.display.descriptor')
-        String intention = InspectionBundle.message('inspection.label.not.found.quickfix.create')
+        String desc = message('inspection.label.not.found.display.descriptor')
+        String intention = message('inspection.label.not.found.quickfix.create')
         myFixture.enableInspections(new LabelNotFoundInXmlInspection())
-        myFixture.configureByFile(testFile)
+
+        // Move file so that test component is found for label file searching
+        String file = "${this.getTestName(false)}.xml"
+        String dest = 'zelda/widget'
+        myFixture.moveFile("xml/$file", dest)
+
+        myFixture.configureByFile("$dest/$file")
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         List<String> highlightDescs = highlightInfos.collect { it.description }
         assertFalse highlightInfos.isEmpty()
@@ -136,6 +143,8 @@ class XmlInspectionTest extends BaseInspectionTest {
         final IntentionAction action = myFixture.findSingleIntention(intention)
         assertNotNull action
         myFixture.launchAction(action)
+
+        assert myFixture.getProject().getService(ProjectServiceInterface.class).getProperty('notExistingLabel')
 
 //        PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
 //        List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, getTagFilter())

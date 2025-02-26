@@ -106,4 +106,6 @@ interface ProjectServiceInterface {
     List<EntityRelation> getAllEntityRelations()
 
     List<UiLabelFile> getAllUiLabelFiles(Project project)
+
+    List<UiLabelFile> getAllUiLabelFilesInComponent(Project project, String componentName)
 }

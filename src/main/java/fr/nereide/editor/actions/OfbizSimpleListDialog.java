@@ -77,4 +77,8 @@ public class OfbizSimpleListDialog extends DialogWrapper {
         }
         return key;
     }
+
+    public boolean isModal() {
+        return true;
+    }
 }

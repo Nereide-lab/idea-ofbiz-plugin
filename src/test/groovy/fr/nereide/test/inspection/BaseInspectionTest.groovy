@@ -83,7 +83,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         return "${getLang()}/${getTestName(false)}.${getLang()}"
     }
 
-    protected void doCpd() {
+    protected void doMove() {
         String file = "xml/${this.getTestName(false)}.xml"
         myFixture.moveFile(file, "zelda/widget")
     }

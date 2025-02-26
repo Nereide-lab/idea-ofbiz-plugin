@@ -22,8 +22,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.search.GlobalSearchScope
-import com.intellij.psi.search.GlobalSearchScopesCore
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
@@ -32,9 +30,14 @@ import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomManager
 import com.intellij.util.xml.DomService
 import fr.nereide.dom.element.Webapp
-import fr.nereide.dom.element.controller.*
+import fr.nereide.dom.element.controller.Include
+import fr.nereide.dom.element.controller.RequestMap
+import fr.nereide.dom.element.controller.ViewMap
 import fr.nereide.dom.element.entityengine.Datasource
-import fr.nereide.dom.element.entitymodel.*
+import fr.nereide.dom.element.entitymodel.Entity
+import fr.nereide.dom.element.entitymodel.EntityRelation
+import fr.nereide.dom.element.entitymodel.ExtendEntity
+import fr.nereide.dom.element.entitymodel.ViewEntity
 import fr.nereide.dom.element.form.Form
 import fr.nereide.dom.element.form.Grid
 import fr.nereide.dom.element.menu.Menu
@@ -49,6 +52,7 @@ import fr.nereide.reference.common.ComponentAwareFileReferenceSet
 import java.util.regex.Matcher
 
 import static com.intellij.psi.search.GlobalSearchScope.allScope
+import static com.intellij.psi.search.GlobalSearchScopesCore.directoryScope
 
 class ProjectServiceImpl implements ProjectServiceInterface {
     private static final Logger LOG = Logger.getInstance(ProjectServiceImpl.class)
@@ -310,7 +314,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         PsiDirectory compoDir = getComponentDir(componentName)
         List controllerFiles = domService.getFileElements(
                 ControllerFile.class, project,
-                GlobalSearchScopesCore.directoryScope(compoDir, true))
+                directoryScope(compoDir, true))
         if (!controllerFiles) return null
         List<RequestMap> controllerRequests = []
         for (DomFileElement<ControllerFile> controllerFile in controllerFiles) {
@@ -327,7 +331,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         }
         List cpdFiles = domService.getFileElements(
                 CompoundFile.class, project,
-                GlobalSearchScopesCore.directoryScope(compoDir, true))
+                directoryScope(compoDir, true))
         if (cpdFiles) {
             cpdFiles.forEach { DomFileElement<CompoundFile> cpdFile ->
                 controllerRequests.addAll(cpdFile.rootElement.siteConf.requestMaps)
@@ -368,7 +372,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         List controllerFiles = domService.getFileElements(
                 ControllerFile.class,
                 myElement.project,
-                GlobalSearchScopesCore.directoryScope(directoryToSearch, true))
+                directoryScope(directoryToSearch, true))
         List requestsUris = []
         controllerFiles.each { controllerFile ->
             List<RequestMap> requests = []
@@ -406,7 +410,13 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
 
     List<UiLabelFile> getAllUiLabelFiles(Project project) {
-//        PsiDirectory directoryToSearch = getComponentDir(componentName)
-        return domService.getFileElements(UiLabelFile.class, project, allScope(project)) as List<UiLabelFile>
+        return domService.getFileElements(UiLabelFile.class, project, allScope(project))
+                .collect { it.getRootElement() }
+    }
+
+    List<UiLabelFile> getAllUiLabelFilesInComponent(Project project, String componentName) {
+        return domService
+                .getFileElements(UiLabelFile.class, project, directoryScope(getComponentDir(componentName), true))
+                .collect { it.getRootElement() }
     }
 }
