@@ -409,12 +409,12 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
 
-    List<UiLabelFile> getAllUiLabelFiles(Project project) {
+    List<UiLabelFile> getAllUiLabelFiles() {
         return domService.getFileElements(UiLabelFile.class, project, allScope(project))
                 .collect { it.getRootElement() }
     }
 
-    List<UiLabelFile> getAllUiLabelFilesInComponent(Project project, String componentName) {
+    List<UiLabelFile> getAllUiLabelFilesInComponent(String componentName) {
         return domService
                 .getFileElements(UiLabelFile.class, project, directoryScope(getComponentDir(componentName), true))
                 .collect { it.getRootElement() }

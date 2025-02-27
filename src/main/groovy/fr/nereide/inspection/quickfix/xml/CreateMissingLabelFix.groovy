@@ -36,8 +36,10 @@ class CreateMissingLabelFix implements LocalQuickFix {
         ProjectServiceInterface ps = project.getService(ProjectServiceInterface.class)
         XmlAttribute attr = descriptor.getPsiElement() as XmlAttribute
         String labelName = attr.getValue()
+        String componentName = getComponentName(attr)
+        Map files = getLabelFilesList(ps, componentName)
         OfbizSimpleListDialog dial = new OfbizDialogBuilder(project)
-                .from(formatUiLabelFileListForDropDown(ps.getAllUiLabelFiles(project)))
+                .from(files)
                 .title(message("editor.action.create.label.title"))
                 .text(message("editor.action.create.label.file.select"))
                 .get()
@@ -45,13 +47,13 @@ class CreateMissingLabelFix implements LocalQuickFix {
         UiLabelFile fileToAddLabelIn
 
         if (getApplication().isUnitTestMode()) {
-            fileToAddLabelIn = ps.getAllUiLabelFilesInComponent(project, getComponentName(attr)).first()
+            fileToAddLabelIn = ps.getAllUiLabelFilesInComponent(componentName).first()
         } else if (!(dial.showAndGet()) || (!dial.getComboBoxValueOrKey())) {
             return
         } else {
             fileToAddLabelIn = dial.getComboBoxValueOrKey() as UiLabelFile
         }
-        if(!fileToAddLabelIn) return
+        if (!fileToAddLabelIn) return
         createLabelInTargetFile(labelName, fileToAddLabelIn)
         fileToAddLabelIn.xmlElement.containingFile.navigate(true)
     }
