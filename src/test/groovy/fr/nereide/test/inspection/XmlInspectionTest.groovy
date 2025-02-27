@@ -145,12 +145,6 @@ class XmlInspectionTest extends BaseInspectionTest {
         myFixture.launchAction(action)
 
         assert myFixture.getProject().getService(ProjectServiceInterface.class).getProperty('notExistingLabel')
-
-//        PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
-//        List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, getTagFilter())
-//        assert tags.any { XmlTag tag ->
-//            tag.getAttribute('name')?.value == elName && tag.getName() == elType
-//        }
     }
 
 }
