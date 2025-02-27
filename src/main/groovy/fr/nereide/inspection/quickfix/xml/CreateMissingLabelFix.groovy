@@ -63,14 +63,19 @@ class CreateMissingLabelFix implements LocalQuickFix {
      * @param uiLabelFileList
      * @return
      */
-    static Map<String, Object> formatUiLabelFileListForDropDown(List<UiLabelFile> uiLabelFileList) {
-        Map<String, Object> result = [:]
-        uiLabelFileList.forEach { file ->
-            String componentName = getComponentName(file)
-            String fileName = file.xmlElement.containingFile.name
-            result << [("$fileName [$componentName]" as String): file]
-        }
+    static LinkedHashMap<String, Object> getLabelFilesList(ProjectServiceInterface ps, String componentName) {
+        LinkedHashMap<String, Object> result = [:]
+        ps.getAllUiLabelFilesInComponent(componentName)
+                .forEach { file -> result << addLabelFileToMap(file, true) }
+        ps.getAllUiLabelFiles()
+                .forEach { file -> result << addLabelFileToMap(file, false) }
         return result
+    }
+
+    private static def addLabelFileToMap(UiLabelFile file, boolean isCurrentComponent) {
+        String fileName = file.xmlElement.containingFile.name
+        String choiceStr = "$fileName [component: ${isCurrentComponent ? 'CURRENT' : getComponentName(file)}]"
+        return [(choiceStr): file]
     }
 
     static void createLabelInTargetFile(String labelName, UiLabelFile labelFile) {
