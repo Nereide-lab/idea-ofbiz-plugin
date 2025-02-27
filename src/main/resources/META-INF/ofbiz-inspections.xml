@@ -34,7 +34,7 @@
                          groupKey="group.names.probable.bugs"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="fr.nereide.inspection.xml.ScreenNotFoundInFileLocation"/>
+                         implementationClass="fr.nereide.inspection.xml.ScreenNotFoundInFileLocationInspection"/>
         <localInspection language="XML"
                          bundle="messages.InspectionBundle"
                          key="inspection.form.not.found.on.target.display.name"
@@ -43,7 +43,16 @@
                          groupKey="group.names.probable.bugs"
                          enabledByDefault="true"
                          level="WARNING"
-                         implementationClass="fr.nereide.inspection.xml.FormNotFoundInFileLocation"/>
+                         implementationClass="fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection"/>
+        <localInspection language="XML"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.label.not.found.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.probable.bugs"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.xml.LabelNotFoundInXmlInspection"/>
 
         <!-- Java Code inspections -->
         <localInspection language="JAVA"

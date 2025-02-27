@@ -5,39 +5,31 @@ import fr.nereide.inspection.groovy.CacheOnNeverCacheEntityGroovyInspection
 
 class GroovyInspectionTest extends BaseInspectionTest {
 
-    CacheOnNeverCacheEntityGroovyInspection myCacheInsp
-
-    GroovyInspectionTest() {
-        myCacheInsp = new CacheOnNeverCacheEntityGroovyInspection()
-    }
-
     @Override
     String getLang() {
         return 'groovy'
     }
 
+    void doNeverCacheTest(boolean mustFind) {
+        myFixture.enableInspections(new CacheOnNeverCacheEntityGroovyInspection())
+        doInspectionThenQuickFixTestWithFileEdit(mustFind,
+                InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix'),
+                InspectionBundle.message('inspection.entity.cache.on.never.cache.display.descriptor'))
+    }
+
     void testCacheOnNeverCacheEntityInCompiledGroovy() {
-        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        myFixture.enableInspections(myCacheInsp)
-        doFileFixTest(intention)
+        doNeverCacheTest(true)
     }
 
     void testCacheOnNeverCacheEntityIGroovyScript() {
-        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        myFixture.enableInspections(myCacheInsp)
-        doFileFixTest(intention)
+        doNeverCacheTest(true)
     }
 
     void testCacheOnNeverCacheEntityIGroovyScriptWithTrueParameter() {
-        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        myFixture.enableInspections(myCacheInsp)
-        doFileFixTest(intention)
+        doNeverCacheTest(true)
     }
 
     void testCacheOnNeverCacheEntityIGroovyScriptWithFalseParameter() {
-        String intention = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-        myFixture.enableInspections(myCacheInsp)
-        String desc = InspectionBundle.message('inspection.entity.cache.on.never.cache.display.descriptor')
-        doFileFixTest(intention, desc, false)
+        doNeverCacheTest(false)
     }
 }

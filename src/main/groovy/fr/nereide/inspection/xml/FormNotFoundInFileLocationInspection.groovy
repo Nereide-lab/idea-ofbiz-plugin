@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull
 
 import static fr.nereide.inspection.common.InspectionUtil.fileHasElementWithSameName
 
-class FormNotFoundInFileLocation extends LocalInspectionTool {
+class FormNotFoundInFileLocationInspection extends LocalInspectionTool {
 
     final String ROOT = 'forms'
     final String NAMESPACE = CompoundFileDescription.FORM_NS_URL

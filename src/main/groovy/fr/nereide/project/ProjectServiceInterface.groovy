@@ -37,6 +37,7 @@ import fr.nereide.dom.element.screen.Screen
 import fr.nereide.dom.element.service.Service
 import fr.nereide.dom.element.uilabel.Property
 import fr.nereide.dom.file.ComponentFile
+import fr.nereide.dom.file.UiLabelFile
 
 interface ProjectServiceInterface {
 
@@ -103,4 +104,8 @@ interface ProjectServiceInterface {
     Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement)
 
     List<EntityRelation> getAllEntityRelations()
+
+    List<UiLabelFile> getAllUiLabelFiles()
+
+    List<UiLabelFile> getAllUiLabelFilesInComponent(String componentName)
 }

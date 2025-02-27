@@ -13,16 +13,7 @@ import fr.nereide.test.BaseOfbizPluginTestCase
 import org.jetbrains.annotations.NotNull
 
 abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
-
     abstract String getLang()
-
-    String getExpectedFilePath() {
-        return "${getLang()}/${getTestName(false)}.after.${getLang()}"
-    }
-
-    String getTestFile() {
-        return "${getLang()}/${getTestName(false)}.${getLang()}"
-    }
 
     @Override
     protected void setUp() {
@@ -35,82 +26,66 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         return "src/test/resources/testData/inspection"
     }
 
-    protected void doFileFixTest(String intention) {
-        doFileFixTest(intention, null, true)
-    }
-
-    protected void doFileFixTest(String intention, String desc, boolean mustFind) {
+    protected void doInspectionThenQuickFixWithXmlElementCreate(boolean mustFind, String intention, String desc, String expectedFileLocation,
+                                                                String elName, String elType) {
         myFixture.configureByFile(testFile)
-        List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
-        if (mustFind) {
-            assertFalse(highlightInfos.isEmpty())
-            final IntentionAction action = myFixture.findSingleIntention(intention)
-            assertNotNull(action)
-            myFixture.launchAction(action)
-            myFixture.checkResultByFile(expectedFilePath, true)
-        } else {
-            List highlightDescs = highlightInfos.collect { it.description }
-            assertFalse highlightDescs.contains(desc)
+        doHighlightTests(mustFind, desc)
+        if (!mustFind) return
+        findAndLaunchAction(intention)
+        PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
+        List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, getTagFilter())
+        assert tags.any { XmlTag tag ->
+            tag.getAttribute('name')?.value == elName && tag.getName() == elType
         }
     }
 
-    protected void doFileInspectionTest(String intention, String expectedFileLocation, boolean mustFind) {
+    protected void doInspectionThenQuickFixTestWithFileEdit(boolean mustFind, String intention, String desc) {
         myFixture.configureByFile(testFile)
-        List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
-        if (mustFind) {
-            assertFalse highlightInfos.isEmpty()
-            final IntentionAction action = myFixture.findSingleIntention(intention)
-            assertNotNull action
-            myFixture.launchAction(action)
-            VirtualFile file = myFixture.getTempDirFixture().getFile(expectedFileLocation)
-            assertNotNull file
-        } else {
-            assert true
-        }
+        doHighlightTests(mustFind, desc)
+        if (!mustFind) return
+        findAndLaunchAction(intention)
+        myFixture.checkResultByFile(expectedFilePath, true)
     }
 
-    protected void doScreenInspectionTestInCompound(String intention, String desc, String expectedFileLocation, String elName, boolean mustFind) {
-        // move file because COMPOUND !...
-        String file = "xml/${this.getTestName(false)}.xml"
-        myFixture.moveFile(file, "zelda/widget")
-        doElementCreateTest(intention, desc, expectedFileLocation, elName, 'screen', mustFind)
-    }
-
-    protected void doScreenInspectionTest(String intention, String desc, String elName, boolean mustFind) {
-        doScreenInspectionTest(intention, desc, null, elName, mustFind)
-    }
-
-    protected void doFormInspectionTest(String intention, String desc, String elName, boolean mustFind) {
-        doFormInspectionTest(intention, desc, null, elName, mustFind)
-    }
-
-    protected void doScreenInspectionTest(String intention, String desc, String expectedFileLocation, String elName, boolean mustFind) {
-        doElementCreateTest(intention, desc, expectedFileLocation, elName, 'screen', mustFind)
-    }
-
-    protected void doFormInspectionTest(String intention, String desc, String expectedFileLocation, String elName, boolean mustFind) {
-        doElementCreateTest(intention, desc, expectedFileLocation, elName, 'form', mustFind)
-    }
-
-    protected void doElementCreateTest(String intention, String desc, String expectedFileLocation, String elName,
-                                       String elType, boolean mustFind) {
+    protected void doFileInspectionTestWithFileCreation(boolean mustFind, String intention, String desc, String expectedFileLocation) {
         myFixture.configureByFile(testFile)
+        doHighlightTests(mustFind, desc)
+        if (!mustFind) return
+        findAndLaunchAction(intention)
+        assertNotNull myFixture.getTempDirFixture().getFile(expectedFileLocation)
+    }
+
+    private void doHighlightTests(boolean mustFind, String desc) {
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         List<String> highlightDescs = highlightInfos.collect { it.description }
-        if (mustFind) {
+        if (!mustFind) {
+            assert !highlightDescs.contains(desc)
+        } else {
             assertFalse highlightInfos.isEmpty()
             assert highlightDescs.contains(desc)
-            final IntentionAction action = myFixture.findSingleIntention(intention)
-            assertNotNull action
-            myFixture.launchAction(action)
-            PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
-            List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, getTagFilter())
-            assert tags.any { XmlTag tag ->
-                tag.getAttribute('name')?.value == elName && tag.getName() == elType
-            }
-        } else {
-            assertFalse highlightDescs.contains(desc)
         }
+    }
+
+    private void findAndLaunchAction(String intention) {
+        final IntentionAction action = myFixture.findSingleIntention(intention)
+        assertNotNull action
+        myFixture.launchAction(action)
+    }
+
+    //#####################################
+    // UTILS
+    //#####################################
+    String getExpectedFilePath() {
+        return "${getLang()}/${getTestName(false)}.after.${getLang()}"
+    }
+
+    String getTestFile() {
+        return "${getLang()}/${getTestName(false)}.${getLang()}"
+    }
+
+    protected void doMove() {
+        String file = "xml/${this.getTestName(false)}.xml"
+        myFixture.moveFile(file, "zelda/widget")
     }
 
     private PsiFile getExpectedFile(String expectedFileLocation) {

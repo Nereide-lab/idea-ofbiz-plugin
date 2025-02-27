@@ -17,11 +17,11 @@
 
 package fr.nereide.reference.common.provider
 
-import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.util.ProcessingContext
+import fr.nereide.project.utils.UiLabelTextRange
 import fr.nereide.reference.common.UiLabelReference
 import org.jetbrains.annotations.NotNull
 
@@ -32,7 +32,7 @@ class UiLabelReferenceProvider extends PsiReferenceProvider {
         UiLabelReference property
         String labelValue = element.text.replaceAll('"', '')
         if (labelValue.startsWith('${')) {
-            property = new UiLabelReference(element, new TextRange(element.text.indexOf('.') + 1, element.text.indexOf('}')))
+            property = new UiLabelReference(element, new UiLabelTextRange(element))
         } else {
             property = new UiLabelReference(element)
         }

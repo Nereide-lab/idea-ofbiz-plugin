@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull
 
 import static fr.nereide.inspection.common.InspectionUtil.fileHasElementWithSameName
 
-class ScreenNotFoundInFileLocation extends LocalInspectionTool {
+class ScreenNotFoundInFileLocationInspection extends LocalInspectionTool {
 
     final String ROOT = 'screens'
     final String NAMESPACE = CompoundFileDescription.SCREEN_NS_URL
