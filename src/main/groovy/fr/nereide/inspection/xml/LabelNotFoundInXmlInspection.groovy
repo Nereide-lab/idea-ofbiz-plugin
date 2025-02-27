@@ -10,6 +10,7 @@ import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.quickfix.xml.CreateMissingLabelFix
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizXmlPatterns
+import fr.nereide.project.utils.UiLabelTextRange
 import org.jetbrains.annotations.NotNull
 
 import static fr.nereide.project.utils.MiscUtils.getUiLabelSafeValue
@@ -38,6 +39,7 @@ class LabelNotFoundInXmlInspection extends LocalInspectionTool {
                             attribute,
                             InspectionBundle.message('inspection.label.not.found.display.descriptor'),
                             ProblemHighlightType.WARNING,
+                            new UiLabelTextRange(attribute),
                             myQuickFix)
             }
         }
