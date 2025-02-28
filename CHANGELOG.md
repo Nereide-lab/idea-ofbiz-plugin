@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.6.4]
+### Fixed
+- [#11] made UiLabelReference soft to avoid error detections
+### Changed
+- set max version to 25.1 build
+- Big inspection test rewrite
+- [#11] Created the inspection for labels not found with creation quickfix
+
 ## [1.6.3] Various rewrites
 ### Changed
 - Small type change in Project service impl
