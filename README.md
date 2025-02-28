@@ -41,11 +41,12 @@ For OFBiz properties (AKA UiLabels), the english message in the property will be
 Plugin now supports Language injection :
 - Injects groovy in relevant locations in xml files
 
-#### CODE INSPECTION
-- Useless cache call
-- Screen not found at specified location
-- Form not found at specified location
-- File not found at specified location
+#### CODE INSPECTION (more to come, feel free to request inspections)
+- Useless cache call (with removal quickfix)
+- Screen not found at specified location (with creation quickfix)
+- Form not found at specified location (with creation quickfix)
+- File not found at specified location (with creation quickfix)
+- Label not found (with creation quickfix)
 
 **Feel free to contribute !**
 ## CONTRIBUTE

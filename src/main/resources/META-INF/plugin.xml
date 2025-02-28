@@ -18,14 +18,18 @@
 <idea-plugin>
     <id>org.apache.ofbiz.OFBizIDEAInteg</id>
     <name>OFBiz IDEA Integration</name>
-    <vendor email="github@nereide.fr" url="https://www.nereide.fr/">OFBiz</vendor>
-
+    <vendor email="github@nereide.fr" url="https://www.nereide.fr/">Néréide</vendor>
     <description><![CDATA[
-    &lt;strong&gt;OFBiz&lt;/strong&gt; is the APACHE fundation free ERP.
+    <strong>OFBiz</strong> is the APACHE fundation free ERP.
     Strong and resilient, it is completely free to use and expand.
-    This plugin aims to help you expand OFBiz for your needs.&lt;br/&gt;
-    Please report any bug &lt;a href="https://github.com/Nereide-lab/idea-ofbiz-plugin/issues/new"&gt;here&lt;/a&gt; &lt;br/&gt;
-    And of course, feel free to contribute !&lt;br/&gt;
+    This plugin aims to help you adapt OFBiz for your needs.<br/>
+    <ul>
+        <li>navigation</li>
+        <li>inspections</li>
+        <li>completions</li>
+    </ul>
+    Please report any bug <a href="https://github.com/Nereide-lab/idea-ofbiz-plugin/issues/new">here</a> <br/>
+    And of course, feel free to contribute !<br/>
     Made by Nereide
     ]]></description>
 
