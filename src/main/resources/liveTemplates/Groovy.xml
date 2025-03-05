@@ -1,0 +1,12 @@
+<templateSet group="Ofbiz Groovy">
+  <template name="rs"
+            value="run service: '$SERVICE$', with: [:]$END$"
+            toReformat="false"
+            toShortenFQNames="false"
+            key="live.template.rs.description" resource-bundle="messages.LiveTemplates">
+    <variable name="SERVICE" expression="" defaultValue="" alwaysStopAt="true"/>
+    <context>
+      <option name="GROOVY_DSL" value="true"/>
+    </context>
+  </template>
+</templateSet>

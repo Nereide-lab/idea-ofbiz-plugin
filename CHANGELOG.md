@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### 
+- [#8] Added small groovy template. Dynamic templating like in my mind is too much ambition for now
+
 ## [1.6.4]
 ### Fixed
 - [#11] made UiLabelReference soft to avoid error detections
