@@ -53,6 +53,15 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="fr.nereide.inspection.xml.LabelNotFoundInXmlInspection"/>
+        <localInspection language="XML"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.uri.duplicate.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.probable.bugs"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.xml.DuplicatedUriInspection"/>
 
         <!-- Java Code inspections -->
         <localInspection language="JAVA"

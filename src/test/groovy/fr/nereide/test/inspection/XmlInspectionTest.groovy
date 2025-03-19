@@ -2,6 +2,7 @@ package fr.nereide.test.inspection
 
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
+import fr.nereide.inspection.xml.DuplicatedUriInspection
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
 import fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection
 import fr.nereide.inspection.xml.LabelNotFoundInXmlInspection
@@ -124,17 +125,13 @@ class XmlInspectionTest extends BaseInspectionTest {
     //==============================
     // UILABEL TESTS
     //==============================
-
     void testLabelNotFoundInScreenFile() {
         String desc = message('inspection.label.not.found.display.descriptor')
         String intention = message('inspection.label.not.found.quickfix.create')
         myFixture.enableInspections(new LabelNotFoundInXmlInspection())
-
-        // Move file so that test component is found for label file searching
         String file = "${this.getTestName(false)}.xml"
         String dest = 'zelda/widget'
         myFixture.moveFile("xml/$file", dest)
-
         myFixture.configureByFile("$dest/$file")
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         List<String> highlightDescs = highlightInfos.collect { it.description }
@@ -143,8 +140,16 @@ class XmlInspectionTest extends BaseInspectionTest {
         final IntentionAction action = myFixture.findSingleIntention(intention)
         assertNotNull action
         myFixture.launchAction(action)
-
         assert myFixture.getProject().getService(ProjectServiceInterface.class).getProperty('notExistingLabel')
     }
 
+    void testDuplicatedUriInCurrentController() {
+        String desc = message('inspection.uri.duplicate.display.descriptor')
+        myFixture.enableInspections(new DuplicatedUriInspection())
+        String file = "${this.getTestName(false)}.xml"
+        String dest = 'zelda/widget'
+        myFixture.moveFile("xml/$file", dest)
+        myFixture.configureByFile("$dest/$file")
+        doHighlight(true, desc)
+    }
 }

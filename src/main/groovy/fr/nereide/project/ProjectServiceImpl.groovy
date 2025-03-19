@@ -349,7 +349,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         allWebapps.forEach { Webapp webapp ->
             try {
                 String mountPoint = webapp.getMountPoint().getValue()
-                List<String> webappUris = getAllWebappMountPointUris(webapp, myElement)
+                List<String> webappUris = getWebappMountPointUris(webapp, myElement)
                 result.put(mountPoint, webappUris)
             } catch (NullPointerException e) {
                 LOG.error(e)
@@ -359,7 +359,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return result
     }
 
-    private List getAllWebappMountPointUris(Webapp webapp, PsiElement myElement) {
+    private List getWebappMountPointUris(Webapp webapp, PsiElement myElement) {
         String componentName = MiscUtils.getComponentName(webapp)
         String location = webapp.getLocation().getValue() //
         PsiDirectory directoryToSearch = getComponentDir(componentName)
