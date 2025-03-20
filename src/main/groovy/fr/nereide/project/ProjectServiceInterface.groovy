@@ -17,7 +17,6 @@
 
 package fr.nereide.project
 
-import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
