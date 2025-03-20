@@ -46,7 +46,7 @@ class DuplicatedUriInspection extends LocalInspectionTool {
 
     private static boolean isDuplicated(XmlAttributeValue attributeValue) {
         return attributeValue.getProject().getService(ProjectServiceInterface.class)
-                .getComponentRequestMaps(MiscUtils.getComponentName(attributeValue), attributeValue.project)
+                .getComponentRequestMaps(MiscUtils.getComponentName(attributeValue))
                 .findAll { it.uri.value == attributeValue.value }
                 .size() > 1
     }

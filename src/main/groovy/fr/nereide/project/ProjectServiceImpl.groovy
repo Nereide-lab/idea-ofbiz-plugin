@@ -311,7 +311,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return domFile.getRootElement().getMenus().find { it.getName().getValue() == menuName }
     }
 
-    List<RequestMap> getComponentRequestMaps(String componentName, Project project) {
+    List<RequestMap> getComponentRequestMaps(String componentName) {
         PsiDirectory compoDir = getComponentDir(componentName)
         List controllerFiles = domService.getFileElements(
                 ControllerFile.class, project,

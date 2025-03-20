@@ -99,8 +99,7 @@ interface ProjectServiceInterface {
 
     Menu getMenuFromPsiFile(PsiFile file, String menuName)
 
-    // TODO remove project from parameters
-    List<RequestMap> getComponentRequestMaps(String componentName, Project project)
+    List<RequestMap> getComponentRequestMaps(String componentName)
 
     Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement)
 
