@@ -2,6 +2,7 @@ package fr.nereide.test.inspection
 
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
+import fr.nereide.inspection.xml.DuplicatedScreenInspection
 import fr.nereide.inspection.xml.DuplicatedUriInspection
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
 import fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection
@@ -152,4 +153,19 @@ class XmlInspectionTest extends BaseInspectionTest {
         myFixture.configureByFile("$dest/$file")
         doHighlight(true, desc)
     }
+
+     void testDuplicatedScreenInCurrentFile() {
+         String desc = message('inspection.screen.duplicate.display.descriptor')
+         myFixture.enableInspections(new DuplicatedScreenInspection())
+         String file = "${this.getTestName(false)}.xml"
+         String dest = 'zelda/widget'
+         myFixture.moveFile("xml/$file", dest)
+         myFixture.configureByFile("$dest/$file")
+         doHighlight(true, desc)
+     }
+
+//     void testDuplicatedScreenInCurrentCompoundFile() {
+    // void testDuplicatedTargetScreen() {
+    // void testDuplicatedTargetScreenInCompoundFile() {
+
 }

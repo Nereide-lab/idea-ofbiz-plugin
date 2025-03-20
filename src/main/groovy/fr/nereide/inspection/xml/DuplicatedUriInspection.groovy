@@ -29,7 +29,7 @@ class DuplicatedUriInspection extends LocalInspectionTool {
         return new XmlElementVisitor() {
             @Override
             void visitXmlAttributeValue(@NotNull XmlAttributeValue attributeValue) {
-                boolean isInController = URI_IN_REQUEST.accepts(attributeValue)
+                boolean isInController = URI_IN_REQUEST_DEFINITION.accepts(attributeValue)
                 boolean isElsewhereRelevant = OfbizXmlPatterns.URI_CALL.accepts(attributeValue)
                 if (!(isInController || isElsewhereRelevant)) return
 
@@ -51,7 +51,7 @@ class DuplicatedUriInspection extends LocalInspectionTool {
                 .size() > 1
     }
 
-    private static final XmlAttributeValuePattern URI_IN_REQUEST = xmlAttributeValue()
+    private static final XmlAttributeValuePattern URI_IN_REQUEST_DEFINITION = xmlAttributeValue()
             .withParent(xmlAttribute('uri').withParent(xmlTag().withName('request-map')))
 }
 

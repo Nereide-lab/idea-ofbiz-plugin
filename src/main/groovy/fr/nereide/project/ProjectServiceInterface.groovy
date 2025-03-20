@@ -73,7 +73,7 @@ interface ProjectServiceInterface {
 
     Datasource getDatasource(String name)
 
-    List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue psiElement)
+    List<Screen> getAllScreenFromCurrentFileFromElement(XmlElement psiElement)
 
     List<Screen> getScreensFromScreenFileAtLocation(XmlElement screenLocation, boolean isController)
 
@@ -99,6 +99,7 @@ interface ProjectServiceInterface {
 
     Menu getMenuFromPsiFile(PsiFile file, String menuName)
 
+    // TODO remove project from parameters
     List<RequestMap> getComponentRequestMaps(String componentName, Project project)
 
     Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement)
