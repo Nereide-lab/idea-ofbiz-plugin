@@ -228,6 +228,10 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return null
     }
 
+    List<DomElement> getDomElementListFromFileAtLocation(String componentPathToFile, Class fileType) {
+        return getDomElementListFromFileAtLocation(componentPathToFile, fileType, null)
+    }
+
     List<DomElement> getDomElementListFromFileAtLocation(String componentPathToFile, Class fileType,
                                                          String wantedElement) {
         PsiFile psiFile = getPsiFileAtLocation(componentPathToFile)
@@ -255,24 +259,8 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return null
     }
 
-    List<Screen> getScreenListFromFileAtLocation(String componentPathToFile) {
-        return getDomElementListFromFileAtLocation(componentPathToFile, ScreenFile.class, null)
-    }
-
-    List<Form> getFormListFromFileAtLocation(String componentPathToFile) {
-        return getDomElementListFromFileAtLocation(componentPathToFile, FormFile.class, null)
-    }
-
-    List<Grid> getGridListFromFileAtLocation(String componentPathToFile) {
-        return getDomElementListFromFileAtLocation(componentPathToFile, FormFile.class, 'GRID')
-    }
-
-    List<Menu> getMenuListFromFileAtLocation(String componentPathToFile) {
-        return getDomElementListFromFileAtLocation(componentPathToFile, MenuFile.class, null)
-    }
-
     Screen getScreenFromFileAtLocation(String componentPathToFile, String screenName) {
-        List<Screen> screens = getScreenListFromFileAtLocation(componentPathToFile)
+        List<Screen> screens = getDomElementListFromFileAtLocation(componentPathToFile, ScreenFile.class)
         return screens.find { it.name.value == screenName }
     }
 
@@ -282,7 +270,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     Form getFormFromFileAtLocation(String componentPathToFile, String formName) {
-        List<Form> forms = getFormListFromFileAtLocation(componentPathToFile)
+        List<Form> forms = getDomElementListFromFileAtLocation(componentPathToFile, FormFile.class)
         return forms.find { it.name.value == formName }
     }
 
@@ -292,7 +280,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     Grid getGridFromFileAtLocation(String componentPathToFile, String formName) {
-        List<Grid> grids = getGridListFromFileAtLocation(componentPathToFile)
+        List<Grid> grids = getDomElementListFromFileAtLocation(componentPathToFile, FormFile.class, 'GRID')
         return grids.find { it.name.value == formName }
     }
 
@@ -302,7 +290,7 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     Menu getMenuFromFileAtLocation(String componentPathToFile, String menuName) {
-        List<Menu> menus = getMenuListFromFileAtLocation(componentPathToFile)
+        List<Menu> menus = getDomElementListFromFileAtLocation(componentPathToFile, MenuFile.class)
         return menus.find { it.name.value == menuName }
     }
 

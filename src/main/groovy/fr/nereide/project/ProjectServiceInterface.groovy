@@ -22,6 +22,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
+import com.intellij.util.xml.DomElement
 import fr.nereide.dom.element.controller.RequestMap
 import fr.nereide.dom.element.controller.ViewMap
 import fr.nereide.dom.element.entityengine.Datasource
@@ -84,7 +85,9 @@ interface ProjectServiceInterface {
 
     Form getFormFromPsiFile(PsiFile file, String formName)
 
-    List<Form> getFormListFromFileAtLocation(String componentPathToFile)
+    List<DomElement> getDomElementListFromFileAtLocation(String componentPathToFile, Class fileType)
+
+    List<DomElement> getDomElementListFromFileAtLocation(String componentPathToFile, Class fileType, String wantedElement)
 
     List<Form> getAllFormsFromCurrentFileFromElement(XmlAttributeValue myVal)
 
@@ -93,8 +96,6 @@ interface ProjectServiceInterface {
     Grid getGridFromPsiFile(PsiFile file, String formName)
 
     Menu getMenuFromFileAtLocation(String componentPathToFile, String menuName)
-
-    List<Menu> getMenuListFromFileAtLocation(String componentPathToFile)
 
     Menu getMenuFromPsiFile(PsiFile file, String menuName)
 
