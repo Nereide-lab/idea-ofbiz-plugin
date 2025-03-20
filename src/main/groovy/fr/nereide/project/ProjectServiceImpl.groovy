@@ -146,7 +146,8 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     List<Screen> getAllScreenFromCurrentFileFromElement(XmlElement myVal) {
         DomFileElement<ScreenFile> screenFile = domManager.getFileElement(myVal.getContainingFile() as XmlFile, ScreenFile.class)
-        return screenFile.rootElement.screens
+        if (screenFile) return screenFile.rootElement.screens
+        return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile.class).rootElement.screens.screens
     }
 
     List<Screen> getScreensFromScreenFileAtLocation(XmlElement screenLocation, boolean isController) {

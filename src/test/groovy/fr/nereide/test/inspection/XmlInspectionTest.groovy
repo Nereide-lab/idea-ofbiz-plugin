@@ -126,7 +126,7 @@ class XmlInspectionTest extends BaseInspectionTest {
     //==============================
     // UILABEL TESTS
     //==============================
-    void testLabelNotFoundInScreenFile() {
+    void testLabelNotFoundInScreenFile() { // TODO refactor this f test
         String desc = message('inspection.label.not.found.display.descriptor')
         String intention = message('inspection.label.not.found.quickfix.create')
         myFixture.enableInspections(new LabelNotFoundInXmlInspection())
@@ -154,17 +154,26 @@ class XmlInspectionTest extends BaseInspectionTest {
         doHighlight(true, desc)
     }
 
-     void testDuplicatedScreenInCurrentFile() {
-         String desc = message('inspection.screen.duplicate.display.descriptor')
-         myFixture.enableInspections(new DuplicatedScreenInspection())
-         String file = "${this.getTestName(false)}.xml"
-         String dest = 'zelda/widget'
-         myFixture.moveFile("xml/$file", dest)
-         myFixture.configureByFile("$dest/$file")
-         doHighlight(true, desc)
-     }
+    void testDuplicatedScreenInCurrentFile() {
+        String desc = message('inspection.screen.duplicate.display.descriptor')
+        myFixture.enableInspections(new DuplicatedScreenInspection())
+        String file = "${this.getTestName(false)}.xml"
+        String dest = 'zelda/widget'
+        myFixture.moveFile("xml/$file", dest)
+        myFixture.configureByFile("$dest/$file")
+        doHighlight(true, desc)
+    }
 
-//     void testDuplicatedScreenInCurrentCompoundFile() {
+    void testDuplicatedScreenInCurrentCompoundFile() {
+        String desc = message('inspection.screen.duplicate.display.descriptor')
+        myFixture.enableInspections(new DuplicatedScreenInspection())
+        String file = "${this.getTestName(false)}.xml"
+        String dest = 'zelda/widget'
+        myFixture.moveFile("xml/$file", dest)
+        myFixture.configureByFile("$dest/$file")
+        doHighlight(true, desc)
+    }
+
     // void testDuplicatedTargetScreen() {
     // void testDuplicatedTargetScreenInCompoundFile() {
 

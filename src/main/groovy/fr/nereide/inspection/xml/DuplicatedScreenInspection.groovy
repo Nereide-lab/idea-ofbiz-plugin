@@ -14,6 +14,8 @@ import org.jetbrains.annotations.NotNull
 
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
 import static com.intellij.patterns.XmlPatterns.*
+import static fr.nereide.dom.filedesc.CompoundFileDescription.SCREEN_NS_PREFIX
+import static fr.nereide.dom.filedesc.CompoundFileDescription.SCREEN_NS_URL
 import static fr.nereide.inspection.InspectionBundle.message
 
 class DuplicatedScreenInspection extends LocalInspectionTool {
@@ -34,7 +36,6 @@ class DuplicatedScreenInspection extends LocalInspectionTool {
                 boolean isDefinition = SCREEN_NAME_IN_DEFINITION.accepts(val)
                 if (!isDefinition && !OfbizXmlPatterns.SCREEN_CALL.accepts(val)) return
                 if (!isDuplicate(val, isDefinition)) return
-
                 holder.registerProblem(
                         val,
                         message('inspection.screen.duplicate.display.descriptor'),
@@ -50,6 +51,12 @@ class DuplicatedScreenInspection extends LocalInspectionTool {
                 .size() > 1
     }
 
-    private static final XmlAttributeValuePattern SCREEN_NAME_IN_DEFINITION = xmlAttributeValue()
-            .withParent(xmlAttribute('name').withParent(xmlTag().withName('screen')))
+    private static final XmlAttributeValuePattern SCREEN_NAME_IN_DEFINITION = xmlAttributeValue().andOr(
+            xmlAttributeValue()
+                    .withParent(xmlAttribute('name').withParent(xmlTag().withName('screen'))),
+            xmlAttributeValue()
+                    .withParent(xmlAttribute('name').withParent(xmlTag().withName("${SCREEN_NS_PREFIX}screen")
+                            .withNamespace(SCREEN_NS_URL))),
+    )
+
 }
