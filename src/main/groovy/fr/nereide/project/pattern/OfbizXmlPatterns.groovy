@@ -231,51 +231,55 @@ class OfbizXmlPatterns {
     }
 
     static Capture decoratorScreenTagInScreenNs() {
-        return xmlTag().withName("${SCREEN_NS_PREFIX}decorator-screen").withNamespace(SCREEN_NS_URL)
+        return xmlTag().withName("${SCREEN_NS_PREFIX}decorator-screen").withNamespace(SCREEN_NS_URL).andNot(withDynamicLocation())
+    }
+
+    private static Capture withDynamicLocation() {
+        xmlTag().withChild(xmlAttribute('location').withValue(string().contains('${')))
     }
 
     static Capture includeScreenInFormNs() {
-        return xmlTag().withName("${FORM_NS_PREFIX}include-screen").withNamespace(FORM_NS_URL)
+        return xmlTag().withName("${FORM_NS_PREFIX}include-screen").withNamespace(FORM_NS_URL).andNot(withDynamicLocation())
     }
 
     static Capture gridTagInScreenNs() {
-        return xmlTag().withName("${SCREEN_NS_PREFIX}include-grid").withNamespace(SCREEN_NS_URL)
+        return xmlTag().withName("${SCREEN_NS_PREFIX}include-grid").withNamespace(SCREEN_NS_URL).andNot(withDynamicLocation())
     }
 
     static Capture gridTagInFormNs() {
-        return xmlTag().withName("${FORM_NS_PREFIX}include-grid").withNamespace(FORM_NS_URL)
+        return xmlTag().withName("${FORM_NS_PREFIX}include-grid").withNamespace(FORM_NS_URL).andNot(withDynamicLocation())
     }
 
     static Capture includeScreenInScreenNs() {
-        return xmlTag().withName("${SCREEN_NS_PREFIX}include-screen").withNamespace(SCREEN_NS_URL)
+        return xmlTag().withName("${SCREEN_NS_PREFIX}include-screen").withNamespace(SCREEN_NS_URL).andNot(withDynamicLocation())
     }
 
     static Capture includeMenuInFormNs() {
-        return xmlTag().withName("${FORM_NS_PREFIX}include-menu").withNamespace(FORM_NS_URL)
+        return xmlTag().withName("${FORM_NS_PREFIX}include-menu").withNamespace(FORM_NS_URL).andNot(withDynamicLocation())
     }
 
     static Capture includeMenuInScreenNs() {
-        return xmlTag().withName("${SCREEN_NS_PREFIX}include-menu").withNamespace(SCREEN_NS_URL)
+        return xmlTag().withName("${SCREEN_NS_PREFIX}include-menu").withNamespace(SCREEN_NS_URL).andNot(withDynamicLocation())
     }
 
     static Capture viewMapInSiteConfNs() {
-        return xmlTag().withName("${SITE_CONF_NS_PREFIX}view-map").withNamespace(SITE_CONF_NS_URL)
+        return xmlTag().withName("${SITE_CONF_NS_PREFIX}view-map").withNamespace(SITE_CONF_NS_URL).andNot(withDynamicLocation())
     }
 
     static Capture formTagInScreenNs() {
-        return xmlTag().withName("${SCREEN_NS_PREFIX}include-form").withNamespace(SCREEN_NS_URL)
+        return xmlTag().withName("${SCREEN_NS_PREFIX}include-form").withNamespace(SCREEN_NS_URL).andNot(withDynamicLocation())
     }
 
     static Capture includeFormTagInFormNs() {
-        return xmlTag().withName("${FORM_NS_PREFIX}include-form").withNamespace(FORM_NS_URL)
+        return xmlTag().withName("${FORM_NS_PREFIX}include-form").withNamespace(FORM_NS_URL).andNot(withDynamicLocation())
     }
 
     static Capture formTagWithFormNs() {
-        return xmlTag().withName("${FORM_NS_PREFIX}form").withNamespace(FORM_NS_URL)
+        return xmlTag().withName("${FORM_NS_PREFIX}form").withNamespace(FORM_NS_URL).andNot(withDynamicLocation())
     }
 
     static Capture responseTagInSiteConfNs() {
-        return xmlTag().withName("${SITE_CONF_NS_PREFIX}response").withNamespace(SITE_CONF_NS_URL)
+        return xmlTag().withName("${SITE_CONF_NS_PREFIX}response").withNamespace(SITE_CONF_NS_URL).andNot(withDynamicLocation())
     }
 
     static XmlAttributeValuePattern dynamicElement() {

@@ -45,9 +45,8 @@ class ScreenReference extends GenericXmlReference {
             return null
         }
         PsiElement locationAttribute = containingTag.getAttribute('location')
-        if (locationAttribute) {
-            String locationAttributeValue = locationAttribute.getValue()
-            return ps.getScreenFromFileAtLocation(locationAttributeValue, this.getValue()).getXmlElement()
+        if (locationAttribute && !(locationAttribute.value.contains('${'))) {
+            return ps.getScreenFromFileAtLocation(locationAttribute.getValue(), this.getValue()).getXmlElement()
         } else if (isPageReferenceFromController(containingTag)) {
             return resolveScreenInController(this.getElement(), ps)
         } else if (isInRightFile(this.getElement(), fileType, dm)) {
