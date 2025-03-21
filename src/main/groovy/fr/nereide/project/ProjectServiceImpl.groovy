@@ -139,9 +139,10 @@ class ProjectServiceImpl implements ProjectServiceInterface {
                 .find { Datasource d -> d.name.value == name } as Datasource
     }
 
-    List<Form> getAllFormsFromCurrentFileFromElement(XmlAttributeValue myVal) {
+    List<Form> getAllFormsFromCurrentFileFromElement(XmlElement myVal) {
         DomFileElement<FormFile> screenFile = domManager.getFileElement(myVal.containingFile as XmlFile, FormFile.class)
-        return screenFile.rootElement.forms
+        if(screenFile) return screenFile.rootElement.forms
+        return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile.class).rootElement.forms.forms
     }
 
     List<Screen> getAllScreenFromCurrentFileFromElement(XmlElement myVal) {

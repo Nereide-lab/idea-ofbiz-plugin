@@ -2,6 +2,7 @@ package fr.nereide.test.inspection
 
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
+import fr.nereide.inspection.xml.DuplicatedFormInspection
 import fr.nereide.inspection.xml.DuplicatedScreenInspection
 import fr.nereide.inspection.xml.DuplicatedUriInspection
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
@@ -144,6 +145,9 @@ class XmlInspectionTest extends BaseInspectionTest {
         assert myFixture.getProject().getService(ProjectServiceInterface.class).getProperty('notExistingLabel')
     }
 
+    //==============================
+    // Duplicated URI
+    //==============================
     void testDuplicatedUriInCurrentController() {
         String desc = message('inspection.uri.duplicate.display.descriptor')
         myFixture.enableInspections(new DuplicatedUriInspection())
@@ -154,23 +158,26 @@ class XmlInspectionTest extends BaseInspectionTest {
         doHighlight(true, desc)
     }
 
+    //==============================
+    // Duplicated Screen
+    //==============================
     void testDuplicatedScreenInCurrentFile() {
         String desc = message('inspection.screen.duplicate.display.descriptor')
-        myFixture.enableInspections(new DuplicatedScreenInspection())
         String file = "${this.getTestName(false)}.xml"
         String dest = 'zelda/widget'
         myFixture.moveFile("xml/$file", dest)
         myFixture.configureByFile("$dest/$file")
+        myFixture.enableInspections(new DuplicatedScreenInspection())
         doHighlight(true, desc)
     }
 
     void testDuplicatedScreenInCurrentCompoundFile() {
         String desc = message('inspection.screen.duplicate.display.descriptor')
-        myFixture.enableInspections(new DuplicatedScreenInspection())
         String file = "${this.getTestName(false)}.xml"
         String dest = 'zelda/widget'
         myFixture.moveFile("xml/$file", dest)
         myFixture.configureByFile("$dest/$file")
+        myFixture.enableInspections(new DuplicatedScreenInspection())
         doHighlight(true, desc)
     }
 
@@ -184,7 +191,7 @@ class XmlInspectionTest extends BaseInspectionTest {
         assert true
 //         String desc = message('inspection.screen.duplicate.display.descriptor')
 //         String file = "${this.getTestName(false)}.xml"
-//         String dest = 'zelda/widget'
+//         String dest = 'elden/widget'
 //         myFixture.moveFile("xml/$file", dest)
 //         myFixture.configureByFile("$dest/$file")
 //         myFixture.enableInspections(new DuplicatedScreenInspection())
@@ -193,4 +200,28 @@ class XmlInspectionTest extends BaseInspectionTest {
 
     // void testDuplicatedTargetScreenInCompoundFile() {
 
+    //==============================
+    // Duplicated Form
+    //==============================
+
+    void testDuplicatedFormInCurrentFile() {
+        String desc = message('inspection.form.duplicate.display.descriptor')
+        String file = "${this.getTestName(false)}.xml"
+        String dest = 'zelda/widget'
+        myFixture.moveFile("xml/$file", dest)
+        myFixture.configureByFile("$dest/$file")
+        myFixture.enableInspections(new DuplicatedFormInspection())
+        doHighlight(true, desc)
+    }
+
+
+    void testDuplicatedFormInCurrentCompoundFile() {
+        String desc = message('inspection.form.duplicate.display.descriptor')
+        String file = "${this.getTestName(false)}.xml"
+        String dest = 'zelda/widget'
+        myFixture.moveFile("xml/$file", dest)
+        myFixture.configureByFile("$dest/$file")
+        myFixture.enableInspections(new DuplicatedFormInspection())
+        doHighlight(true, desc)
+    }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compound-widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:wf="http://ofbiz.apache.org/Widget-Form"
+                  xsi:noNamespaceSchemaLocation="../../../../framework/widget/dtd/compound-widgets.xsd">
+
+    <wf:forms>
+        <wf:form name="DuplicatedFormInCurrentCompoundFile"> </wf:form>
+        <wf:form name="DuplicatedFormInCurrentCompoundFile"> </wf:form>
+    </wf:forms>
+</compound-widgets>

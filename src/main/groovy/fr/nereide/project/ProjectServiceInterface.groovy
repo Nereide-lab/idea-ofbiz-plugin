@@ -89,7 +89,7 @@ interface ProjectServiceInterface {
 
     List<DomElement> getDomElementListFromFileAtLocation(String componentPathToFile, Class fileType, String wantedElement)
 
-    List<Form> getAllFormsFromCurrentFileFromElement(XmlAttributeValue myVal)
+    List<Form> getAllFormsFromCurrentFileFromElement(XmlElement myVal)
 
     Grid getGridFromFileAtLocation(String componentPathToFile, String formName)
 
