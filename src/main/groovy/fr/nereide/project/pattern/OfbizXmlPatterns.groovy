@@ -78,7 +78,8 @@ class OfbizXmlPatterns {
                     'resourceValue', 'resource', 'template', 'page', 'location', 'image-location',
                     'component-location', 'fallback-location', 'default-fallback-location',
                     'default-location', 'path')
-    )
+    ).andNot(dynamicElement())
+
     public static final XmlAttributeValuePattern SCREEN_CALL = xmlAttributeValue().andOr(
             xmlAttributeValue().withParent(pageAttr().withParent(viewMapTag().withChild(typeScreenAttrValue()))),
             xmlAttributeValue().withParent(pageAttr().withParent(viewMapInSiteConfNs().withChild(typeScreenAttrValue()))),
