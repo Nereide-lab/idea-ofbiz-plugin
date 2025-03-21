@@ -46,6 +46,7 @@ class DuplicatedScreenInspection extends LocalInspectionTool {
 
     static boolean isDuplicate(XmlAttributeValue val, boolean isDef) {
         XmlElement valToUse = isDef ? val : new ScreenReference(val, true).resolve() as XmlElement
+        if (!valToUse) return false
         return val.getProject().getService(ProjectServiceInterface.class)
                 .getAllScreenFromCurrentFileFromElement(valToUse)
                 .findAll { it.name.value == val.value }

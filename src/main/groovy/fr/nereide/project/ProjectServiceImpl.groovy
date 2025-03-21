@@ -249,11 +249,13 @@ class ProjectServiceImpl implements ProjectServiceInterface {
                 return domFile.rootElement.screens.screens
             case FormFile.class:
                 domFile = domManager.getFileElement(psiFile as XmlFile, FormFile.class)
-                if (domFile) return domFile.rootElement.forms
-                domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile.class)
                 if (wantedElement == 'GRID') {
+                    if (domFile) return domFile.rootElement.grids
+                    domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile.class)
                     return domFile.rootElement.forms.grids
                 }
+                if (domFile) return domFile.rootElement.forms
+                domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile.class)
                 return domFile.rootElement.forms.forms
         }
         return null
