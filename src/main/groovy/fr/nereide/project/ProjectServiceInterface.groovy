@@ -91,6 +91,8 @@ interface ProjectServiceInterface {
 
     List<Form> getAllFormsFromCurrentFileFromElement(XmlElement myVal)
 
+    List<Menu> getAllMenuFromCurrentFileFromElement(XmlElement myVal)
+
     Grid getGridFromFileAtLocation(String componentPathToFile, String formName)
 
     Grid getGridFromPsiFile(PsiFile file, String formName)

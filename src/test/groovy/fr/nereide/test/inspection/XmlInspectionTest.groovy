@@ -3,6 +3,7 @@ package fr.nereide.test.inspection
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
 import fr.nereide.inspection.xml.DuplicatedFormInspection
+import fr.nereide.inspection.xml.DuplicatedMenuInspection
 import fr.nereide.inspection.xml.DuplicatedScreenInspection
 import fr.nereide.inspection.xml.DuplicatedUriInspection
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
@@ -198,12 +199,11 @@ class XmlInspectionTest extends BaseInspectionTest {
 //         doHighlight(true, desc)
     }
 
-    // void testDuplicatedTargetScreenInCompoundFile() {
+    // void testDuplicatedTargetScreenInCompoundFile() { TODO
 
     //==============================
     // Duplicated Form
     //==============================
-
     void testDuplicatedFormInCurrentFile() {
         String desc = message('inspection.form.duplicate.display.descriptor')
         String file = "${this.getTestName(false)}.xml"
@@ -214,7 +214,6 @@ class XmlInspectionTest extends BaseInspectionTest {
         doHighlight(true, desc)
     }
 
-
     void testDuplicatedFormInCurrentCompoundFile() {
         String desc = message('inspection.form.duplicate.display.descriptor')
         String file = "${this.getTestName(false)}.xml"
@@ -224,4 +223,33 @@ class XmlInspectionTest extends BaseInspectionTest {
         myFixture.enableInspections(new DuplicatedFormInspection())
         doHighlight(true, desc)
     }
+
+    // void testDuplicatedTargetForm() { TODO
+    // void testDuplicatedTargetFormInCompoundFile() { TODO
+
+    //==============================
+    // Duplicated Menu
+    //==============================
+    void testDuplicatedMenuInCurrentFile() {
+        String desc = message('inspection.menu.duplicate.display.descriptor')
+        String file = "${this.getTestName(false)}.xml"
+        String dest = 'zelda/widget'
+        myFixture.moveFile("xml/$file", dest)
+        myFixture.configureByFile("$dest/$file")
+        myFixture.enableInspections(new DuplicatedMenuInspection())
+        doHighlight(true, desc)
+    }
+
+    void testDuplicatedMenuInCurrentCompoundFile() {
+        String desc = message('inspection.menu.duplicate.display.descriptor')
+        String file = "${this.getTestName(false)}.xml"
+        String dest = 'zelda/widget'
+        myFixture.moveFile("xml/$file", dest)
+        myFixture.configureByFile("$dest/$file")
+        myFixture.enableInspections(new DuplicatedMenuInspection())
+        doHighlight(true, desc)
+    }
+
+    // void testDuplicatedTargetMenu() { TODO
+    // void testDuplicatedTargetMenuInCompoundFile() { TODO
 }

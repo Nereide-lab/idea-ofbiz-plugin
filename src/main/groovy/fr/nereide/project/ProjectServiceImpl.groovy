@@ -140,8 +140,8 @@ class ProjectServiceImpl implements ProjectServiceInterface {
     }
 
     List<Form> getAllFormsFromCurrentFileFromElement(XmlElement myVal) {
-        DomFileElement<FormFile> screenFile = domManager.getFileElement(myVal.containingFile as XmlFile, FormFile.class)
-        if(screenFile) return screenFile.rootElement.forms
+        DomFileElement<FormFile> formFile = domManager.getFileElement(myVal.containingFile as XmlFile, FormFile.class)
+        if (formFile) return formFile.rootElement.forms
         return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile.class).rootElement.forms.forms
     }
 
@@ -149,6 +149,12 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         DomFileElement<ScreenFile> screenFile = domManager.getFileElement(myVal.containingFile as XmlFile, ScreenFile.class)
         if (screenFile) return screenFile.rootElement.screens
         return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile.class).rootElement.screens.screens
+    }
+
+    List<Menu> getAllMenuFromCurrentFileFromElement(XmlElement myVal) {
+        DomFileElement<MenuFile> menuFile = domManager.getFileElement(myVal.containingFile as XmlFile, MenuFile.class)
+        if (menuFile) return menuFile.rootElement.menus
+        return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile.class).rootElement.menus.menus
     }
 
     List<Screen> getScreensFromScreenFileAtLocation(XmlElement screenLocation, boolean isController) {
