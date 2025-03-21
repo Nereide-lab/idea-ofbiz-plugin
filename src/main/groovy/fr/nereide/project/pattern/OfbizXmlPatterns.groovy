@@ -159,7 +159,9 @@ class OfbizXmlPatterns {
 
     static XmlAttributePattern relFieldNameAttr() { xmlAttribute('rel-field-name') }
 
-    static XmlAttributePattern serviceLikeAttr() { return xmlAttribute().withName('service', 'service-name', 'serviceName') }
+    static XmlAttributePattern serviceLikeAttr() {
+        return xmlAttribute().withName('service', 'service-name', 'serviceName')
+    }
 
     static XmlAttributePattern groovyEngineAttrValue() { return makeAttrAndValPattern('engine', 'groovy') }
 
@@ -184,7 +186,7 @@ class OfbizXmlPatterns {
 
     static Capture entityEngineXmlTag() { xmlTag().withName('entity-engine-xml') }
 
-    static Capture includeMenuTag() { return makeTagPattern('include-menu') }
+    static Capture includeMenuTag() { return makeTagPattern('include-menu').andNot(withDynamicLocation()) }
 
     static Capture eventTag() { return makeTagPattern('event') }
 
