@@ -22,6 +22,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
+import fr.nereide.dom.element.screen.Screen
 import fr.nereide.dom.file.ScreenFile
 import fr.nereide.project.ProjectServiceInterface
 
@@ -51,7 +52,8 @@ class ScreenReference extends GenericXmlReference {
             return resolveScreenInController(this.getElement(), ps)
         } else if (isInRightFile(this.getElement(), fileType, dm)) {
             PsiFile currentFile = this.getElement().getContainingFile()
-            return ps.getScreenFromPsiFile(currentFile, this.getElement().getValue()).getXmlElement()
+            Screen screen = ps.getScreenFromPsiFile(currentFile, this.getElement().getValue())
+            return screen ? screen.xmlElement : null
         }
         return null
     }

@@ -19,9 +19,10 @@ class XmlUtils {
      * @return
      */
     static XmlTag getParentTag(XmlElement xmlElement) {
+        if (!xmlElement) return null
         int i = 0
         PsiElement parent = xmlElement.getParent()
-        while (i < 5 && !(parent instanceof XmlTag)) {
+        while (i < 5 && parent && !(parent instanceof XmlTag)) {
             parent = parent.getParent()
         }
         return parent instanceof XmlTag ? parent : null
