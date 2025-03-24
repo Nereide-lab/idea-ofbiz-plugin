@@ -119,6 +119,22 @@ class OfbizXmlPatterns {
     public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_TAG_CALL)
     public static final PsiElementPattern ENTITY_FIELD_IN_DATALOAD_COMPL = psiElement().inside(ENTITY_FIELD_IN_DATALOAD)
 
+    public static final XmlAttributeValuePattern FORM_NAME_IN_DEFINITION = xmlAttributeValue().andOr(
+            xmlAttributeValue().withParent(xmlAttribute('name').withParent(xmlTag().withName('form'))),
+            xmlAttributeValue().withParent(xmlAttribute('name').withParent(xmlTag().withName("${FORM_NS_PREFIX}form")
+                    .withNamespace(FORM_NS_URL))),
+    )
+    public static final XmlAttributeValuePattern MENU_NAME_IN_DEFINITION = xmlAttributeValue().andOr(
+            xmlAttributeValue().withParent(xmlAttribute('name').withParent(xmlTag().withName('menu'))),
+            xmlAttributeValue().withParent(xmlAttribute('name').withParent(xmlTag().withName("${MENU_NS_PREFIX}menu")
+                    .withNamespace(MENU_NS_URL))),
+    )
+    public static final XmlAttributeValuePattern SCREEN_NAME_IN_DEFINITION = xmlAttributeValue().andOr(
+            xmlAttributeValue().withParent(xmlAttribute('name').withParent(xmlTag().withName('screen'))),
+            xmlAttributeValue().withParent(xmlAttribute('name').withParent(xmlTag().withName("${SCREEN_NS_PREFIX}screen")
+                    .withNamespace(SCREEN_NS_URL))),
+    )
+
     //============================================
     //       UTILITY METHODS
     //============================================

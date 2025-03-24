@@ -1,50 +1,22 @@
 package fr.nereide.inspection.xml
 
-import com.intellij.codeInspection.LocalInspectionTool
-import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.patterns.XmlAttributeValuePattern
-import com.intellij.psi.PsiElementVisitor
-import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
+import fr.nereide.inspection.common.GenericDuplicateElementXmlInspection
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.reference.xml.FormReference
-import org.jetbrains.annotations.NotNull
 
-import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static com.intellij.patterns.XmlPatterns.*
-import static fr.nereide.dom.filedesc.CompoundFileDescription.FORM_NS_PREFIX
-import static fr.nereide.dom.filedesc.CompoundFileDescription.FORM_NS_URL
 import static fr.nereide.inspection.InspectionBundle.message
 
-class DuplicatedFormInspection extends LocalInspectionTool {
+class DuplicatedFormInspection extends GenericDuplicateElementXmlInspection {
 
-    @Override
-    boolean isEnabledByDefault() {
-        return true
-    }
+    final XmlAttributeValuePattern myDefinitionPattern = OfbizXmlPatterns.FORM_NAME_IN_DEFINITION
+    final XmlAttributeValuePattern myPattern = OfbizXmlPatterns.FORM_CALL
+    final String myMessage = message('inspection.form.duplicate.display.descriptor')
 
-
-    @Override
-    @NotNull
-    PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-
-        return new XmlElementVisitor() {
-            @Override
-            void visitXmlAttributeValue(@NotNull XmlAttributeValue val) {
-                boolean isDefinition = FORM_NAME_IN_DEFINITION.accepts(val)
-                if (!isDefinition && !OfbizXmlPatterns.FORM_CALL.accepts(val)) return
-                if (!isDuplicate(val, isDefinition)) return
-                holder.registerProblem(
-                        val,
-                        message('inspection.form.duplicate.display.descriptor'),
-                        WARNING)
-            }
-        }
-    }
-
-    static boolean isDuplicate(XmlAttributeValue val, boolean isDef) {
+    boolean isDuplicate(XmlAttributeValue val, boolean isDef) {
         XmlElement valToUse = isDef ? val : new FormReference(val, true).resolve() as XmlElement
         if (!valToUse) return false
         return val.getProject().getService(ProjectServiceInterface.class)
@@ -53,12 +25,15 @@ class DuplicatedFormInspection extends LocalInspectionTool {
                 .size() > 1
     }
 
-    private static final XmlAttributeValuePattern FORM_NAME_IN_DEFINITION = xmlAttributeValue().andOr(
-            xmlAttributeValue()
-                    .withParent(xmlAttribute('name').withParent(xmlTag().withName('form'))),
-            xmlAttributeValue()
-                    .withParent(xmlAttribute('name').withParent(xmlTag().withName("${FORM_NS_PREFIX}form")
-                            .withNamespace(FORM_NS_URL))),
-    )
+    XmlAttributeValuePattern getMyDefinitionPattern() {
+        return myDefinitionPattern
+    }
 
+    XmlAttributeValuePattern getMyPattern() {
+        return myPattern
+    }
+
+    String getMyMessage() {
+        return myMessage
+    }
 }
