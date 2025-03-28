@@ -42,45 +42,28 @@ class XmlDuplicateInspectionTest extends BaseInspectionTest {
         doHighlightTest(true, desc)
     }
 
-    void testDuplicatedUriInCurrentController() {
-        doTest(URI_DESC, URI_INSP)
-    }
+    void testDuplicatedUriInCurrentController() { doTest(URI_DESC, URI_INSP) }
 
-    void testDuplicatedScreenInCurrentFile() {
-        doTest(SCREEN_DESC, SCREEN_INSP)
-    }
+    void testDuplicatedScreenInCurrentFile() { doTest(SCREEN_DESC, SCREEN_INSP) }
 
-    void testDuplicatedScreenInCurrentCompoundFile() {
-        doTest(SCREEN_DESC, SCREEN_INSP)
-    }
+    void testDuplicatedScreenInCurrentCompoundFile() { doTest(SCREEN_DESC, SCREEN_INSP) }
 
-    void testDuplicatedTargetScreen() {
-        doTest(SCREEN_DESC, SCREEN_INSP)
-    }
+    void testDuplicatedTargetScreen() { doTest(SCREEN_DESC, SCREEN_INSP) }
 
-     void testDuplicatedTargetScreenInCompoundFile() {
-         doTest(SCREEN_DESC, SCREEN_INSP)
-     }
+    void testDuplicatedTargetScreenInCompoundFile() { doTest(SCREEN_DESC, SCREEN_INSP) }
 
-    void testDuplicatedFormInCurrentFile() {
-        doTest(FORM_DESC, FORM_INSP)
-    }
+    void testDuplicatedFormInCurrentFile() { doTest(FORM_DESC, FORM_INSP) }
 
-    void testDuplicatedFormInCurrentCompoundFile() {
-        doTest(FORM_DESC, FORM_INSP)
-    }
+    void testDuplicatedFormInCurrentCompoundFile() { doTest(FORM_DESC, FORM_INSP) }
 
     // void testDuplicatedTargetForm() { TODO
     // void testDuplicatedTargetFormInCompoundFile() { TODO
 
-    void testDuplicatedMenuInCurrentFile() {
-        doTest(MENU_DESC, MENU_INSP)
-    }
+    void testDuplicatedMenuInCurrentFile() { doTest(MENU_DESC, MENU_INSP) }
 
-    void testDuplicatedMenuInCurrentCompoundFile() {
-        doTest(MENU_DESC, MENU_INSP)
-    }
+    void testDuplicatedMenuInCurrentCompoundFile() { doTest(MENU_DESC, MENU_INSP) }
 
     // void testDuplicatedTargetMenu() { TODO
+
     // void testDuplicatedTargetMenuInCompoundFile() { TODO
 }
