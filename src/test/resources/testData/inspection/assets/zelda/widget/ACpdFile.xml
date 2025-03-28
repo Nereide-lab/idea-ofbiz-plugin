@@ -3,11 +3,12 @@
 <compound-widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xmlns:ws="http://ofbiz.apache.org/Widget-Screen"
                   xmlns:wf="http://ofbiz.apache.org/Widget-Form"
+                  xmlns:wm="http://ofbiz.apache.org/Widget-Menu"
                   xsi:noNamespaceSchemaLocation="../../../../framework/widget/dtd/compound-widgets.xsd">
 
     <ws:screens>
-        <ws:screen name="DuplicatedTargetScreenInCompoundFile"> </ws:screen>
-        <ws:screen name="DuplicatedTargetScreenInCompoundFile"> </ws:screen>
+        <ws:screen name="DuplicatedTargetScreenInCompoundFile"></ws:screen>
+        <ws:screen name="DuplicatedTargetScreenInCompoundFile"></ws:screen>
     </ws:screens>
 
 
@@ -16,4 +17,8 @@
         <wf:form name="DuplicatedTargetFormInCompoundFile"></wf:form>
     </wf:forms>
 
+    <wm:menus>
+        <wm:menu name="DuplicatedTargetMenuInCompoundFile"></wm:menu>
+        <wm:menu name="DuplicatedTargetMenuInCompoundFile"></wm:menu>
+    </wm:menus>
 </compound-widgets>

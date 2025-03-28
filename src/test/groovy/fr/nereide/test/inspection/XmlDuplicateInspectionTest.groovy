@@ -64,7 +64,7 @@ class XmlDuplicateInspectionTest extends BaseInspectionTest {
 
     void testDuplicatedMenuInCurrentCompoundFile() { doTest(MENU_DESC, MENU_INSP) }
 
-    // void testDuplicatedTargetMenu() { TODO
+    void testDuplicatedTargetMenu() { doTest(MENU_DESC, MENU_INSP) }
 
-    // void testDuplicatedTargetMenuInCompoundFile() { TODO
+    void testDuplicatedTargetMenuInCompoundFile() { doTest(MENU_DESC, MENU_INSP) }
 }
