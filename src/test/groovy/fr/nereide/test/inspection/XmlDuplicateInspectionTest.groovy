@@ -1,6 +1,6 @@
 package fr.nereide.test.inspection
 
-
+import com.intellij.codeInspection.LocalInspectionTool
 import fr.nereide.inspection.xml.DuplicatedFormInspection
 import fr.nereide.inspection.xml.DuplicatedMenuInspection
 import fr.nereide.inspection.xml.DuplicatedScreenInspection
@@ -10,7 +10,16 @@ import static fr.nereide.inspection.InspectionBundle.message
 
 class XmlDuplicateInspectionTest extends BaseInspectionTest {
 
-    String dest = 'zelda/widget'
+    final String URI_DESC = message('inspection.uri.duplicate.display.descriptor')
+    final String FORM_DESC = message('inspection.form.duplicate.display.descriptor')
+    final String SCREEN_DESC = message('inspection.screen.duplicate.display.descriptor')
+    final String MENU_DESC = message('inspection.menu.duplicate.display.descriptor')
+    final LocalInspectionTool URI_INSP = new DuplicatedUriInspection()
+    final LocalInspectionTool FORM_INSP = new DuplicatedFormInspection()
+    final LocalInspectionTool SCREEN_INSP = new DuplicatedScreenInspection()
+    final LocalInspectionTool MENU_INSP = new DuplicatedMenuInspection()
+
+    final String DEST = 'zelda/widget'
 
     @Override
     String getLang() {
@@ -22,90 +31,52 @@ class XmlDuplicateInspectionTest extends BaseInspectionTest {
         super.setUp()
         String myTestFileName = "${this.getTestName(false)}.xml"
         myFixture.createFile(myTestFileName, '')
-        myFixture.moveFile(myTestFileName, dest)
-        myFixture.copyFileToProject("xml/$myTestFileName", "$dest/$myTestFileName")
+        myFixture.moveFile(myTestFileName, DEST)
+        myFixture.copyFileToProject("xml/$myTestFileName", "$DEST/$myTestFileName")
     }
 
+    void doTest(String desc, LocalInspectionTool inspection) {
+        myFixture.enableInspections(inspection)
+        String file = "${this.getTestName(false)}.xml"
+        myFixture.configureByFile("$DEST/$file")
+        doHighlightTest(true, desc)
+    }
 
-    //==============================
-    // Duplicated URI
-    //==============================
     void testDuplicatedUriInCurrentController() {
-        String desc = message('inspection.uri.duplicate.display.descriptor')
-        myFixture.enableInspections(new DuplicatedUriInspection())
-        String file = "${this.getTestName(false)}.xml"
-        myFixture.configureByFile("$dest/$file")
-        doHighlightTest(true, desc)
+        doTest(URI_DESC, URI_INSP)
     }
 
-    //==============================
-    // Duplicated Screen
-    //==============================
     void testDuplicatedScreenInCurrentFile() {
-        String desc = message('inspection.screen.duplicate.display.descriptor')
-        String file = "${this.getTestName(false)}.xml"
-        myFixture.configureByFile("$dest/$file")
-        myFixture.enableInspections(new DuplicatedScreenInspection())
-        doHighlightTest(true, desc)
+        doTest(SCREEN_DESC, SCREEN_INSP)
     }
 
     void testDuplicatedScreenInCurrentCompoundFile() {
-        String desc = message('inspection.screen.duplicate.display.descriptor')
-        String file = "${this.getTestName(false)}.xml"
-        myFixture.configureByFile("$dest/$file")
-        myFixture.enableInspections(new DuplicatedScreenInspection())
-        doHighlightTest(true, desc)
+        doTest(SCREEN_DESC, SCREEN_INSP)
     }
 
     void testDuplicatedTargetScreen() {
-         String desc = message('inspection.screen.duplicate.display.descriptor')
-         String file = "${this.getTestName(false)}.xml"
-         myFixture.configureByFile("$dest/$file")
-         myFixture.enableInspections(new DuplicatedScreenInspection())
-         doHighlightTest(true, desc)
+        doTest(SCREEN_DESC, SCREEN_INSP)
     }
 
     // void testDuplicatedTargetScreenInCompoundFile() { TODO
 
-    //==============================
-    // Duplicated Form
-    //==============================
     void testDuplicatedFormInCurrentFile() {
-        String desc = message('inspection.form.duplicate.display.descriptor')
-        String file = "${this.getTestName(false)}.xml"
-        myFixture.configureByFile("$dest/$file")
-        myFixture.enableInspections(new DuplicatedFormInspection())
-        doHighlightTest(true, desc)
+        doTest(FORM_DESC, FORM_INSP)
     }
 
     void testDuplicatedFormInCurrentCompoundFile() {
-        String desc = message('inspection.form.duplicate.display.descriptor')
-        String file = "${this.getTestName(false)}.xml"
-        myFixture.configureByFile("$dest/$file")
-        myFixture.enableInspections(new DuplicatedFormInspection())
-        doHighlightTest(true, desc)
+        doTest(FORM_DESC, FORM_INSP)
     }
 
     // void testDuplicatedTargetForm() { TODO
     // void testDuplicatedTargetFormInCompoundFile() { TODO
 
-    //==============================
-    // Duplicated Menu
-    //==============================
     void testDuplicatedMenuInCurrentFile() {
-        String desc = message('inspection.menu.duplicate.display.descriptor')
-        String file = "${this.getTestName(false)}.xml"
-        myFixture.configureByFile("$dest/$file")
-        myFixture.enableInspections(new DuplicatedMenuInspection())
-        doHighlightTest(true, desc)
+        doTest(MENU_DESC, MENU_INSP)
     }
 
     void testDuplicatedMenuInCurrentCompoundFile() {
-        String desc = message('inspection.menu.duplicate.display.descriptor')
-        String file = "${this.getTestName(false)}.xml"
-        myFixture.configureByFile("$dest/$file")
-        myFixture.enableInspections(new DuplicatedMenuInspection())
-        doHighlightTest(true, desc)
+        doTest(MENU_DESC, MENU_INSP)
     }
 
     // void testDuplicatedTargetMenu() { TODO
