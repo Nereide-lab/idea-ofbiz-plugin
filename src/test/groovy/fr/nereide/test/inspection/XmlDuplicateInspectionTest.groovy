@@ -58,7 +58,9 @@ class XmlDuplicateInspectionTest extends BaseInspectionTest {
         doTest(SCREEN_DESC, SCREEN_INSP)
     }
 
-    // void testDuplicatedTargetScreenInCompoundFile() { TODO
+     void testDuplicatedTargetScreenInCompoundFile() {
+         doTest(SCREEN_DESC, SCREEN_INSP)
+     }
 
     void testDuplicatedFormInCurrentFile() {
         doTest(FORM_DESC, FORM_INSP)
