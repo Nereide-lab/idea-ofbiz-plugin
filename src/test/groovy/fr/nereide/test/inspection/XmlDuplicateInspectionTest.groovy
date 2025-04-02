@@ -4,6 +4,7 @@ import com.intellij.codeInspection.LocalInspectionTool
 import fr.nereide.inspection.xml.DuplicatedFormInspection
 import fr.nereide.inspection.xml.DuplicatedMenuInspection
 import fr.nereide.inspection.xml.DuplicatedScreenInspection
+import fr.nereide.inspection.xml.DuplicatedServiceXmlInspection
 import fr.nereide.inspection.xml.DuplicatedUriInspection
 
 import static fr.nereide.inspection.InspectionBundle.message
@@ -14,10 +15,12 @@ class XmlDuplicateInspectionTest extends BaseInspectionTest {
     final String FORM_DESC = message('inspection.form.duplicate.display.descriptor')
     final String SCREEN_DESC = message('inspection.screen.duplicate.display.descriptor')
     final String MENU_DESC = message('inspection.menu.duplicate.display.descriptor')
+    final String SERVICE_DESC = message('inspection.service.duplicate.display.descriptor')
     final LocalInspectionTool URI_INSP = new DuplicatedUriInspection()
     final LocalInspectionTool FORM_INSP = new DuplicatedFormInspection()
     final LocalInspectionTool SCREEN_INSP = new DuplicatedScreenInspection()
     final LocalInspectionTool MENU_INSP = new DuplicatedMenuInspection()
+    final LocalInspectionTool SERVICE_INSP = new DuplicatedServiceXmlInspection()
 
     final String DEST = 'zelda/widget'
 
@@ -67,4 +70,7 @@ class XmlDuplicateInspectionTest extends BaseInspectionTest {
     void testDuplicatedTargetMenu() { doTest(MENU_DESC, MENU_INSP) }
 
     void testDuplicatedTargetMenuInCompoundFile() { doTest(MENU_DESC, MENU_INSP) }
+
+    void testDuplicatedServiceFromForm() { doTest(SERVICE_DESC, SERVICE_INSP) }
+
 }
