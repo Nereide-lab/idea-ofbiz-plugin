@@ -129,5 +129,14 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="fr.nereide.inspection.groovy.CacheOnNeverCacheEntityGroovyInspection"/>
+        <localInspection language="Groovy"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.service.duplicate.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.code.style.issues"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.groovy.DuplicatedServiceGroovyInspection"/>
     </extensions>
 </idea-plugin>
