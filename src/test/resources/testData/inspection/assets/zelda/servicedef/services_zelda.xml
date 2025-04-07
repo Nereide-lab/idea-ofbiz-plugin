@@ -5,4 +5,6 @@
     <service name="DuplicatedServiceFromForm"/>
     <service name="DuplicatedServiceFromForm"/>
 
+    <service name="DuplicatedServiceInspection"/>
+    <service name="DuplicatedServiceInspection"/>
 </services>
