@@ -17,4 +17,7 @@
     <view-entity entity-name="DuplicatedViewIsCalled"> </view-entity>
     <view-entity entity-name="DuplicatedViewIsCalled"> </view-entity>
 
+    <entity entity-name="DuplicatedEntityInspection"> </entity>
+    <entity entity-name="DuplicatedEntityInspection"> </entity>
+
 </entitymodel>

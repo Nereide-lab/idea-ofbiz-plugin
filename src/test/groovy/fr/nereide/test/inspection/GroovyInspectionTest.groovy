@@ -2,6 +2,7 @@ package fr.nereide.test.inspection
 
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.groovy.CacheOnNeverCacheEntityGroovyInspection
+import fr.nereide.inspection.groovy.DuplicatedEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedServiceGroovyInspection
 
 class GroovyInspectionTest extends BaseInspectionTest {
@@ -38,5 +39,11 @@ class GroovyInspectionTest extends BaseInspectionTest {
         myFixture.enableInspections(new DuplicatedServiceGroovyInspection())
         myFixture.configureByFile(testFile)
         doHighlightTest(true, InspectionBundle.message('inspection.service.duplicate.display.descriptor'))
+    }
+
+    void testDuplicatedEntityInspection() {
+        myFixture.enableInspections(new DuplicatedEntityGroovyInspection())
+        myFixture.configureByFile(testFile)
+        doHighlightTest(true, InspectionBundle.message('inspection.entity.duplicate.display.descriptor'))
     }
 }
