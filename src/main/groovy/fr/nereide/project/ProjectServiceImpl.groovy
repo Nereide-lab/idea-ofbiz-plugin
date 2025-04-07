@@ -95,6 +95,10 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return getAllEntities().find { Entity e -> e.entityName.value == name }
     }
 
+    List<Entity> getEntities(String name) {
+        return getAllEntities().findAll() { Entity e -> e.entityName.value == name }
+    }
+
     List<Entity> getAllEntities() {
         return domService.getFileElements(EntityModelFile.class, project, allScope(project))
                 .collect { DomFileElement<EntityModelFile> emf -> emf.rootElement.entities }
@@ -103,6 +107,10 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     ViewEntity getViewEntity(String name) {
         return getAllViewEntities().find { ViewEntity e -> e.entityName.value == name }
+    }
+
+    List<ViewEntity> getViewEntities(String name) {
+        return getAllViewEntities().findAll() { ViewEntity e -> e.entityName.value == name }
     }
 
     List<ViewEntity> getAllViewEntities() {

@@ -49,9 +49,13 @@ interface ProjectServiceInterface {
 
     Entity getEntity(String name)
 
+    List<Entity> getEntities(String name)
+
     List<Entity> getAllEntities()
 
     ViewEntity getViewEntity(String name)
+
+    List<ViewEntity> getViewEntities(String name)
 
     List<ViewEntity> getAllViewEntities()
 

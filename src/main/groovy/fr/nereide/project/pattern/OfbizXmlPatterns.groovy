@@ -116,7 +116,7 @@ class OfbizXmlPatterns {
     public static final PsiElementPattern ENTITY_OR_VIEW_CALL_COMPL = psiElement().inside(ENTITY_OR_VIEW_CALL)
     public static final PsiElementPattern SERVICE_DEF_CALL_COMPL = psiElement().inside(SERVICE_DEF_CALL)
     public static final PsiElementPattern ENTITY_FIELD_COMPL = psiElement().inside(ENTITY_FIELD_CALL)
-    public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement().inside(ENTITY_TAG_CALL)
+    public static final PsiElementPattern ENTITY_TAG_CALL_COMPL = psiElement().inside(ENTITY_TAG_CALL)
     public static final PsiElementPattern ENTITY_FIELD_IN_DATALOAD_COMPL = psiElement().inside(ENTITY_FIELD_IN_DATALOAD)
 
     //============================================

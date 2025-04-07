@@ -1,6 +1,7 @@
 package fr.nereide.test.inspection
 
 import com.intellij.codeInspection.LocalInspectionTool
+import fr.nereide.inspection.xml.DuplicatedEntityXmlInspection
 import fr.nereide.inspection.xml.DuplicatedFormInspection
 import fr.nereide.inspection.xml.DuplicatedMenuInspection
 import fr.nereide.inspection.xml.DuplicatedScreenInspection
@@ -16,11 +17,13 @@ class XmlDuplicateInspectionTest extends BaseInspectionTest {
     final String SCREEN_DESC = message('inspection.screen.duplicate.display.descriptor')
     final String MENU_DESC = message('inspection.menu.duplicate.display.descriptor')
     final String SERVICE_DESC = message('inspection.service.duplicate.display.descriptor')
+    final String ENTITY_DESC = message('inspection.entity.duplicate.display.descriptor')
     final LocalInspectionTool URI_INSP = new DuplicatedUriInspection()
     final LocalInspectionTool FORM_INSP = new DuplicatedFormInspection()
     final LocalInspectionTool SCREEN_INSP = new DuplicatedScreenInspection()
     final LocalInspectionTool MENU_INSP = new DuplicatedMenuInspection()
     final LocalInspectionTool SERVICE_INSP = new DuplicatedServiceXmlInspection()
+    final LocalInspectionTool ENTITY_INSP = new DuplicatedEntityXmlInspection()
 
     final String DEST = 'zelda/widget'
 
@@ -73,4 +76,7 @@ class XmlDuplicateInspectionTest extends BaseInspectionTest {
 
     void testDuplicatedServiceFromForm() { doTest(SERVICE_DESC, SERVICE_INSP) }
 
+    void testDuplicatedEntityIsCalled() { doTest(ENTITY_DESC, ENTITY_INSP) }
+
+    void testDuplicatedViewIsCalled() { doTest(ENTITY_DESC, ENTITY_INSP) }
 }

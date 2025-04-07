@@ -10,4 +10,11 @@
     <view-entity entity-name="MyNeverCachedView">
         <member-entity entity-alias="MNCE" entity-name="MyNeverCachedEntity"/>
     </view-entity>
+
+    <entity entity-name="DuplicatedEntityIsCalled"> </entity>
+    <entity entity-name="DuplicatedEntityIsCalled"> </entity>
+
+    <view-entity entity-name="DuplicatedViewIsCalled"> </view-entity>
+    <view-entity entity-name="DuplicatedViewIsCalled"> </view-entity>
+
 </entitymodel>

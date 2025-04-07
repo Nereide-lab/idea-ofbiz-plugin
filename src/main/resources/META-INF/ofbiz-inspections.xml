@@ -98,6 +98,15 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="fr.nereide.inspection.xml.DuplicatedServiceXmlInspection"/>
+        <localInspection language="XML"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.entity.duplicate.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.probable.bugs"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.xml.DuplicatedEntityXmlInspection"/>
 
         <!-- Java Code inspections -->
         <localInspection language="JAVA"
