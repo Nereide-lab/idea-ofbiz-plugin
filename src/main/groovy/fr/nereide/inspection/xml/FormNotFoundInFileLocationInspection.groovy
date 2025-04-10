@@ -1,6 +1,5 @@
 package fr.nereide.inspection.xml
 
-import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
@@ -10,6 +9,7 @@ import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlFile
 import fr.nereide.dom.filedesc.CompoundFileDescription
 import fr.nereide.inspection.InspectionBundle
+import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.xml.CreateFormInFormFileQuickFix
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizXmlPatterns
@@ -17,15 +17,10 @@ import org.jetbrains.annotations.NotNull
 
 import static fr.nereide.inspection.common.InspectionUtil.fileHasElementWithSameName
 
-class FormNotFoundInFileLocationInspection extends LocalInspectionTool {
+class FormNotFoundInFileLocationInspection extends OfbizBaseInspection {
 
     final String ROOT = 'forms'
     final String NAMESPACE = CompoundFileDescription.FORM_NS_URL
-
-    @Override
-    boolean isEnabledByDefault() {
-        return true
-    }
 
     @Override
     @NotNull

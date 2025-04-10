@@ -1,0 +1,10 @@
+<compound-widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:wm="http://ofbiz.apache.org/Widget-Menu"
+                  xsi:noNamespaceSchemaLocation="../../../../../framework/widget/dtd/compound-widgets.xsd">
+    <wm:menus>
+        <wm:menu name="DuplicatedMenuInCurrentCompoundFile">
+        </wm:menu>
+        <wm:menu name="DuplicatedMenuInCurrentCompoundFile">
+        </wm:menu>
+    </wm:menus>
+</compound-widgets>

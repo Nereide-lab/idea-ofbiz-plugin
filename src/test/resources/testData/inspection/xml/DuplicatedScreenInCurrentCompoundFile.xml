@@ -1,0 +1,9 @@
+<compound-widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:ws="http://ofbiz.apache.org/Widget-Screen"
+                  xsi:noNamespaceSchemaLocation="../../../../../framework/widget/dtd/compound-widgets.xsd">
+
+    <ws:screens>
+        <ws:screen name="Duplic<caret>atedScreenInCurrentCompoundFile"> </ws:screen>
+        <ws:screen name="DuplicatedScreenInCurrentCompoundFile"> </ws:screen>
+    </ws:screens>
+</compound-widgets>

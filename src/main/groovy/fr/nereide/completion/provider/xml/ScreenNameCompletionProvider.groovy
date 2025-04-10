@@ -39,7 +39,7 @@ class ScreenNameCompletionProvider extends CompletionProvider<CompletionParamete
         } else if (XmlUtils.isPageReferenceFromController(parentTag)) {
             screens = ps.getScreensFromScreenFileAtLocation(myAttrValue, true)
         } else {
-            screens = ps.getAllScreenFromCurrentFileFromElement(myAttrValue as XmlAttributeValue)
+            screens = ps.getAllScreenFromCurrentFileFromElement(myAttrValue)
         }
 
         screens.each { Screen screen ->

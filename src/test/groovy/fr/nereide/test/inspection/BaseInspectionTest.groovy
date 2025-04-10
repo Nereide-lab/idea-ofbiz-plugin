@@ -29,7 +29,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
     protected void doInspectionThenQuickFixWithXmlElementCreate(boolean mustFind, String intention, String desc, String expectedFileLocation,
                                                                 String elName, String elType) {
         myFixture.configureByFile(testFile)
-        doHighlightTests(mustFind, desc)
+        doHighlightTest(mustFind, desc)
         if (!mustFind) return
         findAndLaunchAction(intention)
         PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
@@ -41,7 +41,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
 
     protected void doInspectionThenQuickFixTestWithFileEdit(boolean mustFind, String intention, String desc) {
         myFixture.configureByFile(testFile)
-        doHighlightTests(mustFind, desc)
+        doHighlightTest(mustFind, desc)
         if (!mustFind) return
         findAndLaunchAction(intention)
         myFixture.checkResultByFile(expectedFilePath, true)
@@ -49,13 +49,13 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
 
     protected void doFileInspectionTestWithFileCreation(boolean mustFind, String intention, String desc, String expectedFileLocation) {
         myFixture.configureByFile(testFile)
-        doHighlightTests(mustFind, desc)
+        doHighlightTest(mustFind, desc)
         if (!mustFind) return
         findAndLaunchAction(intention)
         assertNotNull myFixture.getTempDirFixture().getFile(expectedFileLocation)
     }
 
-    private void doHighlightTests(boolean mustFind, String desc) {
+    protected void doHighlightTest(boolean mustFind, String desc) {
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         List<String> highlightDescs = highlightInfos.collect { it.description }
         if (!mustFind) {

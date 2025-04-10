@@ -22,6 +22,8 @@ package fr.nereide.test.inspection
 
 import fr.nereide.inspection.java.CacheOnNeverCacheEntityJavaInspection
 import fr.nereide.inspection.InspectionBundle
+import fr.nereide.inspection.java.DuplicatedEntityJavaInspection
+import fr.nereide.inspection.java.DuplicatedServiceJavaInspection
 
 class JavaInspectionTest extends BaseInspectionTest {
 
@@ -51,5 +53,17 @@ class JavaInspectionTest extends BaseInspectionTest {
 
     void testCacheOnViewIncludingNeverCacheEntity() {
         doNeverCacheTest(true)
+    }
+
+    void testDuplicatedServiceInspection() {
+        myFixture.enableInspections(new DuplicatedServiceJavaInspection())
+        myFixture.configureByFile(testFile)
+        doHighlightTest(true, InspectionBundle.message('inspection.service.duplicate.display.descriptor'))
+    }
+
+    void testDuplicatedEntityInspection() {
+        myFixture.enableInspections(new DuplicatedEntityJavaInspection())
+        myFixture.configureByFile(testFile)
+        doHighlightTest(true, InspectionBundle.message('inspection.entity.duplicate.display.descriptor'))
     }
 }

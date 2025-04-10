@@ -17,12 +17,12 @@
 
 package fr.nereide.project
 
-import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
+import com.intellij.util.xml.DomElement
 import fr.nereide.dom.element.controller.RequestMap
 import fr.nereide.dom.element.controller.ViewMap
 import fr.nereide.dom.element.entityengine.Datasource
@@ -49,9 +49,13 @@ interface ProjectServiceInterface {
 
     Entity getEntity(String name)
 
+    List<Entity> getEntities(String name)
+
     List<Entity> getAllEntities()
 
     ViewEntity getViewEntity(String name)
+
+    List<ViewEntity> getViewEntities(String name)
 
     List<ViewEntity> getAllViewEntities()
 
@@ -73,7 +77,7 @@ interface ProjectServiceInterface {
 
     Datasource getDatasource(String name)
 
-    List<Screen> getAllScreenFromCurrentFileFromElement(XmlAttributeValue psiElement)
+    List<Screen> getAllScreenFromCurrentFileFromElement(XmlElement psiElement)
 
     List<Screen> getScreensFromScreenFileAtLocation(XmlElement screenLocation, boolean isController)
 
@@ -85,9 +89,13 @@ interface ProjectServiceInterface {
 
     Form getFormFromPsiFile(PsiFile file, String formName)
 
-    List<Form> getFormListFromFileAtLocation(String componentPathToFile)
+    List<DomElement> getDomElementListFromFileAtLocation(String componentPathToFile, Class fileType)
 
-    List<Form> getAllFormsFromCurrentFileFromElement(XmlAttributeValue myVal)
+    List<DomElement> getDomElementListFromFileAtLocation(String componentPathToFile, Class fileType, String wantedElement)
+
+    List<Form> getAllFormsFromCurrentFileFromElement(XmlElement myVal)
+
+    List<Menu> getAllMenuFromCurrentFileFromElement(XmlElement myVal)
 
     Grid getGridFromFileAtLocation(String componentPathToFile, String formName)
 
@@ -95,11 +103,9 @@ interface ProjectServiceInterface {
 
     Menu getMenuFromFileAtLocation(String componentPathToFile, String menuName)
 
-    List<Menu> getMenuListFromFileAtLocation(String componentPathToFile)
-
     Menu getMenuFromPsiFile(PsiFile file, String menuName)
 
-    List<RequestMap> getComponentRequestMaps(String componentName, Project project)
+    List<RequestMap> getComponentRequestMaps(String componentName)
 
     Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement)
 

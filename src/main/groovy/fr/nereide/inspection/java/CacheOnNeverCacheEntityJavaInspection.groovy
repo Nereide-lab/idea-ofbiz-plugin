@@ -19,23 +19,18 @@
 
 package fr.nereide.inspection.java
 
-import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.JavaElementVisitor
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiReferenceExpression
 import fr.nereide.inspection.common.InspectionUtil
+import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
 import org.jetbrains.annotations.NotNull
 
-class CacheOnNeverCacheEntityJavaInspection extends LocalInspectionTool {
+class CacheOnNeverCacheEntityJavaInspection extends OfbizBaseInspection {
 
     private final RemoveCacheCallFix myQuickFix = new RemoveCacheCallFix()
-
-    @Override
-    boolean isEnabledByDefault() {
-        return true
-    }
 
     @Override
     @NotNull

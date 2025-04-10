@@ -32,7 +32,7 @@ class XmlCompletionContributor extends OfbizBaseCompletionContributor {
         this.extend(CompletionType.BASIC, OfbizXmlPatterns.SERVICE_DEF_CALL_COMPL, serviceNameCompletionProvider)
         this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_COMPL, xmlEntityFieldsCompletionProvider)
         this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_IN_DATALOAD_COMPL, xmlEntityFieldsCompletionProvider)
-        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_CALL_COMPL, new EntityNameCompletionProvider())
+        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_TAG_CALL_COMPL, new EntityNameCompletionProvider())
         this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.SCREEN_CALL), new ScreenNameCompletionProvider())
         this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.MENU_CALL), new MenuNameCompletionProvider())
         this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.FORM_CALL), new FormNameCompletionProvider())

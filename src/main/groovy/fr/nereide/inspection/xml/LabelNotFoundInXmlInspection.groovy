@@ -1,12 +1,12 @@
 package fr.nereide.inspection.xml
 
-import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttribute
 import fr.nereide.inspection.InspectionBundle
+import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.xml.CreateMissingLabelFix
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizXmlPatterns
@@ -15,14 +15,9 @@ import org.jetbrains.annotations.NotNull
 
 import static fr.nereide.project.utils.MiscUtils.getUiLabelSafeValue
 
-class LabelNotFoundInXmlInspection extends LocalInspectionTool {
+class LabelNotFoundInXmlInspection extends OfbizBaseInspection {
 
     CreateMissingLabelFix myQuickFix = new CreateMissingLabelFix()
-
-    @Override
-    boolean isEnabledByDefault() {
-        return true
-    }
 
     @Override
     @NotNull
