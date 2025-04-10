@@ -1,7 +1,6 @@
 package fr.nereide.inspection.xml
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.patterns.XmlAttributeValuePattern
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
@@ -13,9 +12,6 @@ import fr.nereide.reference.xml.FormReference
 import org.jetbrains.annotations.NotNull
 
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static com.intellij.patterns.XmlPatterns.*
-import static fr.nereide.dom.filedesc.CompoundFileDescription.FORM_NS_PREFIX
-import static fr.nereide.dom.filedesc.CompoundFileDescription.FORM_NS_URL
 import static fr.nereide.inspection.InspectionBundle.message
 
 class DuplicatedFormInspection extends OfbizBaseInspection {
@@ -27,7 +23,7 @@ class DuplicatedFormInspection extends OfbizBaseInspection {
         return new XmlElementVisitor() {
             @Override
             void visitXmlAttributeValue(@NotNull XmlAttributeValue val) {
-                boolean isDefinition = FORM_NAME_IN_DEFINITION.accepts(val)
+                boolean isDefinition = OfbizXmlPatterns.FORM_NAME_IN_DEFINITION.accepts(val)
                 if (!isDefinition && !OfbizXmlPatterns.FORM_CALL.accepts(val)) return
                 if (!isDuplicate(val, isDefinition)) return
                 holder.registerProblem(
@@ -46,13 +42,5 @@ class DuplicatedFormInspection extends OfbizBaseInspection {
                 .findAll { it.name.value == val.value }
                 .size() > 1
     }
-
-    private static final XmlAttributeValuePattern FORM_NAME_IN_DEFINITION = xmlAttributeValue().andOr(
-            xmlAttributeValue()
-                    .withParent(xmlAttribute('name').withParent(xmlTag().withName('form'))),
-            xmlAttributeValue()
-                    .withParent(xmlAttribute('name').withParent(xmlTag().withName("${FORM_NS_PREFIX}form")
-                            .withNamespace(FORM_NS_URL))),
-    )
 
 }

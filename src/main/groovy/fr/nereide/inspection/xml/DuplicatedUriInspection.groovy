@@ -1,7 +1,6 @@
 package fr.nereide.inspection.xml
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.patterns.XmlAttributeValuePattern
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
@@ -12,7 +11,6 @@ import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
 
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static com.intellij.patterns.XmlPatterns.*
 import static fr.nereide.inspection.InspectionBundle.message
 
 class DuplicatedUriInspection extends OfbizBaseInspection {
@@ -24,7 +22,7 @@ class DuplicatedUriInspection extends OfbizBaseInspection {
         return new XmlElementVisitor() {
             @Override
             void visitXmlAttributeValue(@NotNull XmlAttributeValue attributeValue) {
-                boolean isInController = URI_IN_REQUEST_DEFINITION.accepts(attributeValue)
+                boolean isInController = OfbizXmlPatterns.URI_IN_REQUEST_DEFINITION.accepts(attributeValue)
                 boolean isElsewhereRelevant = OfbizXmlPatterns.URI_CALL.accepts(attributeValue)
                 if (!(isInController || isElsewhereRelevant)) return
 
@@ -46,7 +44,5 @@ class DuplicatedUriInspection extends OfbizBaseInspection {
                 .size() > 1
     }
 
-    private static final XmlAttributeValuePattern URI_IN_REQUEST_DEFINITION = xmlAttributeValue()
-            .withParent(xmlAttribute('uri').withParent(xmlTag().withName('request-map')))
 }
 

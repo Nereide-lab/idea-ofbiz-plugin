@@ -1,7 +1,6 @@
 package fr.nereide.inspection.xml
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.patterns.XmlAttributeValuePattern
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
@@ -13,9 +12,6 @@ import fr.nereide.reference.xml.MenuReference
 import org.jetbrains.annotations.NotNull
 
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static com.intellij.patterns.XmlPatterns.*
-import static fr.nereide.dom.filedesc.CompoundFileDescription.MENU_NS_PREFIX
-import static fr.nereide.dom.filedesc.CompoundFileDescription.MENU_NS_URL
 import static fr.nereide.inspection.InspectionBundle.message
 
 class DuplicatedMenuInspection extends OfbizBaseInspection {
@@ -27,7 +23,7 @@ class DuplicatedMenuInspection extends OfbizBaseInspection {
         return new XmlElementVisitor() {
             @Override
             void visitXmlAttributeValue(@NotNull XmlAttributeValue val) {
-                boolean isDefinition = MENU_NAME_IN_DEFINITION.accepts(val)
+                boolean isDefinition = OfbizXmlPatterns.MENU_NAME_IN_DEFINITION.accepts(val)
                 if (!isDefinition && !OfbizXmlPatterns.MENU_CALL.accepts(val)) return
                 if (!isDuplicate(val, isDefinition)) return
                 holder.registerProblem(
@@ -47,11 +43,4 @@ class DuplicatedMenuInspection extends OfbizBaseInspection {
                 .size() > 1
     }
 
-    private static final XmlAttributeValuePattern MENU_NAME_IN_DEFINITION = xmlAttributeValue().andOr(
-            xmlAttributeValue()
-                    .withParent(xmlAttribute('name').withParent(xmlTag().withName('menu'))),
-            xmlAttributeValue()
-                    .withParent(xmlAttribute('name').withParent(xmlTag().withName("${MENU_NS_PREFIX}menu")
-                            .withNamespace(MENU_NS_URL))),
-    )
 }
