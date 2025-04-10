@@ -49,16 +49,16 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
         if (!elementName || !tag) return null
         switch (tag.getLocalName()) {
             case 'service':
-                String serviceName = structureService.getService(elementName).getName().getValue()
+                String serviceName = structureService.getService(elementName)?.name?.value
                 return serviceName ? generateServiceDoc(serviceName, structureService) : 'Service not found'
             case 'entity':
-                String entityName = structureService.getEntity(elementName).getEntityName().getValue()
+                String entityName = structureService.getEntity(elementName)?.entityName?.value
                 return entityName ? generateEntityDoc(entityName, structureService) : 'Entity not found'
             case 'view-entity':
-                String viewName = structureService.getViewEntity(elementName).getEntityName().getValue()
+                String viewName = structureService.getViewEntity(elementName)?.entityName?.value
                 return viewName ? generateViewDoc(viewName, structureService) : 'View not found'
             case 'property':
-                String propertyName = structureService.getProperty(MiscUtils.getUiLabelSafeValue(elementName)).getKey().getValue()
+                String propertyName = structureService.getProperty(MiscUtils.getUiLabelSafeValue(elementName))?.key?.value
                 return propertyName ? generateUiLabelDoc(propertyName, structureService) : 'UiLabel not found'
             default: return null
         }
