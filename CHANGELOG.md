@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.6.5]
 ### Added
 - [#8] Added small groovy template. Dynamic templating like in my mind is too much ambition for now
 - [#12] Added duplicate inspections for Screens, Forms, Menus, Request uris, Services, View-entities and entities, 
