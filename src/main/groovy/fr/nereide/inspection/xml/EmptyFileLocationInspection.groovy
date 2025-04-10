@@ -1,6 +1,5 @@
 package fr.nereide.inspection.xml
 
-import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiDirectory
@@ -8,21 +7,17 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttribute
 import fr.nereide.inspection.InspectionBundle
+import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.xml.AdjustFileLocationPathFix
 import fr.nereide.inspection.quickfix.xml.CreateFileAtLocationFix
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
-class EmptyFileLocationInspection extends LocalInspectionTool {
+class EmptyFileLocationInspection extends OfbizBaseInspection {
 
     private final AdjustFileLocationPathFix myChangePathQuickFix = new AdjustFileLocationPathFix()
     private final CreateFileAtLocationFix myCreateFileQuickFix = new CreateFileAtLocationFix()
-
-    @Override
-    boolean isEnabledByDefault() {
-        return true
-    }
 
     @Override
     @NotNull

@@ -1,11 +1,11 @@
 package fr.nereide.inspection.xml
 
-import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.patterns.XmlAttributeValuePattern
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
+import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.project.utils.MiscUtils
@@ -15,12 +15,7 @@ import static com.intellij.codeInspection.ProblemHighlightType.WARNING
 import static com.intellij.patterns.XmlPatterns.*
 import static fr.nereide.inspection.InspectionBundle.message
 
-class DuplicatedUriInspection extends LocalInspectionTool {
-
-    @Override
-    boolean isEnabledByDefault() {
-        return true
-    }
+class DuplicatedUriInspection extends OfbizBaseInspection {
 
     @Override
     @NotNull

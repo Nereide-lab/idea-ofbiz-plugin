@@ -1,10 +1,10 @@
 package fr.nereide.inspection.xml
 
-import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
+import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import org.jetbrains.annotations.NotNull
@@ -12,13 +12,7 @@ import org.jetbrains.annotations.NotNull
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
 import static fr.nereide.inspection.InspectionBundle.message
 
-class DuplicatedEntityXmlInspection extends LocalInspectionTool {
-
-    @Override
-    boolean isEnabledByDefault() {
-        return true
-    }
-
+class DuplicatedEntityXmlInspection extends OfbizBaseInspection {
 
     @Override
     @NotNull

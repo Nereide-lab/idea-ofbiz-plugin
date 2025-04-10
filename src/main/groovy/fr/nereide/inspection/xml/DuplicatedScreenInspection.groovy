@@ -1,12 +1,12 @@
 package fr.nereide.inspection.xml
 
-import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.patterns.XmlAttributeValuePattern
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
+import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.project.ProjectServiceInterface
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.reference.xml.ScreenReference
@@ -18,13 +18,7 @@ import static fr.nereide.dom.filedesc.CompoundFileDescription.SCREEN_NS_PREFIX
 import static fr.nereide.dom.filedesc.CompoundFileDescription.SCREEN_NS_URL
 import static fr.nereide.inspection.InspectionBundle.message
 
-class DuplicatedScreenInspection extends LocalInspectionTool {
-
-    @Override
-    boolean isEnabledByDefault() {
-        return true
-    }
-
+class DuplicatedScreenInspection extends OfbizBaseInspection {
 
     @Override
     @NotNull

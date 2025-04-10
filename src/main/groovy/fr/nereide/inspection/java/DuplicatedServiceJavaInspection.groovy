@@ -1,9 +1,9 @@
 package fr.nereide.inspection.java
 
-import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.JavaElementVisitor
 import com.intellij.psi.PsiLiteralExpression
+import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.project.pattern.OfbizJavaPatterns
 import fr.nereide.reference.common.ServiceReference
 import org.jetbrains.annotations.NotNull
@@ -11,12 +11,7 @@ import org.jetbrains.annotations.NotNull
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
 import static fr.nereide.inspection.InspectionBundle.message
 
-class DuplicatedServiceJavaInspection extends LocalInspectionTool {
-
-    @Override
-    boolean isEnabledByDefault() {
-        return true
-    }
+class DuplicatedServiceJavaInspection extends OfbizBaseInspection {
 
     @Override
     @NotNull
