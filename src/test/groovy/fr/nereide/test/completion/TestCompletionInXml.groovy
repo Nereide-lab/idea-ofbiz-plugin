@@ -111,4 +111,24 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> expected = ['makeWitcher', 'makeHorse']
         doTest(expected)
     }
+
+    void testEntityAliasCompletionInEntityDefInAlliasAll() {
+        List<String> expected = ['E1', 'E2', 'E3']
+        doTest(expected)
+    }
+
+    void testEntityAliasCompletionInEntityDefInAlias() {
+        List<String> expected = ['E1', 'E2', 'E3']
+        doTest(expected)
+    }
+
+    void testEntityAliasCompletionInEntityDefInViewLink() {
+        List<String> expected = ['E1', 'E2', 'E3']
+        doTest(expected)
+    }
+
+    void testRelEntityAliasCompletionInEntityDefInViewLink() {
+        List<String> expected = ['E1', 'E2', 'E3']
+        doTest(expected)
+    }
 }
