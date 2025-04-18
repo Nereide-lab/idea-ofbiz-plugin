@@ -143,6 +143,18 @@ class OfbizXmlPatterns {
     public static final XmlAttributeValuePattern URI_IN_REQUEST_DEFINITION = xmlAttributeValue()
             .withParent(xmlAttribute('uri').withParent(xmlTag().withName('request-map')))
 
+    public static final XmlAttributeValuePattern ENTITY_ALIAS_IN_ALIAS_ALL = xmlAttributeValue()
+            .withParent(xmlAttribute('entity-alias').withParent(xmlTag().withName('alias-all')))
+
+    public static final XmlAttributeValuePattern ENTITY_ALIAS_IN_ALIAS = xmlAttributeValue()
+            .withParent(xmlAttribute('entity-alias').withParent(xmlTag().withName('alias')))
+
+    public static final XmlAttributeValuePattern ENTITY_ALIAS_IN_VIEW_LINK = xmlAttributeValue()
+            .withParent(xmlAttribute('entity-alias').withParent(xmlTag().withName('view-link')))
+
+    public static final XmlAttributeValuePattern REL_ENTITY_ALIAS_IN_VIEW_LINK = xmlAttributeValue()
+            .withParent(xmlAttribute('rel-entity-alias').withParent(xmlTag().withName('view-link')))
+
     //============================================
     //       UTILITY METHODS
     //============================================

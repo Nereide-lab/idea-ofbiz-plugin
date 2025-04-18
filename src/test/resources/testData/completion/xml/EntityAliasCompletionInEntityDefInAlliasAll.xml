@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/entitymodel.xsd">
+
+    <entity entity-name="Entity1"/>
+    <entity entity-name="Entity2"/>
+    <entity entity-name="Entity3"/>
+
+    <view-entity entity-name="SomeRandomView" >
+        <member-entity entity-alias="E1" entity-name="Entity1"/>
+        <member-entity entity-alias="E2" entity-name="Entity2"/>
+        <member-entity entity-alias="E3" entity-name="Entity3"/>
+        <alias-all entity-alias="<caret>" prefix="parent"/>
+    </view-entity>
+</entitymodel>
