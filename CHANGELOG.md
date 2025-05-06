@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- [#NA] Updated Intellij version to 2025.1
+- [#NA] Updated java and gradle versions
+- [#NA] Updated several dependencies
+
 ### Added
 - [#15] Added completion for aliases in xml files
 
