@@ -26,6 +26,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.service.Service
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.utils.MiscUtils
 import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
@@ -36,6 +37,7 @@ class ServiceNameCompletionProvider extends CompletionProvider<CompletionParamet
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
 
+        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         List servicesNames = ph.getAllServices()
 

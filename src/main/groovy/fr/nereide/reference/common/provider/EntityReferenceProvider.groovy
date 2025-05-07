@@ -21,6 +21,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.util.ProcessingContext
+import fr.nereide.project.PluginActivator
 import fr.nereide.reference.common.EntityReference
 import org.jetbrains.annotations.NotNull
 
@@ -29,6 +30,7 @@ class EntityReferenceProvider extends PsiReferenceProvider {
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+        if (!PluginActivator.getInstance(element.project).isActive()) return []
         EntityReference entity = new EntityReference(element)
         PsiReference[] reference = (PsiReference) entity
         return reference ?: PsiReference.EMPTY_ARRAY

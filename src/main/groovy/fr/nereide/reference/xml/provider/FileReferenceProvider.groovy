@@ -24,6 +24,7 @@ import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.converters.ClassValueConverterImpl
+import fr.nereide.project.PluginActivator
 import fr.nereide.reference.common.ComponentAwareFileReferenceSet
 import org.jetbrains.annotations.NotNull
 
@@ -31,6 +32,7 @@ class FileReferenceProvider extends PsiReferenceProvider {
     FileReferenceProvider() {}
 
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+        if (!PluginActivator.getInstance(element.project).isActive()) return []
         if (isJavaService(element)) {
             return ClassValueConverterImpl
                     .getClassValueConverter()

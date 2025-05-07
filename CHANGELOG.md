@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [#NA] Updated java and gradle versions
 - [#NA] Updated several dependencies
 - [#17] Transforms the ProjectServiceInterface to an annotated LightService class
+- [#NA] Adds an Activator service to mimic the way Eclipse activates plugins.
+  - Instead of an Activator (Like in Eclipse), uses a light service that checks the source package in the project.
+  - All processes added by the plugin return null instead of doing the search work.
+  - A bit hacky, but Intellij framework doesn't provide an Activator-like interface.
 
 ### Added
 - [#15] Added completion for aliases in xml files

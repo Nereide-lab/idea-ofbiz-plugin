@@ -45,9 +45,7 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <psi.referenceContributor language="XML" implementation="fr.nereide.reference.contributor.XmlReferenceContributor"/>
-
         <psi.referenceContributor language="JAVA" implementation="fr.nereide.reference.contributor.JavaReferenceContributor"/>
-
         <psi.referenceContributor language="Groovy" implementation="fr.nereide.reference.contributor.GroovyReferenceContributor"/>
 
         <!-- Documentation -->

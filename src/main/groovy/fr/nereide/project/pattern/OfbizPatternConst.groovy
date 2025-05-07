@@ -5,6 +5,9 @@ import com.intellij.patterns.PsiJavaPatterns
 import com.intellij.psi.PsiLiteral
 
 class OfbizPatternConst {
+    // Base const
+    public static final String BASE_OFB_PACKAGE = 'org.apache.ofbiz'
+
     // classes
     public static final String DISPATCH_CONTEXT_CLASS = 'org.apache.ofbiz.service.DispatchContext'
     public static final String LOCAL_DISPATCHER_CLASS = 'org.apache.ofbiz.service.LocalDispatcher'

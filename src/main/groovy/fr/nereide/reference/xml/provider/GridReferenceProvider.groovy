@@ -22,6 +22,7 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
+import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.GridReference
 import org.jetbrains.annotations.NotNull
 
@@ -30,6 +31,7 @@ class GridReferenceProvider extends PsiReferenceProvider {
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+        if (!PluginActivator.getInstance(element.project).isActive()) return []
         if (element instanceof XmlAttributeValue) {
             GridReference form = new GridReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) form

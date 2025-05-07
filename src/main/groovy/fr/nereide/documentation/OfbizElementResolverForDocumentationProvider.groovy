@@ -9,6 +9,7 @@ import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizJavaPatterns
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.reference.common.EntityReference
@@ -22,6 +23,7 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
 
     @Override
     PsiElement getCustomDocumentationElement(@NotNull Editor editor, @NotNull PsiFile file, @Nullable PsiElement contextElement, int targetOffset) {
+        if (!PluginActivator.getInstance(contextElement.project).isActive()) return null
         PsiElement xmlAttr = PsiTreeUtil.getParentOfType(contextElement, XmlAttribute.class)
         /*************
          *    XML    *

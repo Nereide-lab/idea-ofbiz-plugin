@@ -26,6 +26,7 @@ import com.intellij.psi.PsiReferenceExpression
 import fr.nereide.inspection.common.InspectionUtil
 import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
+import fr.nereide.project.PluginActivator
 import org.jetbrains.annotations.NotNull
 
 class CacheOnNeverCacheEntityJavaInspection extends OfbizBaseInspection {
@@ -38,6 +39,7 @@ class CacheOnNeverCacheEntityJavaInspection extends OfbizBaseInspection {
         return new JavaElementVisitor() {
             @Override
             void visitReferenceExpression(PsiReferenceExpression exp) {
+                if (!PluginActivator.getInstance(exp.project).isActive()) return
                 InspectionUtil.checkAndRegisterCacheOnNeverCacheEntity(exp, holder, myQuickFix)
             }
         }

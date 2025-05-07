@@ -4,6 +4,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.JavaElementVisitor
 import com.intellij.psi.PsiLiteralExpression
 import fr.nereide.inspection.common.OfbizBaseInspection
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizJavaPatterns
 import fr.nereide.reference.common.ServiceReference
 import org.jetbrains.annotations.NotNull
@@ -19,6 +20,7 @@ class DuplicatedServiceJavaInspection extends OfbizBaseInspection {
         return new JavaElementVisitor() {
             @Override
             void visitLiteralExpression(@NotNull PsiLiteralExpression el) {
+                if (!PluginActivator.getInstance(el.project).isActive()) return
                 if (!OfbizJavaPatterns.SERVICE_CALL) return
                 if (!(new ServiceReference(el).multiResolve(false)?.size() > 1)) return
                 holder.registerProblem(

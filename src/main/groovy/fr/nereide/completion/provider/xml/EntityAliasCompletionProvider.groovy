@@ -13,6 +13,7 @@ import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
 import com.intellij.util.xml.DomManager
 import fr.nereide.dom.element.entitymodel.ViewEntity
+import fr.nereide.project.PluginActivator
 import org.jetbrains.annotations.NotNull
 
 class EntityAliasCompletionProvider extends CompletionProvider<CompletionParameters> {
@@ -21,6 +22,7 @@ class EntityAliasCompletionProvider extends CompletionProvider<CompletionParamet
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
 
+        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
         XmlElement myElement
         try {
             myElement = parameters.getPosition() as XmlAttributeValue

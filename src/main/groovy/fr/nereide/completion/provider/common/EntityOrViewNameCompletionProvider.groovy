@@ -27,6 +27,7 @@ import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.entitymodel.Entity
 import fr.nereide.dom.element.entitymodel.ViewEntity
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.utils.MiscUtils
 import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
@@ -36,7 +37,7 @@ class EntityOrViewNameCompletionProvider extends CompletionProvider<CompletionPa
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
-
+        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         addEntitiesLookup(ph, result)
         addViewEntitiesLookups(ph, result)

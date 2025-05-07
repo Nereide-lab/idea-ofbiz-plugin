@@ -6,6 +6,7 @@ import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import org.jetbrains.annotations.NotNull
 
@@ -21,6 +22,7 @@ class DuplicatedEntityXmlInspection extends OfbizBaseInspection {
         return new XmlElementVisitor() {
             @Override
             void visitXmlAttributeValue(@NotNull XmlAttributeValue val) {
+                if (!PluginActivator.getInstance(val.project).isActive()) return
                 if (!(OfbizXmlPatterns.ENTITY_OR_VIEW_CALL.accepts(val))) return
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(val.project)
                 if (ph.getEntities(val.value).size() > 1 || ph.getViewEntities(val.value).size() > 1) {

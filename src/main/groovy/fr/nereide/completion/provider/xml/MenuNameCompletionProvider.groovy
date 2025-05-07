@@ -15,6 +15,7 @@ import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.menu.Menu
 import fr.nereide.dom.file.MenuFile
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
 
@@ -23,6 +24,7 @@ class MenuNameCompletionProvider extends CompletionProvider<CompletionParameters
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
+        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         PsiElement myElement = parameters.getPosition()
         List<Menu> menus
