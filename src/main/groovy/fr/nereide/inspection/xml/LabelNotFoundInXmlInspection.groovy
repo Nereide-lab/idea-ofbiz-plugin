@@ -8,7 +8,7 @@ import com.intellij.psi.xml.XmlAttribute
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.xml.CreateMissingLabelFix
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.project.utils.UiLabelTextRange
 import org.jetbrains.annotations.NotNull
@@ -27,9 +27,9 @@ class LabelNotFoundInXmlInspection extends OfbizBaseInspection {
             @Override
             void visitXmlAttribute(@NotNull XmlAttribute attribute) {
                 if (!OfbizXmlPatterns.LABEL_CALL.accepts(attribute.getValueElement())) return
-                ProjectServiceInterface ps = attribute.getProject().getService(ProjectServiceInterface.class)
+                OfbizProjectHelper ph = OfbizProjectHelper.getInstance(attribute.project)
                 String labelName = attribute.value
-                if (!ps.getProperty(getUiLabelSafeValue(labelName)))
+                if (!ph.getProperty(getUiLabelSafeValue(labelName)))
                     holder.registerProblem(
                             attribute,
                             InspectionBundle.message('inspection.label.not.found.display.descriptor'),

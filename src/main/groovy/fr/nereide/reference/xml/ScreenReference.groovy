@@ -24,7 +24,7 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
 import fr.nereide.dom.element.screen.Screen
 import fr.nereide.dom.file.ScreenFile
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 
 import static fr.nereide.project.utils.XmlUtils.*
 
@@ -47,24 +47,24 @@ class ScreenReference extends GenericXmlReference {
         }
         PsiElement locationAttribute = containingTag.getAttribute('location')
         if (locationAttribute && !(locationAttribute.value.contains('${'))) {
-            Screen screen = ps.getScreenFromFileAtLocation(locationAttribute.value, this.value)
+            Screen screen = ph.getScreenFromFileAtLocation(locationAttribute.value, this.value)
             return screen ? screen.xmlElement : null
         } else if (isPageReferenceFromController(containingTag)) {
-            return resolveScreenInController(this.getElement(), ps)
+            return resolveScreenInController(this.getElement(), ph)
         } else if (isInRightFile(this.getElement(), fileType, dm)) {
             PsiFile currentFile = this.getElement().getContainingFile()
-            Screen screen = ps.getScreenFromPsiFile(currentFile, this.getElement().getValue())
+            Screen screen = ph.getScreenFromPsiFile(currentFile, this.getElement().getValue())
             return screen ? screen.xmlElement : null
         }
         return null
     }
 
-    PsiElement resolveScreenInController(XmlAttributeValue element, ProjectServiceInterface ps) {
+    PsiElement resolveScreenInController(XmlAttributeValue element, OfbizProjectHelper ph) {
         String screenName = getScreenNameFromControllerString(element)
         String controllerStringValue = element.getValue()
         String fileComponentLocation = controllerStringValue.substring(0, controllerStringValue.length() - screenName.length() - 1)
         this.setRangeInElement(new TextRange(controllerStringValue.indexOf('#'), controllerStringValue.length()))
-        return ps.getScreenFromFileAtLocation(fileComponentLocation, screenName).getXmlElement()
+        return ph.getScreenFromFileAtLocation(fileComponentLocation, screenName).getXmlElement()
     }
 
 }

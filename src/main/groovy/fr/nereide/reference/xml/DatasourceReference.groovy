@@ -2,9 +2,8 @@ package fr.nereide.reference.xml
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
-import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.xml.DomElement
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import org.jetbrains.annotations.Nullable
 
 
@@ -15,8 +14,7 @@ class DatasourceReference extends PsiReferenceBase<PsiElement> {
 
     @Nullable
     PsiElement resolve() {
-        ProjectServiceInterface stSer = this.getElement().getProject().getService(ProjectServiceInterface)
-        DomElement datasource = stSer.getDatasource(this.getValue())
+        DomElement datasource = OfbizProjectHelper.getInstance(this.element.project).getDatasource(this.getValue())
         return datasource ? datasource.getXmlElement() : null
     }
 

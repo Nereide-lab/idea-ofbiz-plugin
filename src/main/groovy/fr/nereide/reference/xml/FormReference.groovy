@@ -42,10 +42,10 @@ class FormReference extends GenericXmlReference {
         PsiElement locationAttribute = containingTag.getAttribute('location')
         if (locationAttribute) {
             String locationAttributeValue = locationAttribute.value
-            return ps.getFormFromFileAtLocation(locationAttributeValue, this.value)?.xmlElement
+            return ph.getFormFromFileAtLocation(locationAttributeValue, this.value)?.xmlElement
         } else if (isInRightFile(this.element, fileType, dm)) {
             PsiFile currentFile = this.element.containingFile
-            return ps.getFormFromPsiFile(currentFile, this.element.value)?.xmlElement
+            return ph.getFormFromPsiFile(currentFile, this.element.value)?.xmlElement
         }
         return null
     }

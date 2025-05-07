@@ -5,22 +5,22 @@ import fr.nereide.dom.element.entitymodel.EntityField
 import fr.nereide.dom.element.service.Service
 import fr.nereide.dom.element.service.ServiceAttribute
 import fr.nereide.dom.element.service.ServiceAutoAttribute
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 
 class ServiceWorker {
     final static String SERVICE_ATTR_NAME = 'attribute-name'
     final static String SERVICE_ATTR_TYPE = 'attribute-type'
     public static final ArrayList<String> IN_SERVICE_MODE = ['IN', 'INOUT']
 
-    static List<Map> getRequiredInAttributes(Service service, ProjectServiceInterface ps) {
-        return getServiceInAttributes(service, ps, 'false')
+    static List<Map> getRequiredInAttributes(Service service, OfbizProjectHelper ph) {
+        return getServiceInAttributes(service, ph, 'false')
     }
 
-    static List<Map> getOptionalInAttributes(Service service, ProjectServiceInterface ps) {
-        return getServiceInAttributes(service, ps, 'true')
+    static List<Map> getOptionalInAttributes(Service service, OfbizProjectHelper ph) {
+        return getServiceInAttributes(service, ph, 'true')
     }
 
-    private static ArrayList<Map> getServiceInAttributes(Service service, ProjectServiceInterface ps, String optional) {
+    private static ArrayList<Map> getServiceInAttributes(Service service, OfbizProjectHelper ph, String optional) {
         List<ServiceAttribute> serviceAttributes = service.attributes
         List<Map> paramListToReturn = []
         // Vanilla params
@@ -32,7 +32,7 @@ class ServiceWorker {
         //EntityAuto
         String defaultEntityName = service.defaultEntityName.value
         if (defaultEntityName && service.engine.value == 'entity-auto') {
-            Entity usedEntity = ps.getEntity(defaultEntityName)
+            Entity usedEntity = ph.getEntity(defaultEntityName)
             List<EntityField> entityFields = usedEntity.fields
             List<String> pkFieldNames = getPkNamesList(usedEntity)
             for (ServiceAutoAttribute saa : service.autoAttributes) {

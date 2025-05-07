@@ -14,7 +14,7 @@ import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.form.Form
 import fr.nereide.dom.file.FormFile
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
 
@@ -22,7 +22,7 @@ class FormNameCompletionProvider extends CompletionProvider<CompletionParameters
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
-        ProjectServiceInterface ps = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         PsiElement myElement = parameters.getPosition()
         List<Form> forms
         XmlElement myAttrValue
@@ -34,9 +34,9 @@ class FormNameCompletionProvider extends CompletionProvider<CompletionParameters
         XmlTag parentTag = PsiTreeUtil.getParentOfType(myAttrValue, XmlTag.class)
         if (parentTag.getAttribute('location')) {
             XmlAttributeValue menuLocationAttr = parentTag.getAttribute('location').getValueElement()
-            forms = ps.getDomElementListFromFileAtLocation(menuLocationAttr.value, FormFile.class)
+            forms = ph.getDomElementListFromFileAtLocation(menuLocationAttr.value, FormFile.class)
         } else {
-            forms = ps.getAllFormsFromCurrentFileFromElement(myAttrValue)
+            forms = ph.getAllFormsFromCurrentFileFromElement(myAttrValue)
         }
 
         forms.each { Form form ->

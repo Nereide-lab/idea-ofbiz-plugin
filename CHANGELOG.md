@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [#NA] Updated Intellij version to 2025.1
 - [#NA] Updated java and gradle versions
 - [#NA] Updated several dependencies
+- [#17] Transforms the ProjectServiceInterface to an annotated LightService class
 
 ### Added
 - [#15] Added completion for aliases in xml files

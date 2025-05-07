@@ -17,7 +17,7 @@ import fr.nereide.dom.file.CompoundFile
 import fr.nereide.dom.file.FormFile
 import fr.nereide.dom.file.MenuFile
 import fr.nereide.dom.file.ScreenFile
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.utils.XmlUtils
 import org.jetbrains.annotations.NotNull
@@ -27,7 +27,7 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
-        ProjectServiceInterface ps = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         PsiElement myElement = parameters.getPosition()
         XmlElement myAttrValue
         try {
@@ -55,7 +55,7 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
         if (!targetType) targetType = XmlUtils.getParentTag(myAttrValue)?.getAttribute('url-mode')?.getValue()
 
         if (targetType && targetType == 'inter-app') {
-            Map<String, List<String>> mountPointAndRequestMaps = ps.getAllMountPointsAndRequestMaps(myElement)
+            Map<String, List<String>> mountPointAndRequestMaps = ph.getAllMountPointsAndRequestMaps(myElement)
             mountPointAndRequestMaps.forEach { String mountPoint, List uris ->
                 uris.forEach { uri ->
                     String lookupValue = "$mountPoint/control/$uri"
@@ -65,7 +65,7 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
             }
         } else {
             String componentName = MiscUtils.getComponentName(myAttrValue, clazz)
-            List<RequestMap> uris = ps.getComponentRequestMaps(componentName)
+            List<RequestMap> uris = ph.getComponentRequestMaps(componentName)
             uris.each { RequestMap req ->
                 LookupElement lookupElement = LookupElementBuilder.create(req.getUri().getValue())
                         .withTailText(" Component:${MiscUtils.getComponentName(req)}" as String, true)

@@ -9,7 +9,7 @@ import com.intellij.psi.xml.XmlAttribute
 import fr.nereide.editor.actions.OfbizDialogBuilder
 import fr.nereide.editor.actions.OfbizSimpleListDialog
 import fr.nereide.inspection.InspectionBundle
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
@@ -33,9 +33,7 @@ class CreateFileAtLocationFix implements LocalQuickFix {
         XmlAttribute attr = descriptor.getPsiElement() as XmlAttribute
         String val = attr.getValueElement().getValue()
         List<String> dirsInPath = FileHandlingUtils.splitPathToList(val)
-        ProjectServiceInterface ps = project.getService(ProjectServiceInterface.class)
-
-        PsiDirectory compoDir = ps.getComponentDir(dirsInPath.first())
+        PsiDirectory compoDir = OfbizProjectHelper.getInstance(project).getComponentDir(dirsInPath.first())
         if (!compoDir) return
         PsiDirectory current = compoDir
         String fileName = dirsInPath.last()

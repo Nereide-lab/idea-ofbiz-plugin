@@ -25,7 +25,7 @@ import fr.nereide.dom.element.entitymodel.Entity
 import fr.nereide.dom.element.entitymodel.ViewEntity
 import fr.nereide.dom.element.service.Service
 import fr.nereide.dom.element.uilabel.Property
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.MiscUtils
 
 import static fr.nereide.documentation.format.OfbizCommonDocumentationFormatter.*
@@ -38,48 +38,48 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
 
     static String getQuickNavigateInfo(PsiElement element, String elementName) {
         if (!element || !(element instanceof XmlTag)) return null
-        ProjectServiceInterface structureService = element.getProject().getService(ProjectServiceInterface.class)
-        return getTag(element) ? getQuickNavigateDocForElement(getTag(element), structureService, elementName) : null
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(element.project)
+        return getTag(element) ? getQuickNavigateDocForElement(getTag(element), ph, elementName) : null
     }
 
     static String generateDoc(PsiElement element, String elementName) {
         if (!element || !(element instanceof XmlTag)) return null
-        ProjectServiceInterface structureService = element.getProject().getService(ProjectServiceInterface.class)
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(element.project)
         XmlTag tag = getTag(element)
         if (!elementName || !tag) return null
         switch (tag.getLocalName()) {
             case 'service':
-                String serviceName = structureService.getService(elementName)?.name?.value
-                return serviceName ? generateServiceDoc(serviceName, structureService) : 'Service not found'
+                String serviceName = ph.getService(elementName)?.name?.value
+                return serviceName ? generateServiceDoc(serviceName, ph) : 'Service not found'
             case 'entity':
-                String entityName = structureService.getEntity(elementName)?.entityName?.value
-                return entityName ? generateEntityDoc(entityName, structureService) : 'Entity not found'
+                String entityName = ph.getEntity(elementName)?.entityName?.value
+                return entityName ? generateEntityDoc(entityName, ph) : 'Entity not found'
             case 'view-entity':
-                String viewName = structureService.getViewEntity(elementName)?.entityName?.value
-                return viewName ? generateViewDoc(viewName, structureService) : 'View not found'
+                String viewName = ph.getViewEntity(elementName)?.entityName?.value
+                return viewName ? generateViewDoc(viewName, ph) : 'View not found'
             case 'property':
-                String propertyName = structureService.getProperty(MiscUtils.getUiLabelSafeValue(elementName))?.key?.value
-                return propertyName ? generateUiLabelDoc(propertyName, structureService) : 'UiLabel not found'
+                String propertyName = ph.getProperty(MiscUtils.getUiLabelSafeValue(elementName))?.key?.value
+                return propertyName ? generateUiLabelDoc(propertyName, ph) : 'UiLabel not found'
             default: return null
         }
     }
 
-    static String getQuickNavigateDocForElement(XmlTag tag, ProjectServiceInterface structureService, String elementName) {
+    static String getQuickNavigateDocForElement(XmlTag tag, OfbizProjectHelper ph, String elementName) {
         switch (tag.getLocalName()) {
             case 'entity':
-                return generateEntityQuickNavigateDoc(structureService, elementName)
+                return generateEntityQuickNavigateDoc(ph, elementName)
             case 'view-entity':
-                return generateViewQuickNavigateDoc(structureService, elementName)
+                return generateViewQuickNavigateDoc(ph, elementName)
             case 'service':
-                return generateServiceQuickNavigateDoc(structureService, elementName)
+                return generateServiceQuickNavigateDoc(ph, elementName)
             case 'property':
-                return generatePropertyQuickNavigateDoc(MiscUtils.getUiLabelSafeValue(elementName), structureService)
+                return generatePropertyQuickNavigateDoc(MiscUtils.getUiLabelSafeValue(elementName), ph)
             default: return null
         }
     }
 
-    static String generateUiLabelDoc(String propertyName, ProjectServiceInterface ps) {
-        Property property = ps.getProperty(propertyName)
+    static String generateUiLabelDoc(String propertyName, OfbizProjectHelper ph) {
+        Property property = ph.getProperty(propertyName)
         HtmlBuilder docBuilder = new HtmlBuilder()
                 .append(formatPropertyDefinition(property))
                 .append(formatPropertyText(property))
@@ -87,8 +87,8 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
     }
 
 
-    static String generateServiceDoc(String serviceName, ProjectServiceInterface ps) {
-        Service service = ps.getService(serviceName)
+    static String generateServiceDoc(String serviceName, OfbizProjectHelper ph) {
+        Service service = ph.getService(serviceName)
         HtmlBuilder docBuilder = new HtmlBuilder()
                 .append(formatServiceDefinition(service))
                 .append(formatServiceDescription(service))
@@ -100,29 +100,29 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
             docBuilder.append(formatServiceGroupInvoke(service))
                     .br()
         }
-        docBuilder.append(formatServiceAttributes(service, ps))
+        docBuilder.append(formatServiceAttributes(service, ph))
 
         return docBuilder.toString()
     }
 
-    static String generateEntityDoc(String entityName, ProjectServiceInterface ps) {
-        Entity entity = ps.getEntity(entityName)
+    static String generateEntityDoc(String entityName, OfbizProjectHelper ph) {
+        Entity entity = ph.getEntity(entityName)
         HtmlBuilder docBuilder = new HtmlBuilder()
                 .append(formatEntityDefinition(entity))
         if (entity.getFields().size() > 0) {
-            docBuilder.append(formatEntityFieldList(entityName, ps))
+            docBuilder.append(formatEntityFieldList(entityName, ph))
         }
-        if (ps.getExtendEntityListForEntity(entityName).size() > 0) {
-            docBuilder.append(formatExtendEntityListForEntity(entityName, ps))
+        if (ph.getExtendEntityListForEntity(entityName).size() > 0) {
+            docBuilder.append(formatExtendEntityListForEntity(entityName, ph))
         }
         if (entity.getRelations().size() > 0) {
-            docBuilder.append(formatEntityRelations(entityName, ps))
+            docBuilder.append(formatEntityRelations(entityName, ph))
         }
         return docBuilder.toString()
     }
 
-    static String generateViewDoc(String entityName, ProjectServiceInterface ps) {
-        ViewEntity view = ps.getViewEntity(entityName)
+    static String generateViewDoc(String entityName, OfbizProjectHelper ph) {
+        ViewEntity view = ph.getViewEntity(entityName)
         HtmlBuilder docBuilder = new HtmlBuilder()
                 .append(formatViewDefinition(view))
         return docBuilder.toString()
@@ -136,23 +136,23 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
         }
     }
 
-    static String generateEntityQuickNavigateDoc(ProjectServiceInterface structureService, String elementName) {
-        Entity entity = structureService.getEntity(elementName)
+    static String generateEntityQuickNavigateDoc(OfbizProjectHelper ph, String elementName) {
+        Entity entity = ph.getEntity(elementName)
         return formatNavigateDocWithDomElement(entity, 'entity', elementName)
     }
 
-    static String generateViewQuickNavigateDoc(ProjectServiceInterface structureService, String elementName) {
-        ViewEntity view = structureService.getViewEntity(elementName)
+    static String generateViewQuickNavigateDoc(OfbizProjectHelper ph, String elementName) {
+        ViewEntity view = ph.getViewEntity(elementName)
         return formatNavigateDocWithDomElement(view, 'view-entity', elementName)
     }
 
-    static String generateServiceQuickNavigateDoc(ProjectServiceInterface structureService, String elementName) {
-        Service service = structureService.getService(elementName)
+    static String generateServiceQuickNavigateDoc(OfbizProjectHelper ph, String elementName) {
+        Service service = ph.getService(elementName)
         return formatNavigateDocWithDomElement(service, 'service', elementName)
     }
 
-    static String generatePropertyQuickNavigateDoc(String elementName, ProjectServiceInterface structureService) {
-        Property property = structureService.getProperty(elementName)
+    static String generatePropertyQuickNavigateDoc(String elementName, OfbizProjectHelper ph) {
+        Property property = ph.getProperty(elementName)
         return formatNavigateDocWithDomElement(property, 'label', elementName)
     }
 }

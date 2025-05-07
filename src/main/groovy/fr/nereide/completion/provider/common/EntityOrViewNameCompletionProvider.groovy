@@ -26,7 +26,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.entitymodel.Entity
 import fr.nereide.dom.element.entitymodel.ViewEntity
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.MiscUtils
 import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
@@ -37,13 +37,13 @@ class EntityOrViewNameCompletionProvider extends CompletionProvider<CompletionPa
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
 
-        ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
-        addEntitiesLookup(structureService, result)
-        addViewEntitiesLookups(structureService, result)
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
+        addEntitiesLookup(ph, result)
+        addViewEntitiesLookups(ph, result)
     }
 
-    static void addEntitiesLookup(ProjectServiceInterface structureService, CompletionResultSet result) {
-        List entities = structureService.getAllEntities()
+    static void addEntitiesLookup(OfbizProjectHelper ph, CompletionResultSet result) {
+        List entities = ph.getAllEntities()
         for (Entity entity : entities) {
             LookupElement lookupElement = LookupElementBuilder.create(entity.getEntityName())
                     .withIcon(PluginIcons.ENTITY_ICON)
@@ -52,8 +52,8 @@ class EntityOrViewNameCompletionProvider extends CompletionProvider<CompletionPa
         }
     }
 
-    static void addViewEntitiesLookups(ProjectServiceInterface structureService, CompletionResultSet result) {
-        List viewEntities = structureService.getAllViewEntities()
+    static void addViewEntitiesLookups(OfbizProjectHelper ph, CompletionResultSet result) {
+        List viewEntities = ph.getAllViewEntities()
         for (ViewEntity view : viewEntities) {
             LookupElement lookupElement = LookupElementBuilder.create(view.getEntityName())
                     .withIcon(PluginIcons.VIEW_ENTITY_ICON)
