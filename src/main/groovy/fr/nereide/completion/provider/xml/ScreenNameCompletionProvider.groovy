@@ -14,6 +14,7 @@ import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.screen.Screen
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.utils.XmlUtils
 import org.jetbrains.annotations.NotNull
@@ -23,6 +24,7 @@ class ScreenNameCompletionProvider extends CompletionProvider<CompletionParamete
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
+        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         PsiElement myElement = parameters.getPosition()
         List<Screen> screens

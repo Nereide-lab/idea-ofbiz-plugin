@@ -11,6 +11,7 @@ import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
+import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.JavaMethodReference
 import org.jetbrains.annotations.NotNull
 
@@ -19,6 +20,7 @@ class JavaMethodReferenceProvider extends PsiReferenceProvider {
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+        if (!PluginActivator.getInstance(element.project).isActive()) return []
         if (FileReferenceProvider.isJavaService(element)) {
             String classLocation = getClassLocation(element)
             if (!classLocation) return PsiReference.EMPTY_ARRAY

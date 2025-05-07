@@ -21,6 +21,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.util.ProcessingContext
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.utils.UiLabelTextRange
 import fr.nereide.reference.common.UiLabelReference
 import org.jetbrains.annotations.NotNull
@@ -29,6 +30,7 @@ class UiLabelReferenceProvider extends PsiReferenceProvider {
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+        if (!PluginActivator.getInstance(element.project).isActive()) return []
         UiLabelReference property
         String labelValue = element.text.replaceAll('"', '')
         if (labelValue.startsWith('${')) {

@@ -1,6 +1,7 @@
 package fr.nereide.inspection.groovy
 
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizGroovyPatterns
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.codeInspection.BaseInspection
@@ -21,6 +22,7 @@ class DuplicatedEntityGroovyInspection extends BaseInspection {
         return new BaseInspectionVisitor() {
             @Override
             void visitLiteralExpression(@NotNull GrLiteral element) {
+                if (!PluginActivator.getInstance(element.project).isActive()) return
                 if (!(OfbizGroovyPatterns.ENTITY_CALL.accepts(element))) return
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(element.getProject())
                 if (ph.getEntities(element.value).size() > 1 || ph.getViewEntities(element.value).size() > 1) {

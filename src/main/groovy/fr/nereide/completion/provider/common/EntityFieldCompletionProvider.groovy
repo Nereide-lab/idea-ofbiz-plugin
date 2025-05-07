@@ -20,6 +20,7 @@ import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.entitymodel.Entity
 import fr.nereide.dom.element.entitymodel.ViewEntity
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizPatternConst
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
@@ -42,6 +43,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
+        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         String entityName
         try {

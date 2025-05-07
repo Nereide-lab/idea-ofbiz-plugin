@@ -23,6 +23,7 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
+import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.ViewMapReference
 import org.jetbrains.annotations.NotNull
 
@@ -32,6 +33,7 @@ class ViewMapReferenceProvider extends PsiReferenceProvider {
     private static final Logger LOG = Logger.getInstance(ViewMapReferenceProvider.class)
 
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+        if (!PluginActivator.getInstance(element.project).isActive()) return []
         if (element instanceof XmlAttributeValue) {
             ViewMapReference controller = new ViewMapReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) controller

@@ -12,6 +12,7 @@ import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.xml.CreateScreenInScreenFileQuickFix
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import org.jetbrains.annotations.NotNull
 
@@ -29,6 +30,7 @@ class ScreenNotFoundInFileLocationInspection extends OfbizBaseInspection {
         return new XmlElementVisitor() {
             @Override
             void visitXmlAttribute(@NotNull XmlAttribute attribute) {
+                if (!PluginActivator.getInstance(attribute.project).isActive()) return
                 if (!OfbizXmlPatterns.SCREEN_CALL.accepts(attribute.getValueElement())) return
 
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(attribute.project)

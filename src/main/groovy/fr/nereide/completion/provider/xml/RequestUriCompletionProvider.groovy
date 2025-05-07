@@ -18,6 +18,7 @@ import fr.nereide.dom.file.FormFile
 import fr.nereide.dom.file.MenuFile
 import fr.nereide.dom.file.ScreenFile
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.utils.XmlUtils
 import org.jetbrains.annotations.NotNull
@@ -27,6 +28,7 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
+        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         PsiElement myElement = parameters.getPosition()
         XmlElement myAttrValue

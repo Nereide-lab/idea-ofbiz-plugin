@@ -7,6 +7,7 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.reference.xml.ScreenReference
 import org.jetbrains.annotations.NotNull
@@ -23,6 +24,7 @@ class DuplicatedScreenInspection extends OfbizBaseInspection {
         return new XmlElementVisitor() {
             @Override
             void visitXmlAttributeValue(@NotNull XmlAttributeValue val) {
+                if (!PluginActivator.getInstance(val.project).isActive()) return
                 boolean isDefinition = OfbizXmlPatterns.SCREEN_NAME_IN_DEFINITION.accepts(val)
                 if (!isDefinition && !OfbizXmlPatterns.SCREEN_CALL.accepts(val)) return
                 if (!isDuplicate(val, isDefinition)) return

@@ -6,6 +6,7 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.GroovyServiceDefReference
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.GroovyFile
@@ -14,6 +15,7 @@ class GroovyServiceMethodReferenceProvider extends JavaMethodReferenceProvider {
 
     @Override
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
+        if (!PluginActivator.getInstance(element.project).isActive()) return []
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(element.project)
         String locationAttr = getClassLocation(element)
         if (!locationAttr) return PsiReference.EMPTY_ARRAY

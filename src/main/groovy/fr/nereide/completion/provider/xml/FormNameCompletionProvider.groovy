@@ -15,6 +15,7 @@ import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.form.Form
 import fr.nereide.dom.file.FormFile
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
 
@@ -22,6 +23,7 @@ class FormNameCompletionProvider extends CompletionProvider<CompletionParameters
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
+        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         PsiElement myElement = parameters.getPosition()
         List<Form> forms

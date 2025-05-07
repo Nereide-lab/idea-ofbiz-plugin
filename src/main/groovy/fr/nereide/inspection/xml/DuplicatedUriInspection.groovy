@@ -6,6 +6,7 @@ import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
@@ -21,14 +22,15 @@ class DuplicatedUriInspection extends OfbizBaseInspection {
 
         return new XmlElementVisitor() {
             @Override
-            void visitXmlAttributeValue(@NotNull XmlAttributeValue attributeValue) {
-                boolean isInController = OfbizXmlPatterns.URI_IN_REQUEST_DEFINITION.accepts(attributeValue)
-                boolean isElsewhereRelevant = OfbizXmlPatterns.URI_CALL.accepts(attributeValue)
+            void visitXmlAttributeValue(@NotNull XmlAttributeValue val) {
+                if (!PluginActivator.getInstance(val.project).isActive()) return
+                boolean isInController = OfbizXmlPatterns.URI_IN_REQUEST_DEFINITION.accepts(val)
+                boolean isElsewhereRelevant = OfbizXmlPatterns.URI_CALL.accepts(val)
                 if (!(isInController || isElsewhereRelevant)) return
 
-                if (isDuplicated(attributeValue)) {
+                if (isDuplicated(val)) {
                     holder.registerProblem(
-                            attributeValue,
+                            val,
                             message('inspection.uri.duplicate.display.descriptor'),
                             WARNING)
                 }

@@ -5,6 +5,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.inspection.common.OfbizBaseInspection
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.reference.common.ServiceReference
 import org.jetbrains.annotations.NotNull
@@ -21,6 +22,7 @@ class DuplicatedServiceXmlInspection extends OfbizBaseInspection {
         return new XmlElementVisitor() {
             @Override
             void visitXmlAttributeValue(@NotNull XmlAttributeValue val) {
+                if (!PluginActivator.getInstance(val.project).isActive()) return
                 if (!OfbizXmlPatterns.SERVICE_DEF_CALL.accepts(val)) return
                 if (!(new ServiceReference(val).multiResolve(false)?.size() > 1)) return
                 holder.registerProblem(

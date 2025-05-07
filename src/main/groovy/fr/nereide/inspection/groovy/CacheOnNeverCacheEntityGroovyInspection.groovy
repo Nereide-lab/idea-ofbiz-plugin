@@ -3,6 +3,7 @@ package fr.nereide.inspection.groovy
 import com.intellij.codeInspection.ProblemsHolder
 import fr.nereide.inspection.common.InspectionUtil
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
+import fr.nereide.project.PluginActivator
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.codeInspection.GroovyLocalInspectionTool
 import org.jetbrains.plugins.groovy.lang.psi.GroovyElementVisitor
@@ -23,6 +24,7 @@ class CacheOnNeverCacheEntityGroovyInspection extends GroovyLocalInspectionTool 
         return new GroovyElementVisitor() {
             @Override
             void visitReferenceExpression(GrReferenceExpression exp) {
+                if (!PluginActivator.getInstance(exp.project).isActive()) return
                 InspectionUtil.checkAndRegisterCacheOnNeverCacheEntity(exp, holder, myQuickFix)
             }
         }

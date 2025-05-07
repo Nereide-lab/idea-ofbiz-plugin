@@ -11,6 +11,7 @@ import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.xml.AdjustFileLocationPathFix
 import fr.nereide.inspection.quickfix.xml.CreateFileAtLocationFix
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.PluginActivator
 import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
@@ -25,6 +26,7 @@ class EmptyFileLocationInspection extends OfbizBaseInspection {
         return new XmlElementVisitor() {
             @Override
             void visitXmlAttribute(@NotNull XmlAttribute attribute) {
+                if (!PluginActivator.getInstance(attribute.project).isActive()) return
                 if (!attribute.getName() || !(['path', 'location'].contains(attribute.getName()))) {
                     return
                 }
