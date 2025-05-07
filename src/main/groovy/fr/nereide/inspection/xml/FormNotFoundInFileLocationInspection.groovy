@@ -11,7 +11,7 @@ import fr.nereide.dom.filedesc.CompoundFileDescription
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.xml.CreateFormInFormFileQuickFix
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import org.jetbrains.annotations.NotNull
 
@@ -30,15 +30,15 @@ class FormNotFoundInFileLocationInspection extends OfbizBaseInspection {
             @Override
             void visitXmlAttribute(@NotNull XmlAttribute attribute) {
                 if (!OfbizXmlPatterns.FORM_CALL.accepts(attribute.getValueElement())) return
-                ProjectServiceInterface ps = attribute.getProject().getService(ProjectServiceInterface.class)
+                OfbizProjectHelper ph = OfbizProjectHelper.getInstance(attribute.project)
                 XmlAttribute locationAttribute = attribute.getParent().getAttribute('location')
                 XmlAttribute extendsLocationAttribute = attribute.getParent().getAttribute('extends-resource')
                 PsiFile targetFile
                 if (locationAttribute) {
-                    targetFile = ps.getPsiFileAtLocation(locationAttribute.value)
+                    targetFile = ph.getPsiFileAtLocation(locationAttribute.value)
                 } else if (extendsLocationAttribute) {
                     if (extendsLocationAttribute.value.contains('$')) return // dynamic case, just ignore it
-                    targetFile = ps.getPsiFileAtLocation(extendsLocationAttribute.value)
+                    targetFile = ph.getPsiFileAtLocation(extendsLocationAttribute.value)
                 } else {
                     targetFile = attribute.getContainingFile()
                 }

@@ -9,7 +9,7 @@ import com.intellij.psi.PsiFileSystemItem
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.inspection.InspectionBundle
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.FileHandlingUtils
 import org.apache.commons.text.similarity.LevenshteinDistance
 import org.jetbrains.annotations.NotNull
@@ -37,18 +37,18 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
     void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
         XmlAttribute attr = descriptor.getPsiElement() as XmlAttribute
         XmlAttributeValue val = attr.getValueElement()
-        ProjectServiceInterface ps = descriptor.getPsiElement().getProject().getService(ProjectServiceInterface.class)
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(descriptor.psiElement.project)
         List<String> pathList = FileHandlingUtils.splitPathToList(val.value)
         StringBuilder correctionAttempt = new StringBuilder().append('component://')
 
         String componentNameInput = pathList.first()
         String componentName
-        PsiDirectory currentDir = ps.getComponentDir(componentNameInput)
+        PsiDirectory currentDir = ph.getComponentDir(componentNameInput)
 
         if (!currentDir) {
-            List<String> allComponents = ps.getAllComponentsNames()
+            List<String> allComponents = ph.getAllComponentsNames()
             componentName = getMostLikelyCandidateStringInList(allComponents, componentNameInput)
-            currentDir = ps.getComponentDir(componentName)
+            currentDir = ph.getComponentDir(componentName)
         } else {
             componentName = componentNameInput
         }

@@ -5,7 +5,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.inspection.common.OfbizBaseInspection
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
@@ -38,7 +38,7 @@ class DuplicatedUriInspection extends OfbizBaseInspection {
     }
 
     private static boolean isDuplicated(XmlAttributeValue attributeValue) {
-        return attributeValue.getProject().getService(ProjectServiceInterface.class)
+        return OfbizProjectHelper.getInstance(attributeValue.project)
                 .getComponentRequestMaps(MiscUtils.getComponentName(attributeValue))
                 .findAll { it.uri.value == attributeValue.value }
                 .size() > 1

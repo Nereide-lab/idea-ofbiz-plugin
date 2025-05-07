@@ -6,7 +6,7 @@ import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import fr.nereide.inspection.common.OfbizBaseInspection
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.reference.xml.MenuReference
 import org.jetbrains.annotations.NotNull
@@ -37,7 +37,7 @@ class DuplicatedMenuInspection extends OfbizBaseInspection {
     static boolean isDuplicate(XmlAttributeValue val, boolean isDef) {
         XmlElement valToUse = isDef ? val : new MenuReference(val, true).resolve() as XmlElement
         if (!valToUse) return false
-        return val.getProject().getService(ProjectServiceInterface.class)
+        return OfbizProjectHelper.getInstance(val.project)
                 .getAllMenuFromCurrentFileFromElement(valToUse)
                 .findAll { it.name.value == val.value }
                 .size() > 1

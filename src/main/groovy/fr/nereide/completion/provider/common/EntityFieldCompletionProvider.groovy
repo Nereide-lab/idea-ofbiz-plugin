@@ -19,7 +19,7 @@ import com.intellij.util.CommonProcessors
 import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.entitymodel.Entity
 import fr.nereide.dom.element.entitymodel.ViewEntity
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.pattern.OfbizPatternConst
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
@@ -42,7 +42,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
-        ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         String entityName
         try {
             entityName = getEntityNameFromPsiElement(parameters.getPosition())
@@ -52,14 +52,14 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         }
         if (!entityName) return
         if (entityName.startsWith('\"')) entityName = entityName.replaceAll('\"', '')
-        Entity entity = structureService.getEntity(entityName)
+        Entity entity = ph.getEntity(entityName)
 
         if (entity) {
             List<String> entityFields = getEntityFields(entity)
             addLookupElementFromEntity(result, entityFields, entityName)
         } else {
-            ViewEntity view = structureService.getViewEntity(entityName)
-            List<String> viewFields = getViewFields(view, structureService, 0)
+            ViewEntity view = ph.getViewEntity(entityName)
+            List<String> viewFields = getViewFields(view, ph, 0)
             addLookupElementFromEntity(result, viewFields, entityName)
         }
     }

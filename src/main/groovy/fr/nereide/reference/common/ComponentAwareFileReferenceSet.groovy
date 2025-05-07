@@ -21,15 +21,12 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-
-import static fr.nereide.project.utils.XmlUtils.getParentTag
-import static fr.nereide.project.utils.XmlUtils.isPageReferenceFromController
 
 class ComponentAwareFileReferenceSet extends FileReferenceSet {
 
@@ -112,8 +109,8 @@ class ComponentAwareFileReferenceSet extends FileReferenceSet {
         return new FileReference(set, new TextRange(textRangeStart, textRangeEnd), index, component) {
             @NotNull
             ResolveResult[] multiResolve(boolean incompleteCode) {
-                ProjectServiceInterface structureService = set.getElement().getProject().getService(ProjectServiceInterface.class)
-                PsiDirectory vf = structureService.getComponentDir(component)
+                OfbizProjectHelper ph = OfbizProjectHelper.getInstance(set.element.project)
+                PsiDirectory vf = ph.getComponentDir(component)
                 if (vf != null) {
                     ResolveResult[] result = new PsiElementResolveResult(vf)
                     return result

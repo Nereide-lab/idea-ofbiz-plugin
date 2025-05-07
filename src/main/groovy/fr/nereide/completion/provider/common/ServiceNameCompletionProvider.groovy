@@ -25,7 +25,7 @@ import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.service.Service
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.MiscUtils
 import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
@@ -36,8 +36,8 @@ class ServiceNameCompletionProvider extends CompletionProvider<CompletionParamet
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
 
-        ProjectServiceInterface structureService = parameters.getPosition().getProject().getService(ProjectServiceInterface.class)
-        List servicesNames = structureService.getAllServices()
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
+        List servicesNames = ph.getAllServices()
 
         for (Service service : servicesNames) {
             LookupElement lookupElement = LookupElementBuilder.create(service.getName())

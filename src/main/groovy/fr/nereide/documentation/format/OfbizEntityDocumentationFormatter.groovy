@@ -2,7 +2,7 @@ package fr.nereide.documentation.format
 
 import com.intellij.openapi.util.text.HtmlBuilder
 import fr.nereide.dom.element.entitymodel.*
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.MiscUtils
 
 import static com.intellij.lang.documentation.DocumentationMarkup.CONTENT_ELEMENT
@@ -16,9 +16,9 @@ class OfbizEntityDocumentationFormatter extends OfbizCommonDocumentationFormatte
         return formatEntityOrViewDefinition(entity)
     }
 
-    static Element formatExtendEntityListForEntity(String entityName, ProjectServiceInterface ps) {
+    static Element formatExtendEntityListForEntity(String entityName, OfbizProjectHelper ph) {
         HtmlBuilder builder = new HtmlBuilder()
-        List<ExtendEntity> extendList = ps.getExtendEntityListForEntity(entityName)
+        List<ExtendEntity> extendList = ph.getExtendEntityListForEntity(entityName)
         extendList.forEach {
             List<EntityField> extendedFields = it.getFields()
             String fileName = it.getXmlElement().getContainingFile().getName()
@@ -33,9 +33,9 @@ class OfbizEntityDocumentationFormatter extends OfbizCommonDocumentationFormatte
         return builder.wrapWith(CONTENT_ELEMENT)
     }
 
-    static Element formatEntityFieldList(String entityName, ProjectServiceInterface ps) {
+    static Element formatEntityFieldList(String entityName, OfbizProjectHelper ph) {
         HtmlBuilder builder = new HtmlBuilder()
-        Entity entity = ps.getEntity(entityName)
+        Entity entity = ph.getEntity(entityName)
         List<EntityField> fields = entity.getFields()
         List<EntityPrimKey> pks = entity.getPrimKeys()
 
@@ -53,9 +53,9 @@ class OfbizEntityDocumentationFormatter extends OfbizCommonDocumentationFormatte
         return builder.append(pkListBuilder.wrapWith('ul')).wrapWith(CONTENT_ELEMENT)
     }
 
-    static Element formatEntityRelations(String entityName, ProjectServiceInterface ps) {
+    static Element formatEntityRelations(String entityName, OfbizProjectHelper ph) {
         HtmlBuilder builder = new HtmlBuilder()
-        Entity entity = ps.getEntity(entityName)
+        Entity entity = ph.getEntity(entityName)
         List<EntityRelation> relations = entity.getRelations()
 
         builder.append(text("Related to:").bold()).nbsp()

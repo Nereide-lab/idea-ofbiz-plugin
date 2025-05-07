@@ -21,7 +21,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.xml.DomElement
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import org.jetbrains.annotations.Nullable
 
 class RequestMapReference extends PsiReferenceBase<XmlAttributeValue> {
@@ -31,8 +31,8 @@ class RequestMapReference extends PsiReferenceBase<XmlAttributeValue> {
 
     @Nullable
     PsiElement resolve() {
-        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = structureService.getRequestMap(this.getValue())
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.getElement().project)
+        DomElement definition = ph.getRequestMap(this.getValue())
         return definition != null ? definition.getXmlElement() : null
     }
 }

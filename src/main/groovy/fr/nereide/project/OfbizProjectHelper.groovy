@@ -54,14 +54,19 @@ import java.util.regex.Matcher
 import static com.intellij.psi.search.GlobalSearchScope.allScope
 import static com.intellij.psi.search.GlobalSearchScopesCore.directoryScope
 
-class ProjectServiceImpl implements ProjectServiceInterface {
-    private static final Logger LOG = Logger.getInstance(ProjectServiceImpl.class)
+@com.intellij.openapi.components.Service(com.intellij.openapi.components.Service.Level.PROJECT)
+final class OfbizProjectHelper {
+    private static final Logger LOG = Logger.getInstance(OfbizProjectHelper.class)
 
     private final Project project
     private final DomManager domManager
     private final DomService domService
 
-    ProjectServiceImpl(Project project) {
+    static OfbizProjectHelper getInstance(Project project) {
+        return project.getService(OfbizProjectHelper.class)
+    }
+
+    OfbizProjectHelper(Project project) {
         this.project = project
         this.domManager = DomManager.getDomManager(project)
         this.domService = DomService.instance
@@ -198,7 +203,6 @@ class ProjectServiceImpl implements ProjectServiceInterface {
         return null
     }
 
-    @Override
     List<ExtendEntity> getExtendEntityListForEntity(String entityName) {
         return domService.getFileElements(EntityModelFile.class, project, allScope(project))
                 .collect { DomFileElement<EntityModelFile> emf -> emf.rootElement.extendEntities }
@@ -208,13 +212,11 @@ class ProjectServiceImpl implements ProjectServiceInterface {
 
     }
 
-    @Override
     List<DomFileElement<ComponentFile>> getAllComponentsFiles() {
         return domService.getFileElements(ComponentFile.class, project, allScope(project))
                 .findAll { !isInTestDir(it) }
     }
 
-    @Override
     List<String> getAllComponentsNames() {
         return domService.getFileElements(ComponentFile.class, project, allScope(project))
                 .findAll { !isInTestDir(it) }

@@ -4,7 +4,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.util.xml.DomElement
 import fr.nereide.dom.element.entitymodel.*
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 
 class EntityWorker {
 
@@ -28,15 +28,15 @@ class EntityWorker {
     /**
      * Returns a String list of all entity fields with prefixes, and nested views included in the search
      * @param view
-     * @param structureService
+     * @param ph
      * @param index
      * @return
      */
-    static List<String> getViewFields(ViewEntity view, ProjectServiceInterface structureService, int index) {
-        return getViewFields(view, null, structureService, [], index)
+    static List<String> getViewFields(ViewEntity view, OfbizProjectHelper ph, int index) {
+        return getViewFields(view, null, ph, [], index)
     }
 
-    static List<String> getViewFields(ViewEntity view, String prefix, ProjectServiceInterface structureService,
+    static List<String> getViewFields(ViewEntity view, String prefix, OfbizProjectHelper ph,
                                       List<String> excludedFields, int index) {
         List<String> fieldsList = []
         if (index >= 10) return // infinite loop workaround
@@ -50,12 +50,12 @@ class EntityWorker {
                 if (entityName) {
                     List<String> currentExcludedFields = getListOfExcludedFieldNames(aliasAllElmt)
                     if (currentExcludedFields) currentExcludedFields.addAll(excludedFields)
-                    Entity currentEntity = structureService.getEntity(entityName)
+                    Entity currentEntity = ph.getEntity(entityName)
                     if (currentEntity) {
                         fieldsList.addAll(getEntityFields(currentEntity, currentPrefix, currentExcludedFields))
                     } else {
-                        ViewEntity currentView = structureService.getViewEntity(entityName)
-                        List<String> viewFields = getViewFields(currentView, currentPrefix, structureService, currentExcludedFields, index + 1)
+                        ViewEntity currentView = ph.getViewEntity(entityName)
+                        List<String> viewFields = getViewFields(currentView, currentPrefix, ph, currentExcludedFields, index + 1)
                         if (viewFields) fieldsList.addAll(viewFields)
                     }
                 }
@@ -86,10 +86,10 @@ class EntityWorker {
     }
 
     static boolean entityOrViewHasNeverCacheTrueAttr(String entityName, Project project) {
-        ProjectServiceInterface service = project.getService(ProjectServiceInterface.class)
-        Entity entity = service.getEntity(entityName)
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(project)
+        Entity entity = ph.getEntity(entityName)
         if (!entity) {
-            ViewEntity view = service.getViewEntity(entityName)
+            ViewEntity view = ph.getViewEntity(entityName)
             if (!view) return false
             List<ViewEntityMember> members = view.getMemberEntities()
             return members.any {

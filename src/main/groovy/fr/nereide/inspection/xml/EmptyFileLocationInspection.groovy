@@ -10,7 +10,7 @@ import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.xml.AdjustFileLocationPathFix
 import fr.nereide.inspection.quickfix.xml.CreateFileAtLocationFix
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
@@ -34,14 +34,14 @@ class EmptyFileLocationInspection extends OfbizBaseInspection {
                 }
 
                 //Actual control
-                ProjectServiceInterface ps = attribute.getOriginalElement().getProject().getService(ProjectServiceInterface.class)
-                if (!ps.getPsiFileAtLocation(attrValue)) {
+                OfbizProjectHelper ph = OfbizProjectHelper.getInstance(attribute.originalElement.project)
+                if (!ph.getPsiFileAtLocation(attrValue)) {
                     holder.registerProblem(
                             attribute,
                             InspectionBundle.message('inspection.location.target.file.not.found.display.descriptor'),
                             ProblemHighlightType.WARNING,
                             myChangePathQuickFix,
-                            doesComponentExists(ps, attrValue) ? myCreateFileQuickFix : null
+                            doesComponentExists(ph, attrValue) ? myCreateFileQuickFix : null
                     )
                 }
             }
@@ -49,7 +49,7 @@ class EmptyFileLocationInspection extends OfbizBaseInspection {
         }
     }
 
-    private static PsiDirectory doesComponentExists(ProjectServiceInterface ps, String attrValue) {
-        return ps.getComponentDir(FileHandlingUtils.splitPathToList(attrValue)[0])
+    private static PsiDirectory doesComponentExists(OfbizProjectHelper ph, String attrValue) {
+        return ph.getComponentDir(FileHandlingUtils.splitPathToList(attrValue)[0])
     }
 }

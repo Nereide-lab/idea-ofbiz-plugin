@@ -20,7 +20,8 @@ package fr.nereide.reference.common
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.util.xml.DomElement
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.dom.element.entitymodel.EntityRelation
+import fr.nereide.project.OfbizProjectHelper
 import org.jetbrains.annotations.Nullable
 
 class EntityReference extends PsiReferenceBase<PsiElement> {
@@ -30,18 +31,18 @@ class EntityReference extends PsiReferenceBase<PsiElement> {
 
     @Nullable
     PsiElement resolve() {
-        ProjectServiceInterface ps = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        DomElement definition = ps.getEntity(this.getValue())
-        if (!definition) definition = ps.getViewEntity(this.getValue())
-        if (!definition) definition = ps.getEntity(getEntityNameFromGetRelated(ps))
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.getElement().project)
+        DomElement definition = ph.getEntity(this.getValue())
+        if (!definition) definition = ph.getViewEntity(this.getValue())
+        if (!definition) definition = ph.getEntity(getEntityNameFromGetRelated(ph))
         return definition != null ? definition.getXmlElement() : null
     }
 
-    String getEntityNameFromGetRelated(ProjectServiceInterface ps) {
+    String getEntityNameFromGetRelated(OfbizProjectHelper ph) {
         String wantedString = this.getValue()
         if (!wantedString) return null
-        List<fr.nereide.dom.element.entitymodel.EntityRelation> relations = ps.getAllEntityRelations()
-        fr.nereide.dom.element.entitymodel.EntityRelation matchingRel = relations.find { fr.nereide.dom.element.entitymodel.EntityRelation rel ->
+        List<EntityRelation> relations = ph.getAllEntityRelations()
+        EntityRelation matchingRel = relations.find { EntityRelation rel ->
             wantedString == rel.getTitle().getValue() + rel.getRelEntityName().getValue()
         }
         if (!matchingRel) return null

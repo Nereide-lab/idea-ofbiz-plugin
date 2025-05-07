@@ -44,10 +44,6 @@
 
     <extensions defaultExtensionNs="com.intellij">
 
-        <!-- Project MiscUtils for file and DomElement recuperations -->
-        <projectService serviceInterface="fr.nereide.project.ProjectServiceInterface"
-                        serviceImplementation="fr.nereide.project.ProjectServiceImpl"/>
-
         <psi.referenceContributor language="XML" implementation="fr.nereide.reference.contributor.XmlReferenceContributor"/>
 
         <psi.referenceContributor language="JAVA" implementation="fr.nereide.reference.contributor.JavaReferenceContributor"/>

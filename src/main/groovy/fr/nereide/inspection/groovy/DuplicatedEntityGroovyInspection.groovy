@@ -1,6 +1,6 @@
 package fr.nereide.inspection.groovy
 
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.pattern.OfbizGroovyPatterns
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.codeInspection.BaseInspection
@@ -22,8 +22,8 @@ class DuplicatedEntityGroovyInspection extends BaseInspection {
             @Override
             void visitLiteralExpression(@NotNull GrLiteral element) {
                 if (!(OfbizGroovyPatterns.ENTITY_CALL.accepts(element))) return
-                ProjectServiceInterface ps = element.getProject().getService(ProjectServiceInterface.class)
-                if (ps.getEntities(element.value).size() > 1 || ps.getViewEntities(element.value).size() > 1) {
+                OfbizProjectHelper ph = OfbizProjectHelper.getInstance(element.getProject())
+                if (ph.getEntities(element.value).size() > 1 || ph.getViewEntities(element.value).size() > 1) {
                     this.registerError(
                             element,
                             message('inspection.entity.duplicate.display.descriptor'),

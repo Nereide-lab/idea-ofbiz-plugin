@@ -5,7 +5,7 @@ import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.inspection.common.OfbizBaseInspection
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import org.jetbrains.annotations.NotNull
 
@@ -22,8 +22,8 @@ class DuplicatedEntityXmlInspection extends OfbizBaseInspection {
             @Override
             void visitXmlAttributeValue(@NotNull XmlAttributeValue val) {
                 if (!(OfbizXmlPatterns.ENTITY_OR_VIEW_CALL.accepts(val))) return
-                ProjectServiceInterface ps = val.getProject().getService(ProjectServiceInterface.class)
-                if (ps.getEntities(val.value).size() > 1 || ps.getViewEntities(val.value).size() > 1) {
+                OfbizProjectHelper ph = OfbizProjectHelper.getInstance(val.project)
+                if (ph.getEntities(val.value).size() > 1 || ph.getViewEntities(val.value).size() > 1) {
                     holder.registerProblem(
                             val,
                             message('inspection.entity.duplicate.display.descriptor'),

@@ -9,7 +9,7 @@ import fr.nereide.dom.file.UiLabelFile
 import fr.nereide.editor.actions.OfbizDialogBuilder
 import fr.nereide.editor.actions.OfbizSimpleListDialog
 import fr.nereide.inspection.InspectionBundle
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import org.jetbrains.annotations.NotNull
 
 import static com.intellij.openapi.application.ApplicationManager.getApplication
@@ -33,11 +33,11 @@ class CreateMissingLabelFix implements LocalQuickFix {
 
     @Override
     void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        ProjectServiceInterface ps = project.getService(ProjectServiceInterface.class)
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(project)
         XmlAttribute attr = descriptor.getPsiElement() as XmlAttribute
         String labelName = attr.getValue()
         String componentName = getComponentName(attr)
-        Map files = getLabelFilesList(ps, componentName)
+        Map files = getLabelFilesList(ph, componentName)
         OfbizSimpleListDialog dial = new OfbizDialogBuilder(project)
                 .from(files)
                 .title(message("editor.action.create.label.title"))
@@ -47,7 +47,7 @@ class CreateMissingLabelFix implements LocalQuickFix {
         UiLabelFile fileToAddLabelIn
 
         if (getApplication().isUnitTestMode()) {
-            fileToAddLabelIn = ps.getAllUiLabelFilesInComponent(componentName).first()
+            fileToAddLabelIn = ph.getAllUiLabelFilesInComponent(componentName).first()
         } else if (!(dial.showAndGet()) || (!dial.getComboBoxValueOrKey())) {
             return
         } else {
@@ -63,11 +63,11 @@ class CreateMissingLabelFix implements LocalQuickFix {
      * @param uiLabelFileList
      * @return
      */
-    static LinkedHashMap<String, Object> getLabelFilesList(ProjectServiceInterface ps, String componentName) {
+    static LinkedHashMap<String, Object> getLabelFilesList(OfbizProjectHelper ph, String componentName) {
         LinkedHashMap<String, Object> result = [:]
-        ps.getAllUiLabelFilesInComponent(componentName)
+        ph.getAllUiLabelFilesInComponent(componentName)
                 .forEach { file -> result << addLabelFileToMap(file, true) }
-        ps.getAllUiLabelFiles()
+        ph.getAllUiLabelFiles()
                 .forEach { file -> result << addLabelFileToMap(file, false) }
         return result
     }

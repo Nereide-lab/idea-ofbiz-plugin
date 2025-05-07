@@ -2,15 +2,11 @@ package fr.nereide.test.inspection
 
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
-import fr.nereide.inspection.xml.DuplicatedFormInspection
-import fr.nereide.inspection.xml.DuplicatedMenuInspection
-import fr.nereide.inspection.xml.DuplicatedScreenInspection
-import fr.nereide.inspection.xml.DuplicatedUriInspection
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
 import fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection
 import fr.nereide.inspection.xml.LabelNotFoundInXmlInspection
 import fr.nereide.inspection.xml.ScreenNotFoundInFileLocationInspection
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 
 import static fr.nereide.inspection.InspectionBundle.*
 
@@ -143,6 +139,6 @@ class XmlInspectionTest extends BaseInspectionTest {
         final IntentionAction action = myFixture.findSingleIntention(intention)
         assertNotNull action
         myFixture.launchAction(action)
-        assert myFixture.getProject().getService(ProjectServiceInterface.class).getProperty('notExistingLabel')
+        assert OfbizProjectHelper.getInstance(myFixture.project).getProperty('notExistingLabel')
     }
 }

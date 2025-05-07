@@ -3,7 +3,7 @@ package fr.nereide.documentation.format
 import com.intellij.openapi.util.text.HtmlBuilder
 import com.intellij.openapi.util.text.StringUtil
 import fr.nereide.dom.element.service.Service
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.MiscUtils
 
 import static com.intellij.lang.documentation.DocumentationMarkup.*
@@ -51,25 +51,25 @@ class OfbizServiceDocumentationFormatter extends OfbizCommonDocumentationFormatt
         return descriptionContentBuilder.wrapWith(CONTENT_ELEMENT)
     }
 
-    static Element formatServiceAttributes(Service service, ProjectServiceInterface ps) {
+    static Element formatServiceAttributes(Service service, OfbizProjectHelper ph) {
         HtmlBuilder attributesBuilder = new HtmlBuilder()
         attributesBuilder.append(text("Service parameters"))
                 .br()
                 .append(text('Required:'))
 
         HtmlBuilder requiredAttributesBuilder = new HtmlBuilder()
-        formatAttributeListForDisplay(true, service, ps, requiredAttributesBuilder)
+        formatAttributeListForDisplay(true, service, ph, requiredAttributesBuilder)
         attributesBuilder.append(requiredAttributesBuilder.wrapWith('ul'))
                 .append(text('Optional:'))
 
         HtmlBuilder optionalAttributesBuilder = new HtmlBuilder()
-        formatAttributeListForDisplay(false, service, ps, optionalAttributesBuilder)
+        formatAttributeListForDisplay(false, service, ph, optionalAttributesBuilder)
         return attributesBuilder.append(optionalAttributesBuilder.wrapWith('ul'))
                 .wrapWith(CONTENT_ELEMENT)
     }
 
-    static void formatAttributeListForDisplay(boolean required, Service service, ProjectServiceInterface ps, attributesBuilder) {
-        List<Map> optionalAttributes = required ? getRequiredInAttributes(service, ps) : getOptionalInAttributes(service, ps)
+    static void formatAttributeListForDisplay(boolean required, Service service, OfbizProjectHelper ph, attributesBuilder) {
+        List<Map> optionalAttributes = required ? getRequiredInAttributes(service, ph) : getOptionalInAttributes(service, ph)
         optionalAttributes.forEach {
             HtmlBuilder attrBuilder = new HtmlBuilder()
                     .append(text("${it.get(SERVICE_ATTR_NAME)}"))

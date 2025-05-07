@@ -11,7 +11,7 @@ import fr.nereide.dom.filedesc.CompoundFileDescription
 import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.xml.CreateScreenInScreenFileQuickFix
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import org.jetbrains.annotations.NotNull
 
@@ -31,12 +31,12 @@ class ScreenNotFoundInFileLocationInspection extends OfbizBaseInspection {
             void visitXmlAttribute(@NotNull XmlAttribute attribute) {
                 if (!OfbizXmlPatterns.SCREEN_CALL.accepts(attribute.getValueElement())) return
 
-                ProjectServiceInterface ps = attribute.getProject().getService(ProjectServiceInterface.class)
+                OfbizProjectHelper ph = OfbizProjectHelper.getInstance(attribute.project)
                 XmlAttribute locationAttribute = attribute.getParent().getAttribute('location')
                 String targetFileLocation
                 boolean isController
                 (targetFileLocation, isController) = getControllerSafeLocationAttr(locationAttribute ?: attribute)
-                PsiFile targetFile = ps.getPsiFileAtLocation(targetFileLocation)
+                PsiFile targetFile = ph.getPsiFileAtLocation(targetFileLocation)
 
                 if (!targetFile) targetFile = attribute.getContainingFile()
                 if (!targetFile || !(targetFile instanceof XmlFile)) return

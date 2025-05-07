@@ -22,7 +22,7 @@ import com.intellij.psi.PsiElementResolveResult
 import com.intellij.psi.PsiPolyVariantReferenceBase
 import com.intellij.psi.ResolveResult
 import fr.nereide.dom.element.service.Service
-import fr.nereide.project.ProjectServiceInterface
+import fr.nereide.project.OfbizProjectHelper
 
 class ServiceReference extends PsiPolyVariantReferenceBase<PsiElement> {
 
@@ -33,8 +33,8 @@ class ServiceReference extends PsiPolyVariantReferenceBase<PsiElement> {
     @Override
     ResolveResult[] multiResolve(boolean incompleteCode) {
         List<ResolveResult> results = []
-        ProjectServiceInterface structureService = this.getElement().getProject().getService(ProjectServiceInterface.class)
-        List<Service> definitions = structureService.getServices(this.getValue())
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.getElement().project)
+        List<Service> definitions = ph.getServices(this.getValue())
         if (!definitions) return ResolveResult.EMPTY_ARRAY
         for (Service service : definitions) {
             results << new PsiElementResolveResult(service.getXmlElement())
