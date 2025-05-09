@@ -1,5 +1,6 @@
 import groovy.xml.XmlSlurper
 import groovy.xml.MarkupBuilder
+import org.jetbrains.changelog.Changelog
 
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
@@ -107,8 +108,10 @@ task generateUpdatePluginXml {
         <idea-version since-build="${property("ideaMinVersion")}" until-build="${property("ideaMaxVersion")}"/>
         <name>${definedInPluginXml('name')}</name>
         <description>${definedInPluginXml('description')}</description>
-        <change-notes>${changelog.get(pluginVersion).toHTML()}</change-notes>
-    </plugin>""")
+        <change-notes>
+        ${changelog.renderItem(changelog.getLatest().withEmptySections(false), Changelog.OutputType.HTML)}
+        </change-notes>
+        </plugin>""")
             mkp.yield('\n  ')
         }
     }
