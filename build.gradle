@@ -88,6 +88,7 @@ changelog {
  * Generates the updatePlugin.xml files used for the repo.
  */
 task generateUpdatePluginXml {
+    dependsOn patchPluginXml
     // clean file if already exists
     if (file('updatePlugins.xml')) {
         task cleanPluginsFile(type: Delete) {
@@ -111,7 +112,7 @@ task generateUpdatePluginXml {
         <change-notes>
         ${changelog.renderItem(changelog.getLatest().withEmptySections(false), Changelog.OutputType.HTML)}
         </change-notes>
-        </plugin>""")
+    </plugin>""")
             mkp.yield('\n  ')
         }
     }
@@ -123,5 +124,4 @@ task generateUpdatePluginXml {
 buildPlugin {
     dependsOn 'test'
     dependsOn 'generateUpdatePluginXml'
-    tasks.findByName('generateUpdatePluginXml').mustRunAfter 'patchPluginXml'
 }
