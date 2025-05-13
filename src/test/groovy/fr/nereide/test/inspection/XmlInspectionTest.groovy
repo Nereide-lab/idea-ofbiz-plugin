@@ -6,9 +6,10 @@ import fr.nereide.inspection.xml.EmptyFileLocationInspection
 import fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection
 import fr.nereide.inspection.xml.LabelNotFoundInXmlInspection
 import fr.nereide.inspection.xml.ScreenNotFoundInFileLocationInspection
+import fr.nereide.inspection.xml.ServiceNotFoundInXmlInspection
 import fr.nereide.project.OfbizProjectHelper
 
-import static fr.nereide.inspection.InspectionBundle.*
+import static fr.nereide.inspection.InspectionBundle.message
 
 class XmlInspectionTest extends BaseInspectionTest {
 
@@ -140,5 +141,18 @@ class XmlInspectionTest extends BaseInspectionTest {
         assertNotNull action
         myFixture.launchAction(action)
         assert OfbizProjectHelper.getInstance(myFixture.project).getProperty('notExistingLabel')
+    }
+
+    //==============================
+    // SERVICES TESTS
+    //==============================
+    void testServiceNotFoundInspection() {
+        doHighlightTest(true, message('inspection.service.not.found.display.descriptor'),
+                new ServiceNotFoundInXmlInspection())
+    }
+
+    void testServiceNotFoundInspectionSafety() {
+        doHighlightTest(false, message('inspection.service.not.found.display.descriptor'),
+                new ServiceNotFoundInXmlInspection())
     }
 }
