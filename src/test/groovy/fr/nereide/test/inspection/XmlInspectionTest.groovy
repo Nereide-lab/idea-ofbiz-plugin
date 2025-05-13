@@ -3,6 +3,7 @@ package fr.nereide.test.inspection
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
+import fr.nereide.inspection.xml.EntityNotFoundInXmlInspection
 import fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection
 import fr.nereide.inspection.xml.LabelNotFoundInXmlInspection
 import fr.nereide.inspection.xml.ScreenNotFoundInFileLocationInspection
@@ -154,5 +155,18 @@ class XmlInspectionTest extends BaseInspectionTest {
     void testServiceNotFoundInspectionSafety() {
         doHighlightTest(false, message('inspection.service.not.found.display.descriptor'),
                 new ServiceNotFoundInXmlInspection())
+    }
+
+    //==============================
+    // ENTITY TESTS
+    //==============================
+    void testEntityNotFoundInspection() {
+        doHighlightTest(true, message('inspection.entity.not.found.display.descriptor'),
+                new EntityNotFoundInXmlInspection())
+    }
+
+    void testEntityNotFoundInspectionSafety() {
+        doHighlightTest(false, message('inspection.entity.not.found.display.descriptor'),
+                new EntityNotFoundInXmlInspection())
     }
 }

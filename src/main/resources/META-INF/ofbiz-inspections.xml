@@ -116,6 +116,15 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="fr.nereide.inspection.xml.ServiceNotFoundInXmlInspection"/>
+        <localInspection language="XML"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.entity.not.found.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.probable.bugs"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.xml.EntityNotFoundInXmlInspection"/>
 
         <!-- Java Code inspections -->
         <localInspection language="JAVA"

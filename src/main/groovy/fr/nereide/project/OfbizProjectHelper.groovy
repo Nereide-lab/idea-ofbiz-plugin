@@ -104,6 +104,11 @@ final class OfbizProjectHelper {
         return getAllEntities().findAll() { Entity e -> e.entityName.value == name }
     }
 
+    boolean entityOrViewExists(String name) {
+        return (getAllEntities().any() { Entity e -> e.entityName.value == name } ||
+                getAllViewEntities().any() { ViewEntity e -> e.entityName.value == name })
+    }
+
     List<Entity> getAllEntities() {
         return domService.getFileElements(EntityModelFile.class, project, allScope(project))
                 .collect { DomFileElement<EntityModelFile> emf -> emf.rootElement.entities }
