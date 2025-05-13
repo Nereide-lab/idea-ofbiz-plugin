@@ -1,9 +1,11 @@
 package fr.nereide.test.inspection
 
-import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.groovy.CacheOnNeverCacheEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedServiceGroovyInspection
+import fr.nereide.inspection.groovy.ServiceNotFoundInGroovyInspection
+
+import static fr.nereide.inspection.InspectionBundle.message
 
 class GroovyInspectionTest extends BaseInspectionTest {
 
@@ -15,8 +17,8 @@ class GroovyInspectionTest extends BaseInspectionTest {
     void doNeverCacheTest(boolean mustFind) {
         myFixture.enableInspections(new CacheOnNeverCacheEntityGroovyInspection())
         doInspectionThenQuickFixTestWithFileEdit(mustFind,
-                InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix'),
-                InspectionBundle.message('inspection.entity.cache.on.never.cache.display.descriptor'))
+                message('inspection.entity.cache.on.never.cache.use.quickfix'),
+                message('inspection.entity.cache.on.never.cache.display.descriptor'))
     }
 
     void testCacheOnNeverCacheEntityInCompiledGroovy() {
@@ -38,12 +40,26 @@ class GroovyInspectionTest extends BaseInspectionTest {
     void testDuplicatedServiceInspection() {
         myFixture.enableInspections(new DuplicatedServiceGroovyInspection())
         myFixture.configureByFile(testFile)
-        doHighlightTest(true, InspectionBundle.message('inspection.service.duplicate.display.descriptor'))
+        doHighlightTest(true, message('inspection.service.duplicate.display.descriptor'))
     }
 
     void testDuplicatedEntityInspection() {
         myFixture.enableInspections(new DuplicatedEntityGroovyInspection())
         myFixture.configureByFile(testFile)
-        doHighlightTest(true, InspectionBundle.message('inspection.entity.duplicate.display.descriptor'))
+        doHighlightTest(true, message('inspection.entity.duplicate.display.descriptor'))
+    }
+
+    void doServiceTest(boolean shouldFind) {
+        myFixture.enableInspections(new ServiceNotFoundInGroovyInspection())
+        myFixture.configureByFile(testFile)
+        doHighlightTest(shouldFind, message('inspection.service.not.found.display.descriptor'))
+    }
+
+    void testServiceNotFoundInspection() {
+        doServiceTest(true)
+    }
+
+    void testServiceNotFoundInspectionSafety() {
+        doServiceTest(false)
     }
 }

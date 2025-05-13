@@ -9,6 +9,7 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.util.PsiElementFilter
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlTag
+import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.jetbrains.annotations.NotNull
 
@@ -70,6 +71,12 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         final IntentionAction action = myFixture.findSingleIntention(intention)
         assertNotNull action
         myFixture.launchAction(action)
+    }
+
+    void doHighlightTest(boolean shouldFind, String message, OfbizBaseInspection inspection) {
+        myFixture.enableInspections(inspection)
+        myFixture.configureByFile(testFile)
+        doHighlightTest(shouldFind, message)
     }
 
     //#####################################

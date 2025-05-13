@@ -146,17 +146,13 @@ class XmlInspectionTest extends BaseInspectionTest {
     //==============================
     // SERVICES TESTS
     //==============================
-    void doServiceTest(boolean shouldFind) {
-        myFixture.enableInspections(new ServiceNotFoundInXmlInspection())
-        myFixture.configureByFile(testFile)
-        doHighlightTest(shouldFind, message('inspection.service.not.found.display.descriptor'))
-    }
-
     void testServiceNotFoundInspection() {
-        doServiceTest(true)
+        doHighlightTest(true, message('inspection.service.not.found.display.descriptor'),
+                new ServiceNotFoundInXmlInspection())
     }
 
     void testServiceNotFoundInspectionSafety() {
-        doServiceTest(false)
+        doHighlightTest(false, message('inspection.service.not.found.display.descriptor'),
+                new ServiceNotFoundInXmlInspection())
     }
 }
