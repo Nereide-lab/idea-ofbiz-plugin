@@ -41,4 +41,9 @@ class ServiceReference extends PsiPolyVariantReferenceBase<PsiElement> {
         }
         return results.toArray(new ResolveResult[definitions.size()])
     }
+
+    @Override
+    boolean isSoft() {
+        return true
+    }
 }
