@@ -19,11 +19,12 @@
 
 package fr.nereide.test.inspection
 
-
 import fr.nereide.inspection.java.CacheOnNeverCacheEntityJavaInspection
-import fr.nereide.inspection.InspectionBundle
 import fr.nereide.inspection.java.DuplicatedEntityJavaInspection
 import fr.nereide.inspection.java.DuplicatedServiceJavaInspection
+import fr.nereide.inspection.java.ServiceNotFoundInJavaInspection
+
+import static fr.nereide.inspection.InspectionBundle.message
 
 class JavaInspectionTest extends BaseInspectionTest {
 
@@ -35,8 +36,8 @@ class JavaInspectionTest extends BaseInspectionTest {
     void doNeverCacheTest(boolean mustFind) {
         myFixture.enableInspections(new CacheOnNeverCacheEntityJavaInspection())
         doInspectionThenQuickFixTestWithFileEdit(mustFind,
-                InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix'),
-                InspectionBundle.message('inspection.entity.cache.on.never.cache.display.descriptor'))
+                message('inspection.entity.cache.on.never.cache.use.quickfix'),
+                message('inspection.entity.cache.on.never.cache.display.descriptor'))
     }
 
     void testCacheOnNeverCacheEntity() {
@@ -56,14 +57,22 @@ class JavaInspectionTest extends BaseInspectionTest {
     }
 
     void testDuplicatedServiceInspection() {
-        myFixture.enableInspections(new DuplicatedServiceJavaInspection())
-        myFixture.configureByFile(testFile)
-        doHighlightTest(true, InspectionBundle.message('inspection.service.duplicate.display.descriptor'))
+        doHighlightTest(true, message('inspection.service.duplicate.display.descriptor'),
+                new DuplicatedServiceJavaInspection())
     }
 
     void testDuplicatedEntityInspection() {
-        myFixture.enableInspections(new DuplicatedEntityJavaInspection())
-        myFixture.configureByFile(testFile)
-        doHighlightTest(true, InspectionBundle.message('inspection.entity.duplicate.display.descriptor'))
+        doHighlightTest(true, message('inspection.entity.duplicate.display.descriptor'),
+                new DuplicatedEntityJavaInspection())
+    }
+
+    void testServiceNotFoundInspection() {
+        doHighlightTest(true, message('inspection.service.not.found.display.descriptor'),
+                new ServiceNotFoundInJavaInspection())
+    }
+
+    void testServiceNotFoundInspectionSafety() {
+        doHighlightTest(false, message('inspection.service.not.found.display.descriptor'),
+                new ServiceNotFoundInJavaInspection())
     }
 }

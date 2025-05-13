@@ -145,6 +145,15 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="fr.nereide.inspection.java.DuplicatedEntityJavaInspection"/>
+        <localInspection language="JAVA"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.service.not.found.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.probable.bugs"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.java.ServiceNotFoundInJavaInspection"/>
 
         <!-- Groovy Code inspections -->
         <localInspection language="Groovy"
