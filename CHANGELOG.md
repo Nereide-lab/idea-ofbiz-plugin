@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+- [18] Adds the service not found inspection for java, xml, and groovy
+
 ## [1.7.0] Technical update, Activator, and refacto
 ### Changed
 - [#NA] Updated Intellij version to 2025.1
