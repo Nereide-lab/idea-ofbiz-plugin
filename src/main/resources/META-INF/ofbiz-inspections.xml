@@ -210,5 +210,14 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="fr.nereide.inspection.groovy.ServiceNotFoundInGroovyInspection"/>
+        <localInspection language="Groovy"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.entity.not.found.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.probable.bugs"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.groovy.EntityNotFoundInGroovyInspection"/>
     </extensions>
 </idea-plugin>

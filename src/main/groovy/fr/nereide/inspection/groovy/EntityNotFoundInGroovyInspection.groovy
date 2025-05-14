@@ -1,5 +1,6 @@
 package fr.nereide.inspection.groovy
 
+
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizGroovyPatterns
@@ -11,8 +12,7 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
 import static fr.nereide.inspection.InspectionBundle.message
 
-class ServiceNotFoundInGroovyInspection extends BaseInspection {
-
+class EntityNotFoundInGroovyInspection extends BaseInspection {
     @Override
     boolean isEnabledByDefault() {
         return true
@@ -24,12 +24,12 @@ class ServiceNotFoundInGroovyInspection extends BaseInspection {
             @Override
             void visitLiteralExpression(@NotNull GrLiteral element) {
                 if (!PluginActivator.getInstance(element.project).isActive() ||
-                        !(OfbizGroovyPatterns.SERVICE_CALL.accepts(element))) return
+                        !(OfbizGroovyPatterns.ENTITY_CALL.accepts(element))) return
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(element.project)
-                if (!(ph.getService(element.value))) {
+                if (!(ph.entityOrViewExists(element.value))) {
                     this.registerError(
                             element,
-                            message('inspection.service.not.found.display.descriptor'),
+                            message('inspection.entity.not.found.display.descriptor'),
                             null,
                             WARNING)
                 }
