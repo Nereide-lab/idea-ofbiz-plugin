@@ -22,6 +22,7 @@ package fr.nereide.test.inspection
 import fr.nereide.inspection.java.CacheOnNeverCacheEntityJavaInspection
 import fr.nereide.inspection.java.DuplicatedEntityJavaInspection
 import fr.nereide.inspection.java.DuplicatedServiceJavaInspection
+import fr.nereide.inspection.java.EntityNotFoundInJavaInspection
 import fr.nereide.inspection.java.ServiceNotFoundInJavaInspection
 
 import static fr.nereide.inspection.InspectionBundle.message
@@ -74,5 +75,15 @@ class JavaInspectionTest extends BaseInspectionTest {
     void testServiceNotFoundInspectionSafety() {
         doHighlightTest(false, message('inspection.service.not.found.display.descriptor'),
                 new ServiceNotFoundInJavaInspection())
+    }
+
+    void testEntityNotFoundInspection() {
+        doHighlightTest(true, message('inspection.entity.not.found.display.descriptor'),
+                new EntityNotFoundInJavaInspection())
+    }
+
+    void testEntityNotFoundInspectionSafety() {
+        doHighlightTest(false, message('inspection.entity.not.found.display.descriptor'),
+                new EntityNotFoundInJavaInspection())
     }
 }

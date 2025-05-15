@@ -3,6 +3,7 @@ package fr.nereide.test.inspection
 import fr.nereide.inspection.groovy.CacheOnNeverCacheEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedServiceGroovyInspection
+import fr.nereide.inspection.groovy.EntityNotFoundInGroovyInspection
 import fr.nereide.inspection.groovy.ServiceNotFoundInGroovyInspection
 
 import static fr.nereide.inspection.InspectionBundle.message
@@ -38,28 +39,32 @@ class GroovyInspectionTest extends BaseInspectionTest {
     }
 
     void testDuplicatedServiceInspection() {
-        myFixture.enableInspections(new DuplicatedServiceGroovyInspection())
-        myFixture.configureByFile(testFile)
-        doHighlightTest(true, message('inspection.service.duplicate.display.descriptor'))
+        doHighlightTest(true, message('inspection.service.duplicate.display.descriptor'),
+                new DuplicatedServiceGroovyInspection())
     }
 
     void testDuplicatedEntityInspection() {
-        myFixture.enableInspections(new DuplicatedEntityGroovyInspection())
-        myFixture.configureByFile(testFile)
-        doHighlightTest(true, message('inspection.entity.duplicate.display.descriptor'))
-    }
-
-    void doServiceTest(boolean shouldFind) {
-        myFixture.enableInspections(new ServiceNotFoundInGroovyInspection())
-        myFixture.configureByFile(testFile)
-        doHighlightTest(shouldFind, message('inspection.service.not.found.display.descriptor'))
+        doHighlightTest(true, message('inspection.entity.duplicate.display.descriptor'),
+                new DuplicatedEntityGroovyInspection())
     }
 
     void testServiceNotFoundInspection() {
-        doServiceTest(true)
+        doHighlightTest(true, message('inspection.service.not.found.display.descriptor'),
+                new ServiceNotFoundInGroovyInspection())
     }
 
     void testServiceNotFoundInspectionSafety() {
-        doServiceTest(false)
+        doHighlightTest(false, message('inspection.service.not.found.display.descriptor'),
+                new ServiceNotFoundInGroovyInspection())
+    }
+
+    void testEntityNotFoundInspection() {
+        doHighlightTest(true, message('inspection.entity.not.found.display.descriptor'),
+                new EntityNotFoundInGroovyInspection())
+    }
+
+    void testEntityNotFoundInspectionSafety() {
+        doHighlightTest(false, message('inspection.entity.not.found.display.descriptor'),
+                new EntityNotFoundInGroovyInspection())
     }
 }

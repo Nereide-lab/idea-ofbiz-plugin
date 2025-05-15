@@ -20,4 +20,5 @@
     <entity entity-name="DuplicatedEntityInspection"> </entity>
     <entity entity-name="DuplicatedEntityInspection"> </entity>
 
+    <entity entity-name="Gustave"> </entity>
 </entitymodel>

@@ -2,6 +2,7 @@ package fr.nereide.test.inspection
 
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
+import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -9,7 +10,6 @@ import com.intellij.psi.PsiManager
 import com.intellij.psi.util.PsiElementFilter
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlTag
-import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.jetbrains.annotations.NotNull
 
@@ -73,7 +73,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         myFixture.launchAction(action)
     }
 
-    void doHighlightTest(boolean shouldFind, String message, OfbizBaseInspection inspection) {
+    void doHighlightTest(boolean shouldFind, String message, LocalInspectionTool inspection) {
         myFixture.enableInspections(inspection)
         myFixture.configureByFile(testFile)
         doHighlightTest(shouldFind, message)
