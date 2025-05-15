@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- [18] Adds the service not found inspection for java, xml, and groovy
+- [#18] Adds the service not found inspection for java, xml, and groovy
+- [#19] Adds the entity not found inspection for java, xml, and groovy
+- [#19] Adds the missing descriptions to inspections (very light descriptions)
 
 ## [1.7.0] Technical update, Activator, and refacto
 ### Changed
