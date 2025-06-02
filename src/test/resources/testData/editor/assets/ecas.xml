@@ -2,6 +2,6 @@
 
 <service-eca xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/service-eca.xsd">
-    <eca service="ServiceEcaMarkerInJavaService">
+    <eca service="ServiceEcaMarkerInJavaElement">
     </eca>
 </service-eca>
