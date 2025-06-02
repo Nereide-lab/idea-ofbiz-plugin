@@ -50,6 +50,7 @@ import fr.nereide.dom.file.*
 import fr.nereide.project.utils.FileHandlingUtils
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.reference.common.ComponentAwareFileReferenceSet
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
 
 import java.util.regex.Matcher
 
@@ -441,6 +442,8 @@ final class OfbizProjectHelper {
             serviceName = (element as XmlAttributeValue).value
         } else if (element instanceof PsiLiteralExpression) {
             serviceName = (element as PsiLiteralExpression).value
+        } else if (element instanceof GrLiteral) { // Groovy case
+            serviceName = (element as GrLiteral).value
         }
 
         if (getService(serviceName) == null) {

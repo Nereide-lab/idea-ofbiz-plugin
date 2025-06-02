@@ -20,6 +20,6 @@
           xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/services.xsd">
 
     <service name="ServiceEcaMarkerInJavaElement"/>
-
     <service name="ServiceEcaMarkerInXmlElement"/>
+    <service name="ServiceEcaMarkerInGroovyElement"/>
 </services>
