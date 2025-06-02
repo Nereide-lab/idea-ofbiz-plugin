@@ -21,7 +21,7 @@ class DuplicatedEntityJavaInspection extends OfbizBaseInspection {
             @Override
             void visitLiteralExpression(@NotNull PsiLiteralExpression el) {
                 if (!PluginActivator.getInstance(el.project).isActive()) return
-                if (!OfbizJavaPatterns.ENTITY_CALL) return
+                if (!OfbizJavaPatterns.ENTITY_CALL.accepts(el)) return
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(el.project)
                 if (ph.getEntities(el.value).size() > 1 || ph.getViewEntities(el.value).size() > 1) {
                     holder.registerProblem(
