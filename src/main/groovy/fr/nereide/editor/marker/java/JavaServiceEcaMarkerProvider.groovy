@@ -1,4 +1,4 @@
-package fr.nereide.editor.marker
+package fr.nereide.editor.marker.java
 
 import com.intellij.codeInsight.daemon.DefaultGutterIconNavigationHandler
 import com.intellij.codeInsight.daemon.LineMarkerInfo
