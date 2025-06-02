@@ -1,49 +1,19 @@
 package fr.nereide.editor.marker.java
 
-import com.intellij.codeInsight.daemon.DefaultGutterIconNavigationHandler
-import com.intellij.codeInsight.daemon.LineMarkerInfo
-import com.intellij.codeInsight.daemon.LineMarkerProvider
-import com.intellij.openapi.editor.markup.GutterIconRenderer
-import com.intellij.psi.PsiElement
+
+import com.intellij.patterns.PsiElementPattern
 import com.intellij.psi.PsiJavaToken
-import fr.nereide.project.OfbizProjectHelper
-import fr.nereide.project.PluginActivator
+import fr.nereide.editor.marker.BaseServiceEcaMarker
 import fr.nereide.project.pattern.OfbizJavaPatterns
-import icons.PluginIcons
-import org.jetbrains.annotations.NotNull
 
-import java.util.function.Supplier
+class JavaServiceEcaMarkerProvider extends BaseServiceEcaMarker {
 
-class JavaServiceEcaMarkerProvider implements LineMarkerProvider {
+    PsiElementPattern getPattern() {
+        return OfbizJavaPatterns.SERVICE_CALL
+    }
 
-    @Override
-    LineMarkerInfo<?> getLineMarkerInfo(@NotNull PsiElement element) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return null
-        if (!OfbizJavaPatterns.SERVICE_CALL.accepts(element)) return null
-        PsiElement elementToRegister = element.getFirstChild()
-        if (!(elementToRegister instanceof PsiJavaToken)) return null
-
-        List<PsiElement> ecas = OfbizProjectHelper.getInstance(element.project)
-                .getEcasForService(element)
-                .collect { it.getXmlElement()?.getNavigationElement() }
-
-        if (ecas && ecas.size() > 0) {
-            return new LineMarkerInfo<PsiElement>(
-                    elementToRegister,
-                    element.getTextRange(),
-                    PluginIcons.ECA_ICON,
-                    (psiElement) -> 'Eca(s) present on service',
-                    new DefaultGutterIconNavigationHandler<>(ecas, 'Ecas detected'),
-                    GutterIconRenderer.Alignment.RIGHT,
-                    new Supplier<String>() {
-                        @Override
-                        String get() {
-                            return 'Service ECA detected'
-                        }
-                    }
-            )
-        }
-        return null
+    Class getLeafElementType() {
+        return PsiJavaToken.class
     }
 
 }

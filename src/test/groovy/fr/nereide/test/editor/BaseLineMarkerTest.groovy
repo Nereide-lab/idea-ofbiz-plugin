@@ -4,7 +4,9 @@ import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
 import com.intellij.psi.PsiElement
 import fr.nereide.test.BaseOfbizPluginTestCase
+import org.junit.Ignore
 
+@Ignore('Parent class, No tests here')
 class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
 
     static final String BASE_TEST_DIR = 'src/test/resources/testData/editor'
