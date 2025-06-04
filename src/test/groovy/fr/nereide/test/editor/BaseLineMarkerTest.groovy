@@ -23,16 +23,10 @@ class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
 
     protected String getExtension() { return 'xml' }
 
-//    protected String getDestination() { return null }
-
     @Override
     protected void setUp() {
         super.setUp()
         myFixture.copyDirectoryToProject('assets', '')
-//        if (getDestination()) {
-//            String file = "${this.getTestName(false)}.${getExtension()}"
-//            myFixture.moveFile(file, getDestination())
-//        }
     }
 
     protected void doTest(LineMarkerProvider lineMarker, String tooltip) {
