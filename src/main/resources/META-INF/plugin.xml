@@ -45,6 +45,7 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="fr.nereide.editor.marker.java.JavaServiceEcaMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="Groovy" implementationClass="fr.nereide.editor.marker.groovy.GroovyServiceEcaMarkerProvider"/>
         <codeInsight.lineMarkerProvider language="XML" implementationClass="fr.nereide.editor.marker.xml.XmlServiceEcaMarkerProvider"/>
 
         <psi.referenceContributor language="XML" implementation="fr.nereide.reference.contributor.XmlReferenceContributor"/>
