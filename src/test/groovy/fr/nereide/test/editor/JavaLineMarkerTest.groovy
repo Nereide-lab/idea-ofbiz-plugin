@@ -13,6 +13,6 @@ class JavaLineMarkerTest extends BaseLineMarkerTest {
     }
 
     void testServiceEcaMarkerInJava() {
-        doTest(new JavaServiceEcaMarkerProvider(), 'Eca(s) present on service')
+        doTest(new JavaServiceEcaMarkerProvider(), '1 ECA(s) present on service')
     }
 }

@@ -14,6 +14,6 @@ class XmlLineMarkerTests extends BaseLineMarkerTest {
     }
 
     void testServiceEcaMarkerInXml() {
-        doTest(new XmlServiceEcaMarkerProvider(), 'Eca(s) present on service')
+        doTest(new XmlServiceEcaMarkerProvider(), '1 ECA(s) present on service')
     }
 }

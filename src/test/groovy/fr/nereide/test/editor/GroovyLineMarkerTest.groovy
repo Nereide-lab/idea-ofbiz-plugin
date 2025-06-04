@@ -13,6 +13,6 @@ class GroovyLineMarkerTest extends BaseLineMarkerTest {
     }
 
     void testServiceEcaMarkerInGroovy() {
-        doTest(new GroovyServiceEcaMarkerProvider(), 'Eca(s) present on service')
+        doTest(new GroovyServiceEcaMarkerProvider(), '1 ECA(s) present on service')
     }
 }
