@@ -34,7 +34,8 @@ import fr.nereide.dom.element.Webapp
 import fr.nereide.dom.element.controller.Include
 import fr.nereide.dom.element.controller.RequestMap
 import fr.nereide.dom.element.controller.ViewMap
-import fr.nereide.dom.element.eca.Eca
+import fr.nereide.dom.element.serviceeca.Eca as Seca
+import fr.nereide.dom.element.entityeca.Eca as Eeca
 import fr.nereide.dom.element.entityengine.Datasource
 import fr.nereide.dom.element.entitymodel.Entity
 import fr.nereide.dom.element.entitymodel.EntityRelation
@@ -436,25 +437,41 @@ final class OfbizProjectHelper {
                 .collect { it.rootElement }
     }
 
-    List<Eca> getEcasForService(PsiElement element) {
-        String serviceName = element.text
-        if (element instanceof XmlAttributeValue) {
-            serviceName = (element as XmlAttributeValue).value
-        } else if (element instanceof PsiLiteralExpression) {
-            serviceName = (element as PsiLiteralExpression).value
-        } else if (element instanceof GrLiteral) { // Groovy case
-            serviceName = (element as GrLiteral).value
-        }
-
+    List<Seca> getEcasForService(PsiElement element) {
+        String serviceName = getStringValueFromPsiElement(element)
         if (getService(serviceName) == null) {
             return []
         }
-
         return domService.getFileElements(ServiceEcaFile.class, project, allScope(project))
                 .collect { it.rootElement.ecas }
                 .flatten()
-                .findAll { Eca eca ->
+                .findAll { Seca eca ->
                     eca.service && eca.service.value == serviceName
-                } as List<Eca>
+                } as List<Seca>
     }
+
+    List<Eeca> getEcasForEntity(PsiElement element) {
+        String entityName = getStringValueFromPsiElement(element)
+        if (getEntity(entityName) == null) {
+            return []
+        }
+        return domService.getFileElements(EntityEcaFile.class, project, allScope(project))
+                .collect { it.rootElement.ecas }
+                .flatten()
+                .findAll { Eeca eca ->
+                    eca.entity && eca.entity.value == entityName
+                } as List<Eeca>
+    }
+
+    static String getStringValueFromPsiElement(PsiElement element) {
+        if (element instanceof XmlAttributeValue) {
+            return (element as XmlAttributeValue).value
+        } else if (element instanceof PsiLiteralExpression) {
+            return (element as PsiLiteralExpression).value
+        } else if (element instanceof GrLiteral) { // Groovy case
+            return (element as GrLiteral).value
+        }
+        return element.text
+    }
+
 }
