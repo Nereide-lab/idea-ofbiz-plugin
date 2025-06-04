@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+- [#21] Added gutter flag for services with an ECA.
+  - If service only has one eca, clicking will navigate to the ECA.
+  - If multiple ECA exists, a clic will display the list.
 
 ## [1.7.1]
 ### Added

@@ -45,6 +45,7 @@ class PluginIcons {
     static final Icon VIEW_ENTITY_ICON = new LayeredIcon(2)
     static final Icon SERVICE_ICON = new LayeredIcon(2)
 
+    static final Icon ECA_ICON = new LayeredIcon(2)
     static {
         ENTITY_FILE_ICON.setIcon(BASE_LOGO, 0)
         ENTITY_FILE_ICON.setIcon(IconLoader.getIcon('/icons/ENT.svg', PluginIcons.class),
@@ -80,6 +81,10 @@ class PluginIcons {
 
         SERVICE_ICON.setIcon(BASE_LOGO, 0)
         SERVICE_ICON.setIcon(IconLoader.getIcon('/icons/Gear.svg', PluginIcons.class),
+                1, MIDDLE, MIDDLE)
+
+        ECA_ICON.setIcon(BASE_LOGO, 0)
+        ECA_ICON.setIcon(AllIcons.Actions.InlayGear,
                 1, MIDDLE, MIDDLE)
     }
 }

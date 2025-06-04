@@ -22,6 +22,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
@@ -33,6 +34,7 @@ import fr.nereide.dom.element.Webapp
 import fr.nereide.dom.element.controller.Include
 import fr.nereide.dom.element.controller.RequestMap
 import fr.nereide.dom.element.controller.ViewMap
+import fr.nereide.dom.element.eca.Eca
 import fr.nereide.dom.element.entityengine.Datasource
 import fr.nereide.dom.element.entitymodel.Entity
 import fr.nereide.dom.element.entitymodel.EntityRelation
@@ -48,6 +50,7 @@ import fr.nereide.dom.file.*
 import fr.nereide.project.utils.FileHandlingUtils
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.reference.common.ComponentAwareFileReferenceSet
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
 
 import java.util.regex.Matcher
 
@@ -431,5 +434,27 @@ final class OfbizProjectHelper {
         return domService
                 .getFileElements(UiLabelFile.class, project, directoryScope(getComponentDir(componentName), true))
                 .collect { it.rootElement }
+    }
+
+    List<Eca> getEcasForService(PsiElement element) {
+        String serviceName = element.text
+        if (element instanceof XmlAttributeValue) {
+            serviceName = (element as XmlAttributeValue).value
+        } else if (element instanceof PsiLiteralExpression) {
+            serviceName = (element as PsiLiteralExpression).value
+        } else if (element instanceof GrLiteral) { // Groovy case
+            serviceName = (element as GrLiteral).value
+        }
+
+        if (getService(serviceName) == null) {
+            return []
+        }
+
+        return domService.getFileElements(ServiceEcaFile.class, project, allScope(project))
+                .collect { it.rootElement.ecas }
+                .flatten()
+                .findAll { Eca eca ->
+                    eca.service && eca.service.value == serviceName
+                } as List<Eca>
     }
 }

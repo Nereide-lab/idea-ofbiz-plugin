@@ -25,7 +25,7 @@ class ServiceWorker {
         List<Map> paramListToReturn = []
         // Vanilla params
         paramListToReturn.addAll(serviceAttributes.stream()
-                .filter { optional == 'true' ? !isRequired(it) : isRequired(it) }
+                .filter { optional == 'true' ? !isRequiredAttribute(it) : isRequiredAttribute(it) }
                 .filter { IN_SERVICE_MODE.contains(it.mode.value) }
                 .map { makeServiceAttrMap(it) }
                 .collect())
@@ -72,7 +72,7 @@ class ServiceWorker {
         return attrMap
     }
 
-    private static boolean isRequired(ServiceAttribute it) {
+    private static boolean isRequiredAttribute(ServiceAttribute it) {
         return !it.optional.value || it.optional.value == 'false'
     }
 
