@@ -2,13 +2,13 @@ package fr.nereide.editor.marker.groovy
 
 import com.intellij.patterns.PsiElementPattern
 import com.intellij.psi.PsiElement
-import fr.nereide.editor.marker.common.CommonServiceMarkerProvider
+import fr.nereide.editor.marker.common.CommonEntityMarkerProvider
 import fr.nereide.project.pattern.OfbizGroovyPatterns
 
-class GroovyServiceEcaMarkerProvider extends CommonServiceMarkerProvider {
+class GroovyEntityEcaMarkerProvider extends CommonEntityMarkerProvider {
 
     PsiElementPattern getPattern() {
-        return OfbizGroovyPatterns.SERVICE_CALL
+        return OfbizGroovyPatterns.ENTITY_CALL
     }
 
     Class getLeafElementType() {

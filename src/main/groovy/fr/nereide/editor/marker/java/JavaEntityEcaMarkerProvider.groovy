@@ -2,13 +2,13 @@ package fr.nereide.editor.marker.java
 
 import com.intellij.patterns.PsiElementPattern
 import com.intellij.psi.PsiJavaToken
-import fr.nereide.editor.marker.common.CommonServiceMarkerProvider
+import fr.nereide.editor.marker.common.CommonEntityMarkerProvider
 import fr.nereide.project.pattern.OfbizJavaPatterns
 
-class JavaServiceEcaMarkerProvider extends CommonServiceMarkerProvider {
+class JavaEntityEcaMarkerProvider extends CommonEntityMarkerProvider {
 
     PsiElementPattern getPattern() {
-        return OfbizJavaPatterns.SERVICE_CALL
+        return OfbizJavaPatterns.ENTITY_CALL
     }
 
     Class getLeafElementType() {

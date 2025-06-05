@@ -1,4 +1,4 @@
-package fr.nereide.dom.element.eca
+package fr.nereide.dom.element.commoneca
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.GenericAttributeValue
