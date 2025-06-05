@@ -1,0 +1,2 @@
+
+def bossOfMe = from('EntityEcaMarkerInGroovyElement')
