@@ -1,0 +1,2 @@
+Plugin made to facilitate OFBiz development with Intellij. Provides completions, navigation, some inspections and a few other small things.
+See https://labs.nereide.fr/10031/intellij-plugin-v2 for more informations.

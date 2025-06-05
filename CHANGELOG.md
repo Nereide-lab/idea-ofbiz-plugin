@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- [#23] Updated and cleaned-up build.gradle file
+### Added
 - [#20] Added gutter flag for entities with an ECA.
   - If entity only has one eca, clicking will navigate to the ECA.
   - If multiple ECA exists, a clic will display the list.

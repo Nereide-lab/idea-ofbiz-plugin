@@ -1,19 +1,13 @@
 import groovy.xml.XmlSlurper
 import groovy.xml.MarkupBuilder
 import org.jetbrains.changelog.Changelog
-
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
-def property(String key) { return project.findProperty(key).toString() }
-
-static def definedInPluginXml(String key) {
-    File pluginXmlFile = new File('src/main/resources/META-INF/plugin.xml')
-    def idea = new XmlSlurper().parse(pluginXmlFile)
-    return idea."$key"
-}
-
+//============================================
+//   BUILD
+//============================================
 plugins {
-    id 'org.jetbrains.intellij.platform' version '2.5.0'
+    id 'org.jetbrains.intellij.platform' version '2.6.0'
     id 'groovy'
     id 'java'
     id 'org.jetbrains.changelog' version '2.2.1'
@@ -21,7 +15,6 @@ plugins {
 
 repositories {
     mavenCentral()
-
     intellijPlatform {
         defaultRepositories()
     }
@@ -43,23 +36,14 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.12.2'
 }
 
-
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
 }
 
-/**
- * Refreshes the plugin.xml file for deployment
- */
-String ideaMinVersion = property("ideaMinVersion")
-String ideaMaxVersion = property("ideaMaxVersion")
-String pluginVersion = property("version")
-patchPluginXml {
-    changeNotes = changelog.get(pluginVersion).toHTML()
-    version = pluginVersion
-    sinceBuild = ideaMinVersion
-    untilBuild = ideaMaxVersion
+buildPlugin {
+    dependsOn 'test'
+    dependsOn 'generateUpdatePluginXml'
 }
 
 test {
@@ -74,9 +58,15 @@ tasks {
     }
 }
 
-/**
- * Config for changelog Plugin
- */
+//============================================
+//   CONFIGS
+//============================================
+String changelogText = "${changelog.renderItem(changelog.getLatest().withEmptySections(false), Changelog.OutputType.HTML)}" as String
+String pluginDesc = file('shortPluginDesc.md').text
+String ideaMinVersion = property("ideaMinVersion")
+String ideaMaxVersion = property("ideaMaxVersion")
+String pluginVersion = property("version")
+
 changelog {
     itemPrefix = "-"
     keepUnreleasedSection = false
@@ -84,9 +74,17 @@ changelog {
     groups = ["Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"]
 }
 
-/**
- * Generates the updatePlugin.xml files used for the repo.
- */
+patchPluginXml {
+    changeNotes = changelogText
+    version = pluginVersion
+    sinceBuild = ideaMinVersion
+    untilBuild = ideaMaxVersion
+    pluginDescription = pluginDesc
+}
+
+//============================================
+//   DEPLOY
+//============================================
 task generateUpdatePluginXml {
     dependsOn patchPluginXml
     // clean file if already exists
@@ -95,33 +93,33 @@ task generateUpdatePluginXml {
             delete 'updatePlugins.xml'
         }
     }
-    file("updatePlugins.xml").withWriter { writer ->
+    file('updatePlugins.xml').withPrintWriter { writer ->
         def xml = new MarkupBuilder(writer)
-        // Leave file comment
-        xml.doubleQuotes = true
-        xml.mkp.xmlDeclaration(version: '1.0', encoding: 'utf-8')
-
-        xml.plugins {
-            mkp.yield('\n  ')
+        xml.with {
+            doubleQuotes = true
+            mkp.xmlDeclaration(version: '1.0', encoding: 'utf-8')
             mkp.comment("AUTO-GENERATED FILE")
-            mkp.yieldUnescaped("""
-    <plugin id="${definedInPluginXml('id')}" url="${property("downloadUrl")}${property('name')}-${property("version")}.zip" version="${property("version")}">
-        <idea-version since-build="${property("ideaMinVersion")}" until-build="${property("ideaMaxVersion")}"/>
-        <name>${definedInPluginXml('name')}</name>
-        <description>${definedInPluginXml('description')}</description>
-        <change-notes>
-        ${changelog.renderItem(changelog.getLatest().withEmptySections(false), Changelog.OutputType.HTML)}
-        </change-notes>
-    </plugin>""")
-            mkp.yield('\n  ')
+        }
+        xml.plugins {
+            'plugin'(id: "${getInPluginBaseFile('id')}",
+                    url: "${property("downloadUrl")}${property('name')}-$pluginVersion}.zip",
+                    version: "${property("version")}") {
+                'idea-version'('since-build': "$ideaMinVersion", 'until-build': "$ideaMaxVersion")
+                'name'("${getInPluginBaseFile('name')}")
+                mkp.yieldUnescaped "<description><![CDATA[ $pluginDesc ]]></description>"
+                'change-notes'(changelogText)
+            }
         }
     }
 }
 
-/**
- * Adds tests on build
- */
-buildPlugin {
-    dependsOn 'test'
-    dependsOn 'generateUpdatePluginXml'
+//============================================
+//   UTILS
+//============================================
+def property(String key) { return project.findProperty(key).toString() }
+
+static def getInPluginBaseFile(String key) {
+    File pluginXmlFile = new File('src/main/resources/META-INF/plugin.xml')
+    def idea = new XmlSlurper().parse(pluginXmlFile)
+    return idea."$key"
 }
