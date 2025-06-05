@@ -7,7 +7,7 @@ import fr.nereide.project.OfbizProjectHelper
 
 import java.util.function.Supplier
 
-class CommonServiceMarkerProvider extends OfbizBaseLineMarker {
+abstract class CommonServiceMarkerProvider extends OfbizBaseLineMarker {
 
     ServiceEcaPresentationRenderer getRenderer() {
         return new ServiceEcaPresentationRenderer()

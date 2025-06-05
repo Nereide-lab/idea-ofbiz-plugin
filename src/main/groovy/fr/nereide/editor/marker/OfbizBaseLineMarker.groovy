@@ -14,25 +14,26 @@ import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
 
 import java.awt.event.MouseEvent
+import java.util.function.Function
 import java.util.function.Supplier
 
 import static com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment
 
-class OfbizBaseLineMarker implements LineMarkerProvider {
+abstract class OfbizBaseLineMarker implements LineMarkerProvider {
 
-    PsiElementPattern getPattern() { return null }
+    abstract PsiElementPattern getPattern()
 
-    Class getLeafElementType() { return null }
+    abstract Class getLeafElementType()
 
-    PsiTargetPresentationRenderer<PsiElement> getRenderer() { return null }
+    abstract PsiTargetPresentationRenderer<PsiElement> getRenderer()
 
-    String getListTitle() { return null }
+    abstract String getListTitle()
 
-    def getTooltipProvider(List<PsiElement> navEls) { return null }
+    abstract def getTooltipProvider(List<PsiElement> navEls)
 
-    Supplier<String> getMessageSupplier() { return null }
+    abstract Supplier<String> getMessageSupplier()
 
-    List<PsiElement> getNavigatableList(PsiElement element) { return null }
+    abstract List<PsiElement> getNavigatableList(PsiElement element)
 
     @Override
     LineMarkerInfo<PsiElement> getLineMarkerInfo(@NotNull PsiElement element) {

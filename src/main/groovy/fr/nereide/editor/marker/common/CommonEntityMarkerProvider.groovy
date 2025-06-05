@@ -7,7 +7,7 @@ import fr.nereide.project.OfbizProjectHelper
 
 import java.util.function.Supplier
 
-class CommonEntityMarkerProvider extends OfbizBaseLineMarker {
+abstract class CommonEntityMarkerProvider extends OfbizBaseLineMarker {
 
     EntityEcaPresentationRenderer getRenderer() {
         return new EntityEcaPresentationRenderer()
