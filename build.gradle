@@ -102,7 +102,7 @@ task generateUpdatePluginXml {
         }
         xml.plugins {
             'plugin'(id: "${getInPluginBaseFile('id')}",
-                    url: "${property("downloadUrl")}${property('name')}-$pluginVersion}.zip",
+                    url: "${property("downloadUrl")}${property('name')}-${pluginVersion}.zip",
                     version: "${property("version")}") {
                 'idea-version'('since-build': "$ideaMinVersion", 'until-build': "$ideaMaxVersion")
                 'name'("${getInPluginBaseFile('name')}")
