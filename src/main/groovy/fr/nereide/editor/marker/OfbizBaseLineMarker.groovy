@@ -14,7 +14,6 @@ import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
 
 import java.awt.event.MouseEvent
-import java.util.function.Function
 import java.util.function.Supplier
 
 import static com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment
