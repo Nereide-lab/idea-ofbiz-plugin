@@ -46,6 +46,8 @@ import fr.nereide.dom.element.form.Grid
 import fr.nereide.dom.element.menu.Menu
 import fr.nereide.dom.element.screen.Screen
 import fr.nereide.dom.element.service.Service
+import fr.nereide.dom.element.serviceengine.Engine
+import fr.nereide.dom.element.serviceengine.ServiceEngine
 import fr.nereide.dom.element.uilabel.Property
 import fr.nereide.dom.file.*
 import fr.nereide.project.utils.FileHandlingUtils
@@ -474,4 +476,12 @@ final class OfbizProjectHelper {
         return element.text
     }
 
+    Engine getEngine(String name) {
+        return domService.getFileElements(ServiceEngineFile.class, project, allScope(project))
+                .collect { it.rootElement.serviceEngines.engines }
+                .flatten()
+                .find { Engine engine ->
+                    engine.name.value == name
+                }
+    }
 }

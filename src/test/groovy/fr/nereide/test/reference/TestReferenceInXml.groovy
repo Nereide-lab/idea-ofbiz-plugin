@@ -27,6 +27,7 @@ import fr.nereide.reference.xml.JavaMethodReference
 import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.reference.xml.ScreenReference
+import fr.nereide.reference.xml.EngineReference
 import fr.nereide.reference.xml.ViewMapReference
 
 class TestReferenceInXml extends BaseReferenceTestCase {
@@ -116,5 +117,9 @@ class TestReferenceInXml extends BaseReferenceTestCase {
 
     void testServiceReferenceInXmlDataFile() {
         doTest(ServiceReference.class, 'Croissance3000Service')
+    }
+
+    void testServiceEngineReferenceTest() {
+        doTest(EngineReference.class, 'entity-auto')
     }
 }

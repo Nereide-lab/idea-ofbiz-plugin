@@ -61,5 +61,6 @@
         <dom.fileMetaData implementation="fr.nereide.dom.filedesc.EntityEngineFileDescription" rootTagName="entity-config"/>
         <dom.fileMetaData implementation="fr.nereide.dom.filedesc.ServiceEcaFileDescription" rootTagName="service-eca"/>
         <dom.fileMetaData implementation="fr.nereide.dom.filedesc.EntityEcaFileDescription" rootTagName="entity-eca"/>
+        <dom.fileMetaData implementation="fr.nereide.dom.filedesc.ServiceEngineFileDescription" rootTagName="service-config"/>
     </extensions>
 </idea-plugin>
