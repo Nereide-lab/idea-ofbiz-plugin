@@ -98,6 +98,10 @@ class OfbizXmlPatterns {
             xmlAttributeValue().withParent(xmlAttribute().withName('datasource-name'))
     )
 
+    public static final XmlAttributeValuePattern SERVICE_ENGINE_CALL = xmlAttributeValue().andOr(
+            xmlAttributeValue().withParent(xmlAttribute().withName('engine').withParent(xmlTag().withName('service')))
+    )
+
     public static final XmlAttributeValuePattern ENTITY_FIELD_CALL = xmlAttributeValue().andOr(
             xmlAttributeValue().inside(nameAttr().withParent(aliasTag()))
                     .andNot(xmlAttributeValue().inside(nameAttr().withParent(aliasTag().withChild(fieldAttr())))),

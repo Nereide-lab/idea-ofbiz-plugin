@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        intellijIdeaCommunity('2025.1')
+        intellijIdeaCommunity('2024.2') // rollbacking IJ version for now (see https://youtrack.jetbrains.com/issue/IDEA-366433/Duplicate-content-root-and-file-not-treated-as-source)
         bundledPlugins('com.intellij.java', 'org.intellij.groovy', 'org.intellij.intelliLang')
         pluginVerifier()
         zipSigner()
