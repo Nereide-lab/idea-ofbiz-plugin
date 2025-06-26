@@ -384,10 +384,10 @@ final class OfbizProjectHelper {
         PsiDirectory directoryToSearch = getComponentDir(componentName)
         String webappDirName = location.substring(location.indexOf('/') + 1, location.length())
         directoryToSearch = directoryToSearch
-                .findSubdirectory('webapp')
-                .findSubdirectory(webappDirName)
-                .findSubdirectory('WEB-INF')
-
+                ?.findSubdirectory('webapp')
+                ?.findSubdirectory(webappDirName)
+                ?.findSubdirectory('WEB-INF')
+        if(!directoryToSearch) return
         List controllerFiles = domService.getFileElements(
                 ControllerFile.class,
                 myElement.project,
@@ -401,7 +401,7 @@ final class OfbizProjectHelper {
                 requestsUris << request.uri.value
             }
         }
-        return requestsUris
+        return requestsUris.flatten()
     }
 
     List<RequestMap> getRequestsFromImports(ControllerFile controllerFile) {

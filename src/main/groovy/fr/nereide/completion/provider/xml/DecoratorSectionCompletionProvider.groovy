@@ -40,15 +40,31 @@ class DecoratorSectionCompletionProvider extends CompletionProvider<CompletionPa
         } catch (ClassCastException ignored) {
             myAttrValue = myElement as XmlElement
         }
-        XmlTag decoratorSectionTag = PsiTreeUtil.getParentOfType(myAttrValue, XmlTag.class, false)
+        Screen decoratorScreen = getDecoratorScreenFromContext(ph, myAttrValue)
+        if (!decoratorScreen) return
+        List includes = decoratorScreen.sections?.flatten()
+                ?.collect { ScreenSection scrSec -> scrSec.widgets }?.flatten()
+                ?.collect { ScreenWidget scrWid -> scrWid.includeScreens }?.flatten()
 
+        List<String> decoratorSections = includes.collect { IncludeScreen incScrTag ->
+            getDecoratorSectionsFromInclude(incScrTag, ph, myAttrValue, decoratorScreen.name.value)
+        }?.flatten()
+
+        decoratorSections.forEach {
+            LookupElement lookupElement = LookupElementBuilder.create(it)
+                    .withTailText(" Found in FooScreen" as String, true)
+            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
+        }
+    }
+
+    static Screen getDecoratorScreenFromContext(OfbizProjectHelper ph, XmlElement myAttrValue) {
+        XmlTag decoratorSectionTag = PsiTreeUtil.getParentOfType(myAttrValue, XmlTag.class, false)
         int i = 0
         while (decoratorSectionTag.getName() != 'decorator-section' && i < 4) {
             decoratorSectionTag = PsiTreeUtil.getParentOfType(decoratorSectionTag, XmlTag.class, false)
             i++
         }
         if (decoratorSectionTag.getName() != 'decorator-section') return
-
         XmlTag decoratorScreenTag = decoratorSectionTag.parentTag
         i = 0
         while (decoratorSectionTag.parentTag && decoratorScreenTag.name != 'decorator-screen' && i < 4) {
@@ -58,38 +74,27 @@ class DecoratorSectionCompletionProvider extends CompletionProvider<CompletionPa
         if (decoratorScreenTag.getName() != 'decorator-screen') return
         String screenLocation = decoratorScreenTag.getAttributeValue('location')
         String decoratorName = decoratorScreenTag.getAttributeValue('name')
+        return ph.getScreenFromFileAtLocation(screenLocation, decoratorName)
+    }
 
-        Screen decoratorScreen = ph.getScreenFromFileAtLocation(screenLocation, decoratorName)
-
-        List includes = decoratorScreen.sections?.flatten()
-                .collect { ScreenSection scrSec -> scrSec.widgets }?.flatten()
-                .collect { ScreenWidget scrWid -> scrWid.includeScreens }?.flatten()
-
-        List<String> decoratorSections = includes.collect { IncludeScreen incScrTag ->
-            XmlAttribute screenNameXmlValue = incScrTag.name.xmlElement
-            XmlTag resolvedScreen = new ScreenReference(screenNameXmlValue.valueElement).resolve()
-            if (!resolvedScreen) {
-                PsiDirectory commonThemeDir = ph.getComponentDir('common-theme')
-                if (!commonThemeDir) return
-                XmlFile commonScreenFile = commonThemeDir.findSubdirectory('widget').findFile('CommonScreens.xml')
-                ScreenFile screenFile = DomManager.getDomManager(myAttrValue.project)
-                        .getFileElement(commonScreenFile, ScreenFile.class)
-                        ?.rootElement
-                resolvedScreen = screenFile.screens.find {
-                    it.name.value == decoratorName
-                }?.xmlElement
-            }
-            if (!resolvedScreen) return
-
-            List<XmlTag> decoratorSectionTags = PsiTreeUtil.collectElements(resolvedScreen, getSectionTagFilter())
-            return decoratorSectionTags.collect { it.getAttributeValue('name') }
-        }?.flatten()
-
-        decoratorSections.forEach {
-            LookupElement lookupElement = LookupElementBuilder.create(it)
-                    .withTailText(" Found in FooScreen" as String, true)
-            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
+    private static List<String> getDecoratorSectionsFromInclude(IncludeScreen incScrTag, OfbizProjectHelper ph, XmlElement myAttrValue, String decoratorName) {
+        XmlAttribute screenNameXmlValue = incScrTag.name.xmlElement as XmlAttribute
+        XmlTag resolvedScreen = new ScreenReference(screenNameXmlValue.valueElement).resolve() as XmlTag
+        if (!resolvedScreen) {
+            PsiDirectory commonThemeDir = ph.getComponentDir('common-theme')
+            if (!commonThemeDir) return
+            XmlFile commonScreenFile = commonThemeDir.findSubdirectory('widget').findFile('CommonScreens.xml') as XmlFile
+            ScreenFile screenFile = DomManager.getDomManager(myAttrValue.project)
+                    .getFileElement(commonScreenFile, ScreenFile.class)
+                    ?.rootElement
+            resolvedScreen = screenFile.screens.find {
+                it.name.value == decoratorName
+            }?.xmlElement as XmlTag
         }
+        if (!resolvedScreen) return
+
+        return PsiTreeUtil.collectElements(resolvedScreen, getSectionTagFilter())
+                ?.collect { XmlTag sectionIncludeTag -> sectionIncludeTag.getAttributeValue('name') }
     }
 
     private static PsiElementFilter getSectionTagFilter() {
