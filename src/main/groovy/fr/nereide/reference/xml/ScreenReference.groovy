@@ -40,15 +40,23 @@ class ScreenReference extends GenericXmlReference {
         super(screenName, soft)
     }
 
+    ScreenReference(XmlAttributeValue screenName) {
+        super(screenName, true)
+    }
+
     PsiElement resolve() {
         XmlTag containingTag = (XmlTag) getParentTag(this.getElement())
         if (!containingTag) {
             return null
         }
         PsiElement locationAttribute = containingTag.getAttribute('location')
-        if (locationAttribute && !(locationAttribute.value.contains('${'))) {
-            Screen screen = ph.getScreenFromFileAtLocation(locationAttribute.value, this.value)
-            return screen ? screen.xmlElement : null
+        if (locationAttribute) {
+            if (locationAttribute.value.contains('${')) {
+                return null
+            } else {
+                Screen screen = ph.getScreenFromFileAtLocation(locationAttribute.value, this.value)
+                return screen ? screen.xmlElement : null
+            }
         } else if (isPageReferenceFromController(containingTag)) {
             return resolveScreenInController(this.getElement(), ph)
         } else if (isInRightFile(this.getElement(), fileType, dm)) {

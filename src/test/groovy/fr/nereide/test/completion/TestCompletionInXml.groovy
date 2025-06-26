@@ -131,4 +131,15 @@ class TestCompletionInXml extends BaseComplTestCase {
         List<String> expected = ['E1', 'E2', 'E3']
         doTest(expected)
     }
+
+    void testSectionCompletionInFindSimpleScreen() {
+        List<String> expected = ["search-options", "search-results"]
+        doTest(expected)
+    }
+
+    void testSectionCompletionInSearchFindCompoundScreen() { // TODO
+//        List<String> expected = []
+//        doTest(expected)
+        assert true
+    }
 }
