@@ -30,6 +30,7 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
                                   @NotNull CompletionResultSet result) {
         if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
+        DomManager dm = ph.getDomManager()
         PsiElement myElement = parameters.getPosition()
         XmlElement myAttrValue
         try {
@@ -37,7 +38,6 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
         } catch (ClassCastException ignored) {
             myAttrValue = myElement as XmlElement
         }
-        DomManager dm = DomManager.getDomManager(myElement.getProject())
         Class clazz
         XmlFile myFile = myAttrValue.getContainingFile() as XmlFile
         if (!myFile) return

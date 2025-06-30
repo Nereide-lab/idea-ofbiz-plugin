@@ -16,7 +16,6 @@ import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
-import com.intellij.util.xml.DomManager
 import fr.nereide.dom.element.screen.IncludeScreen
 import fr.nereide.dom.element.screen.Screen
 import fr.nereide.dom.element.screen.ScreenSection
@@ -27,8 +26,6 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.reference.xml.ScreenReference
 import org.jetbrains.annotations.NotNull
-
-import static com.intellij.util.xml.DomManager.getDomManager
 
 class DecoratorSectionCompletionProvider extends CompletionProvider<CompletionParameters> {
 
@@ -90,7 +87,7 @@ class DecoratorSectionCompletionProvider extends CompletionProvider<CompletionPa
             PsiDirectory commonThemeDir = ph.getComponentDir('common-theme')
             if (!commonThemeDir) return
             XmlFile commonScreenFile = commonThemeDir.findSubdirectory('widget').findFile('CommonScreens.xml') as XmlFile
-            ScreenFile screenFile = getDomManager(ph.getProject())
+            ScreenFile screenFile = ph.getDomManager()
                     .getFileElement(commonScreenFile, ScreenFile.class)
                     ?.rootElement
             resolvedScreen = screenFile.screens.find {
@@ -99,8 +96,7 @@ class DecoratorSectionCompletionProvider extends CompletionProvider<CompletionPa
         }
         if (!resolvedScreen) return
 
-        List<IncludeScreen> includes = getIncludesInScreenDom(
-                getDomManager(ph.getProject()).getDomElement(resolvedScreen) as Screen)
+        List<IncludeScreen> includes = getIncludesInScreenDom(ph.getDomManager().getDomElement(resolvedScreen) as Screen)
 
         if (includes) {
             includes.forEach { include ->
