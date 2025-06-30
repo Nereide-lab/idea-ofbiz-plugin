@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.7.3]
 ### Added
 - [#24] Reference to service engines (with relevant dom interfaced)
 - [#25] Added completion for Screen sections in screen with decorators (with relevant dom interfaced)
