@@ -24,6 +24,7 @@ import fr.nereide.dom.element.screen.ScreenWidget
 import fr.nereide.dom.file.ScreenFile
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.PluginActivator
+import fr.nereide.project.utils.MiscUtils
 import fr.nereide.reference.xml.ScreenReference
 import org.jetbrains.annotations.NotNull
 
@@ -46,13 +47,15 @@ class DecoratorSectionCompletionProvider extends CompletionProvider<CompletionPa
                 ?.collect { ScreenSection scrSec -> scrSec.widgets }?.flatten()
                 ?.collect { ScreenWidget scrWid -> scrWid.includeScreens }?.flatten()
 
-        List<String> decoratorSections = includes.collect { IncludeScreen incScrTag ->
+        List<XmlAttribute> decoratorSections = includes.collect { IncludeScreen incScrTag ->
             getDecoratorSectionsFromInclude(incScrTag, ph, myAttrValue, decoratorScreen.name.value)
         }?.flatten()
 
-        decoratorSections.forEach {
-            LookupElement lookupElement = LookupElementBuilder.create(it)
-                    .withTailText(" Found in FooScreen" as String, true)
+        decoratorSections.forEach { attr ->
+            String componentName = MiscUtils.getComponentName(attr)
+            String fileName = attr.getContainingFile().getName()
+            LookupElement lookupElement = LookupElementBuilder.create(attr.value)
+                    .withTailText("  $fileName [$componentName]" as String, true)
             result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
         }
     }
@@ -77,7 +80,7 @@ class DecoratorSectionCompletionProvider extends CompletionProvider<CompletionPa
         return ph.getScreenFromFileAtLocation(screenLocation, decoratorName)
     }
 
-    private static List<String> getDecoratorSectionsFromInclude(IncludeScreen incScrTag, OfbizProjectHelper ph, XmlElement myAttrValue, String decoratorName) {
+    private static List<XmlAttribute> getDecoratorSectionsFromInclude(IncludeScreen incScrTag, OfbizProjectHelper ph, XmlElement myAttrValue, String decoratorName) {
         XmlAttribute screenNameXmlValue = incScrTag.name.xmlElement as XmlAttribute
         XmlTag resolvedScreen = new ScreenReference(screenNameXmlValue.valueElement).resolve() as XmlTag
         if (!resolvedScreen) {
@@ -94,7 +97,7 @@ class DecoratorSectionCompletionProvider extends CompletionProvider<CompletionPa
         if (!resolvedScreen) return
 
         return PsiTreeUtil.collectElements(resolvedScreen, getSectionTagFilter())
-                ?.collect { XmlTag sectionIncludeTag -> sectionIncludeTag.getAttributeValue('name') }
+                ?.collect { XmlTag sectionIncludeTag -> sectionIncludeTag.getAttribute('name') }
     }
 
     private static PsiElementFilter getSectionTagFilter() {
