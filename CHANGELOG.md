@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Fixed a potential NPE when collecting Uris in components
+- 
+### Changed
+- [#26] Small refactor of DomManager call
 
 ## [1.7.2]
 ### Changed
