@@ -30,5 +30,10 @@ class TestCompletionInXmlCpd extends BaseComplTestCase {
     void testFormNameCompletionInCpdFormWithLocationOutCpd() {
         doTest(['SomeDistantForestForm', 'SomeOtherDistantForestForm'])
     }
+
+    void testSectionCompletionInSearchFindCompoundScreen() {
+        doTest(['actions', 'menu-bar', 'single', 'content', 'list'])
+    }
+
 }
 

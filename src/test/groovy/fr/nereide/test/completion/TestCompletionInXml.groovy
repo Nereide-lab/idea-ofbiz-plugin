@@ -137,9 +137,4 @@ class TestCompletionInXml extends BaseComplTestCase {
         doTest(expected)
     }
 
-    void testSectionCompletionInSearchFindCompoundScreen() { // TODO
-//        List<String> expected = []
-//        doTest(expected)
-        assert true
-    }
 }

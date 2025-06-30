@@ -161,9 +161,10 @@ class OfbizXmlPatterns {
     public static final XmlAttributeValuePattern REL_ENTITY_ALIAS_IN_VIEW_LINK = xmlAttributeValue()
             .withParent(xmlAttribute('rel-entity-alias').withParent(xmlTag().withName('view-link')))
 
-    public static final XmlAttributeValuePattern SECTION_ATTR_IN_SCREEN_WITH_DECORATOR = xmlAttributeValue()
-            .withParent(xmlAttribute('name')
-                    .withParent(xmlTag().withName('decorator-section')))
+    public static final XmlAttributeValuePattern SECTION_ATTR_IN_SCREEN_WITH_DECORATOR = xmlAttributeValue().andOr(
+            xmlAttributeValue().withParent(nameAttr().withParent(decoratorSectionTag())),
+            xmlAttributeValue().withParent(nameAttr().withParent(decoratorSectionTagInScreenNs()))
+    )
 
     //============================================
     //       UTILITY METHODS
@@ -332,7 +333,15 @@ class OfbizXmlPatterns {
     }
 
     static XmlAttributeValuePattern dynamicElement() {
-        xmlAttributeValue().withValue(string().contains('${'))
+        return xmlAttributeValue().withValue(string().contains('${'))
+    }
+
+    private static Capture decoratorSectionTag() {
+        return xmlTag().withName('decorator-section')
+    }
+
+    private static Capture decoratorSectionTagInScreenNs() {
+        return xmlTag().withName("${SCREEN_NS_PREFIX}decorator-section").withNamespace(SCREEN_NS_URL).andNot(withDynamicLocation())
     }
 
 }

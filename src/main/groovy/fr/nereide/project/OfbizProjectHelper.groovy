@@ -78,6 +78,12 @@ final class OfbizProjectHelper {
         this.domService = DomService.instance
     }
 
+    Project getProject() { return this.project }
+
+    DomManager getDomManager() { return this.domManager }
+
+    DomService getDomService() { return this.domService }
+
     RequestMap getRequestMap(String name) {
         List<ControllerFile> relevantDomBlocs = getAllControllerFiles()
         return relevantDomBlocs.collect { ControllerFile cf -> cf.requestMaps }
@@ -387,7 +393,7 @@ final class OfbizProjectHelper {
                 ?.findSubdirectory('webapp')
                 ?.findSubdirectory(webappDirName)
                 ?.findSubdirectory('WEB-INF')
-        if(!directoryToSearch) return
+        if (!directoryToSearch) return
         List controllerFiles = domService.getFileElements(
                 ControllerFile.class,
                 myElement.project,
