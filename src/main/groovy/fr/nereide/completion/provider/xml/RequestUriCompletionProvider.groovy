@@ -59,6 +59,7 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
         if (targetType && targetType == 'inter-app') {
             Map<String, List<String>> mountPointAndRequestMaps = ph.getAllMountPointsAndRequestMaps(myElement)
             mountPointAndRequestMaps.forEach { String mountPoint, List uris ->
+                if (!uris) return
                 uris.forEach { uri ->
                     String lookupValue = "$mountPoint/control/$uri"
                     LookupElement lookupElement = LookupElementBuilder.create(lookupValue)

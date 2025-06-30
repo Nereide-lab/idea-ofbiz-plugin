@@ -43,6 +43,8 @@ class XmlCompletionContributor extends OfbizBaseCompletionContributor {
                 psiElement().inside(OfbizXmlPatterns.ENTITY_ALIAS_IN_VIEW_LINK),
                 psiElement().inside(OfbizXmlPatterns.REL_ENTITY_ALIAS_IN_VIEW_LINK),
         ), new EntityAliasCompletionProvider())
+        this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.SECTION_ATTR_IN_SCREEN_WITH_DECORATOR),
+                new DecoratorSectionCompletionProvider())
     }
 }
 

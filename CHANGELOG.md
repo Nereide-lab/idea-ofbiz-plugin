@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- [#24] Reference to service engines
+- [#24] Reference to service engines (with relevant dom interfaced)
+- [#25] Added completion for Screen sections in screen with decorators (with relevant dom interfaced)
+
+### Fixed
+- Fixed a potential NPE when collecting Uris in components
 
 ## [1.7.2]
 ### Changed

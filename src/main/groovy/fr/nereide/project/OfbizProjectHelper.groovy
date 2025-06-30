@@ -78,6 +78,12 @@ final class OfbizProjectHelper {
         this.domService = DomService.instance
     }
 
+    Project getProject() { return this.project }
+
+    DomManager getDomManager() { return this.domManager }
+
+    DomService getDomService() { return this.domService }
+
     RequestMap getRequestMap(String name) {
         List<ControllerFile> relevantDomBlocs = getAllControllerFiles()
         return relevantDomBlocs.collect { ControllerFile cf -> cf.requestMaps }
@@ -384,10 +390,10 @@ final class OfbizProjectHelper {
         PsiDirectory directoryToSearch = getComponentDir(componentName)
         String webappDirName = location.substring(location.indexOf('/') + 1, location.length())
         directoryToSearch = directoryToSearch
-                .findSubdirectory('webapp')
-                .findSubdirectory(webappDirName)
-                .findSubdirectory('WEB-INF')
-
+                ?.findSubdirectory('webapp')
+                ?.findSubdirectory(webappDirName)
+                ?.findSubdirectory('WEB-INF')
+        if (!directoryToSearch) return
         List controllerFiles = domService.getFileElements(
                 ControllerFile.class,
                 myElement.project,
@@ -401,7 +407,7 @@ final class OfbizProjectHelper {
                 requestsUris << request.uri.value
             }
         }
-        return requestsUris
+        return requestsUris.flatten()
     }
 
     List<RequestMap> getRequestsFromImports(ControllerFile controllerFile) {

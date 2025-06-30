@@ -4,6 +4,7 @@ import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.GenericAttributeValue
 import com.intellij.util.xml.NameValue
 import com.intellij.util.xml.Stubbed
+import com.intellij.util.xml.SubTagList
 import com.intellij.util.xmlb.annotations.Attribute
 
 interface Screen extends DomElement {
@@ -11,4 +12,7 @@ interface Screen extends DomElement {
     @Stubbed
     @Attribute("name")
     GenericAttributeValue<String> getName()
+
+    @SubTagList('section')
+    List<ScreenSection> getSections()
 }

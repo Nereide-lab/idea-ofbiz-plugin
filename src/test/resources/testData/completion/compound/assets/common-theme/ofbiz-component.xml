@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ofbiz-component name="common-theme"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/ofbiz-component.xsd">
+
+    <webapp name="common-theme"
+            title="common theme"
+            server="default-server"
+            location="webapp/common-theme"
+            mount-point="/common"
+            app-bar-display="false"/>
+
+</ofbiz-component>
