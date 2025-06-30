@@ -226,7 +226,6 @@ final class OfbizProjectHelper {
                 .flatten()
                 .findAll { ExtendEntity ee -> ee.entityName.value == entityName }
                 .collect() as List<ExtendEntity>
-
     }
 
     List<DomFileElement<ComponentFile>> getAllComponentsFiles() {
@@ -432,7 +431,6 @@ final class OfbizProjectHelper {
         }
         return result
     }
-
 
     List<UiLabelFile> getAllUiLabelFiles() {
         return domService.getFileElements(UiLabelFile.class, project, allScope(project))
