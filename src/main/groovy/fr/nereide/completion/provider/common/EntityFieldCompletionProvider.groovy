@@ -57,7 +57,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         Entity entity = ph.getEntity(entityName)
 
         if (entity) {
-            List<String> entityFields = getEntityFields(entity)
+            List<String> entityFields = getEntityFields(entity, ph)
             addLookupElementFromEntity(result, entityFields, entityName)
         } else {
             ViewEntity view = ph.getViewEntity(entityName)

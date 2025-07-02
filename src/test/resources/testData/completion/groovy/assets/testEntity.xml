@@ -97,4 +97,11 @@
         <field name="monica" type="id"/>
     </entity>
 
+    <entity entity-name="EntityFieldCompletionOnEntityWithExtends">
+        <field name="field1" type="id"/>
+    </entity>
+
+    <extend-entity entity-name="EntityFieldCompletionOnEntityWithExtends">
+        <field name="field2" type="id"/>
+    </extend-entity>
 </entitymodel>
