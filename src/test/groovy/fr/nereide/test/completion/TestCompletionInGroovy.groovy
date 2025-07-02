@@ -245,4 +245,8 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected, notExpected)
     }
+
+    void testEntityFieldCompletionOnEntityWithExtends() {
+        doTest(['field1', 'field2'])
+    }
 }

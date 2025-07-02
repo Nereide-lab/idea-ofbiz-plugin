@@ -14,13 +14,17 @@ class EntityWorker {
      * @param entity
      * @return
      */
-    static List<String> getEntityFields(Entity entity) {
-        return getEntityFields(entity, null, [])
+    static List<String> getEntityFields(Entity entity, OfbizProjectHelper ph) {
+        return getEntityFields(entity, null, [], ph)
     }
 
-    static List<String> getEntityFields(Entity entity, String prefix, List<String> excludedFields) {
+    static List<String> getEntityFields(Entity entity, String prefix, List<String> excludedFields, OfbizProjectHelper ph) {
         List<EntityField> fields = entity.getFields().findAll { entityField ->
             !excludedFields.contains(entityField.getName().getValue())
+        }
+        List<ExtendEntity> extendList = ph.getExtendEntityListForEntity(entity.entityName.value)
+        if (extendList && extendList.size() > 0) {
+            fields.addAll(extendList.collect { it.getFields() })
         }
         return getFormatedFieldsName(fields, prefix)
     }
