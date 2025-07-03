@@ -1,3 +1,4 @@
+//file:noinspection ConfigurationAvoidance
 import groovy.xml.XmlSlurper
 import groovy.xml.MarkupBuilder
 import org.jetbrains.changelog.Changelog
