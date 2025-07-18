@@ -17,8 +17,8 @@ abstract class CommonServiceMarkerProvider extends OfbizBaseLineMarker {
         return 'ECA list'
     }
 
-    def getTooltipProvider(List<PsiElement> navEls) {
-        return ((psiElement) -> "${navEls.size()} ECA(s) present on service" as String)
+    Closure<String> getTooltipProvider(List<PsiElement> navEls) {
+        return (psiElement) -> "${navEls.size()} ECA(s) present on service" as String
     }
 
     Supplier<String> getMessageSupplier() {

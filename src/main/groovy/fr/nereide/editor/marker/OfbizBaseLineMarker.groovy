@@ -28,7 +28,7 @@ abstract class OfbizBaseLineMarker implements LineMarkerProvider {
 
     abstract String getListTitle()
 
-    abstract def getTooltipProvider(List<PsiElement> navEls)
+    abstract Closure<String> getTooltipProvider(List<PsiElement> navEls)
 
     abstract Supplier<String> getMessageSupplier()
 
