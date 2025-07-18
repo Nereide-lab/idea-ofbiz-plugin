@@ -4,13 +4,19 @@ import com.intellij.psi.PsiElement
 import fr.nereide.editor.marker.OfbizBaseLineMarker
 import fr.nereide.editor.renderer.ServiceEcaPresentationRenderer
 import fr.nereide.project.OfbizProjectHelper
+import icons.PluginIcons
 
+import javax.swing.Icon
 import java.util.function.Supplier
 
 abstract class CommonServiceMarkerProvider extends OfbizBaseLineMarker {
 
     ServiceEcaPresentationRenderer getRenderer() {
         return new ServiceEcaPresentationRenderer()
+    }
+
+    Icon getIcon() {
+        return PluginIcons.ECA_ICON
     }
 
     String getListTitle() {

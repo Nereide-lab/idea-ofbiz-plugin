@@ -10,9 +10,9 @@ import com.intellij.pom.Navigatable
 import com.intellij.psi.PsiElement
 import com.intellij.ui.awt.RelativePoint
 import fr.nereide.project.PluginActivator
-import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
 
+import javax.swing.*
 import java.awt.event.MouseEvent
 import java.util.function.Supplier
 
@@ -34,6 +34,8 @@ abstract class OfbizBaseLineMarker implements LineMarkerProvider {
 
     abstract List<PsiElement> getNavigatableList(PsiElement element)
 
+    abstract Icon getIcon()
+
     @Override
     LineMarkerInfo<PsiElement> getLineMarkerInfo(@NotNull PsiElement element) {
         if (!PluginActivator.getInstance(element.project).isActive()) return null
@@ -47,7 +49,7 @@ abstract class OfbizBaseLineMarker implements LineMarkerProvider {
         return new LineMarkerInfo<PsiElement>(
                 elementToRegister,
                 element.getTextRange(),
-                PluginIcons.ECA_ICON,
+                getIcon(),
                 getTooltipProvider(navEls),
                 getNavHandler(navEls),
                 Alignment.RIGHT,

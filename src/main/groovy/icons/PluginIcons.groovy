@@ -21,8 +21,7 @@ import com.intellij.icons.AllIcons
 import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.LayeredIcon
 
-import javax.swing.Icon
-
+import javax.swing.*
 
 class PluginIcons {
     static final Icon BASE_LOGO = IconLoader.getIcon('/icons/OfbizBaseLogoGrey.svg', PluginIcons.class)
@@ -46,6 +45,7 @@ class PluginIcons {
     static final Icon SERVICE_ICON = new LayeredIcon(2)
 
     static final Icon ECA_ICON = new LayeredIcon(2)
+    static final Icon EXTENDED_ENTITY_ICON = new LayeredIcon(2)
     static {
         ENTITY_FILE_ICON.setIcon(BASE_LOGO, 0)
         ENTITY_FILE_ICON.setIcon(IconLoader.getIcon('/icons/ENT.svg', PluginIcons.class),
@@ -85,6 +85,10 @@ class PluginIcons {
 
         ECA_ICON.setIcon(BASE_LOGO, 0)
         ECA_ICON.setIcon(AllIcons.Actions.InlayGear,
+                1, MIDDLE, MIDDLE)
+
+        EXTENDED_ENTITY_ICON.setIcon(ENTITY_ICON, 0)
+        EXTENDED_ENTITY_ICON.setIcon(AllIcons.General.InlineAdd,
                 1, MIDDLE, MIDDLE)
     }
 }
