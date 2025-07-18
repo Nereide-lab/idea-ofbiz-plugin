@@ -56,7 +56,7 @@ class EntityWorker {
                     if (currentExcludedFields) currentExcludedFields.addAll(excludedFields)
                     Entity currentEntity = ph.getEntity(entityName)
                     if (currentEntity) {
-                        fieldsList.addAll(getEntityFields(currentEntity, currentPrefix, currentExcludedFields))
+                        fieldsList.addAll(getEntityFields(currentEntity, currentPrefix, currentExcludedFields, ph))
                     } else {
                         ViewEntity currentView = ph.getViewEntity(entityName)
                         List<String> viewFields = getViewFields(currentView, currentPrefix, ph, currentExcludedFields, index + 1)
