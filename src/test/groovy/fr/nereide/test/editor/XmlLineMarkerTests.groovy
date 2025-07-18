@@ -7,12 +7,9 @@ import fr.nereide.editor.marker.xml.XmlServiceEcaMarkerProvider
 
 class XmlLineMarkerTests extends BaseLineMarkerTest {
 
-    protected String getExtension() { return 'xml' }
+    String getExtension() { return 'xml' }
 
-    @Override
-    protected Class getElementTypeToFind() {
-        return XmlAttributeValue.class
-    }
+    Class getElementTypeToFind() { return XmlAttributeValue.class }
 
     void testServiceEcaMarkerInXml() {
         doTest(new XmlServiceEcaMarkerProvider(), '1 ECA(s) present on service')

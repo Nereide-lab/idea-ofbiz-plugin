@@ -6,12 +6,9 @@ import fr.nereide.editor.marker.java.JavaServiceEcaMarkerProvider
 
 class JavaLineMarkerTest extends BaseLineMarkerTest {
 
-    protected String getExtension() { return 'java' }
+    String getExtension() { return 'java' }
 
-    @Override
-    protected Class getElementTypeToFind() {
-        return PsiLiteralExpression.class
-    }
+    Class getElementTypeToFind() { return PsiLiteralExpression.class }
 
     void testServiceEcaMarkerInJava() {
         doTest(new JavaServiceEcaMarkerProvider(), '1 ECA(s) present on service')

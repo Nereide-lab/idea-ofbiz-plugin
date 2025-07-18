@@ -6,12 +6,9 @@ import fr.nereide.editor.marker.groovy.GroovyServiceEcaMarkerProvider
 
 class GroovyLineMarkerTest extends BaseLineMarkerTest {
 
-    protected String getExtension() { return 'groovy' }
+    String getExtension() { return 'groovy' }
 
-    @Override
-    protected Class getElementTypeToFind() {
-        return PsiElement.class
-    }
+    Class getElementTypeToFind() { return PsiElement.class }
 
     void testServiceEcaMarkerInGroovy() {
         doTest(new GroovyServiceEcaMarkerProvider(), '1 ECA(s) present on service')
