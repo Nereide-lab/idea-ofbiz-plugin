@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - [#27] Added fields added in extends entity to completion results when doing completion of entity fields.
+### Added
+- [#28] Gutter icon for extended entities in Java, groovy and Xml.
 
 ## [1.7.3]
 ### Added
