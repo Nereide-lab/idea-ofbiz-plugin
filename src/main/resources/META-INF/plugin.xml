@@ -31,9 +31,13 @@
 
     <extensions defaultExtensionNs="com.intellij">
 
-        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="fr.nereide.editor.marker.java.JavaServiceEcaMarkerProvider"/>
-        <codeInsight.lineMarkerProvider language="Groovy" implementationClass="fr.nereide.editor.marker.groovy.GroovyServiceEcaMarkerProvider"/>
-        <codeInsight.lineMarkerProvider language="XML" implementationClass="fr.nereide.editor.marker.xml.XmlServiceEcaMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="fr.nereide.editor.marker.java.JavaServiceEcaEcaMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="Groovy" implementationClass="fr.nereide.editor.marker.groovy.GroovyServiceEcaEcaMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="XML" implementationClass="fr.nereide.editor.marker.xml.XmlServiceEcaEcaMarkerProvider"/>
+
+        <codeInsight.lineMarkerProvider language="XML" implementationClass="fr.nereide.editor.marker.xml.XmlExtendedEntityMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="Groovy" implementationClass="fr.nereide.editor.marker.groovy.GroovyExtendedEntityMarkerProvider"/>
+        <codeInsight.lineMarkerProvider language="JAVA" implementationClass="fr.nereide.editor.marker.java.JavaExtendedEntityMarkerProvider"/>
 
         <codeInsight.lineMarkerProvider language="JAVA" implementationClass="fr.nereide.editor.marker.java.JavaEntityEcaMarkerProvider"/>
         <codeInsight.lineMarkerProvider language="Groovy" implementationClass="fr.nereide.editor.marker.groovy.GroovyEntityEcaMarkerProvider"/>

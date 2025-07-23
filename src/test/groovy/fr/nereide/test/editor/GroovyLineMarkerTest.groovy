@@ -2,22 +2,24 @@ package fr.nereide.test.editor
 
 import com.intellij.psi.PsiElement
 import fr.nereide.editor.marker.groovy.GroovyEntityEcaMarkerProvider
-import fr.nereide.editor.marker.groovy.GroovyServiceEcaMarkerProvider
+import fr.nereide.editor.marker.groovy.GroovyExtendedEntityMarkerProvider
+import fr.nereide.editor.marker.groovy.GroovyServiceEcaEcaMarkerProvider
 
 class GroovyLineMarkerTest extends BaseLineMarkerTest {
 
-    protected String getExtension() { return 'groovy' }
+    String getExtension() { return 'groovy' }
 
-    @Override
-    protected Class getElementTypeToFind() {
-        return PsiElement.class
-    }
+    Class getElementTypeToFind() { return PsiElement.class }
 
     void testServiceEcaMarkerInGroovy() {
-        doTest(new GroovyServiceEcaMarkerProvider(), '1 ECA(s) present on service')
+        doTest(new GroovyServiceEcaEcaMarkerProvider(), '1 ECA(s) present on service')
     }
 
     void testEntityEcaMarkerInGroovy() {
         doTest(new GroovyEntityEcaMarkerProvider(), '1 ECA(s) present on entity')
+    }
+
+    void testExtendedEntityMarkerInGroovy() {
+        doTest(new GroovyExtendedEntityMarkerProvider(), 'Entity is extended')
     }
 }

@@ -7,7 +7,7 @@ import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
 @Ignore('Parent class, No tests here')
-class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
+abstract class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
 
     static final String BASE_TEST_DIR = 'src/test/resources/testData/editor'
     static final String ELEMENT_SUFFIX = 'Element'
@@ -17,11 +17,9 @@ class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
         return "$BASE_TEST_DIR"
     }
 
-    protected Class getElementTypeToFind() {
-        return null
-    }
+    abstract Class getElementTypeToFind()
 
-    protected String getExtension() { return 'xml' }
+    abstract String getExtension()
 
     @Override
     protected void setUp() {

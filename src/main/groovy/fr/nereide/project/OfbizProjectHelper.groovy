@@ -220,6 +220,10 @@ final class OfbizProjectHelper {
         return null
     }
 
+    List<ExtendEntity> getExtendEntityListForEntity(PsiElement element) {
+        return getExtendEntityListForEntity(getStringValueFromPsiElement(element))
+    }
+
     List<ExtendEntity> getExtendEntityListForEntity(String entityName) {
         return domService.getFileElements(EntityModelFile.class, project, allScope(project))
                 .collect { DomFileElement<EntityModelFile> emf -> emf.rootElement.extendEntities }
