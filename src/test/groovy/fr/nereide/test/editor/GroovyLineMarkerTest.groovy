@@ -2,7 +2,7 @@ package fr.nereide.test.editor
 
 import com.intellij.psi.PsiElement
 import fr.nereide.editor.marker.groovy.GroovyEntityEcaMarkerProvider
-import fr.nereide.editor.marker.groovy.GroovyServiceEcaMarkerProvider
+import fr.nereide.editor.marker.groovy.GroovyServiceEcaEcaMarkerProvider
 
 class GroovyLineMarkerTest extends BaseLineMarkerTest {
 
@@ -11,7 +11,7 @@ class GroovyLineMarkerTest extends BaseLineMarkerTest {
     Class getElementTypeToFind() { return PsiElement.class }
 
     void testServiceEcaMarkerInGroovy() {
-        doTest(new GroovyServiceEcaMarkerProvider(), '1 ECA(s) present on service')
+        doTest(new GroovyServiceEcaEcaMarkerProvider(), '1 ECA(s) present on service')
     }
 
     void testEntityEcaMarkerInGroovy() {

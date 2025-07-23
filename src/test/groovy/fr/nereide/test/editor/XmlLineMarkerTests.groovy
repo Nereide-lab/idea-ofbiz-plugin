@@ -4,7 +4,7 @@ package fr.nereide.test.editor
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.editor.marker.xml.XmlEntityEcaMarkerProvider
 import fr.nereide.editor.marker.xml.XmlExtendedEntityMarkerProvider
-import fr.nereide.editor.marker.xml.XmlServiceEcaMarkerProvider
+import fr.nereide.editor.marker.xml.XmlServiceEcaEcaMarkerProvider
 
 class XmlLineMarkerTests extends BaseLineMarkerTest {
 
@@ -13,7 +13,7 @@ class XmlLineMarkerTests extends BaseLineMarkerTest {
     Class getElementTypeToFind() { return XmlAttributeValue.class }
 
     void testServiceEcaMarkerInXml() {
-        doTest(new XmlServiceEcaMarkerProvider(), '1 ECA(s) present on service')
+        doTest(new XmlServiceEcaEcaMarkerProvider(), '1 ECA(s) present on service')
     }
 
     void testEntityEcaMarkerInXml() {

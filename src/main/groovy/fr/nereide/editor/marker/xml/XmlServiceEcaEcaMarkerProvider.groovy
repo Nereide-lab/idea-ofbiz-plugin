@@ -2,12 +2,12 @@ package fr.nereide.editor.marker.xml
 
 import com.intellij.patterns.PsiElementPattern
 import com.intellij.psi.xml.XmlToken
-import fr.nereide.editor.marker.common.CommonEntityEcaMarkerProvider
+import fr.nereide.editor.marker.common.CommonServiceEcaMarkerProvider
 import fr.nereide.project.pattern.OfbizXmlPatterns
 
-class XmlEntityEcaMarkerProvider extends CommonEntityEcaMarkerProvider {
+class XmlServiceEcaEcaMarkerProvider extends CommonServiceEcaMarkerProvider {
 
-    PsiElementPattern getPattern() { return OfbizXmlPatterns.ENTITY_OR_VIEW_CALL }
+    PsiElementPattern getPattern() { return OfbizXmlPatterns.SERVICE_DEF_CALL }
 
     Class getLeafElementType() { XmlToken.class }
 

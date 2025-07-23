@@ -2,38 +2,38 @@ package fr.nereide.editor.marker.common
 
 import com.intellij.psi.PsiElement
 import fr.nereide.editor.marker.OfbizBaseLineMarker
-import fr.nereide.editor.renderer.EntityEcaPresentationRenderer
+import fr.nereide.editor.renderer.ExtendEntityPresentationRenderer
 import fr.nereide.project.OfbizProjectHelper
 import icons.PluginIcons
 
-import javax.swing.Icon
+import javax.swing.*
 import java.util.function.Supplier
 
-abstract class CommonEntityMarkerProvider extends OfbizBaseLineMarker {
+abstract class CommonEntityExtendMarkerProvider extends OfbizBaseLineMarker {
 
-    EntityEcaPresentationRenderer getRenderer() {
-        return new EntityEcaPresentationRenderer()
+    ExtendEntityPresentationRenderer getRenderer() {
+        return new ExtendEntityPresentationRenderer()
     }
 
     Icon getIcon() {
-        return PluginIcons.ECA_ICON
+        return PluginIcons.ENTITY_ICON
     }
 
     String getListTitle() {
-        return 'ECA list'
+        return 'Extends list'
     }
 
     Closure<String> getTooltipProvider(List<PsiElement> navEls) {
-        return (psiElement) -> "${navEls.size()} ECA(s) present on entity" as String
+        return (psiElement) -> 'Entity is extended'
     }
 
     Supplier<String> getMessageSupplier() {
-        return { 'Entity ECA detected' }
+        return { 'Entity is extended' }
     }
 
     List<PsiElement> getNavigatableList(PsiElement element) {
         return OfbizProjectHelper.getInstance(element.project)
-                .getEcasForEntity(element)
+                .getExtendEntityListForEntity(element)
                 .collect { it.getXmlElement().getNavigationElement() }
     }
 }
