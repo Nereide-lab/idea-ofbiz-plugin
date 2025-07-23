@@ -4,6 +4,10 @@
     <entity entity-name="EntityEcaMarkerInXmlElement"/>
     <entity entity-name="EntityEcaMarkerInGroovyElement"/>
     <entity entity-name="EntityEcaMarkerInJavaElement"/>
+    <entity entity-name="ExtendedEntityMarkerInGroovyElement"/>
+    <entity entity-name="ExtendedEntityMarkerInJavaElement"/>
 
     <extend-entity entity-name="ExtendedEntityMarkerInXmlElement"/>
+    <extend-entity entity-name="ExtendedEntityMarkerInGroovyElement"/>
+    <extend-entity entity-name="ExtendedEntityMarkerInJavaElement"/>
 </entitymodel>
