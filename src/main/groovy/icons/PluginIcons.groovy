@@ -17,14 +17,17 @@
 
 package icons
 
-import com.intellij.icons.AllIcons
-import com.intellij.openapi.util.IconLoader
+
 import com.intellij.ui.LayeredIcon
 
 import javax.swing.*
 
+import static com.intellij.icons.AllIcons.Actions
+import static com.intellij.icons.AllIcons.General
+import static com.intellij.openapi.util.IconLoader.getIcon
+
 class PluginIcons {
-    static final Icon BASE_LOGO = IconLoader.getIcon('/icons/OfbizBaseLogoGrey.svg', PluginIcons.class)
+    static final Icon BASE_LOGO = getIcon('/icons/OfbizBaseLogoGrey.svg', PluginIcons.class)
     static final int TOTAL_WIDTH = 16
     static final int TOTAL_HEIGHT = 16
     static final int LABEL_WIDTH = 15
@@ -48,47 +51,36 @@ class PluginIcons {
     static final Icon EXTENDED_ENTITY_ICON = new LayeredIcon(2)
     static {
         ENTITY_FILE_ICON.setIcon(BASE_LOGO, 0)
-        ENTITY_FILE_ICON.setIcon(IconLoader.getIcon('/icons/ENT.svg', PluginIcons.class),
-                1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
+        ENTITY_FILE_ICON.setIcon(getIcon('/icons/ENT.svg', PluginIcons.class), 1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
 
         SERVICE_FILE_ICON.setIcon(BASE_LOGO, 0)
-        SERVICE_FILE_ICON.setIcon(IconLoader.getIcon('/icons/SVC.svg', PluginIcons.class),
-                1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
+        SERVICE_FILE_ICON.setIcon(getIcon('/icons/SVC.svg', PluginIcons.class), 1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
 
         SCREEN_FILE_ICON.setIcon(BASE_LOGO, 0)
-        SCREEN_FILE_ICON.setIcon(IconLoader.getIcon('/icons/SCN.svg', PluginIcons.class),
-                1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
+        SCREEN_FILE_ICON.setIcon(getIcon('/icons/SCN.svg', PluginIcons.class), 1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
 
         FORM_FILE_ICON.setIcon(BASE_LOGO, 0)
-        FORM_FILE_ICON.setIcon(IconLoader.getIcon('/icons/FRM.svg', PluginIcons.class),
-                1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
+        FORM_FILE_ICON.setIcon(getIcon('/icons/FRM.svg', PluginIcons.class), 1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
 
         CONTROLLER_FILE_ICON.setIcon(BASE_LOGO, 0)
-        CONTROLLER_FILE_ICON.setIcon(IconLoader.getIcon('/icons/CTL.svg', PluginIcons.class),
-                1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
+        CONTROLLER_FILE_ICON.setIcon(getIcon('/icons/CTL.svg', PluginIcons.class), 1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
 
         LABEL_FILE_ICON.setIcon(BASE_LOGO, 0)
-        LABEL_FILE_ICON.setIcon(IconLoader.getIcon('/icons/LBL.svg', PluginIcons.class),
-                1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
+        LABEL_FILE_ICON.setIcon(getIcon('/icons/LBL.svg', PluginIcons.class), 1, LABEL_X_OFFSET, LABEL_Y_OFFSET)
 
         ENTITY_ICON.setIcon(BASE_LOGO, 0)
-        ENTITY_ICON.setIcon(IconLoader.getIcon('/icons/BDD_Entity.svg', PluginIcons.class),
-                1, MIDDLE, MIDDLE)
+        ENTITY_ICON.setIcon(getIcon('/icons/BDD_Entity.svg', PluginIcons.class), 1, MIDDLE, MIDDLE)
 
         VIEW_ENTITY_ICON.setIcon(BASE_LOGO, 0)
-        VIEW_ENTITY_ICON.setIcon(IconLoader.getIcon('/icons/BDD_View.svg', PluginIcons.class),
-                1, MIDDLE, MIDDLE)
+        VIEW_ENTITY_ICON.setIcon(getIcon('/icons/BDD_View.svg', PluginIcons.class), 1, MIDDLE, MIDDLE)
 
         SERVICE_ICON.setIcon(BASE_LOGO, 0)
-        SERVICE_ICON.setIcon(IconLoader.getIcon('/icons/Gear.svg', PluginIcons.class),
-                1, MIDDLE, MIDDLE)
+        SERVICE_ICON.setIcon(getIcon('/icons/Gear.svg', PluginIcons.class), 1, MIDDLE, MIDDLE)
 
         ECA_ICON.setIcon(BASE_LOGO, 0)
-        ECA_ICON.setIcon(AllIcons.Actions.InlayGear,
-                1, MIDDLE, MIDDLE)
+        ECA_ICON.setIcon(Actions.InlayGear, 1, MIDDLE, MIDDLE)
 
         EXTENDED_ENTITY_ICON.setIcon(ENTITY_ICON, 0)
-        EXTENDED_ENTITY_ICON.setIcon(AllIcons.General.InlineAdd,
-                1, MIDDLE, MIDDLE)
+        EXTENDED_ENTITY_ICON.setIcon(General.InlineAdd, 1, MIDDLE, MIDDLE)
     }
 }

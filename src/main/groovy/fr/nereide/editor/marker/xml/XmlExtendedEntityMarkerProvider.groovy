@@ -25,7 +25,7 @@ class XmlExtendedEntityMarkerProvider extends OfbizBaseLineMarker {
     Class getLeafElementType() { return XmlToken.class }
 
     Icon getIcon() {
-        return PluginIcons.EXTENDED_ENTITY_ICON
+        return PluginIcons.ENTITY_ICON
     }
 
     PsiTargetPresentationRenderer<PsiElement> getRenderer() {
