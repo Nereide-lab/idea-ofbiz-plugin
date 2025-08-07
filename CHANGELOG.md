@@ -4,11 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.7.4]
 ### Fixed
 - [#27] Added fields added in extends entity to completion results when doing completion of entity fields.
 ### Added
 - [#28] Gutter icon for extended entities in Java, groovy and Xml.
+- [#NA] Increased max intellij version to 25.2
 
 ## [1.7.3]
 ### Added
