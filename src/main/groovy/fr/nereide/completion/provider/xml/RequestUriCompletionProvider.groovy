@@ -68,7 +68,7 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
             }
         } else {
             String componentName = MiscUtils.getComponentName(myAttrValue, clazz)
-            List<RequestMap> uris = ph.getComponentRequestMaps(componentName)
+            Set<RequestMap> uris = ph.getComponentRequestMaps(componentName)
             uris.each { RequestMap req ->
                 LookupElement lookupElement = LookupElementBuilder.create(req.getUri().getValue())
                         .withTailText(" Component:${MiscUtils.getComponentName(req)}" as String, true)

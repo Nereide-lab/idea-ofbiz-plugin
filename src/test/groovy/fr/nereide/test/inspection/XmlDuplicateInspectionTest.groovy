@@ -41,14 +41,18 @@ class XmlDuplicateInspectionTest extends BaseInspectionTest {
         myFixture.copyFileToProject("xml/$myTestFileName", "$DEST/$myTestFileName")
     }
 
-    void doTest(String desc, LocalInspectionTool inspection) {
+    void doTest(boolean mustFind = true, String desc, LocalInspectionTool inspection) {
         myFixture.enableInspections(inspection)
         String file = "${this.getTestName(false)}.xml"
         myFixture.configureByFile("$DEST/$file")
-        doHighlightTest(true, desc)
+        doHighlightTest(mustFind, desc)
     }
 
     void testDuplicatedUriInCurrentController() { doTest(URI_DESC, URI_INSP) }
+
+    void testDuplicatedUriInCurrentControllerWithDifferentMethod() {
+        doTest(false, URI_DESC, URI_INSP)
+    }
 
     void testDuplicatedScreenInCurrentFile() { doTest(SCREEN_DESC, SCREEN_INSP) }
 

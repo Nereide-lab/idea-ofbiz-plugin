@@ -7,6 +7,9 @@ import com.intellij.util.xmlb.annotations.Attribute
 
 interface RequestMap extends DomElement {
     @NameValue
-    @Attribute("uri")
+    @Attribute('uri')
     GenericAttributeValue<String> getUri()
+
+    @Attribute('method')
+    GenericAttributeValue<String> getMethod()
 }

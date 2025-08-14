@@ -338,13 +338,13 @@ final class OfbizProjectHelper {
         return domFile.rootElement.menus.find { it.name.value == menuName }
     }
 
-    List<RequestMap> getComponentRequestMaps(String componentName) {
+    Set<RequestMap> getComponentRequestMaps(String componentName) {
         PsiDirectory compoDir = getComponentDir(componentName)
         List controllerFiles = domService.getFileElements(
                 ControllerFile.class, project,
                 directoryScope(compoDir, true))
         if (!controllerFiles) return null
-        List<RequestMap> controllerRequests = []
+        Set<RequestMap> controllerRequests = []
         for (DomFileElement<ControllerFile> controllerFile in controllerFiles) {
             controllerRequests.addAll(controllerFile.rootElement.requestMaps)
             List<Include> includes = controllerFile.rootElement.includes

@@ -4,11 +4,14 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
 import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlTag
+import fr.nereide.dom.element.controller.RequestMap
 import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import fr.nereide.project.utils.MiscUtils
+import fr.nereide.project.utils.XmlUtils
 import org.jetbrains.annotations.NotNull
 
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
@@ -42,9 +45,21 @@ class DuplicatedUriInspection extends OfbizBaseInspection {
     private static boolean isDuplicated(XmlAttributeValue attributeValue) {
         return OfbizProjectHelper.getInstance(attributeValue.project)
                 .getComponentRequestMaps(MiscUtils.getComponentName(attributeValue))
-                .findAll { it.uri.value == attributeValue.value }
+                .findAll { hasSameUriAndMethod(it, attributeValue) }
                 .size() > 1
     }
 
+    private static boolean hasSameUriAndMethod(RequestMap comparedRM, XmlAttributeValue myUriAttr) {
+        if (comparedRM.uri.value != myUriAttr.value) {
+            return false
+        }
+        XmlTag myRequestMap = XmlUtils.getParentTag(myUriAttr)
+        String myMethod = myRequestMap.getAttribute('method')?.value
+        if (myMethod && comparedRM.method) {
+            return myMethod == comparedRM.method.value
+        } else {
+            return true
+        }
+    }
 }
 
