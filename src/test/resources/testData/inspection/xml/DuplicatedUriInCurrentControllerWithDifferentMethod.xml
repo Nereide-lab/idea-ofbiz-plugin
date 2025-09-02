@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://ofbiz.apache.org/Site-Conf"
+           xsi:schemaLocation="http://ofbiz.apache.org/Site-Conf http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <request-map uri="DuplicatedUriInCurrentControllerWithDifferent<caret>Method" method="get"/>
+    <request-map uri="DuplicatedUriInCurrentControllerWithDifferentMethod" method="post"/>
+</site-conf>
