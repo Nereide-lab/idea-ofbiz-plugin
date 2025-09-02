@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Fixed
+- [#29] Fixed some cases of false duplicate uri inspection, by taking the method (http) into account.
+
 ## [1.7.4]
 ### Fixed
 - [#27] Added fields added in extends entity to completion results when doing completion of entity fields.

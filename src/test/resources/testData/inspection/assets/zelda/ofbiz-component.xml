@@ -1,5 +1,11 @@
 <ofbiz-component name="zelda"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/ofbiz-component.xsd">
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/ofbiz-component.xsd">
+
+    <webapp location="webapp/zelda"
+            mount-point="/zelda"/>
+
+    <webapp location="webapp/link"
+            mount-point="/link"/>
 
 </ofbiz-component>

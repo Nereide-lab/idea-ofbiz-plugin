@@ -38,28 +38,42 @@ class DuplicatedUriInspection extends OfbizBaseInspection {
                             WARNING)
                 }
             }
-
         }
     }
 
     private static boolean isDuplicated(XmlAttributeValue attributeValue) {
-        return OfbizProjectHelper.getInstance(attributeValue.project)
-                .getComponentRequestMaps(MiscUtils.getComponentName(attributeValue))
-                .findAll { hasSameUriAndMethod(it, attributeValue) }
-                .size() > 1
+        Map<String, Set<RequestMap>> componentUrisByMountPoint = OfbizProjectHelper
+                .getInstance(attributeValue.project)
+                .getStructuredComponentRequestMaps(MiscUtils.getComponentName(attributeValue))
+        return componentUrisByMountPoint.find { String mountPoint, Set<RequestMap> reqMaps ->
+            return reqMaps.any { reqMap ->
+                String comparedUri = reqMap.uri.value // TODO debug to remove
+                hasSameUriAndMethodAndMountPoint(mountPoint, reqMap, attributeValue)
+            }
+        }
     }
 
-    private static boolean hasSameUriAndMethod(RequestMap comparedRM, XmlAttributeValue myUriAttr) {
-        if (comparedRM.uri.value != myUriAttr.value) {
+    private static boolean hasSameUriAndMethodAndMountPoint(String comparedMP, RequestMap comparedRM, XmlAttributeValue myUriAttr) {
+        if (comparedRM.uri.value != myUriAttr.value || comparedRM.getXmlTag() == XmlUtils.getParentTag(myUriAttr)) {
             return false
         }
         XmlTag myRequestMap = XmlUtils.getParentTag(myUriAttr)
         String myMethod = myRequestMap.getAttribute('method')?.value
-        if (myMethod && comparedRM.method) {
-            return myMethod == comparedRM.method.value
-        } else {
-            return true
+        Set<String> myMountPoints = OfbizProjectHelper
+                .getInstance(myUriAttr.project)
+                .getMountPointsOfUri(myUriAttr)
+        boolean isSameMountPoint = myMountPoints.contains(comparedMP)
+
+        String comparedMethod = comparedRM.method.value ?: 'get'
+
+        if (!myMethod) {
+            if (!comparedMethod && isSameMountPoint) {
+                return true
+            } else myMethod = 'get'
         }
+
+        boolean isSameMethod = myMethod == comparedMethod
+        return isSameMethod && isSameMountPoint
     }
 }
 

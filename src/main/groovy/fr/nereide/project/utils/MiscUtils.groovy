@@ -35,16 +35,14 @@ class MiscUtils {
      * @return
      */
     static String getComponentName(DomElement element) {
-        DomManager dm = DomManager.getDomManager(element.getXmlElement().getProject())
-        PsiFile file = element.getXmlElement().getContainingFile()
-        PsiDirectory dir = file.originalFile.getParent()
-        try {
-            return findComponentName(dir, dm)
-        } catch (NullPointerException ignored) {
-            return null
-        }
+        return getComponentName(element.getXmlElement())
     }
 
+    /**
+     * returns the name of the component dir containing the element
+     * @param element
+     * @return
+     */
     static String getComponentName(PsiElement element) {
         DomManager dm = DomManager.getDomManager(element.getProject())
         PsiFile file = element.getContainingFile()
@@ -56,6 +54,7 @@ class MiscUtils {
         }
     }
 
+    // TODO gneee ? why the classfile ?
     static String getComponentName(XmlElement element, Class myClassFile) {
         DomManager dm = DomManager.getDomManager(element.getProject())
         DomFileElement<DomElement> myFile = dm.getFileElement((element.getContainingFile() as XmlFile), myClassFile)

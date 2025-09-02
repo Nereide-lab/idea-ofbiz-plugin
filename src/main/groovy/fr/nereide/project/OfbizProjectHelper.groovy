@@ -23,6 +23,7 @@ import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiLiteralExpression
+import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
@@ -34,7 +35,6 @@ import fr.nereide.dom.element.Webapp
 import fr.nereide.dom.element.controller.Include
 import fr.nereide.dom.element.controller.RequestMap
 import fr.nereide.dom.element.controller.ViewMap
-import fr.nereide.dom.element.serviceeca.Eca as Seca
 import fr.nereide.dom.element.entityeca.Eca as Eeca
 import fr.nereide.dom.element.entityengine.Datasource
 import fr.nereide.dom.element.entitymodel.Entity
@@ -46,8 +46,8 @@ import fr.nereide.dom.element.form.Grid
 import fr.nereide.dom.element.menu.Menu
 import fr.nereide.dom.element.screen.Screen
 import fr.nereide.dom.element.service.Service
+import fr.nereide.dom.element.serviceeca.Eca as Seca
 import fr.nereide.dom.element.serviceengine.Engine
-import fr.nereide.dom.element.serviceengine.ServiceEngine
 import fr.nereide.dom.element.uilabel.Property
 import fr.nereide.dom.file.*
 import fr.nereide.project.utils.FileHandlingUtils
@@ -59,6 +59,7 @@ import java.util.regex.Matcher
 
 import static com.intellij.psi.search.GlobalSearchScope.allScope
 import static com.intellij.psi.search.GlobalSearchScopesCore.directoryScope
+import static java.util.Collections.*
 
 @com.intellij.openapi.components.Service(com.intellij.openapi.components.Service.Level.PROJECT)
 final class OfbizProjectHelper {
@@ -338,18 +339,73 @@ final class OfbizProjectHelper {
         return domFile.rootElement.menus.find { it.name.value == menuName }
     }
 
+    /**
+     * @param componentName
+     * @return a map with the following format <br>
+     * <code>['mount-point' : [@RequestMap, @RequestMap, .. ]] </code>
+     */
+    Map<String, Set<RequestMap>> getStructuredComponentRequestMaps(String componentName) {
+        PsiDirectory compoDir = getComponentDir(componentName)
+        Map<String, Set<RequestMap>> componentRequests = [:]
+
+        List<DomFileElement<ComponentFile>> componentFiles = domService.getFileElements(
+                ComponentFile.class, project,
+                directoryScope(compoDir, true))
+        if (!componentFiles || componentFiles.size() > 1) {
+            LOG.error("Multiple or no component file found in component $componentName")
+            return null
+        }
+        ComponentFile component = componentFiles.first.rootElement
+        List<Webapp> webapps = component.webapps
+
+        for (Webapp webapp : webapps) { // TODO refactor and extract (make use in getWebappMountPointUris
+            PsiDirectory currentControllerFolder = getwebappControllerDirectory(webapp, compoDir)
+            List<ControllerFile> controllerFiles = domService.getFileElements(
+                    ControllerFile.class, project,
+                    directoryScope(currentControllerFolder, true))
+            List<ComponentFile> cpdFiles = domService.getFileElements(
+                    CompoundFile.class, project,
+                    directoryScope(currentControllerFolder, true))
+            String mountPoint = webapp.mountPoint.value
+            componentRequests.put(mountPoint, collectRequestMapsFromControllerFiles(controllerFiles, cpdFiles))
+        }
+        return componentRequests
+    }
+
+    private PsiDirectory getwebappControllerDirectory(Webapp webapp, PsiDirectory compoDir) {
+        String filesLocations = webapp.getLocation().value
+        List subFold = filesLocations.split('/').findAll { it != 'WEB-INF' }
+        PsiDirectory currentControllerFolder = compoDir
+        try {
+            subFold.each {
+                currentControllerFolder = currentControllerFolder.findSubdirectory(it)
+            }
+        } catch (NullPointerException e) {
+            LOG.error(e)
+            return null
+        }
+        return currentControllerFolder
+    }
+
     Set<RequestMap> getComponentRequestMaps(String componentName) {
         PsiDirectory compoDir = getComponentDir(componentName)
         List controllerFiles = domService.getFileElements(
                 ControllerFile.class, project,
                 directoryScope(compoDir, true))
+        List cpdFiles = domService.getFileElements(
+                CompoundFile.class, project,
+                directoryScope(compoDir, true))
+        return collectRequestMapsFromControllerFiles(controllerFiles, cpdFiles)
+    }
+
+    Set<RequestMap> collectRequestMapsFromControllerFiles(List<ControllerFile> controllerFiles, List<CompoundFile> compoundFiles) {
         if (!controllerFiles) return null
         Set<RequestMap> controllerRequests = []
-        for (DomFileElement<ControllerFile> controllerFile in controllerFiles) {
+        for (DomFileElement<ControllerFile> controllerFile : controllerFiles) {
             controllerRequests.addAll(controllerFile.rootElement.requestMaps)
             List<Include> includes = controllerFile.rootElement.includes
             if (includes) {
-                for (Include include in includes) {
+                for (Include include : includes) {
                     XmlFile file = getPsiFileAtLocation(include.location.value) as XmlFile
                     if (domManager.getFileElement(file, ControllerFile.class)) {
                         controllerRequests.addAll(domManager.getFileElement(file, ControllerFile.class).rootElement.requestMaps)
@@ -357,27 +413,33 @@ final class OfbizProjectHelper {
                 }
             }
         }
-        List cpdFiles = domService.getFileElements(
-                CompoundFile.class, project,
-                directoryScope(compoDir, true))
-        if (cpdFiles) {
-            cpdFiles.forEach { DomFileElement<CompoundFile> cpdFile ->
-                controllerRequests.addAll(cpdFile.rootElement.siteConf.requestMaps)
-            }
+        for (DomFileElement<CompoundFile> cpdFile : compoundFiles) {
+            controllerRequests.addAll(cpdFile.rootElement.siteConf.requestMaps)
         }
         return controllerRequests
     }
 
-    Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement) {
-        List<Webapp> allWebapps = getAllComponentsFiles()
-                .collect { DomFileElement<ComponentFile> cptf -> cptf.rootElement.webapps }
-                .flatten() as List<Webapp>
+    List<String> getMountPointsOfUri(XmlAttribute uriXmlAttribute) {
+        return getMountPointsOfUri(uriXmlAttribute.getValueElement())
+    }
 
+    Set<String> getMountPointsOfUri(XmlAttributeValue myUriAttr) {
+        Set<String> result = []
+        getAllWebappsInProject().forEach { Webapp webapp ->
+            List<String> uris = getWebappMountPointUris(webapp)
+            if (uris && uris.contains(myUriAttr.value)) {
+                result << webapp.mountPoint.value
+            }
+        }
+        return result
+    }
+
+    Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement) {
         Map<String, List<String>> result = [:]
-        allWebapps.forEach { Webapp webapp ->
+        getAllWebappsInProject().forEach { Webapp webapp ->
             try {
                 String mountPoint = webapp.mountPoint.value
-                List<String> webappUris = getWebappMountPointUris(webapp, myElement)
+                List<String> webappUris = getWebappMountPointUris(webapp)
                 result.put(mountPoint, webappUris)
             } catch (NullPointerException e) {
                 LOG.error(e)
@@ -387,19 +449,19 @@ final class OfbizProjectHelper {
         return result
     }
 
-    private List getWebappMountPointUris(Webapp webapp, PsiElement myElement) {
+    private List<Webapp> getAllWebappsInProject() {
+        return getAllComponentsFiles()
+                .collect { DomFileElement<ComponentFile> cptf -> cptf.rootElement.webapps }
+                .flatten() as List<Webapp>
+    }
+
+    private List<String> getWebappMountPointUris(Webapp webapp) {
         String componentName = MiscUtils.getComponentName(webapp)
-        String location = webapp.location.value
-        PsiDirectory directoryToSearch = getComponentDir(componentName)
-        String webappDirName = location.substring(location.indexOf('/') + 1, location.length())
-        directoryToSearch = directoryToSearch
-                ?.findSubdirectory('webapp')
-                ?.findSubdirectory(webappDirName)
-                ?.findSubdirectory('WEB-INF')
-        if (!directoryToSearch) return
+        if (componentName.contains('@')) return emptyList()
+        PsiDirectory directoryToSearch = getwebappControllerDirectory(webapp, getComponentDir(componentName))
         List controllerFiles = domService.getFileElements(
                 ControllerFile.class,
-                myElement.project,
+                project,
                 directoryScope(directoryToSearch, true))
         List requestsUris = []
         controllerFiles.each { controllerFile ->
