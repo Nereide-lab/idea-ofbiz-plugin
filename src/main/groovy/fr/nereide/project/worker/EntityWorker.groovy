@@ -95,10 +95,8 @@ class EntityWorker {
         if (!entity) {
             ViewEntity view = ph.getViewEntity(entityName)
             if (!view) return false
-            List<ViewEntityMember> members = view.getMemberEntities()
-            return members.any {
-                entityOrViewHasNeverCacheTrueAttr(it.getEntityName().getValue(), project)
-            }
+            String neverCache = view.neverCache ?: ''
+            return neverCache ? neverCache == 'true' : false
         }
         String neverCache = entity.neverCache ?: ''
         return neverCache ? neverCache == 'true' : false

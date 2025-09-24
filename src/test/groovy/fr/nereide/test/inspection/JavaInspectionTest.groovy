@@ -53,8 +53,12 @@ class JavaInspectionTest extends BaseInspectionTest {
         doNeverCacheTest(false)
     }
 
-    void testCacheOnViewIncludingNeverCacheEntity() {
+    void testCacheOnNeverCacheView() {
         doNeverCacheTest(true)
+    }
+
+    void testCacheOnViewIncludingNeverCacheEntity() {
+        doNeverCacheTest(false)
     }
 
     void testDuplicatedServiceInspection() {
