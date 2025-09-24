@@ -5,7 +5,8 @@ import org.apache.ofbiz.entity.util.EntityQuery
 class MyClassroom {
     GenericValue defEnt(Delegator delegator) {
         return EntityQuery.use(delegator)
-                .from("MyNeverCachedView")
+                .from("CacheOnNeverCacheView")
+                .cac<caret>he()
                 .queryFirst();
     }
 }

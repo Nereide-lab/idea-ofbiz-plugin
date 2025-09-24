@@ -7,18 +7,22 @@
         <field name="foo" type="id"/>
     </entity>
 
-    <view-entity entity-name="MyNeverCachedView">
+    <view-entity entity-name="CacheOnViewIncludingNeverCacheEntity">
         <member-entity entity-alias="MNCE" entity-name="MyNeverCachedEntity"/>
     </view-entity>
 
-    <entity entity-name="DuplicatedEntityIsCalled"> </entity>
-    <entity entity-name="DuplicatedEntityIsCalled"> </entity>
+    <view-entity entity-name="CacheOnNeverCacheView" never-cache="true">
+        <member-entity entity-alias="MNCE" entity-name="MyNeverCachedEntity"/>
+    </view-entity>
 
-    <view-entity entity-name="DuplicatedViewIsCalled"> </view-entity>
-    <view-entity entity-name="DuplicatedViewIsCalled"> </view-entity>
+    <entity entity-name="DuplicatedEntityIsCalled"></entity>
+    <entity entity-name="DuplicatedEntityIsCalled"></entity>
 
-    <entity entity-name="DuplicatedEntityInspection"> </entity>
-    <entity entity-name="DuplicatedEntityInspection"> </entity>
+    <view-entity entity-name="DuplicatedViewIsCalled"></view-entity>
+    <view-entity entity-name="DuplicatedViewIsCalled"></view-entity>
 
-    <entity entity-name="Gustave"> </entity>
+    <entity entity-name="DuplicatedEntityInspection"></entity>
+    <entity entity-name="DuplicatedEntityInspection"></entity>
+
+    <entity entity-name="Gustave"></entity>
 </entitymodel>
