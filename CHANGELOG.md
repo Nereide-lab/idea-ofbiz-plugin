@@ -223,7 +223,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Added fixes for two NPE errors when getting files or script
-- Fixed condition syntax and removed some non idiomatic try / catch
+- Fixed condition syntax and removed some non-idiomatic try / catch
 - Fixed reference from makeValue() method towards an entity definition in groovy
 
 ## [1.4.4]
@@ -299,7 +299,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.2.0]
 
 ### Added
-- Added completion for a Generic Value to a certain extend (still heavily beta)
+- Added completion for a Generic Value to a certain extent (still heavily beta)
 - Added some tests, still a lot of tests to add
 - Added reference in groovy towards services in run instruction
   - Ex : `run service: "createProductPromo"`
