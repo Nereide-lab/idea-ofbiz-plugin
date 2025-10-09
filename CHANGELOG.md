@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.6]
+### Changed
+- [NA] Made compatible with 25.3
+
 ## [1.7.5]
 ### Fixed
 - [#29] Fixed some cases of false duplicate uri inspection, by taking the method (http) into account.
