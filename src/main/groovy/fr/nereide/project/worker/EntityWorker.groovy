@@ -16,6 +16,8 @@ import fr.nereide.project.OfbizProjectHelper
  */
 class EntityWorker {
 
+    public static final String TRUE = 'true'
+
     /**
      * Returns a String list of all entity fields
      */
@@ -98,10 +100,10 @@ class EntityWorker {
             ViewEntity view = ph.getViewEntity(entityName)
             if (!view) return false
             String neverCache = view.neverCache ?: ''
-            return neverCache ? neverCache == 'true' : false
+            return neverCache ? neverCache == TRUE : false
         }
         String neverCache = entity.neverCache ?: ''
-        return neverCache ? neverCache == 'true' : false
+        return neverCache ? neverCache == TRUE : false
     }
 
 }

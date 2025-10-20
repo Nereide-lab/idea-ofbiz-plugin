@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.7]
+### Changed
+- [31] Applied codenarc to
+
 ## [1.7.6]
 ### Changed
 - [NA] Made compatible with 25.3
