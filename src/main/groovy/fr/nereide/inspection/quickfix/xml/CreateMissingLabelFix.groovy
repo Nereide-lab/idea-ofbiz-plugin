@@ -1,5 +1,10 @@
 package fr.nereide.inspection.quickfix.xml
 
+import static com.intellij.openapi.application.ApplicationManager.getApplication
+import static fr.nereide.editor.OfbizEditorBundle.message
+import static fr.nereide.project.utils.MiscUtils.getComponentName
+import static fr.nereide.project.utils.MiscUtils.getUiLabelSafeValue
+
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
@@ -12,74 +17,35 @@ import fr.nereide.inspection.InspectionBundle
 import fr.nereide.project.OfbizProjectHelper
 import org.jetbrains.annotations.NotNull
 
-import static com.intellij.openapi.application.ApplicationManager.getApplication
-import static fr.nereide.editor.OfbizEditorBundle.message
-import static fr.nereide.project.utils.MiscUtils.getComponentName
-import static fr.nereide.project.utils.MiscUtils.getUiLabelSafeValue
-
+/**
+ * Quickfix that creates a label in a property file when missing
+ */
 class CreateMissingLabelFix implements LocalQuickFix {
 
-    CreateMissingLabelFix() {}
+    final String name = InspectionBundle.message('inspection.label.not.found.quickfix.create')
 
-    @Override
-    String getName() {
-        return InspectionBundle.message('inspection.label.not.found.quickfix.create')
-    }
-
-    @Override
-    String getFamilyName() {
-        return getName()
-    }
-
-    @Override
-    void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(project)
-        XmlAttribute attr = descriptor.getPsiElement() as XmlAttribute
-        String labelName = attr.getValue()
-        String componentName = getComponentName(attr)
-        Map files = getLabelFilesList(ph, componentName)
-        OfbizSimpleListDialog dial = new OfbizDialogBuilder(project)
-                .from(files)
-                .title(message("editor.action.create.label.title"))
-                .text(message("editor.action.create.label.file.select"))
-                .get()
-
-        UiLabelFile fileToAddLabelIn
-
-        if (getApplication().isUnitTestMode()) {
-            fileToAddLabelIn = ph.getAllUiLabelFilesInComponent(componentName).first()
-        } else if (!(dial.showAndGet()) || (!dial.getComboBoxValueOrKey())) {
-            return
-        } else {
-            fileToAddLabelIn = dial.getComboBoxValueOrKey() as UiLabelFile
-        }
-        if (!fileToAddLabelIn) return
-        createLabelInTargetFile(labelName, fileToAddLabelIn)
-        fileToAddLabelIn.xmlElement.containingFile.navigate(true)
-    }
+    final String familyName = getName()
 
     /**
      * Returns a map of label file names and associated pointers to files.
-     * @param uiLabelFileList
-     * @return
      */
-    static LinkedHashMap<String, Object> getLabelFilesList(OfbizProjectHelper ph, String componentName) {
-        LinkedHashMap<String, Object> result = [:]
-        ph.getAllUiLabelFilesInComponent(componentName)
+    static Map getLabelFilesList(OfbizProjectHelper ph, String componentName) {
+        Map result = [:]
+        ph.collectAllUiLabelFilesInComponent(componentName)
                 .forEach { file -> result << addLabelFileToMap(file, true) }
-        ph.getAllUiLabelFiles()
+        ph.collectAllUiLabelFiles() // codenarc-disable UnnecessaryGetter
                 .forEach { file -> result << addLabelFileToMap(file, false) }
         return result
     }
 
-    private static def addLabelFileToMap(UiLabelFile file, boolean isCurrentComponent) {
+    static Map addLabelFileToMap(UiLabelFile file, boolean isCurrentComponent) {
         String fileName = file.xmlElement.containingFile.name
         String choiceStr = "$fileName [component: ${isCurrentComponent ? 'CURRENT' : getComponentName(file)}]"
-        return [(choiceStr): file]
+        return [(choiceStr):file]
     }
 
-    static void createLabelInTargetFile(String labelName, UiLabelFile labelFile) {
-        XmlTag rootTag = labelFile.getXmlElement() as XmlTag
+    static void addLabelInTargetFile(String labelName, UiLabelFile labelFile) {
+        XmlTag rootTag = labelFile.xmlElement as XmlTag
 
         // create new Prop tag
         XmlTag newPropertyTag = rootTag.createChildTag('property', '', '', false)
@@ -92,4 +58,32 @@ class CreateMissingLabelFix implements LocalQuickFix {
 
         rootTag.addSubTag(newPropertyTag, false)
     }
+
+    @Override
+    void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(project)
+        XmlAttribute attr = descriptor.psiElement as XmlAttribute
+        String labelName = attr.value
+        String componentName = getComponentName(attr)
+        Map files = getLabelFilesList(ph, componentName)
+        OfbizSimpleListDialog dial = new OfbizDialogBuilder(project)
+                .from(files)
+                .title(message('editor.action.create.label.title'))
+                .text(message('editor.action.create.label.file.select'))
+                .get()
+
+        UiLabelFile fileToAddLabelIn
+
+        if (application.unitTestMode) {
+            fileToAddLabelIn = ph.collectAllUiLabelFilesInComponent(componentName).first()
+        } else if (!(dial.showAndGet()) || (!dial.comboBoxValueOrKey)) {
+            return
+        } else {
+            fileToAddLabelIn = dial.comboBoxValueOrKey as UiLabelFile
+        }
+        if (!fileToAddLabelIn) return
+        addLabelInTargetFile(labelName, fileToAddLabelIn)
+        fileToAddLabelIn.xmlElement.containingFile.navigate(true)
+    }
+
 }

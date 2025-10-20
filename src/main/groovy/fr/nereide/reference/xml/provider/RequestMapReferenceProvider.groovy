@@ -14,9 +14,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.xml.provider
-
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
@@ -27,11 +25,14 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.RequestMapReference
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class RequestMapReferenceProvider extends PsiReferenceProvider {
-    RequestMapReferenceProvider() {}
 
+    // codenarc-disable UnusedMethodParameter
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return []
+        if (PluginActivator.getInstance(element.project).inactive) return []
         if (element instanceof XmlAttributeValue) {
             RequestMapReference controller = new RequestMapReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) controller
@@ -39,4 +40,5 @@ class RequestMapReferenceProvider extends PsiReferenceProvider {
         }
         return PsiReference.EMPTY_ARRAY
     }
+
 }

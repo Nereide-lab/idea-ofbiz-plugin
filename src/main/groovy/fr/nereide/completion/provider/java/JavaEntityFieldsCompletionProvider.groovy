@@ -8,29 +8,28 @@ import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiVariable
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
 
+/**
+ * Entity fields completion provider for Java
+ */
 abstract class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionProvider {
 
     /**
      * Get the entity name from a for statement
-     * @param forStatement
-     * @return
      */
     static String getEntityNameFromForStatement(PsiForeachStatement forStatement) {
-        PsiReferenceExpression iteratedValue = forStatement.getIteratedValue() as PsiReferenceExpression
+        PsiReferenceExpression iteratedValue = forStatement.iteratedValue as PsiReferenceExpression
         if (iteratedValue) {
             PsiVariable iteratedValueVariable = iteratedValue.resolve() as PsiVariable
-            return getEntityNameFromDeclarationString(iteratedValueVariable.getInitializer().text)
+            return getEntityNameFromDeclarationString(iteratedValueVariable.initializer.text)
         }
         return null
     }
 
-    Class getReferenceExpressionClass() {
-        return PsiReferenceExpression.class
-    }
+    abstract String getEntityNameFromPsiElement(PsiElement psiElement)
 
-    Class getAssigmentClass() {
-        return PsiAssignmentExpression.class
-    }
+    final Class methodExprClass = PsiMethodCallExpression
+    final Class referenceExpressionClass = PsiReferenceExpression
+    final Class assigmentClass = PsiAssignmentExpression
 
     String getAssigmentString(PsiElement assign) {
         return (assign as PsiAssignmentExpression).RExpression.text
@@ -38,10 +37,6 @@ abstract class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionP
 
     PsiElement[] getMethodArgs(PsiElement method) {
         return (method as PsiMethodCallExpression).argumentList.expressions
-    }
-
-    Class getMethodExprClass() {
-        return PsiMethodCallExpression.class
     }
 
 }

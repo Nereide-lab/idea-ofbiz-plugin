@@ -14,14 +14,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.completion.contributor
-
-import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.java.JavaEntityFieldsFromDVECompletionProvider
-import fr.nereide.completion.provider.java.JavaEntityFieldsFromDVEKeyMapCompletionProvider
-import fr.nereide.completion.provider.java.JavaEntityFieldsFromGvMethodCompletionProvider
-import fr.nereide.completion.provider.java.JavaEntityFieldsInQueryCompletionProvider
 
 import static fr.nereide.project.pattern.OfbizJavaPatterns.ENTITY_CALL_COMPL
 import static fr.nereide.project.pattern.OfbizJavaPatterns.ENTITY_FIELD_INKEYMAP_IN_DVE_0
@@ -31,16 +24,29 @@ import static fr.nereide.project.pattern.OfbizJavaPatterns.GENERIC_VALUE_FIELD_I
 import static fr.nereide.project.pattern.OfbizJavaPatterns.GENERIC_VALUE_FIELD_IN_WHERE_QUERY
 import static fr.nereide.project.pattern.OfbizJavaPatterns.SERVICE_CALL_COMPL
 
-class JavaCompletionContributor extends OfbizBaseCompletionContributor {
+import com.intellij.codeInsight.completion.CompletionType
+import fr.nereide.completion.provider.java.JavaEntityFieldsFromDVECompletionProvider
+import fr.nereide.completion.provider.java.JavaEntityFieldsFromDVEKeyMapCompletionProvider
+import fr.nereide.completion.provider.java.JavaEntityFieldsFromGvMethodCompletionProvider
+import fr.nereide.completion.provider.java.JavaEntityFieldsInQueryCompletionProvider
+
+/**
+ * Part of the OFBiz plugin Completion system
+ */
+class JavaCompletionContributor extends BaseCompletionContributor {
 
     JavaCompletionContributor() {
-
         this.extend(CompletionType.BASIC, ENTITY_CALL_COMPL, entityOrViewNameCompletionProvider)
         this.extend(CompletionType.BASIC, SERVICE_CALL_COMPL, serviceNameCompletionProvider)
-        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_IN_WHERE_QUERY, new JavaEntityFieldsInQueryCompletionProvider())
-        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_FROM_GV_OBJECT, new JavaEntityFieldsFromGvMethodCompletionProvider())
+        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_IN_WHERE_QUERY,
+                new JavaEntityFieldsInQueryCompletionProvider())
+        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_FROM_GV_OBJECT,
+                new JavaEntityFieldsFromGvMethodCompletionProvider())
         this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_IN_DVE, new JavaEntityFieldsFromDVECompletionProvider())
-        this.extend(CompletionType.BASIC, ENTITY_FIELD_INKEYMAP_IN_DVE_0, new JavaEntityFieldsFromDVEKeyMapCompletionProvider(0))
-        this.extend(CompletionType.BASIC, ENTITY_FIELD_INKEYMAP_IN_DVE_1, new JavaEntityFieldsFromDVEKeyMapCompletionProvider(1))
+        this.extend(CompletionType.BASIC, ENTITY_FIELD_INKEYMAP_IN_DVE_0,
+                new JavaEntityFieldsFromDVEKeyMapCompletionProvider(0))
+        this.extend(CompletionType.BASIC, ENTITY_FIELD_INKEYMAP_IN_DVE_1,
+                new JavaEntityFieldsFromDVEKeyMapCompletionProvider(1))
     }
+
 }

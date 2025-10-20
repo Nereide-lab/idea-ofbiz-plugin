@@ -41,11 +41,11 @@ class TestServiceAttributes extends BaseServiceTest {
 
     private static List<String> getRequiredAttrNames(Service service, OfbizProjectHelper ph) {
         ServiceWorker.getRequiredInAttributes(service, ph)
-                .stream().map { it.get(ServiceWorker.SERVICE_ATTR_NAME) }.collect()
+                .collect { it -> it.get(ServiceWorker.SERVICE_ATTR_NAME) } as List<String>
     }
 
     private static List<String> getOptionalAttrNames(Service service, OfbizProjectHelper ph) {
         ServiceWorker.getOptionalInAttributes(service, ph)
-                .stream().map { it.get(ServiceWorker.SERVICE_ATTR_NAME) }.collect()
+                .collect { it -> it.get(ServiceWorker.SERVICE_ATTR_NAME) } as List<String>
     }
 }

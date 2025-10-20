@@ -14,13 +14,15 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.dom.file
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.SubTagList
 import fr.nereide.dom.element.serviceengine.ServiceEngine
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface ServiceEngineFile extends DomElement {
 
     @SubTagList('service-engine')

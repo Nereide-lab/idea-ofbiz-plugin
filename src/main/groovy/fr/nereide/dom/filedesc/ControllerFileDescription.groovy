@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.dom.filedesc
 
 import com.intellij.util.xml.DomElement
@@ -25,15 +24,20 @@ import org.jetbrains.annotations.Nullable
 
 import javax.swing.Icon
 
+/**
+ * Part of the OFBiz DOM description
+ */
 class ControllerFileDescription<S extends DomElement> extends DomFileDescription {
-    private static final String rootTagName = "site-conf"
+
+    private static final String ROOT_TAG_NAME = 'site-conf'
 
     ControllerFileDescription() {
-        super(ControllerFile.class, rootTagName)
+        super(ControllerFile, ROOT_TAG_NAME)
     }
 
     @Nullable
-    Icon getFileIcon(int flags) {
+    Icon getFileIcon(int flags) { // codenarc-disable UnusedMethodParameter
         return PluginIcons.CONTROLLER_FILE_ICON
     }
+
 }

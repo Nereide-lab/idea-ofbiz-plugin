@@ -14,7 +14,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.completion.provider.common
 
 import com.intellij.codeInsight.completion.CompletionParameters
@@ -28,38 +27,45 @@ import fr.nereide.dom.element.entitymodel.Entity
 import fr.nereide.dom.element.entitymodel.ViewEntity
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.PluginActivator
+import fr.nereide.project.pattern.OfbizPluginConstants
 import fr.nereide.project.utils.MiscUtils
 import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin completion system
+ */
 class EntityOrViewNameCompletionProvider extends CompletionProvider<CompletionParameters> {
+
+    static void addEntitiesLookup(OfbizProjectHelper ph, CompletionResultSet result) {
+        List entities = ph.collectAllEntities()
+        for (Entity entity : entities) {
+            LookupElement lookupElement = LookupElementBuilder.create(entity.entityName)
+                    .withIcon(PluginIcons.ENTITY_ICON)
+                    .withTailText(" Component:${MiscUtils.getComponentName(entity)}" as String, true)
+            result.addElement(PrioritizedLookupElement.withPriority(lookupElement,
+                    OfbizPluginConstants.DEFAULT_COMPLETION_PRIORITY))
+        }
+    }
+
+    static void addViewEntitiesLookups(OfbizProjectHelper ph, CompletionResultSet result) {
+        List viewEntities = ph.collectAllViewEntities()
+        for (ViewEntity view : viewEntities) {
+            LookupElement lookupElement = LookupElementBuilder.create(view.entityName)
+                    .withIcon(PluginIcons.VIEW_ENTITY_ICON)
+                    .withTailText(" Component:${MiscUtils.getComponentName(view)}" as String, true)
+            result.addElement(PrioritizedLookupElement.withPriority(lookupElement,
+                    OfbizPluginConstants.DEFAULT_COMPLETION_PRIORITY))
+        }
+    }
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
-        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
+        if (PluginActivator.getInstance(parameters.position.project).inactive) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         addEntitiesLookup(ph, result)
         addViewEntitiesLookups(ph, result)
     }
 
-    static void addEntitiesLookup(OfbizProjectHelper ph, CompletionResultSet result) {
-        List entities = ph.getAllEntities()
-        for (Entity entity : entities) {
-            LookupElement lookupElement = LookupElementBuilder.create(entity.getEntityName())
-                    .withIcon(PluginIcons.ENTITY_ICON)
-                    .withTailText(" Component:${MiscUtils.getComponentName(entity)}" as String, true)
-            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
-        }
-    }
-
-    static void addViewEntitiesLookups(OfbizProjectHelper ph, CompletionResultSet result) {
-        List viewEntities = ph.getAllViewEntities()
-        for (ViewEntity view : viewEntities) {
-            LookupElement lookupElement = LookupElementBuilder.create(view.getEntityName())
-                    .withIcon(PluginIcons.VIEW_ENTITY_ICON)
-                    .withTailText(" Component:${MiscUtils.getComponentName(view)}" as String, true)
-            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
-        }
-    }
 }

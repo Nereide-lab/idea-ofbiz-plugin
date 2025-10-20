@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.dom.filedesc
 
 import com.intellij.util.xml.DomElement
@@ -22,8 +21,13 @@ import com.intellij.util.xml.DomFileDescription
 import fr.nereide.dom.file.ComponentFile
 import fr.nereide.dom.file.ServiceEngineFile
 
+/**
+ * Part of the OFBiz DOM description
+ */
 class ServiceEngineFileDescription<S extends DomElement> extends DomFileDescription<ComponentFile> {
-    private static final String rootTagName = "service-config"
 
-    ServiceEngineFileDescription() { super(ServiceEngineFile.class, rootTagName) }
+    private static final String ROOT_TAG = 'service-config'
+
+    ServiceEngineFileDescription() { super(ServiceEngineFile, ROOT_TAG) }
+
 }

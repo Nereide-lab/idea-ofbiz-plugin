@@ -2,13 +2,16 @@ package fr.nereide.reference.xml
 
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import org.jetbrains.annotations.Nullable
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class JavaMethodReference extends PsiReferenceBase<XmlElement> {
+
     private final PsiClass currentClass
 
     JavaMethodReference(XmlAttributeValue methodName, PsiClass currentClass, boolean soft) {
@@ -18,14 +21,7 @@ class JavaMethodReference extends PsiReferenceBase<XmlElement> {
 
     @Nullable
     PsiElement resolve() {
-        PsiMethod[] methods = this.currentClass.getMethods()
-        String val = this.getValue()
-
-        for (PsiMethod method : methods) {
-            if (method.getName() == val) {
-                return method
-            }
-        }
-        return null
+        return this.currentClass.methods.find { method -> method.name == this.value }
     }
+
 }

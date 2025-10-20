@@ -7,6 +7,9 @@ import com.intellij.util.xmlb.annotations.Attribute
 import fr.nereide.dom.element.commoneca.Action
 import fr.nereide.dom.element.commoneca.Condition
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface Eca extends DomElement {
 
     @Attribute('service')
@@ -20,4 +23,5 @@ interface Eca extends DomElement {
 
     @SubTagList('action')
     List<Action> getActions()
+
 }

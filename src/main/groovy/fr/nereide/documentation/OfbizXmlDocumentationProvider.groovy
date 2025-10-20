@@ -14,12 +14,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.documentation
 
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlToken
 import com.intellij.psi.xml.XmlTokenType
@@ -27,8 +24,10 @@ import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
+/**
+ * Part of the Documentation provider system.
+ */
 class OfbizXmlDocumentationProvider extends OfbizCommonDocumentationProvider {
-    private static final Logger LOG = Logger.getInstance(OfbizXmlDocumentationProvider.class)
 
     @Override
     String getQuickNavigateInfo(PsiElement element, PsiElement originalElement) {
@@ -47,21 +46,16 @@ class OfbizXmlDocumentationProvider extends OfbizCommonDocumentationProvider {
 
     private static String getElementName(PsiElement originalElement) {
         if (originalElement instanceof XmlAttributeValue) {
-            String val = (originalElement as XmlAttributeValue).getValue()
+            String val = (originalElement as XmlAttributeValue).value
             if (val.contains('${')) {
                 return val.substring(val.indexOf('.') + 1, val.indexOf('}'))
-            } else {
-                return val
             }
-        } else if (originalElement instanceof XmlToken && (originalElement as XmlToken).getTokenType().equals(XmlTokenType.XML_ATTRIBUTE_VALUE_TOKEN)) {
-            return (originalElement as XmlToken).getText()
-        } else {
-            try {
-                return MiscUtils.getSafeTextValue(originalElement)
-            } catch (Exception e) {
-                LOG.warn("Could not find element name", e)
-                return null
-            }
+            return val
+        } else if (originalElement instanceof XmlToken &&
+                (originalElement as XmlToken).tokenType == XmlTokenType.XML_ATTRIBUTE_VALUE_TOKEN) {
+            return (originalElement as XmlToken).text
         }
+        return MiscUtils.getSafeTextValue(originalElement)
     }
+
 }

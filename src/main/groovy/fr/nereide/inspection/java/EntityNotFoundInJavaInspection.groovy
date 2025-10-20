@@ -1,5 +1,8 @@
 package fr.nereide.inspection.java
 
+import static com.intellij.codeInspection.ProblemHighlightType.WARNING
+import static fr.nereide.inspection.InspectionBundle.message
+
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.JavaElementVisitor
 import com.intellij.psi.PsiElementVisitor
@@ -10,17 +13,19 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizJavaPatterns
 import org.jetbrains.annotations.NotNull
 
-import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static fr.nereide.inspection.InspectionBundle.message
-
+/**
+ * Inspection for entities or views not found
+ */
 class EntityNotFoundInJavaInspection extends OfbizBaseInspection {
+
     @Override
     @NotNull
     PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
         return new JavaElementVisitor() {
+
             @Override
             void visitLiteralExpression(PsiLiteralExpression exp) {
-                if (!PluginActivator.getInstance(exp.project).isActive() ||
+                if (PluginActivator.getInstance(exp.project).inactive ||
                         !OfbizJavaPatterns.ENTITY_CALL.accepts(exp)) return
                 if (!(OfbizProjectHelper.getInstance(exp.project).entityOrViewExists(exp.value))) {
                     holder.registerProblem(exp,
@@ -29,6 +34,8 @@ class EntityNotFoundInJavaInspection extends OfbizBaseInspection {
                     )
                 }
             }
+
         }
     }
+
 }

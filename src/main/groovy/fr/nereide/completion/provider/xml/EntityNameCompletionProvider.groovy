@@ -8,12 +8,17 @@ import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.PluginActivator
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin completion system
+ */
 class EntityNameCompletionProvider extends EntityOrViewNameCompletionProvider {
 
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
-        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
+    protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
+                                  @NotNull CompletionResultSet result) {
+        if (PluginActivator.getInstance(parameters.position.project).inactive) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         addEntitiesLookup(ph, result)
     }
+
 }

@@ -1,39 +1,38 @@
 package fr.nereide.editor.marker.common
 
+import com.intellij.patterns.PsiElementPattern
 import com.intellij.psi.PsiElement
 import fr.nereide.editor.marker.OfbizBaseLineMarker
 import fr.nereide.editor.renderer.ExtendEntityPresentationRenderer
 import fr.nereide.project.OfbizProjectHelper
 import icons.PluginIcons
 
-import javax.swing.*
+import javax.swing.Icon
 import java.util.function.Supplier
 
-abstract class CommonEntityExtendMarkerProvider extends OfbizBaseLineMarker {
+/**
+ * Class that marks in gutter entities that are extended
+ */
+class CommonEntityExtendMarkerProvider extends OfbizBaseLineMarker {
+
+    final PsiElementPattern pattern = null
+    final Icon icon = PluginIcons.ENTITY_ICON
+    final Class leafElementType = null
+    final String listTitle = 'Extends list'
+    final Supplier<String> messageSupplier = { 'Entity is extended' }
 
     ExtendEntityPresentationRenderer getRenderer() {
         return new ExtendEntityPresentationRenderer()
     }
 
-    Icon getIcon() {
-        return PluginIcons.ENTITY_ICON
-    }
-
-    String getListTitle() {
-        return 'Extends list'
-    }
-
-    Closure<String> getTooltipProvider(List<PsiElement> navEls) {
+    Closure<String> getTooltipProvider(List<PsiElement> navEls) { // codenarc-disable UnusedMethodParameter
         return (psiElement) -> 'Entity is extended'
-    }
-
-    Supplier<String> getMessageSupplier() {
-        return { 'Entity is extended' }
     }
 
     List<PsiElement> getNavigatableList(PsiElement element) {
         return OfbizProjectHelper.getInstance(element.project)
                 .getExtendEntityListForEntity(element)
-                .collect { it.getXmlElement().getNavigationElement() }
+                .collect { extend -> extend.xmlElement.navigationElement }
     }
+
 }

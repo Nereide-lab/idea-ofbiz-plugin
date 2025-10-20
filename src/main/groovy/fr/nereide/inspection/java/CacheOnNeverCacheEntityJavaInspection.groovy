@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.inspection.java
 
 import com.intellij.codeInspection.ProblemsHolder
@@ -29,6 +28,9 @@ import fr.nereide.inspection.quickfix.RemoveCacheCallFix
 import fr.nereide.project.PluginActivator
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Checks never cache call in java
+ */
 class CacheOnNeverCacheEntityJavaInspection extends OfbizBaseInspection {
 
     private final RemoveCacheCallFix myQuickFix = new RemoveCacheCallFix()
@@ -37,11 +39,14 @@ class CacheOnNeverCacheEntityJavaInspection extends OfbizBaseInspection {
     @NotNull
     PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
         return new JavaElementVisitor() {
+
             @Override
             void visitReferenceExpression(PsiReferenceExpression exp) {
-                if (!PluginActivator.getInstance(exp.project).isActive()) return
+                if (PluginActivator.getInstance(exp.project).inactive) return
                 InspectionUtil.checkAndRegisterCacheOnNeverCacheEntity(exp, holder, myQuickFix)
             }
+
         }
     }
+
 }

@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.dom.filedesc
 
 import com.intellij.util.xml.DomElement
@@ -25,15 +24,20 @@ import org.jetbrains.annotations.Nullable
 
 import javax.swing.Icon
 
+/**
+ * Part of the OFBiz DOM description
+ */
 class EntityModelFileDescription<S extends DomElement> extends DomFileDescription {
-    private static final String rootTagName = "entitymodel"
+
+    private static final String ROOT_TAG = 'entitymodel'
 
     EntityModelFileDescription() {
-        super(EntityModelFile.class, rootTagName)
+        super(EntityModelFile, ROOT_TAG)
     }
 
     @Nullable
-    Icon getFileIcon(int flags) {
+    Icon getFileIcon(int flags) { // codenarc-disable UnusedMethodParameter
         return PluginIcons.ENTITY_FILE_ICON
     }
+
 }

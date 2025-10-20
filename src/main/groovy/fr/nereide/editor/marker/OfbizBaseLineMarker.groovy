@@ -1,5 +1,7 @@
 package fr.nereide.editor.marker
 
+import static com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment
+
 import com.intellij.codeInsight.daemon.GutterIconNavigationHandler
 import com.intellij.codeInsight.daemon.LineMarkerInfo
 import com.intellij.codeInsight.daemon.LineMarkerProvider
@@ -12,12 +14,13 @@ import com.intellij.ui.awt.RelativePoint
 import fr.nereide.project.PluginActivator
 import org.jetbrains.annotations.NotNull
 
-import javax.swing.*
 import java.awt.event.MouseEvent
+import javax.swing.Icon
 import java.util.function.Supplier
 
-import static com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment
-
+/**
+ * Base interface for ofbiz gutter icons
+ */
 abstract class OfbizBaseLineMarker implements LineMarkerProvider {
 
     abstract PsiElementPattern getPattern()
@@ -38,27 +41,28 @@ abstract class OfbizBaseLineMarker implements LineMarkerProvider {
 
     @Override
     LineMarkerInfo<PsiElement> getLineMarkerInfo(@NotNull PsiElement element) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return null
-        if (!getPattern().accepts(element)) return null
-        PsiElement elementToRegister = element.getFirstChild()
-        if (!getLeafElementType().isAssignableFrom(elementToRegister.getClass())) return null
+        if (PluginActivator.getInstance(element.project).inactive) return null
+        if (!pattern.accepts(element)) return null
+        PsiElement elementToRegister = element.firstChild
+        if (!leafElementType.isAssignableFrom(elementToRegister.getClass())) return null
 
         List<PsiElement> navEls = getNavigatableList(element)
 
         if (navEls.size() < 1) return null
         return new LineMarkerInfo<PsiElement>(
                 elementToRegister,
-                element.getTextRange(),
-                getIcon(),
+                element.textRange,
+                icon,
                 getTooltipProvider(navEls),
                 getNavHandler(navEls),
                 Alignment.RIGHT,
-                getMessageSupplier()
+                messageSupplier
         )
     }
 
     private GutterIconNavigationHandler<PsiElement> getNavHandler(List<PsiElement> navigatableList) {
         return new GutterIconNavigationHandler<PsiElement>() {
+
             @Override
             void navigate(MouseEvent e, PsiElement elt) {
                 if (navigatableList.size() == 1) {
@@ -67,12 +71,14 @@ abstract class OfbizBaseLineMarker implements LineMarkerProvider {
                 } else {
                     NavigationUtil.getPsiElementPopup(
                             { -> navigatableList },
-                            getRenderer(),
-                            getListTitle(),
+                            renderer,
+                            listTitle,
                             elt.project
                     ).show(new RelativePoint(e))
                 }
             }
+
         }
     }
+
 }

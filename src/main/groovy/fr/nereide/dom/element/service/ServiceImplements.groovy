@@ -6,13 +6,17 @@ import com.intellij.util.xml.NameValue
 import com.intellij.util.xml.Stubbed
 import com.intellij.util.xmlb.annotations.Attribute
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface ServiceImplements extends DomElement {
 
     @NameValue
     @Stubbed
-    @Attribute("service")
+    @Attribute('service')
     GenericAttributeValue<String> getService()
 
-    @Attribute("optional")
+    @Attribute('optional')
     GenericAttributeValue<String> getOptional()
+
 }

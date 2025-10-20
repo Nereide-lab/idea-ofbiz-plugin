@@ -14,29 +14,34 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.xml
 
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.xml.DomManager
 import fr.nereide.project.OfbizProjectHelper
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 abstract class GenericXmlReference extends PsiReferenceBase<XmlAttributeValue> {
 
     DomManager dm
     OfbizProjectHelper ph
 
-    GenericXmlReference(XmlAttributeValue element, TextRange textRange, boolean soft) {
+    abstract PsiElement resolve()
+
+    protected GenericXmlReference(XmlAttributeValue element, TextRange textRange, boolean soft) {
         super(element, textRange, soft)
-        dm = DomManager.getDomManager(element.getProject())
+        dm = DomManager.getDomManager(element.project)
         ph = OfbizProjectHelper.getInstance(element.project)
     }
 
-    GenericXmlReference(XmlAttributeValue element, boolean soft) {
+    protected GenericXmlReference(XmlAttributeValue element, boolean soft) {
         super(element, soft)
-        dm = DomManager.getDomManager(element.getProject())
+        dm = DomManager.getDomManager(element.project)
         ph = OfbizProjectHelper.getInstance(element.project)
     }
 

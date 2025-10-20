@@ -7,12 +7,17 @@ import com.intellij.util.xml.Stubbed
 import com.intellij.util.xml.SubTagList
 import com.intellij.util.xmlb.annotations.Attribute
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface Screen extends DomElement {
+
     @NameValue
     @Stubbed
-    @Attribute("name")
+    @Attribute('name')
     GenericAttributeValue<String> getName()
 
     @SubTagList('section')
     List<ScreenSection> getSections()
+
 }

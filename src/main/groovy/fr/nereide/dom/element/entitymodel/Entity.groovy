@@ -11,31 +11,36 @@ import com.intellij.util.xmlb.annotations.Attribute
 
 import javax.xml.bind.annotation.XmlValue
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface Entity extends DomElement {
-    @Attribute("title")
+
+    @Attribute('title')
     GenericAttributeValue<String> getTitle()
 
     @NameValue
     @XmlValue
     @Stubbed
-    @Attribute("entity-name")
+    @Attribute('entity-name')
     GenericAttributeValue<String> getEntityName()
 
-    @SubTag("description")
+    @SubTag('description')
     GenericDomValue<String> getDescription()
 
-    @Attribute("never-cache")
+    @Attribute('never-cache')
     GenericAttributeValue<String> getNeverCache()
 
-    @Attribute("package-name")
+    @Attribute('package-name')
     GenericAttributeValue<String> getPackageName()
 
-    @SubTagList("field")
+    @SubTagList('field')
     List<EntityField> getFields()
 
-    @SubTagList("prim-key")
+    @SubTagList('prim-key')
     List<EntityPrimKey> getPrimKeys()
 
-    @SubTagList("relation")
+    @SubTagList('relation')
     List<EntityRelation> getRelations()
+
 }

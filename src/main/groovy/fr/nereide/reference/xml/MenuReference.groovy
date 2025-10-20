@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.xml
 
 import com.intellij.psi.PsiElement
@@ -24,27 +23,31 @@ import com.intellij.psi.xml.XmlTag
 import fr.nereide.dom.file.FormFile
 import fr.nereide.project.utils.XmlUtils
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class MenuReference extends GenericXmlReference {
 
-    Class fileType = FormFile.class
+    Class fileType = FormFile
 
     MenuReference(XmlAttributeValue menuName, boolean soft) {
         super(menuName, soft)
     }
 
     PsiElement resolve() {
-        XmlTag containingTag = (XmlTag) XmlUtils.getParentTag(this.getElement())
+        XmlTag containingTag = (XmlTag) XmlUtils.getParentTag(this.element)
         if (!containingTag) {
             return null
         }
         PsiElement locationAttribute = containingTag.getAttribute('location')
         if (locationAttribute) {
-            String locationAttributeValue = locationAttribute.getValue()
-            return ph.getMenuFromFileAtLocation(locationAttributeValue, this.getValue()).getXmlElement()
-        } else if (XmlUtils.isInRightFile(this.getElement(), fileType, dm)) {
-            PsiFile currentFile = this.getElement().getContainingFile()
-            return ph.getMenuFromPsiFile(currentFile, this.getElement().getValue()).getXmlElement()
+            String locationAttributeValue = locationAttribute.value
+            return ph.getMenuFromFileAtLocation(locationAttributeValue, this.value).xmlElement
+        } else if (XmlUtils.isInRightFile(this.element, fileType, dm)) {
+            PsiFile currentFile = this.element.containingFile
+            return ph.getMenuFromPsiFile(currentFile, this.element.value).xmlElement
         }
         return null
     }
+
 }

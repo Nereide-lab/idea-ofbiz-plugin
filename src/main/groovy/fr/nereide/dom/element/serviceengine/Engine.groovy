@@ -6,6 +6,9 @@ import com.intellij.util.xml.GenericAttributeValue
 import com.intellij.util.xml.NameValue
 import com.intellij.util.xml.Stubbed
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface Engine extends DomElement {
 
     @NameValue

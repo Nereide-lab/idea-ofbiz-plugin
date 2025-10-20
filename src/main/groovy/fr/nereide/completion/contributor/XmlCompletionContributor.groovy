@@ -14,37 +14,58 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.completion.contributor
-
-import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.xml.*
-import fr.nereide.project.pattern.OfbizXmlPatterns
 
 import static com.intellij.patterns.PlatformPatterns.psiElement
 
-class XmlCompletionContributor extends OfbizBaseCompletionContributor {
+import com.intellij.codeInsight.completion.CompletionType
+import fr.nereide.completion.provider.xml.DecoratorSectionCompletionProvider
+import fr.nereide.completion.provider.xml.EntityAliasCompletionProvider
+import fr.nereide.completion.provider.xml.EntityNameCompletionProvider
+import fr.nereide.completion.provider.xml.FormNameCompletionProvider
+import fr.nereide.completion.provider.xml.MenuNameCompletionProvider
+import fr.nereide.completion.provider.xml.RequestUriCompletionProvider
+import fr.nereide.completion.provider.xml.ScreenNameCompletionProvider
+import fr.nereide.completion.provider.xml.XmlEntityFieldsCompletionProvider
+import fr.nereide.project.pattern.OfbizXmlPatterns
+
+/**
+ * Part of the OFBiz plugin Completion system
+ */
+class XmlCompletionContributor extends BaseCompletionContributor {
+
     XmlEntityFieldsCompletionProvider xmlEntityFieldsCompletionProvider
 
     XmlCompletionContributor() {
         xmlEntityFieldsCompletionProvider = new XmlEntityFieldsCompletionProvider()
-        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_OR_VIEW_CALL_COMPL, entityOrViewNameCompletionProvider)
-        this.extend(CompletionType.BASIC, OfbizXmlPatterns.SERVICE_DEF_CALL_COMPL, serviceNameCompletionProvider)
-        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_COMPL, xmlEntityFieldsCompletionProvider)
-        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_FIELD_IN_DATALOAD_COMPL, xmlEntityFieldsCompletionProvider)
-        this.extend(CompletionType.BASIC, OfbizXmlPatterns.ENTITY_TAG_CALL_COMPL, new EntityNameCompletionProvider())
-        this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.SCREEN_CALL), new ScreenNameCompletionProvider())
-        this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.MENU_CALL), new MenuNameCompletionProvider())
-        this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.FORM_CALL), new FormNameCompletionProvider())
-        this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.URI_CALL), new RequestUriCompletionProvider())
-        this.extend(CompletionType.BASIC, psiElement().andOr(
-                psiElement().inside(OfbizXmlPatterns.ENTITY_ALIAS_IN_ALIAS_ALL),
-                psiElement().inside(OfbizXmlPatterns.ENTITY_ALIAS_IN_ALIAS),
-                psiElement().inside(OfbizXmlPatterns.ENTITY_ALIAS_IN_VIEW_LINK),
-                psiElement().inside(OfbizXmlPatterns.REL_ENTITY_ALIAS_IN_VIEW_LINK),
-        ), new EntityAliasCompletionProvider())
-        this.extend(CompletionType.BASIC, psiElement().inside(OfbizXmlPatterns.SECTION_ATTR_IN_SCREEN_WITH_DECORATOR),
+        this.extend(CompletionType.BASIC,
+                OfbizXmlPatterns.ENTITY_OR_VIEW_CALL_COMPL, entityOrViewNameCompletionProvider)
+        this.extend(CompletionType.BASIC,
+                OfbizXmlPatterns.SERVICE_DEF_CALL_COMPL, serviceNameCompletionProvider)
+        this.extend(CompletionType.BASIC,
+                OfbizXmlPatterns.ENTITY_FIELD_COMPL, xmlEntityFieldsCompletionProvider)
+        this.extend(CompletionType.BASIC,
+                OfbizXmlPatterns.ENTITY_FIELD_IN_DATALOAD_COMPL, xmlEntityFieldsCompletionProvider)
+        this.extend(CompletionType.BASIC,
+                OfbizXmlPatterns.ENTITY_TAG_CALL_COMPL, new EntityNameCompletionProvider())
+        this.extend(CompletionType.BASIC,
+                psiElement().inside(OfbizXmlPatterns.SCREEN_CALL), new ScreenNameCompletionProvider())
+        this.extend(CompletionType.BASIC,
+                psiElement().inside(OfbizXmlPatterns.MENU_CALL), new MenuNameCompletionProvider())
+        this.extend(CompletionType.BASIC,
+                psiElement().inside(OfbizXmlPatterns.FORM_CALL), new FormNameCompletionProvider())
+        this.extend(CompletionType.BASIC,
+                psiElement().inside(OfbizXmlPatterns.URI_CALL), new RequestUriCompletionProvider())
+        this.extend(CompletionType.BASIC,
+                psiElement().andOr(
+                        psiElement().inside(OfbizXmlPatterns.ENTITY_ALIAS_IN_ALIAS_ALL),
+                        psiElement().inside(OfbizXmlPatterns.ENTITY_ALIAS_IN_ALIAS),
+                        psiElement().inside(OfbizXmlPatterns.ENTITY_ALIAS_IN_VIEW_LINK),
+                        psiElement().inside(OfbizXmlPatterns.REL_ENTITY_ALIAS_IN_VIEW_LINK),
+                ), new EntityAliasCompletionProvider())
+        this.extend(CompletionType.BASIC,
+                psiElement().inside(OfbizXmlPatterns.SECTION_ATTR_IN_SCREEN_WITH_DECORATOR),
                 new DecoratorSectionCompletionProvider())
     }
-}
 
+}

@@ -4,8 +4,12 @@ import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileDescription
 import fr.nereide.dom.file.CompoundFile
 
+/**
+ * Part of the OFBiz DOM description
+ */
 class CompoundFileDescription<S extends DomElement> extends DomFileDescription<CompoundFile> {
-    private static final String rootTagName = "compound-widgets"
+
+    private static final String ROOT_TAG_NAME = 'compound-widgets'
 
     public static final String SITE_CONF_NS_URL = 'http://ofbiz.apache.org/Site-Conf'
     public static final String SITE_CONF_NS = 'sc'
@@ -23,7 +27,7 @@ class CompoundFileDescription<S extends DomElement> extends DomFileDescription<C
     public static final String SCREEN_NS = 'ws'
     public static final String SCREEN_NS_PREFIX = 'ws:'
 
-    CompoundFileDescription() { super(CompoundFile.class, rootTagName) }
+    CompoundFileDescription() { super(CompoundFile, ROOT_TAG_NAME) }
 
     @Override
     protected void initializeFileDescription() {
@@ -32,4 +36,5 @@ class CompoundFileDescription<S extends DomElement> extends DomFileDescription<C
         registerNamespacePolicy(MENU_NS, MENU_NS_URL)
         registerNamespacePolicy(SCREEN_NS, SCREEN_NS_URL)
     }
+
 }

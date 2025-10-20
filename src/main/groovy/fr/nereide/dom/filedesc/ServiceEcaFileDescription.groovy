@@ -14,15 +14,19 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.dom.filedesc
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileDescription
 import fr.nereide.dom.file.ServiceEcaFile
 
+/**
+ * Part of the OFBiz DOM description
+ */
 class ServiceEcaFileDescription<S extends DomElement> extends DomFileDescription<ServiceEcaFile> {
-    private static final String rootTagName = 'service-eca'
 
-    ServiceEcaFileDescription() { super(ServiceEcaFile.class, rootTagName) }
+    private static final String ROOT_TAG = 'service-eca'
+
+    ServiceEcaFileDescription() { super(ServiceEcaFile, ROOT_TAG) }
+
 }

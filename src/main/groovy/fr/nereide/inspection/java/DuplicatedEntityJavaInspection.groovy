@@ -1,5 +1,8 @@
 package fr.nereide.inspection.java
 
+import static com.intellij.codeInspection.ProblemHighlightType.WARNING
+import static fr.nereide.inspection.InspectionBundle.message
+
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.JavaElementVisitor
 import com.intellij.psi.PsiLiteralExpression
@@ -9,18 +12,19 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizJavaPatterns
 import org.jetbrains.annotations.NotNull
 
-import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static fr.nereide.inspection.InspectionBundle.message
-
+/**
+ * Basic inspection
+ */
 class DuplicatedEntityJavaInspection extends OfbizBaseInspection {
 
     @Override
     @NotNull
     JavaElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
         return new JavaElementVisitor() {
+
             @Override
             void visitLiteralExpression(@NotNull PsiLiteralExpression el) {
-                if (!PluginActivator.getInstance(el.project).isActive()) return
+                if (PluginActivator.getInstance(el.project).inactive) return
                 if (!OfbizJavaPatterns.ENTITY_CALL.accepts(el)) return
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(el.project)
                 if (ph.getEntities(el.value).size() > 1 || ph.getViewEntities(el.value).size() > 1) {
@@ -30,6 +34,8 @@ class DuplicatedEntityJavaInspection extends OfbizBaseInspection {
                             WARNING)
                 }
             }
+
         }
     }
+
 }

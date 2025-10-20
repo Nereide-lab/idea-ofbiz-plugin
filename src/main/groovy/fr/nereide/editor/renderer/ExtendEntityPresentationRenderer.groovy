@@ -11,6 +11,9 @@ import org.jetbrains.annotations.NotNull
 import javax.swing.Icon
 import java.awt.Color
 
+/**
+ * Class responsible for rendering the text that appears when hovering over a gutter icon for ECA
+ */
 class ExtendEntityPresentationRenderer extends PsiTargetPresentationRenderer<PsiElement> {
 
     String getElementText(PsiElement element) {
@@ -19,25 +22,19 @@ class ExtendEntityPresentationRenderer extends PsiTargetPresentationRenderer<Psi
 
     @Override
     TargetPresentation getPresentation(@NotNull PsiElement element) {
-
-        //noinspection UnstableApiUsage
+        // noinspection UnstableApiUsage
         return new TargetPresentation() {
 
-            String getPresentableText() { return '' }
+            final String presentableText = ''
+            final String containerText = ''
+            final String locationText = "[Component : ${MiscUtils.getComponentName(element)}]"
+            final Icon icon = PluginIcons.ECA_ICON
+            final TextAttributes presentableTextAttributes = null
+            final TextAttributes containerTextAttributes = null
+            final Icon locationIcon = null
+            final Color backgroundColor = null
 
-            String getContainerText() { return '' }
-
-            String getLocationText() { return "[Component : ${MiscUtils.getComponentName(element)}]" }
-
-            Icon getIcon() { return PluginIcons.ECA_ICON }
-
-            TextAttributes getPresentableTextAttributes() { return null }
-
-            TextAttributes getContainerTextAttributes() { return null }
-
-            Icon getLocationIcon() { return null }
-
-            Color getBackgroundColor() { return null }
         }
     }
+
 }

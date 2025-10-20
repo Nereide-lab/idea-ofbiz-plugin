@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.common.provider
 
 import com.intellij.psi.PsiElement
@@ -26,11 +25,17 @@ import fr.nereide.project.utils.UiLabelTextRange
 import fr.nereide.reference.common.UiLabelReference
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class UiLabelReferenceProvider extends PsiReferenceProvider {
+
+    /* codenarc-disable UnusedMethodParameter */
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return []
+        /* codenarc-enable UnusedMethodParameter */
+        if (PluginActivator.getInstance(element.project).inactive) return []
         UiLabelReference property
         String labelValue = element.text.replaceAll('"', '')
         if (labelValue.startsWith('${')) {
@@ -41,4 +46,5 @@ class UiLabelReferenceProvider extends PsiReferenceProvider {
         PsiReference[] reference = (PsiReference) property
         return reference ?: PsiReference.EMPTY_ARRAY
     }
+
 }

@@ -11,32 +11,29 @@ import com.intellij.util.xml.DomManager
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+/**
+ * Various xml utility methods
+ */
 class XmlUtils {
 
     /**
      * returns the xml tag parent of xml element or null if not found
-     * @param xmlElement
-     * @return
      */
     static XmlTag getParentTag(XmlElement xmlElement) {
         if (!xmlElement) return null
         int i = 0
-        PsiElement parent = xmlElement.getParent()
+        PsiElement parent = xmlElement.parent
         while (i < 5 && parent && !(parent instanceof XmlTag)) {
-            parent = parent.getParent()
+            parent = parent.parent
         }
         return parent instanceof XmlTag ? parent : null
     }
 
     /**
      * Checks that the XmlElement we want reference on is in a file where it would be defined
-     * @param value
-     * @param fileType
-     * @param dm
-     * @return
      */
     static boolean isInRightFile(XmlAttributeValue value, Class fileType, DomManager dm) {
-        PsiFile currentFile = value.getContainingFile() as XmlFile
+        PsiFile currentFile = value.containingFile as XmlFile
         return dm.getFileElement(currentFile, fileType) != null
     }
 
@@ -45,8 +42,8 @@ class XmlUtils {
     }
 
     static String getScreenNameFromControllerString(XmlAttributeValue name) {
-        final Pattern SCREEN_NAME_PATTERN = Pattern.compile("[^#]*\$")
-        Matcher matcher = SCREEN_NAME_PATTERN.matcher(name.getValue())
+        Matcher matcher = Pattern.compile("[^#]*\$").matcher(name.value)
         return matcher.find() ? matcher.group(0) : null
     }
+
 }

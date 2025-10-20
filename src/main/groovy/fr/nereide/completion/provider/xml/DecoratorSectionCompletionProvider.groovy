@@ -23,15 +23,46 @@ import fr.nereide.dom.element.screen.ScreenWidget
 import fr.nereide.dom.file.ScreenFile
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.PluginActivator
+import fr.nereide.project.pattern.OfbizPluginConstants
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.reference.xml.ScreenReference
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin completion system
+ */
 class DecoratorSectionCompletionProvider extends CompletionProvider<CompletionParameters> {
 
-    @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
-        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
+    public static final String DECORATOR_SCREEN = 'decorator-screen'
+    public static final String DECORATOR_SECTION = 'decorator-section'
+    public static final String NAME_ATTR = 'name'
+    public static final int ARCHI_THRESHOLD = 4
+
+    static Screen getDecoratorScreenFromContext(OfbizProjectHelper ph, XmlElement myAttrValue) {
+        XmlTag decoratorSectionTag = PsiTreeUtil.getParentOfType(myAttrValue, XmlTag, false)
+        int i = 0
+        while (decoratorSectionTag.localName != DECORATOR_SECTION && i < ARCHI_THRESHOLD) {
+            decoratorSectionTag = PsiTreeUtil.getParentOfType(decoratorSectionTag, XmlTag, false)
+            i++
+        }
+        if (decoratorSectionTag.localName != DECORATOR_SECTION) return
+        XmlTag decoratorScreenTag = decoratorSectionTag.parentTag
+        i = 0
+        while (decoratorSectionTag.parentTag &&
+                decoratorScreenTag.localName != DECORATOR_SCREEN && i < ARCHI_THRESHOLD) {
+            decoratorScreenTag = decoratorSectionTag.parentTag
+            i++
+        }
+        if (decoratorScreenTag.localName != DECORATOR_SCREEN) return
+        String screenLocation = decoratorScreenTag.getAttributeValue('location')
+        String decoratorName = decoratorScreenTag.getAttributeValue(NAME_ATTR)
+        return ph.getScreenFromFileAtLocation(screenLocation, decoratorName)
+    }
+
+    // codenarc-disable UnusedMethodParameter
+    protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
+                                  @NotNull CompletionResultSet result) {
+        if (PluginActivator.getInstance(parameters.position.project).inactive) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
         PsiElement myElement = parameters.position
         XmlElement myAttrValue
@@ -46,82 +77,66 @@ class DecoratorSectionCompletionProvider extends CompletionProvider<CompletionPa
 
         List<XmlAttribute> decoratorSections = includes.collect { IncludeScreen incScrTag ->
             getDecoratorSectionsFromInclude(incScrTag, ph, decoratorScreen.name.value)
-        }
-                ?.flatten()
-                ?.findAll { it != null }
+        }?.flatten()?.findAll { include -> include != null }
 
         decoratorSections.forEach { XmlAttribute attr ->
             String componentName = MiscUtils.getComponentName(attr)
-            String fileName = attr.getContainingFile().getName()
+            String fileName = attr.containingFile.name
             LookupElement lookupElement = LookupElementBuilder.create(attr.value)
                     .withTailText("  $fileName [$componentName]" as String, true)
-            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
+            result.addElement(PrioritizedLookupElement.withPriority(lookupElement,
+                    OfbizPluginConstants.DEFAULT_COMPLETION_PRIORITY))
         }
     }
 
-    static Screen getDecoratorScreenFromContext(OfbizProjectHelper ph, XmlElement myAttrValue) {
-        XmlTag decoratorSectionTag = PsiTreeUtil.getParentOfType(myAttrValue, XmlTag.class, false)
-        int i = 0
-        while (decoratorSectionTag.localName != 'decorator-section' && i < 4) {
-            decoratorSectionTag = PsiTreeUtil.getParentOfType(decoratorSectionTag, XmlTag.class, false)
-            i++
-        }
-        if (decoratorSectionTag.localName != 'decorator-section') return
-        XmlTag decoratorScreenTag = decoratorSectionTag.parentTag
-        i = 0
-        while (decoratorSectionTag.parentTag && decoratorScreenTag.localName != 'decorator-screen' && i < 4) {
-            decoratorScreenTag = decoratorSectionTag.parentTag
-            i++
-        }
-        if (decoratorScreenTag.localName != 'decorator-screen') return
-        String screenLocation = decoratorScreenTag.getAttributeValue('location')
-        String decoratorName = decoratorScreenTag.getAttributeValue('name')
-        return ph.getScreenFromFileAtLocation(screenLocation, decoratorName)
-    }
-
-    private static List<XmlAttribute> getDecoratorSectionsFromInclude(IncludeScreen incScreenDom, OfbizProjectHelper ph, String decoratorName) {
+    private static List<XmlAttribute> getDecoratorSectionsFromInclude(IncludeScreen incScreenDom, OfbizProjectHelper ph,
+                                                                      String decoratorName) {
         List result = []
         XmlAttribute screenNameXmlValue = incScreenDom.name.xmlElement as XmlAttribute
         XmlTag resolvedScreen = new ScreenReference(screenNameXmlValue.valueElement).resolve() as XmlTag
         if (!resolvedScreen) {
             PsiDirectory commonThemeDir = ph.getComponentDir('common-theme')
-            if (!commonThemeDir) return
-            XmlFile commonScreenFile = commonThemeDir.findSubdirectory('widget').findFile('CommonScreens.xml') as XmlFile
-            ScreenFile screenFile = ph.getDomManager()
-                    .getFileElement(commonScreenFile, ScreenFile.class)
+            if (!commonThemeDir) return result
+            XmlFile commonScreenFile = commonThemeDir.findSubdirectory('widget')
+                    .findFile('CommonScreens.xml') as XmlFile
+            ScreenFile screenFile = ph.getDomManager() // codenarc-disable UnnecessaryGetter
+                    .getFileElement(commonScreenFile, ScreenFile)
                     ?.rootElement
-            resolvedScreen = screenFile.screens.find {
-                it.name.value == decoratorName
+            resolvedScreen = screenFile.screens.find { screen ->
+                screen.name.value == decoratorName
             }?.xmlElement as XmlTag
         }
-        if (!resolvedScreen) return
+        if (!resolvedScreen) return result
 
-        List<IncludeScreen> includes = getIncludesInScreenDom(ph.getDomManager().getDomElement(resolvedScreen) as Screen)
-
+        List<IncludeScreen> includes = getIncludesInScreenDom(
+                ph.getDomManager().getDomElement(resolvedScreen) as Screen) // codenarc-disable UnnecessaryGetter
         if (includes) {
             includes.forEach { include ->
                 result << getDecoratorSectionsFromInclude(include, ph, include.name.value)
             }
         }
-        result << PsiTreeUtil.collectElements(resolvedScreen, getSectionTagFilter())
-                ?.collect { XmlTag sectionIncludeTag -> sectionIncludeTag.getAttribute('name') }
+
+        result << PsiTreeUtil.collectElements(resolvedScreen, sectionTagFilter)*.getAttribute(NAME_ATTR)
         return result
     }
 
     private static PsiElementFilter getSectionTagFilter() {
-        new PsiElementFilter() {
+        return new PsiElementFilter() {
+
             @Override
             boolean isAccepted(@NotNull PsiElement psiElement) {
-                boolean isTag = psiElement instanceof XmlTag
+                boolean isTag = XmlTag.isAssignableFrom(psiElement.class)
                 if (!isTag) return false
                 return isTag && ((psiElement as XmlTag).localName == 'decorator-section-include')
             }
+
         }
     }
 
     private static List<IncludeScreen> getIncludesInScreenDom(Screen decoratorScreen) {
         return decoratorScreen.sections?.flatten()
-                ?.collect { ScreenSection scrSec -> scrSec.widgets }?.flatten()
-                ?.collect { ScreenWidget scrWid -> scrWid.includeScreens }?.flatten()
+                ?.collectMany { ScreenSection scrSec -> scrSec.widgets }
+                ?.collectMany { ScreenWidget scrWid -> scrWid.includeScreens }
     }
+
 }

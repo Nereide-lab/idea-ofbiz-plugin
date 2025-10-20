@@ -14,15 +14,19 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.dom.filedesc
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileDescription
 import fr.nereide.dom.file.ComponentFile
 
+/**
+ * Part of the OFBiz DOM description
+ */
 class ComponentFileDescription<S extends DomElement> extends DomFileDescription<ComponentFile> {
-    private static final String rootTagName = "ofbiz-component"
 
-    ComponentFileDescription() { super(ComponentFile.class, rootTagName) }
+    private static final String ROOT_TAG_NAME = 'ofbiz-component'
+
+    ComponentFileDescription() { super(ComponentFile, ROOT_TAG_NAME) }
+
 }

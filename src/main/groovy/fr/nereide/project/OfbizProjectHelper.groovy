@@ -14,16 +14,17 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.project
+
+import static com.intellij.psi.search.GlobalSearchScope.allScope
+import static com.intellij.psi.search.GlobalSearchScopesCore.directoryScope
+import static fr.nereide.project.pattern.OfbizPluginConstants.FILE_AND_ELEMENT_SEPARATOR
 
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
-import com.intellij.psi.PsiLiteralExpression
-import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
@@ -49,28 +50,42 @@ import fr.nereide.dom.element.service.Service
 import fr.nereide.dom.element.serviceeca.Eca as Seca
 import fr.nereide.dom.element.serviceengine.Engine
 import fr.nereide.dom.element.uilabel.Property
-import fr.nereide.dom.file.*
+import fr.nereide.dom.file.ComponentFile
+import fr.nereide.dom.file.CompoundFile
+import fr.nereide.dom.file.ControllerFile
+import fr.nereide.dom.file.EntityEcaFile
+import fr.nereide.dom.file.EntityEngineFile
+import fr.nereide.dom.file.EntityModelFile
+import fr.nereide.dom.file.FormFile
+import fr.nereide.dom.file.MenuFile
+import fr.nereide.dom.file.ScreenFile
+import fr.nereide.dom.file.ServiceEcaFile
+import fr.nereide.dom.file.ServiceEngineFile
+import fr.nereide.dom.file.ServiceFile
+import fr.nereide.dom.file.UiLabelFile
 import fr.nereide.project.utils.FileHandlingUtils
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.reference.common.ComponentAwareFileReferenceSet
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
 
 import java.util.regex.Matcher
 
-import static com.intellij.psi.search.GlobalSearchScope.allScope
-import static com.intellij.psi.search.GlobalSearchScopesCore.directoryScope
-import static java.util.Collections.*
-
+/**
+ * Main helper class for the plugin.
+ * Lots of helper methods for collecting dom elements.
+ * Makes heavy use of DomManager and Dom service.
+ */
 @com.intellij.openapi.components.Service(com.intellij.openapi.components.Service.Level.PROJECT)
 final class OfbizProjectHelper {
-    private static final Logger LOG = Logger.getInstance(OfbizProjectHelper.class)
+
+    private static final Logger LOG = Logger.getInstance(OfbizProjectHelper)
+    public static final String GRID = 'GRID'
 
     private final Project project
     private final DomManager domManager
     private final DomService domService
 
     static OfbizProjectHelper getInstance(Project project) {
-        return project.getService(OfbizProjectHelper.class)
+        return project.getService(OfbizProjectHelper)
     }
 
     OfbizProjectHelper(Project project) {
@@ -83,134 +98,122 @@ final class OfbizProjectHelper {
 
     DomManager getDomManager() { return this.domManager }
 
-    DomService getDomService() { return this.domService }
-
     RequestMap getRequestMap(String name) {
-        List<ControllerFile> relevantDomBlocs = getAllControllerFiles()
-        return relevantDomBlocs.collect { ControllerFile cf -> cf.requestMaps }
+        List<ControllerFile> relevantDomBlocs = collectAllControllerFiles()
+        return relevantDomBlocs*.requestMaps
                 .flatten()
                 .find { RequestMap req -> req.uri?.value == name } as RequestMap
     }
 
     ViewMap getViewMap(String name) {
-        List<ControllerFile> relevantDomBlocs = getAllControllerFiles()
-        return relevantDomBlocs.collect { ControllerFile cf -> cf.viewMaps }
+        List<ControllerFile> relevantDomBlocs = collectAllControllerFiles()
+        return relevantDomBlocs*.viewMaps
                 .flatten()
                 .find { ViewMap vm -> vm.name?.value == name } as ViewMap
     }
 
-    private List<ControllerFile> getAllControllerFiles() {
-        return (
-                domService.getFileElements(ControllerFile.class, project, allScope(project))
-                        .collect { DomFileElement<ControllerFile> cf -> cf.rootElement }
-                        +
-                        domService.getFileElements(CompoundFile.class, project, allScope(project))
-                                .collect { DomFileElement<CompoundFile> cpd -> cpd.rootElement.siteConf }
-        )
+    List<ControllerFile> collectAllControllerFiles() {
+        return domService.getFileElements(ControllerFile, project, allScope(project))*.rootElement +
+                domService.getFileElements(CompoundFile, project, allScope(project))*.rootElement.siteConf
     }
 
     Entity getEntity(String name) {
-        return getAllEntities().find { Entity e -> e.entityName.value == name }
+        return collectAllEntities().find { Entity e -> e.entityName.value == name }
     }
 
     List<Entity> getEntities(String name) {
-        return getAllEntities().findAll() { Entity e -> e.entityName.value == name }
+        return collectAllEntities().findAll { Entity e -> e.entityName.value == name }
     }
 
     boolean entityOrViewExists(String name) {
-        return (getAllEntities().any() { Entity e -> e.entityName.value == name } ||
-                getAllViewEntities().any() { ViewEntity e -> e.entityName.value == name })
+        return (collectAllEntities().any { Entity e -> e.entityName.value == name } ||
+                collectAllViewEntities().any { ViewEntity e -> e.entityName.value == name })
     }
 
-    List<Entity> getAllEntities() {
-        return domService.getFileElements(EntityModelFile.class, project, allScope(project))
+    List<Entity> collectAllEntities() {
+        return domService.getFileElements(EntityModelFile, project, allScope(project))
                 .collect { DomFileElement<EntityModelFile> emf -> emf.rootElement.entities }
                 .flatten() as List<Entity>
     }
 
     ViewEntity getViewEntity(String name) {
-        return getAllViewEntities().find { ViewEntity e -> e.entityName.value == name }
+        return collectAllViewEntities().find { ViewEntity e -> e.entityName.value == name }
     }
 
     List<ViewEntity> getViewEntities(String name) {
-        return getAllViewEntities().findAll() { ViewEntity e -> e.entityName.value == name }
+        return collectAllViewEntities().findAll { ViewEntity e -> e.entityName.value == name }
     }
 
-    List<ViewEntity> getAllViewEntities() {
-        return domService.getFileElements(EntityModelFile.class, project, allScope(project))
+    List<ViewEntity> collectAllViewEntities() {
+        return domService.getFileElements(EntityModelFile, project, allScope(project))
                 .collect { DomFileElement<EntityModelFile> emf -> emf.rootElement.viewEntities }
                 .flatten() as List<ViewEntity>
     }
 
     Service getService(String name) {
-        return getAllServices().find { Service s -> s.name.value == name } as Service
+        return collectAllServices().find { Service s -> s.name.value == name } as Service
     }
 
     List<Service> getServices(String name) {
-        return getAllServices().findAll { Service s -> s.name.value == name } as List<Service>
+        return collectAllServices().findAll { Service s -> s.name.value == name } as List<Service>
     }
 
-    List<Service> getAllServices() {
-        return domService.getFileElements(ServiceFile.class, project, allScope(project))
+    List<Service> collectAllServices() {
+        return domService.getFileElements(ServiceFile, project, allScope(project))
                 .collect { DomFileElement<ServiceFile> sdf -> sdf.rootElement.services }
                 .flatten() as List<Service>
     }
 
     Property getProperty(String name) {
-        return domService.getFileElements(UiLabelFile.class, project, allScope(project))
+        return domService.getFileElements(UiLabelFile, project, allScope(project))
                 .collect { DomFileElement<UiLabelFile> ulf -> ulf.rootElement.properties }
                 .flatten()
                 .find { Property p -> p.key.value == name } as Property
     }
 
     Datasource getDatasource(String name) {
-        return domService.getFileElements(EntityEngineFile.class, project, allScope(project))
+        return domService.getFileElements(EntityEngineFile, project, allScope(project))
                 .collect { DomFileElement<EntityEngineFile> eef -> eef.rootElement.datasources }
                 .flatten()
                 .find { Datasource d -> d.name.value == name } as Datasource
     }
 
-    List<Form> getAllFormsFromCurrentFileFromElement(XmlElement myVal) {
-        DomFileElement<FormFile> formFile = domManager.getFileElement(myVal.containingFile as XmlFile, FormFile.class)
+    List<Form> collectAllFormsFromCurrentFileFromElement(XmlElement myVal) {
+        DomFileElement<FormFile> formFile = domManager.getFileElement(myVal.containingFile as XmlFile, FormFile)
         if (formFile) return formFile.rootElement.forms
-        return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile.class).rootElement.forms.forms
+        return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile).rootElement.forms.forms
     }
 
-    List<Screen> getAllScreenFromCurrentFileFromElement(XmlElement myVal) {
-        DomFileElement<ScreenFile> screenFile = domManager.getFileElement(myVal.containingFile as XmlFile, ScreenFile.class)
+    List<Screen> collectAllScreenFromCurrentFileFromElement(XmlElement myVal) {
+        DomFileElement<ScreenFile> screenFile = domManager.getFileElement(myVal.containingFile as XmlFile, ScreenFile)
         if (screenFile) return screenFile.rootElement.screens
-        return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile.class).rootElement.screens.screens
+        return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile).rootElement.screens.screens
     }
 
-    List<Menu> getAllMenuFromCurrentFileFromElement(XmlElement myVal) {
-        DomFileElement<MenuFile> menuFile = domManager.getFileElement(myVal.containingFile as XmlFile, MenuFile.class)
+    List<Menu> collectAllMenuFromCurrentFileFromElement(XmlElement myVal) {
+        DomFileElement<MenuFile> menuFile = domManager.getFileElement(myVal.containingFile as XmlFile, MenuFile)
         if (menuFile) return menuFile.rootElement.menus
-        return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile.class).rootElement.menus.menus
+        return domManager.getFileElement(myVal.containingFile as XmlFile, CompoundFile).rootElement.menus.menus
     }
 
     List<Screen> getScreensFromScreenFileAtLocation(XmlElement screenLocation, boolean isController) {
         String location
         if (isController) {
             String locationText = screenLocation.text
-            location = locationText.substring(0, locationText.lastIndexOf('#'))
+            location = locationText.substring(0, locationText.lastIndexOf(FILE_AND_ELEMENT_SEPARATOR))
         } else {
             location = (screenLocation as XmlAttributeValue).value
         }
         PsiFile file = getPsiFileAtLocation(location)
-        DomFileElement<ScreenFile> screenFile = domManager.getFileElement(file as XmlFile, ScreenFile.class)
+        DomFileElement<ScreenFile> screenFile = domManager.getFileElement(file as XmlFile, ScreenFile)
         if (screenFile) {
             return screenFile.rootElement.screens
         }
-        return domManager.getFileElement(file as XmlFile, CompoundFile.class).rootElement.screens.screens
-    }
-
-    static boolean isInTestDir(DomFileElement domFile) {
-        String dir = domFile.file.containingDirectory.toString()
-        return dir.contains('/tests')
+        return domManager.getFileElement(file as XmlFile, CompoundFile).rootElement.screens.screens
     }
 
     PsiDirectory getComponentDir(String name) {
-        List<DomFileElement<ComponentFile>> componentFiles = getAllComponentsFiles()
+        List<DomFileElement<ComponentFile>> componentFiles = collectAllComponentsFiles()
         DomFileElement<ComponentFile> relevantComponent = componentFiles
                 .find { DomFileElement<ComponentFile> componentFile ->
                     componentFile.rootElement.name.value.equalsIgnoreCase(name)
@@ -222,27 +225,24 @@ final class OfbizProjectHelper {
     }
 
     List<ExtendEntity> getExtendEntityListForEntity(PsiElement element) {
-        return getExtendEntityListForEntity(getStringValueFromPsiElement(element))
+        return getExtendEntityListForEntity(MiscUtils.getStringValueFromPsiElement(element))
     }
 
     List<ExtendEntity> getExtendEntityListForEntity(String entityName) {
-        return domService.getFileElements(EntityModelFile.class, project, allScope(project))
+        return domService.getFileElements(EntityModelFile, project, allScope(project))
                 .collect { DomFileElement<EntityModelFile> emf -> emf.rootElement.extendEntities }
                 .flatten()
-                .findAll { ExtendEntity ee -> ee.entityName.value == entityName }
-                .collect() as List<ExtendEntity>
+                .findAll { ExtendEntity ee -> ee.entityName.value == entityName } as List<ExtendEntity>
     }
 
-    List<DomFileElement<ComponentFile>> getAllComponentsFiles() {
-        return domService.getFileElements(ComponentFile.class, project, allScope(project))
-                .findAll { !isInTestDir(it) }
+    List<DomFileElement<ComponentFile>> collectAllComponentsFiles() {
+        return domService.getFileElements(ComponentFile, project, allScope(project))
+                .findAll { compoFile -> !MiscUtils.isInTestDir(compoFile) }
     }
 
-    List<String> getAllComponentsNames() {
-        return domService.getFileElements(ComponentFile.class, project, allScope(project))
-                .findAll { !isInTestDir(it) }
-                .collect { it.rootElement }
-                .collect { it.name.value }
+    List<String> collectAllComponentsNames() {
+        return domService.getFileElements(ComponentFile, project, allScope(project))
+                .findAll { compoFile -> !MiscUtils.isInTestDir(compoFile) }*.rootElement*.name*.value
     }
 
     PsiFile getPsiFileAtLocation(String componentPathToFile) {
@@ -253,12 +253,9 @@ final class OfbizProjectHelper {
             List<String> pathPieces = FileHandlingUtils.splitPathToList(componentPathToFile)
 
             PsiDirectory currentDir = getComponentDir(pathPieces.first())
-            try {
-                for (int i = 1; i < pathPieces.size() - 1; i++) {
-                    currentDir = currentDir.findSubdirectory(pathPieces.get(i))
-                }
-            } catch (NullPointerException ignored) {
-                return null
+            for (int i = 1; i < pathPieces.size() - 1; i++) {
+                if (!currentDir) return null
+                currentDir = currentDir.findSubdirectory(pathPieces.get(i))
             }
             PsiFile file = currentDir.findFile(pathPieces.last())
             return file
@@ -275,72 +272,71 @@ final class OfbizProjectHelper {
         PsiFile psiFile = getPsiFileAtLocation(componentPathToFile)
         DomElement domFile
         switch (fileType) {
-            case MenuFile.class:
-                domFile = domManager.getFileElement(psiFile as XmlFile, MenuFile.class)
+            case MenuFile:
+                domFile = domManager.getFileElement(psiFile as XmlFile, MenuFile)
                 if (domFile) return domFile.rootElement.menus
-                domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile.class)
+                domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile)
                 return domFile.rootElement.menus.menus
-            case ScreenFile.class:
-                domFile = domManager.getFileElement(psiFile as XmlFile, ScreenFile.class)
+            case ScreenFile:
+                domFile = domManager.getFileElement(psiFile as XmlFile, ScreenFile)
                 if (domFile) return domFile.rootElement.screens
-                domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile.class)
+                domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile)
                 return domFile.rootElement.screens.screens
-            case FormFile.class:
-                domFile = domManager.getFileElement(psiFile as XmlFile, FormFile.class)
-                if (wantedElement == 'GRID') {
+            case FormFile:
+                domFile = domManager.getFileElement(psiFile as XmlFile, FormFile)
+                if (wantedElement == GRID) {
                     if (domFile) return domFile.rootElement.grids
-                    domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile.class)
+                    domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile)
                     return domFile.rootElement.forms.grids
                 }
                 if (domFile) return domFile.rootElement.forms
-                domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile.class)
+                domFile = domManager.getFileElement(psiFile as XmlFile, CompoundFile)
                 return domFile.rootElement.forms.forms
         }
-        return null
+        return Collections.emptyList()
     }
 
     Screen getScreenFromFileAtLocation(String componentPathToFile, String screenName) {
-        List<Screen> screens = getDomElementListFromFileAtLocation(componentPathToFile, ScreenFile.class)
-        return screens.find { it.name.value == screenName }
+        List<Screen> screens = getDomElementListFromFileAtLocation(componentPathToFile, ScreenFile)
+        return screens.find { screen -> screen.name.value == screenName }
     }
 
     Screen getScreenFromPsiFile(PsiFile file, String screenName) {
-        DomFileElement<ScreenFile> domFile = domManager.getFileElement(file as XmlFile, ScreenFile.class)
-        return domFile.rootElement.screens.find { it.name.value == screenName }
+        DomFileElement<ScreenFile> domFile = domManager.getFileElement(file as XmlFile, ScreenFile)
+        return domFile.rootElement.screens.find { screen -> screen.name.value == screenName }
     }
 
     Form getFormFromFileAtLocation(String componentPathToFile, String formName) {
-        List<Form> forms = getDomElementListFromFileAtLocation(componentPathToFile, FormFile.class)
-        return forms.find { it.name.value == formName }
+        List<Form> forms = getDomElementListFromFileAtLocation(componentPathToFile, FormFile)
+        return forms.find { form -> form.name.value == formName }
     }
 
     Form getFormFromPsiFile(PsiFile file, String formName) {
-        DomFileElement<FormFile> domFile = domManager.getFileElement(file as XmlFile, FormFile.class)
-        return domFile.rootElement.forms.find { it.name.value == formName }
+        DomFileElement<FormFile> domFile = domManager.getFileElement(file as XmlFile, FormFile)
+        return domFile.rootElement.forms.find { form -> form.name.value == formName }
     }
 
     Grid getGridFromFileAtLocation(String componentPathToFile, String formName) {
-        List<Grid> grids = getDomElementListFromFileAtLocation(componentPathToFile, FormFile.class, 'GRID')
-        return grids.find { it.name.value == formName }
+        List<Grid> grids = getDomElementListFromFileAtLocation(componentPathToFile, FormFile, GRID)
+        return grids.find { grid -> grid.name.value == formName }
     }
 
     Grid getGridFromPsiFile(PsiFile file, String formName) {
-        DomFileElement<FormFile> domFile = domManager.getFileElement(file as XmlFile, FormFile.class)
-        return domFile.rootElement.grids.find { it.name.value == formName }
+        DomFileElement<FormFile> domFile = domManager.getFileElement(file as XmlFile, FormFile)
+        return domFile.rootElement.grids.find { grid -> grid.name.value == formName }
     }
 
     Menu getMenuFromFileAtLocation(String componentPathToFile, String menuName) {
-        List<Menu> menus = getDomElementListFromFileAtLocation(componentPathToFile, MenuFile.class)
-        return menus.find { it.name.value == menuName }
+        List<Menu> menus = getDomElementListFromFileAtLocation(componentPathToFile, MenuFile)
+        return menus.find { menu -> menu.name.value == menuName }
     }
 
     Menu getMenuFromPsiFile(PsiFile file, String menuName) {
-        DomFileElement<MenuFile> domFile = domManager.getFileElement(file as XmlFile, MenuFile.class)
-        return domFile.rootElement.menus.find { it.name.value == menuName }
+        DomFileElement<MenuFile> domFile = domManager.getFileElement(file as XmlFile, MenuFile)
+        return domFile.rootElement.menus.find { menu -> menu.name.value == menuName }
     }
 
     /**
-     * @param componentName
      * @return a map with the following format <br>
      * <code>['mount-point' : [@RequestMap, @RequestMap, .. ]] </code>
      */
@@ -349,11 +345,11 @@ final class OfbizProjectHelper {
         Map<String, Set<RequestMap>> componentRequests = [:]
 
         List<DomFileElement<ComponentFile>> componentFiles = domService.getFileElements(
-                ComponentFile.class, project,
+                ComponentFile, project,
                 directoryScope(compoDir, true))
         if (!componentFiles || componentFiles.size() > 1) {
             LOG.error("Multiple or no component file found in component $componentName")
-            return null
+            return Collections.emptyList()
         }
         ComponentFile component = componentFiles.first.rootElement
         List<Webapp> webapps = component.webapps
@@ -361,10 +357,10 @@ final class OfbizProjectHelper {
         for (Webapp webapp : webapps) { // TODO refactor and extract (make use in getWebappMountPointUris
             PsiDirectory currentControllerFolder = getwebappControllerDirectory(webapp, compoDir)
             List<ControllerFile> controllerFiles = domService.getFileElements(
-                    ControllerFile.class, project,
+                    ControllerFile, project,
                     directoryScope(currentControllerFolder, true))
             List<ComponentFile> cpdFiles = domService.getFileElements(
-                    CompoundFile.class, project,
+                    CompoundFile, project,
                     directoryScope(currentControllerFolder, true))
             String mountPoint = webapp.mountPoint.value
             componentRequests.put(mountPoint, collectRequestMapsFromControllerFiles(controllerFiles, cpdFiles))
@@ -372,17 +368,13 @@ final class OfbizProjectHelper {
         return componentRequests
     }
 
-    private PsiDirectory getwebappControllerDirectory(Webapp webapp, PsiDirectory compoDir) {
-        String filesLocations = webapp.getLocation().value
-        List subFold = filesLocations.split('/').findAll { it != 'WEB-INF' }
+    PsiDirectory getwebappControllerDirectory(Webapp webapp, PsiDirectory compoDir) {
+        String filesLocations = webapp.location.value
+        List subFold = filesLocations.split('/').findAll { dir -> dir != 'WEB-INF' }
         PsiDirectory currentControllerFolder = compoDir
-        try {
-            subFold.each {
-                currentControllerFolder = currentControllerFolder.findSubdirectory(it)
-            }
-        } catch (NullPointerException e) {
-            LOG.error(e)
-            return null
+        subFold.each { dir ->
+            if (!currentControllerFolder) return
+            currentControllerFolder = currentControllerFolder.findSubdirectory(dir)
         }
         return currentControllerFolder
     }
@@ -390,42 +382,48 @@ final class OfbizProjectHelper {
     Set<RequestMap> getComponentRequestMaps(String componentName) {
         PsiDirectory compoDir = getComponentDir(componentName)
         List controllerFiles = domService.getFileElements(
-                ControllerFile.class, project,
+                ControllerFile, project,
                 directoryScope(compoDir, true))
         List cpdFiles = domService.getFileElements(
-                CompoundFile.class, project,
+                CompoundFile, project,
                 directoryScope(compoDir, true))
         return collectRequestMapsFromControllerFiles(controllerFiles, cpdFiles)
     }
 
-    Set<RequestMap> collectRequestMapsFromControllerFiles(List<ControllerFile> controllerFiles, List<CompoundFile> compoundFiles) {
-        if (!controllerFiles) return null
+    Set<RequestMap> collectRequestMapsFromControllerFiles(List<ControllerFile> controllerFiles,
+                                                          List<CompoundFile> compoundFiles) {
+        if (!controllerFiles) return Collections.emptyList()
         Set<RequestMap> controllerRequests = []
+
         for (DomFileElement<ControllerFile> controllerFile : controllerFiles) {
             controllerRequests.addAll(controllerFile.rootElement.requestMaps)
-            List<Include> includes = controllerFile.rootElement.includes
-            if (includes) {
-                for (Include include : includes) {
-                    XmlFile file = getPsiFileAtLocation(include.location.value) as XmlFile
-                    if (domManager.getFileElement(file, ControllerFile.class)) {
-                        controllerRequests.addAll(domManager.getFileElement(file, ControllerFile.class).rootElement.requestMaps)
-                    }
-                }
-            }
+            controllerRequests.addAll(collectIncludedRequestsIfAny(controllerFile))
         }
+
         for (DomFileElement<CompoundFile> cpdFile : compoundFiles) {
             controllerRequests.addAll(cpdFile.rootElement.siteConf.requestMaps)
         }
         return controllerRequests
     }
 
-    List<String> getMountPointsOfUri(XmlAttribute uriXmlAttribute) {
-        return getMountPointsOfUri(uriXmlAttribute.getValueElement())
+    Set<RequestMap> collectIncludedRequestsIfAny(DomFileElement<ControllerFile> controllerFile) {
+        Set<RequestMap> result = []
+        List<Include> includes = controllerFile.rootElement.includes
+        if (!includes) {
+            return result
+        }
+        for (Include include : includes) {
+            XmlFile file = getPsiFileAtLocation(include.location.value) as XmlFile
+            if (domManager.getFileElement(file, ControllerFile)) {
+                result.addAll(domManager.getFileElement(file, ControllerFile).rootElement.requestMaps)
+            }
+        }
+        return result
     }
 
     Set<String> getMountPointsOfUri(XmlAttributeValue myUriAttr) {
         Set<String> result = []
-        getAllWebappsInProject().forEach { Webapp webapp ->
+        collectAllWebappsInProject().forEach { Webapp webapp ->
             List<String> uris = getWebappMountPointUris(webapp)
             if (uris && uris.contains(myUriAttr.value)) {
                 result << webapp.mountPoint.value
@@ -434,33 +432,28 @@ final class OfbizProjectHelper {
         return result
     }
 
-    Map<String, List<String>> getAllMountPointsAndRequestMaps(PsiElement myElement) {
+    Map<String, List<String>> collectAllMountPointsAndRequestMaps() {
         Map<String, List<String>> result = [:]
-        getAllWebappsInProject().forEach { Webapp webapp ->
-            try {
-                String mountPoint = webapp.mountPoint.value
-                List<String> webappUris = getWebappMountPointUris(webapp)
-                result.put(mountPoint, webappUris)
-            } catch (NullPointerException e) {
-                LOG.error(e)
-                return []
-            }
+        collectAllWebappsInProject().forEach { Webapp webapp ->
+            String mountPoint = webapp.mountPoint.value
+            List<String> webappUris = getWebappMountPointUris(webapp)
+            result.put(mountPoint, webappUris)
         }
         return result
     }
 
-    private List<Webapp> getAllWebappsInProject() {
-        return getAllComponentsFiles()
+    List<Webapp> collectAllWebappsInProject() {
+        return collectAllComponentsFiles()
                 .collect { DomFileElement<ComponentFile> cptf -> cptf.rootElement.webapps }
                 .flatten() as List<Webapp>
     }
 
-    private List<String> getWebappMountPointUris(Webapp webapp) {
+    List<String> getWebappMountPointUris(Webapp webapp) {
         String componentName = MiscUtils.getComponentName(webapp)
-        if (componentName.contains('@')) return emptyList()
+        if (componentName.contains('@')) return Collections.emptyList()
         PsiDirectory directoryToSearch = getwebappControllerDirectory(webapp, getComponentDir(componentName))
         List controllerFiles = domService.getFileElements(
-                ControllerFile.class,
+                ControllerFile,
                 project,
                 directoryScope(directoryToSearch, true))
         List requestsUris = []
@@ -477,45 +470,44 @@ final class OfbizProjectHelper {
 
     List<RequestMap> getRequestsFromImports(ControllerFile controllerFile) {
         List result = []
-        if (!controllerFile.getIncludes()) return []
+        if (!controllerFile.includes) return []
         for (Include include in controllerFile.includes) {
             String includeLocation = include.location.value
             XmlFile file = getPsiFileAtLocation(includeLocation) as XmlFile
-            if (domManager.getFileElement(file, ControllerFile.class)) {
-                result.addAll((domManager.getFileElement(file, ControllerFile.class)).rootElement.requestMaps)
-            } else if (domManager.getFileElement(file, CompoundFile.class)) {
-                result.addAll((domManager.getFileElement(file, CompoundFile.class)).rootElement.siteConf?.requestMaps)
+            if (domManager.getFileElement(file, ControllerFile)) {
+                result.addAll((domManager.getFileElement(file, ControllerFile)).rootElement.requestMaps)
+            } else if (domManager.getFileElement(file, CompoundFile)) {
+                result.addAll((domManager.getFileElement(file, CompoundFile)).rootElement.siteConf?.requestMaps)
             }
         }
         return result
     }
 
-    List<EntityRelation> getAllEntityRelations() {
+    List<EntityRelation> collectAllEntityRelations() {
         List<EntityRelation> result = []
-        getAllEntities().each { Entity entity ->
+        collectAllEntities().each { Entity entity ->
             result.addAll(entity.relations)
         }
         return result
     }
 
-    List<UiLabelFile> getAllUiLabelFiles() {
-        return domService.getFileElements(UiLabelFile.class, project, allScope(project))
-                .collect { it.rootElement }
+    List<UiLabelFile> collectAllUiLabelFiles() {
+        return domService.getFileElements(UiLabelFile, project, allScope(project))*.rootElement
     }
 
-    List<UiLabelFile> getAllUiLabelFilesInComponent(String componentName) {
+    List<UiLabelFile> collectAllUiLabelFilesInComponent(String componentName) {
         return domService
-                .getFileElements(UiLabelFile.class, project, directoryScope(getComponentDir(componentName), true))
-                .collect { it.rootElement }
+                .getFileElements(UiLabelFile, project, directoryScope(getComponentDir(componentName), true))
+                *.rootElement
     }
 
     List<Seca> getEcasForService(PsiElement element) {
-        String serviceName = getStringValueFromPsiElement(element)
+        String serviceName = MiscUtils.getStringValueFromPsiElement(element)
         if (getService(serviceName) == null) {
             return []
         }
-        return domService.getFileElements(ServiceEcaFile.class, project, allScope(project))
-                .collect { it.rootElement.ecas }
+        return domService.getFileElements(ServiceEcaFile, project, allScope(project))
+                .collect { ecaFile -> ecaFile.rootElement.ecas }
                 .flatten()
                 .findAll { Seca eca ->
                     eca.service && eca.service.value == serviceName
@@ -523,35 +515,25 @@ final class OfbizProjectHelper {
     }
 
     List<Eeca> getEcasForEntity(PsiElement element) {
-        String entityName = getStringValueFromPsiElement(element)
+        String entityName = MiscUtils.getStringValueFromPsiElement(element)
         if (getEntity(entityName) == null) {
             return []
         }
-        return domService.getFileElements(EntityEcaFile.class, project, allScope(project))
-                .collect { it.rootElement.ecas }
+        return domService.getFileElements(EntityEcaFile, project, allScope(project))
+                .collect { ecaFile -> ecaFile.rootElement.ecas }
                 .flatten()
                 .findAll { Eeca eca ->
                     eca.entity && eca.entity.value == entityName
                 } as List<Eeca>
     }
 
-    static String getStringValueFromPsiElement(PsiElement element) {
-        if (element instanceof XmlAttributeValue) {
-            return (element as XmlAttributeValue).value
-        } else if (element instanceof PsiLiteralExpression) {
-            return (element as PsiLiteralExpression).value
-        } else if (element instanceof GrLiteral) { // Groovy case
-            return (element as GrLiteral).value
-        }
-        return element.text
-    }
-
     Engine getEngine(String name) {
-        return domService.getFileElements(ServiceEngineFile.class, project, allScope(project))
-                .collect { it.rootElement.serviceEngines.engines }
+        return domService.getFileElements(ServiceEngineFile, project, allScope(project))
+                .collect { engineFile -> engineFile.rootElement.serviceEngines.engines }
                 .flatten()
                 .find { Engine engine ->
                     engine.name.value == name
                 }
     }
+
 }

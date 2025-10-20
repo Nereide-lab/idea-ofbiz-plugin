@@ -14,6 +14,10 @@ import fr.nereide.project.utils.FileHandlingUtils
 import org.apache.commons.text.similarity.LevenshteinDistance
 import org.jetbrains.annotations.NotNull
 
+/**
+ * QuickFix class that attempts to fix a file location to the most probable one.
+ * Uses the apache implementation of LevenshteinDistance
+ */
 class AdjustFileLocationPathFix implements LocalQuickFix {
 
     final static int DISTANCE_THRESHOLD = 15
@@ -30,13 +34,13 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
 
     @Override
     String getFamilyName() {
-        return getName()
+        return name
     }
 
     @Override
     void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        XmlAttribute attr = descriptor.getPsiElement() as XmlAttribute
-        XmlAttributeValue val = attr.getValueElement()
+        XmlAttribute attr = descriptor.psiElement as XmlAttribute
+        XmlAttributeValue val = attr.valueElement
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(descriptor.psiElement.project)
         List<String> pathList = FileHandlingUtils.splitPathToList(val.value)
         StringBuilder correctionAttempt = new StringBuilder().append('component://')
@@ -45,19 +49,19 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
         String componentName
         PsiDirectory currentDir = ph.getComponentDir(componentNameInput)
 
-        if (!currentDir) {
-            List<String> allComponents = ph.getAllComponentsNames()
+        if (currentDir) {
+            componentName = componentNameInput
+        } else {
+            List<String> allComponents = ph.collectAllComponentsNames()
             componentName = getMostLikelyCandidateStringInList(allComponents, componentNameInput)
             currentDir = ph.getComponentDir(componentName)
-        } else {
-            componentName = componentNameInput
         }
         correctionAttempt.append(componentName).append('/')
         boolean doFix = true
         for (int i = 1; i < pathList.size(); i++) {
             String inputPieceName = pathList[i]
             if (inputPieceName.contains('.')) {
-                List<PsiFile> files = currentDir.getFiles()
+                List<PsiFile> files = currentDir.files
                 String mostProbableFileName = getMostLikelyCandidateStringInDirOrFileList(files, inputPieceName)
                 if (mostProbableFileName) {
                     correctionAttempt.append(mostProbableFileName)
@@ -66,11 +70,11 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
                     break
                 }
             } else {
-                List<PsiDirectory> possibleDirs = currentDir.getSubdirectories()
+                List<PsiDirectory> possibleDirs = currentDir.subdirectories
                 String mostProbableDirName = getMostLikelyCandidateStringInDirOrFileList(possibleDirs, inputPieceName)
-                currentDir = currentDir.getSubdirectories().find { it.name == mostProbableDirName }
+                currentDir = currentDir.subdirectories.find { dir -> dir.name == mostProbableDirName }
                 if (currentDir) {
-                    correctionAttempt.append(currentDir.name).append('/')
+                    correctionAttempt.append("${currentDir.name}/")
                 } else {
                     doFix = false
                     break
@@ -78,16 +82,17 @@ class AdjustFileLocationPathFix implements LocalQuickFix {
             }
         }
         if (doFix) {
-            attr.setValue(correctionAttempt.toString())
+            attr.value = correctionAttempt.toString()
         }
     }
 
     String getMostLikelyCandidateStringInDirOrFileList(List<PsiFileSystemItem> possibleDirs, String inputPieceName) {
-        return getMostLikelyCandidateStringInList(possibleDirs.collect { it.getName() }, inputPieceName)
+        return getMostLikelyCandidateStringInList(possibleDirs*.name, inputPieceName)
     }
 
-    String getMostLikelyCandidateStringInList(List<String> list, String candidat) {
-        return list.findAll { distance.apply(candidat, it) >= 0 }
-                .min { distance.apply(candidat, it) }
+    String getMostLikelyCandidateStringInList(List<String> fileNames, String candidat) {
+        return fileNames.findAll { fileName -> distance.apply(candidat, fileName) >= 0 }
+                .min { fileName -> distance.apply(candidat, fileName) }
     }
+
 }

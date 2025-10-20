@@ -1,28 +1,32 @@
 package fr.nereide.project.pattern
 
-import com.intellij.patterns.PsiElementPattern
-import com.intellij.patterns.PsiJavaPatterns
-import com.intellij.psi.PsiLiteralExpression
-
 import static com.intellij.patterns.PlatformPatterns.psiElement
 import static com.intellij.patterns.PsiJavaElementPattern.Capture
 import static com.intellij.patterns.PsiJavaPatterns.psiExpression
 import static com.intellij.patterns.PsiJavaPatterns.psiMethod
-import static fr.nereide.project.pattern.OfbizPatternConst.DELEGATOR_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.DISPATCH_CONTEXT_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.DYNAMIC_VIEW_ENTITY_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_DATA_SERVICES_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.ENTITY_QUERY_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.GENERIC_ENTITY_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.GENERIC_VALUE_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.LOCAL_DISPATCHER_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.MODEL_KEYMAP_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.SCRIPT_HELPER_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.UTIL_PROPERTIES_CLASS
-import static fr.nereide.project.pattern.OfbizPatternConst.makeMethodParameterPattern
+import static OfbizPluginConstants.DELEGATOR_CLASS
+import static OfbizPluginConstants.DISPATCH_CONTEXT_CLASS
+import static OfbizPluginConstants.DYNAMIC_VIEW_ENTITY_CLASS
+import static OfbizPluginConstants.ENTITY_DATA_SERVICES_CLASS
+import static OfbizPluginConstants.ENTITY_QUERY_CLASS
+import static OfbizPluginConstants.GENERIC_ENTITY_CLASS
+import static OfbizPluginConstants.GENERIC_VALUE_CLASS
+import static OfbizPluginConstants.LOCAL_DISPATCHER_CLASS
+import static OfbizPluginConstants.MODEL_KEYMAP_CLASS
+import static OfbizPluginConstants.SCRIPT_HELPER_CLASS
+import static OfbizPluginConstants.UTIL_PROPERTIES_CLASS
+import static OfbizPluginConstants.makeMethodParameterPattern
 
+import com.intellij.patterns.PsiElementPattern
+import com.intellij.patterns.PsiJavaPatterns
+import com.intellij.psi.PsiLiteralExpression
+
+/**
+ * Psi patterns for java structures in plugin
+ */
 class OfbizJavaPatterns {
 
+    /* codenarc-disable DuplicateStringLiteral */
     //============================================
     //       PATTERNS
     //============================================
@@ -124,10 +128,12 @@ class OfbizJavaPatterns {
     public static final PsiElementPattern ENTITY_CALL_COMPL = psiElement()
             .inside(ENTITY_CALL)
 
+    /* codenarc-enable DuplicateStringLiteral */
     //============================================
     //       UTILITY METHODS
     //============================================
-    static Capture<PsiLiteralExpression> makeJavaMethodParameterPattern(String methodName, String className, int index) {
+    static Capture<PsiLiteralExpression> makeJavaMethodParameterPattern(String methodName, String className,
+                                                                        int index) {
         return makeMethodParameterPattern(PsiJavaPatterns::literalExpression(), methodName, className, index)
     }
 
@@ -174,4 +180,5 @@ class OfbizJavaPatterns {
     static Capture<PsiLiteralExpression> makeUtilPropertiesJavaMethodParameterPattern(String methodName, int index) {
         return makeJavaMethodParameterPattern(methodName, UTIL_PROPERTIES_CLASS, index)
     }
+
 }

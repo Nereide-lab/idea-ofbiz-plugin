@@ -6,19 +6,23 @@ import com.intellij.util.xml.NameValue
 import com.intellij.util.xml.Stubbed
 import com.intellij.util.xmlb.annotations.Attribute
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface ServiceGroupInvoke extends DomElement {
 
     @NameValue
     @Stubbed
-    @Attribute("name")
+    @Attribute('name')
     GenericAttributeValue<String> getName()
 
-    @Attribute("parameters")
+    @Attribute('parameters')
     GenericAttributeValue<String> getParameters()
 
-    @Attribute("result-to-context")
+    @Attribute('result-to-context')
     GenericAttributeValue<String> getResultToContext()
 
-    @Attribute("mode")
+    @Attribute('mode')
     GenericAttributeValue<String> getMode()
+
 }

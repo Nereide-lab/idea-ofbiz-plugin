@@ -1,5 +1,7 @@
 package fr.nereide.inspection.xml
 
+import static fr.nereide.inspection.common.InspectionUtil.fileHasElementWithSameName
+
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
@@ -16,25 +18,26 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import org.jetbrains.annotations.NotNull
 
-import static fr.nereide.inspection.common.InspectionUtil.fileHasElementWithSameName
-
+/**
+ * Basic inspection for forms not found
+ */
 class FormNotFoundInFileLocationInspection extends OfbizBaseInspection {
 
-    final String ROOT = 'forms'
-    final String NAMESPACE = CompoundFileDescription.FORM_NS_URL
+    public static final String ROOT = 'forms'
+    public static final String NAMESPACE = CompoundFileDescription.FORM_NS_URL
 
     @Override
     @NotNull
     PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-
         return new XmlElementVisitor() {
+
             @Override
             void visitXmlAttribute(@NotNull XmlAttribute attribute) {
-                if (!PluginActivator.getInstance(attribute.project).isActive()) return
-                if (!OfbizXmlPatterns.FORM_CALL.accepts(attribute.getValueElement())) return
+                if (PluginActivator.getInstance(attribute.project).inactive) return
+                if (!OfbizXmlPatterns.FORM_CALL.accepts(attribute.valueElement)) return
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(attribute.project)
-                XmlAttribute locationAttribute = attribute.getParent().getAttribute('location')
-                XmlAttribute extendsLocationAttribute = attribute.getParent().getAttribute('extends-resource')
+                XmlAttribute locationAttribute = attribute.parent.getAttribute('location')
+                XmlAttribute extendsLocationAttribute = attribute.parent.getAttribute('extends-resource')
                 PsiFile targetFile
                 if (locationAttribute) {
                     targetFile = ph.getPsiFileAtLocation(locationAttribute.value)
@@ -42,7 +45,7 @@ class FormNotFoundInFileLocationInspection extends OfbizBaseInspection {
                     if (extendsLocationAttribute.value.contains('$')) return // dynamic case, just ignore it
                     targetFile = ph.getPsiFileAtLocation(extendsLocationAttribute.value)
                 } else {
-                    targetFile = attribute.getContainingFile()
+                    targetFile = attribute.containingFile
                 }
                 if (!targetFile || !(targetFile instanceof XmlFile)) return
 
@@ -55,6 +58,8 @@ class FormNotFoundInFileLocationInspection extends OfbizBaseInspection {
                     )
                 }
             }
+
         }
     }
+
 }

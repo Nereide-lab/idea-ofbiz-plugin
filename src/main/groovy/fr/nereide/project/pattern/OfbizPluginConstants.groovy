@@ -4,9 +4,14 @@ import com.intellij.patterns.PsiJavaElementPattern
 import com.intellij.patterns.PsiJavaPatterns
 import com.intellij.psi.PsiLiteral
 
-class OfbizPatternConst {
+/**
+ * String constants
+ */
+class OfbizPluginConstants {
+
     // Base const
     public static final String BASE_OFB_PACKAGE = 'org.apache.ofbiz'
+    public static final int DEFAULT_COMPLETION_PRIORITY = 100
 
     // classes
     public static final String DISPATCH_CONTEXT_CLASS = 'org.apache.ofbiz.service.DispatchContext'
@@ -27,6 +32,11 @@ class OfbizPatternConst {
 
     static Object makeMethodParameterPattern(PsiJavaElementPattern<? extends PsiLiteral, ?> elementPattern,
                                              String methodName, String className, int index) {
-        return elementPattern.methodCallParameter(index, PsiJavaPatterns.psiMethod().withName(methodName).definedInClass(className))
+        return elementPattern.methodCallParameter(index, PsiJavaPatterns.psiMethod()
+                .withName(methodName)
+                .definedInClass(className))
     }
+
+    public static final String FILE_AND_ELEMENT_SEPARATOR = '#'
+
 }

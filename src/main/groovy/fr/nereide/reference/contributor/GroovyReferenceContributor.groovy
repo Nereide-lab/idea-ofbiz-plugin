@@ -14,9 +14,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.contributor
-
 
 import com.intellij.psi.PsiReferenceContributor
 import com.intellij.psi.PsiReferenceRegistrar
@@ -26,12 +24,15 @@ import fr.nereide.reference.common.provider.ServiceReferenceProvider
 import fr.nereide.reference.common.provider.UiLabelReferenceProvider
 import org.jetbrains.annotations.NotNull
 
+/**
+ * General Groovy contributor that accepts custom references
+ */
 class GroovyReferenceContributor extends PsiReferenceContributor {
-    GroovyReferenceContributor() {}
 
     void registerReferenceProviders(@NotNull PsiReferenceRegistrar registrar) {
         registrar.registerReferenceProvider(OfbizGroovyPatterns.SERVICE_CALL, new ServiceReferenceProvider())
         registrar.registerReferenceProvider(OfbizGroovyPatterns.ENTITY_CALL, new EntityReferenceProvider())
         registrar.registerReferenceProvider(OfbizGroovyPatterns.LABEL_CALL, new UiLabelReferenceProvider())
     }
+
 }

@@ -14,7 +14,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.completion.provider.common
 
 import com.intellij.codeInsight.completion.CompletionParameters
@@ -27,25 +26,31 @@ import com.intellij.util.ProcessingContext
 import fr.nereide.dom.element.service.Service
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.PluginActivator
+import fr.nereide.project.pattern.OfbizPluginConstants
 import fr.nereide.project.utils.MiscUtils
 import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin completion system
+ */
 class ServiceNameCompletionProvider extends CompletionProvider<CompletionParameters> {
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
 
-        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
+        if (PluginActivator.getInstance(parameters.position.project).inactive) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
-        List servicesNames = ph.getAllServices()
+        List servicesNames = ph.collectAllServices()
 
         for (Service service : servicesNames) {
-            LookupElement lookupElement = LookupElementBuilder.create(service.getName())
+            LookupElement lookupElement = LookupElementBuilder.create(service.name)
                     .withIcon(PluginIcons.SERVICE_ICON)
                     .withTailText(" Component:${MiscUtils.getComponentName(service)}" as String, true)
-            result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
+            result.addElement(PrioritizedLookupElement.withPriority(lookupElement,
+                    OfbizPluginConstants.DEFAULT_COMPLETION_PRIORITY))
         }
     }
+
 }

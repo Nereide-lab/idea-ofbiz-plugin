@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.common
 
 import com.intellij.openapi.util.TextRange
@@ -25,7 +24,11 @@ import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.annotations.Nullable
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class UiLabelReference extends PsiReferenceBase<PsiElement> {
+
     UiLabelReference(PsiElement element) {
         super(element)
     }
@@ -36,9 +39,9 @@ class UiLabelReference extends PsiReferenceBase<PsiElement> {
 
     @Nullable
     PsiElement resolve() {
-        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.getElement().project)
-        DomElement definition = ph.getProperty(MiscUtils.getUiLabelSafeValue(this.getValue()))
-        return definition != null ? definition.getXmlElement() : null
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.element.project)
+        DomElement definition = ph.getProperty(MiscUtils.getUiLabelSafeValue(this.value))
+        return definition != null ? definition.xmlElement : null
     }
 
     boolean isSoft() {

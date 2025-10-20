@@ -7,18 +7,23 @@ import com.intellij.util.xml.Stubbed
 import com.intellij.util.xml.SubTagList
 import com.intellij.util.xmlb.annotations.Attribute
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface Grid extends DomElement {
+
     @NameValue
     @Stubbed
-    @Attribute("name")
+    @Attribute('name')
     GenericAttributeValue<String> getName()
 
-    @Attribute("type")
+    @Attribute('type')
     GenericAttributeValue<String> getType()
 
-    @Attribute("target")
+    @Attribute('target')
     GenericAttributeValue<String> getTarget()
 
-    @SubTagList("field")
+    @SubTagList('field')
     List<FormField> getFormFields()
+
 }

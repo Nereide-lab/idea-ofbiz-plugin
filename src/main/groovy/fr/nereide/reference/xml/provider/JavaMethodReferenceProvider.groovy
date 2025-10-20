@@ -15,26 +15,30 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.JavaMethodReference
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class JavaMethodReferenceProvider extends PsiReferenceProvider {
-    JavaMethodReferenceProvider() {}
+
+    static String getClassLocation(PsiElement element) {
+        XmlTag tag = PsiTreeUtil.getParentOfType(element, XmlTag)
+        XmlAttribute locationAttr = tag.getAttribute('location') ?: tag.getAttribute('path')
+        return locationAttr ? locationAttr.value : null
+    }
+    /* codenarc-disable UnusedMethodParameter */
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return []
-        if (FileReferenceProvider.isJavaService(element)) {
-            String classLocation = getClassLocation(element)
-            if (!classLocation) return PsiReference.EMPTY_ARRAY
-            PsiClass aClass = JavaPsiFacade.getInstance(element.getProject())
-                    .findClass(classLocation, GlobalSearchScope.allScope(element.getProject()))
-            return (PsiReference) new JavaMethodReference((XmlAttributeValue) element, aClass, true)
+        /* codenarc-enable UnusedMethodParameter */
+        if (PluginActivator.getInstance(element.project).inactive) return PsiReference.EMPTY_ARRAY
+        if (!FileReferenceProvider.isJavaService(element)) {
+            return PsiReference.EMPTY_ARRAY
         }
-        return PsiReference.EMPTY_ARRAY
+        String classLocation = getClassLocation(element)
+        if (!classLocation) return PsiReference.EMPTY_ARRAY
+        PsiClass aClass = JavaPsiFacade.getInstance(element.project)
+                .findClass(classLocation, GlobalSearchScope.allScope(element.project))
+        return (PsiReference) new JavaMethodReference((XmlAttributeValue) element, aClass, true)
     }
 
-    static String getClassLocation(PsiElement element) {
-        XmlTag tag = PsiTreeUtil.getParentOfType(element, XmlTag.class)
-        XmlAttribute locationAttr = tag.getAttribute("location")
-        if (!locationAttr) locationAttr = tag.getAttribute("path")
-        return locationAttr ? locationAttr.getValue() : null
-    }
 }

@@ -2,7 +2,11 @@ package fr.nereide.completion.provider.java
 
 import com.intellij.psi.PsiElement
 
+/**
+ * Entity fields completion provider for java in dve
+ */
 class JavaEntityFieldsFromDVEKeyMapCompletionProvider extends JavaEntityFieldsFromDVECompletionProvider {
+
     int index
 
     JavaEntityFieldsFromDVEKeyMapCompletionProvider(int index) {
@@ -11,6 +15,7 @@ class JavaEntityFieldsFromDVEKeyMapCompletionProvider extends JavaEntityFieldsFr
 
     @Override
     String getEntityNameFromPsiElement(PsiElement element) {
-        return getEntityNameFromKeyMapInDve(element, getMethodExprClass(), this.index)
+        return getEntityNameFromKeyMapInDve(element, methodExprClass, this.index)
     }
+
 }

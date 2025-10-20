@@ -6,11 +6,16 @@ import com.intellij.util.xml.NameValue
 import com.intellij.util.xml.SubTagList
 import com.intellij.util.xmlb.annotations.Attribute
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface Property extends DomElement {
+
     @NameValue
-    @Attribute("key")
+    @Attribute('key')
     GenericAttributeValue<String> getKey()
 
-    @SubTagList("value")
+    @SubTagList('value')
     List<PropertyValue> getPropertyValues()
+
 }

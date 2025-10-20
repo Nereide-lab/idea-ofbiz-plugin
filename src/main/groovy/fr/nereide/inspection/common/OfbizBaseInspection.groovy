@@ -2,9 +2,10 @@ package fr.nereide.inspection.common
 
 import com.intellij.codeInspection.LocalInspectionTool
 
+/**
+ * Base inspection for Ofbiz plugin
+ */
 class OfbizBaseInspection extends LocalInspectionTool {
-
-    OfbizBaseInspection() {}
 
     @Override
     boolean isEnabledByDefault() {

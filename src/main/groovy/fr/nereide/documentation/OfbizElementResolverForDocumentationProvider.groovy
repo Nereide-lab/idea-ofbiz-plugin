@@ -1,7 +1,6 @@
 package fr.nereide.documentation
 
 import com.intellij.lang.documentation.AbstractDocumentationProvider
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -17,17 +16,16 @@ import fr.nereide.reference.common.ServiceReference
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 
+/**
+ * Resolver class for custom documentation provider
+ */
 class OfbizElementResolverForDocumentationProvider extends AbstractDocumentationProvider {
 
-    private static final Logger LOG = Logger.getInstance(OfbizElementResolverForDocumentationProvider.class)
-
     @Override
-    PsiElement getCustomDocumentationElement(@NotNull Editor editor, @NotNull PsiFile file, @Nullable PsiElement contextElement, int targetOffset) {
-        if (!PluginActivator.getInstance(contextElement.project).isActive()) return null
-        PsiElement xmlAttr = PsiTreeUtil.getParentOfType(contextElement, XmlAttribute.class)
-        /*************
-         *    XML    *
-         *************/
+    PsiElement getCustomDocumentationElement(@NotNull Editor editor, @NotNull PsiFile file,
+                                             @Nullable PsiElement contextElement, int targetOffset) {
+        if (PluginActivator.getInstance(contextElement.project).inactive) return null
+        PsiElement xmlAttr = PsiTreeUtil.getParentOfType(contextElement, XmlAttribute)
         if (xmlAttr) {
             PsiElement xmlAttrValue = PsiTreeUtil.getChildOfType(xmlAttr, XmlAttributeValue)
             if (OfbizXmlPatterns.SERVICE_DEF_CALL.accepts(xmlAttr)) {
@@ -36,19 +34,12 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
                 return xmlAttrValue ? resolveEntityOrView(xmlAttrValue) : null
             }
         }
-        /*************
-         *    JAVA   *
-         *************/
         if (OfbizJavaPatterns.SERVICE_CALL.accepts(contextElement)) {
-            return resolveService(PsiTreeUtil.getParentOfType(contextElement, PsiLiteralExpression.class))
+            return resolveService(PsiTreeUtil.getParentOfType(contextElement, PsiLiteralExpression))
         }
         if (OfbizJavaPatterns.ENTITY_CALL.accepts(contextElement)) {
-            return resolveEntityOrView(PsiTreeUtil.getParentOfType(contextElement, PsiLiteralExpression.class))
+            return resolveEntityOrView(PsiTreeUtil.getParentOfType(contextElement, PsiLiteralExpression))
         }
-        /*************
-         *  GROOVY   *
-         * useless ? *
-         *************/
         return null
     }
 
@@ -71,4 +62,5 @@ class OfbizElementResolverForDocumentationProvider extends AbstractDocumentation
         EntityReference entity = new EntityReference(expr)
         return entity.resolve()
     }
+
 }

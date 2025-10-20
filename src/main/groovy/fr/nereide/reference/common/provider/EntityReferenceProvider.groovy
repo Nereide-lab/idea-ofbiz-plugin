@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.common.provider
 
 import com.intellij.psi.PsiElement
@@ -25,14 +24,20 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.reference.common.EntityReference
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class EntityReferenceProvider extends PsiReferenceProvider {
-    EntityReferenceProvider() {}
+
+    /* codenarc-disable UnusedMethodParameter */
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return []
+        /* codenarc-enable UnusedMethodParameter */
+        if (PluginActivator.getInstance(element.project).inactive) return []
         EntityReference entity = new EntityReference(element)
         PsiReference[] reference = (PsiReference) entity
         return reference ?: PsiReference.EMPTY_ARRAY
     }
+
 }

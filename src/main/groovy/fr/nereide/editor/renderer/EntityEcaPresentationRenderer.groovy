@@ -10,10 +10,12 @@ import fr.nereide.dom.element.entityeca.Eca
 import fr.nereide.project.utils.MiscUtils
 import icons.PluginIcons
 import org.jetbrains.annotations.NotNull
+import javax.swing.Icon
+import java.awt.Color
 
-import javax.swing.*
-import java.awt.*
-
+/**
+ * Class responsible for rendering the text that appears when hovering over a gutter icon for ECA
+ */
 class EntityEcaPresentationRenderer extends PsiTargetPresentationRenderer<PsiElement> {
 
     String getElementText(PsiElement element) {
@@ -22,38 +24,33 @@ class EntityEcaPresentationRenderer extends PsiTargetPresentationRenderer<PsiEle
 
     @Override
     TargetPresentation getPresentation(@NotNull PsiElement element) {
-
-        //noinspection UnstableApiUsage
+        // noinspection UnstableApiUsage
         return new TargetPresentation() {
 
-            String getPresentableText() {
-                return 'ECA'
-            }
+            final String presentableText = 'ECA'
+            final String locationText = "[Component : ${MiscUtils.getComponentName(element)}]"
+            final Icon icon = PluginIcons.ECA_ICON
+            final TextAttributes presentableTextAttributes = null
+            final TextAttributes containerTextAttributes = null
+            final Icon locationIcon = null
+            final Color backgroundColor = null
 
             String getContainerText() {
+                String none = 'NONE'
                 Eca eca = DomManager.getDomManager(element.project).getDomElement(element as XmlTag) as Eca
-                StringBuilder sb = new StringBuilder()
-                sb.append('event: ')
-                sb.append(eca.event?.value ?: 'NONE')
-                sb.append(' | ')
-                sb.append('operation: ')
-                sb.append(eca.operation?.value ?: 'NONE')
-                sb.append(' | ')
-                sb.append('service: ')
-                sb.append(eca.actions.collect { it.service.value }.join(', '))
+                StringBuilder sb = new StringBuilder().with {
+                    append('event: ')
+                    append(eca.event?.value ?: none)
+                    append(' | ')
+                    append('operation: ')
+                    append(eca.operation?.value ?: none)
+                    append(' | service: ')
+                    append(eca.actions.collect { action -> action.service.value }.join(', '))
+                }
+                return sb.toString()
             }
 
-            String getLocationText() { return "[Component : ${MiscUtils.getComponentName(element)}]" }
-
-            Icon getIcon() { return PluginIcons.ECA_ICON }
-
-            TextAttributes getPresentableTextAttributes() { return null }
-
-            TextAttributes getContainerTextAttributes() { return null }
-
-            Icon getLocationIcon() { return null }
-
-            Color getBackgroundColor() { return null }
         }
     }
+
 }

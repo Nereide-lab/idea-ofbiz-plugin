@@ -6,20 +6,25 @@ import com.intellij.util.xml.NameValue
 import com.intellij.util.xml.SubTagList
 import com.intellij.util.xmlb.annotations.Attribute
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface EntityRelation extends DomElement {
+
     @NameValue
-    @Attribute("fk-name")
+    @Attribute('fk-name')
     GenericAttributeValue<String> getFkName()
 
-    @Attribute("type")
+    @Attribute('type')
     GenericAttributeValue<String> getType()
 
-    @Attribute("rel-entity-name")
+    @Attribute('rel-entity-name')
     GenericAttributeValue<String> getRelEntityName()
 
-    @Attribute("title")
+    @Attribute('title')
     GenericAttributeValue<String> getTitle()
 
-    @SubTagList("key-map")
+    @SubTagList('key-map')
     List<RelationKeyMap> getKeyMaps()
+
 }
