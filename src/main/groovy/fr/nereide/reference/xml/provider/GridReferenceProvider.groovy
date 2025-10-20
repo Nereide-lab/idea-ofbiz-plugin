@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.xml.provider
 
 import com.intellij.psi.PsiElement
@@ -26,12 +25,17 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.GridReference
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class GridReferenceProvider extends PsiReferenceProvider {
-    GridReferenceProvider() {}
+
+    /* codenarc-disable UnusedMethodParameter */
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return []
+        /* codenarc-enable UnusedMethodParameter */
+        if (PluginActivator.getInstance(element.project).inactive) return []
         if (element instanceof XmlAttributeValue) {
             GridReference form = new GridReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) form
@@ -39,4 +43,5 @@ class GridReferenceProvider extends PsiReferenceProvider {
         }
         return PsiReference.EMPTY_ARRAY
     }
+
 }

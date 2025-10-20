@@ -1,5 +1,8 @@
 package fr.nereide.inspection.xml
 
+import static fr.nereide.inspection.common.InspectionUtil.fileHasElementWithSameName
+import static fr.nereide.project.pattern.OfbizPluginConstants.FILE_AND_ELEMENT_SEPARATOR
+
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
@@ -16,31 +19,54 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizXmlPatterns
 import org.jetbrains.annotations.NotNull
 
-import static fr.nereide.inspection.common.InspectionUtil.fileHasElementWithSameName
-
+/**
+ * Custom inspection that checks if referenced screen exists
+ */
 class ScreenNotFoundInFileLocationInspection extends OfbizBaseInspection {
 
-    final String ROOT = 'screens'
-    final String NAMESPACE = CompoundFileDescription.SCREEN_NS_URL
+    public static final String ROOT = 'screens'
+    public static final String NAMESPACE = CompoundFileDescription.SCREEN_NS_URL
+
+    static String getScreenFromController(String value) {
+        return value.substring(value.lastIndexOf(FILE_AND_ELEMENT_SEPARATOR) + 1, value.size())
+    }
+
+    static List getControllerSafeLocationAttr(XmlAttribute location) {
+        if (!location.value) return Collections.emptyList()
+        String val = location.value
+        if (val.contains('$')) {
+            return [null, false]
+        } else if (val.contains(FILE_AND_ELEMENT_SEPARATOR)) {
+            return [val.substring(0, val.lastIndexOf(FILE_AND_ELEMENT_SEPARATOR)), true]
+        }
+        return [val, false]
+    }
+
+    static String getControllerSafeScreenName(XmlAttribute location) {
+        if (!location.value) return ''
+        String val = location.value
+        if (val.contains(FILE_AND_ELEMENT_SEPARATOR)) {
+            return val.substring(val.lastIndexOf(FILE_AND_ELEMENT_SEPARATOR) + 1, val.length())
+        }
+        return val
+    }
 
     @Override
     @NotNull
     PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-
         return new XmlElementVisitor() {
+
             @Override
             void visitXmlAttribute(@NotNull XmlAttribute attribute) {
-                if (!PluginActivator.getInstance(attribute.project).isActive()) return
-                if (!OfbizXmlPatterns.SCREEN_CALL.accepts(attribute.getValueElement())) return
+                if (PluginActivator.getInstance(attribute.project).inactive) return
+                if (!OfbizXmlPatterns.SCREEN_CALL.accepts(attribute.valueElement)) return
 
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(attribute.project)
-                XmlAttribute locationAttribute = attribute.getParent().getAttribute('location')
+                XmlAttribute locationAttribute = attribute.parent.getAttribute('location')
                 String targetFileLocation
                 boolean isController
                 (targetFileLocation, isController) = getControllerSafeLocationAttr(locationAttribute ?: attribute)
-                PsiFile targetFile = ph.getPsiFileAtLocation(targetFileLocation)
-
-                if (!targetFile) targetFile = attribute.getContainingFile()
+                PsiFile targetFile = ph.getPsiFileAtLocation(targetFileLocation) ?: attribute.containingFile
                 if (!targetFile || !(targetFile instanceof XmlFile)) return
 
                 String nameValue = isController ? getControllerSafeScreenName(attribute) : attribute.value
@@ -54,30 +80,8 @@ class ScreenNotFoundInFileLocationInspection extends OfbizBaseInspection {
                     )
                 }
             }
+
         }
     }
 
-    static String getScreenFromController(String value) {
-        return value.substring(value.lastIndexOf('#') + 1, value.size())
-    }
-
-    static def getControllerSafeLocationAttr(XmlAttribute location) {
-        if (!location.value) return null
-        String val = location.value
-        if (val.contains('$')) {
-            return [null, false]
-        } else if (val.contains('#')) {
-            return [val.substring(0, val.lastIndexOf('#')), true]
-        }
-        return [val, false]
-    }
-
-    static String getControllerSafeScreenName(XmlAttribute location) {
-        if (!location.value) return null
-        String val = location.value
-        if (val.contains('#')) {
-            return val.substring(val.lastIndexOf('#') + 1, val.length())
-        }
-        return val
-    }
 }

@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.dom.filedesc
 
 import com.intellij.util.xml.DomElement
@@ -25,17 +24,21 @@ import org.jetbrains.annotations.Nullable
 
 import javax.swing.Icon
 
+/**
+ * Part of the OFBiz DOM description
+ */
 class UiLabelFileDescription<S extends DomElement> extends DomFileDescription {
-    private static final String rootTagName = "resource"
+
+    private static final String ROOT_TAG = 'resource'
     public static final String XML_LANG_NS = 'http://www.w3.org/XML/1998/namespace'
     public static final String XML_LANG_NS_NAME = 'xml'
 
     UiLabelFileDescription() {
-        super(UiLabelFile.class, rootTagName)
+        super(UiLabelFile, ROOT_TAG)
     }
 
     @Nullable
-    Icon getFileIcon(int flags) {
+    Icon getFileIcon(int flags) { // codenarc-disable UnusedMethodParameter
         return PluginIcons.LABEL_FILE_ICON
     }
 
@@ -43,4 +46,5 @@ class UiLabelFileDescription<S extends DomElement> extends DomFileDescription {
     protected void initializeFileDescription() {
         registerNamespacePolicy(XML_LANG_NS_NAME, XML_LANG_NS)
     }
+
 }

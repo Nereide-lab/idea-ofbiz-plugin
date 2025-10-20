@@ -20,7 +20,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <defaultLiveTemplates file="/liveTemplates/Groovy.xml"/>
-        <liveTemplateContext implementation="fr.nereide.liveTemplates.GroovyDslContext"
+        <liveTemplateContext implementation="fr.nereide.live.template.GroovyDslContext"
                              contextId="GROOVY_DSL"/>
     </extensions>
 </idea-plugin>

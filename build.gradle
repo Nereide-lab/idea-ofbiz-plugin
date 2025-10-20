@@ -12,6 +12,7 @@ plugins {
     id 'groovy'
     id 'java'
     id 'org.jetbrains.changelog' version '2.2.1'
+    id 'codenarc'
 }
 
 repositories {
@@ -36,6 +37,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.12.2'
+
+    // specify last codenarc version for java 17 compliance
+    codenarc('org.codenarc:CodeNarc:3.6.0')
 }
 
 java {
@@ -45,6 +49,7 @@ java {
 
 buildPlugin {
     dependsOn 'test'
+    dependsOn 'codenarcMain'
     dependsOn 'generateUpdatePluginXml'
 }
 
@@ -91,6 +96,19 @@ patchPluginXml {
     untilBuild = ideaMaxVersion
     pluginDescription = pluginDesc
 }
+
+codenarc {
+    setConfigFile(new File('config/codenarc/codenarc.groovy'))
+    sourceSets = [sourceSets.main] // Analyse le code source principal
+    ignoreFailures = false // Échoue si des violations sont trouvées
+    reportFormat = 'xml' // Format du rapport (html, xml, txt, etc.)
+}
+
+/**
+ * for local testing of codenarc
+ * ./gradlew check -x test
+ */
+check.dependsOn 'codenarcMain'
 
 //============================================
 //   DEPLOY

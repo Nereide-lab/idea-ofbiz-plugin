@@ -5,6 +5,9 @@ import com.intellij.util.xml.Namespace
 import com.intellij.util.xml.SubTag
 import fr.nereide.dom.filedesc.CompoundFileDescription
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface CompoundFile extends DomElement {
 
     @Namespace(CompoundFileDescription.FORM_NS)
@@ -30,4 +33,5 @@ interface CompoundFile extends DomElement {
 
     @SubTag('screens')
     ScreenBlocInCpd getScreens()
+
 }

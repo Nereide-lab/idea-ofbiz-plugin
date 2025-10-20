@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.common
 
 import com.intellij.psi.PsiElement
@@ -24,6 +23,9 @@ import com.intellij.psi.ResolveResult
 import fr.nereide.dom.element.service.Service
 import fr.nereide.project.OfbizProjectHelper
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class ServiceReference extends PsiPolyVariantReferenceBase<PsiElement> {
 
     ServiceReference(PsiElement element) {
@@ -33,11 +35,11 @@ class ServiceReference extends PsiPolyVariantReferenceBase<PsiElement> {
     @Override
     ResolveResult[] multiResolve(boolean incompleteCode) {
         List<ResolveResult> results = []
-        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.getElement().project)
-        List<Service> definitions = ph.getServices(this.getValue())
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.element.project)
+        List<Service> definitions = ph.getServices(this.value)
         if (!definitions) return ResolveResult.EMPTY_ARRAY
         for (Service service : definitions) {
-            results << new PsiElementResolveResult(service.getXmlElement())
+            results << new PsiElementResolveResult(service.xmlElement)
         }
         return results.toArray(new ResolveResult[definitions.size()])
     }
@@ -46,4 +48,5 @@ class ServiceReference extends PsiPolyVariantReferenceBase<PsiElement> {
     boolean isSoft() {
         return true
     }
+
 }

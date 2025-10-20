@@ -14,8 +14,11 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.xml.provider
+
+import static fr.nereide.project.pattern.OfbizPluginConstants.FILE_AND_ELEMENT_SEPARATOR
+import static fr.nereide.project.utils.XmlUtils.getParentTag
+import static fr.nereide.project.utils.XmlUtils.isPageReferenceFromController
 
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
@@ -27,16 +30,23 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.ScreenReference
 import org.jetbrains.annotations.NotNull
 
-import static fr.nereide.project.utils.XmlUtils.getParentTag
-import static fr.nereide.project.utils.XmlUtils.isPageReferenceFromController
-
-
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class ScreenReferenceProvider extends PsiReferenceProvider {
-    ScreenReferenceProvider() {}
+
+    static TextRange getScreenTextRangeFromController(PsiElement element) {
+        String locationAndScreen = element.text.replaceAll('"', '')
+        return new TextRange(locationAndScreen.lastIndexOf(FILE_AND_ELEMENT_SEPARATOR) + 2,
+                locationAndScreen.length() + 1)
+    }
+
+    /* codenarc-disable UnusedMethodParameter */
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return []
+        /* codenarc-enable UnusedMethodParameter */
+        if (PluginActivator.getInstance(element.project).inactive) return []
         if (!(element instanceof XmlAttributeValue)) {
             return PsiReference.EMPTY_ARRAY
         }
@@ -53,8 +63,4 @@ class ScreenReferenceProvider extends PsiReferenceProvider {
         return reference ?: PsiReference.EMPTY_ARRAY
     }
 
-    static TextRange getScreenTextRangeFromController(PsiElement element) {
-        String locationAndScreen = element.text.replaceAll('"', '')
-        return new TextRange(locationAndScreen.lastIndexOf('#') + 2, locationAndScreen.length() + 1)
-    }
 }

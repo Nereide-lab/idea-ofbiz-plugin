@@ -14,8 +14,10 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.xml
+
+import static fr.nereide.project.utils.XmlUtils.getParentTag
+import static fr.nereide.project.utils.XmlUtils.isInRightFile
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -23,19 +25,19 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
 import fr.nereide.dom.file.FormFile
 
-import static fr.nereide.project.utils.XmlUtils.getParentTag
-import static fr.nereide.project.utils.XmlUtils.isInRightFile
-
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class FormReference extends GenericXmlReference {
 
-    Class fileType = FormFile.class
+    Class fileType = FormFile
 
     FormReference(XmlAttributeValue formName, boolean soft) {
         super(formName, soft)
     }
 
     PsiElement resolve() {
-        XmlTag containingTag = (XmlTag) getParentTag(this.getElement())
+        XmlTag containingTag = (XmlTag) getParentTag(this.element)
         if (!containingTag) {
             return null
         }
@@ -49,4 +51,5 @@ class FormReference extends GenericXmlReference {
         }
         return null
     }
+
 }

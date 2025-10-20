@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.xml
 
 import com.intellij.psi.PsiElement
@@ -24,15 +23,20 @@ import com.intellij.util.xml.DomElement
 import fr.nereide.project.OfbizProjectHelper
 import org.jetbrains.annotations.Nullable
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class RequestMapReference extends PsiReferenceBase<XmlAttributeValue> {
+
     RequestMapReference(XmlAttributeValue element, boolean soft) {
         super(element, soft)
     }
 
     @Nullable
     PsiElement resolve() {
-        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.getElement().project)
-        DomElement definition = ph.getRequestMap(this.getValue())
-        return definition != null ? definition.getXmlElement() : null
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.element.project)
+        DomElement definition = ph.getRequestMap(this.value)
+        return definition != null ? definition.xmlElement : null
     }
+
 }

@@ -14,8 +14,9 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.xml
+
+import static fr.nereide.project.pattern.OfbizPluginConstants.FILE_AND_ELEMENT_SEPARATOR
 
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
@@ -25,12 +26,14 @@ import com.intellij.psi.xml.XmlTag
 import fr.nereide.dom.element.screen.Screen
 import fr.nereide.dom.file.ScreenFile
 import fr.nereide.project.OfbizProjectHelper
+import fr.nereide.project.utils.XmlUtils
 
-import static fr.nereide.project.utils.XmlUtils.*
-
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class ScreenReference extends GenericXmlReference {
 
-    Class fileType = ScreenFile.class
+    Class fileType = ScreenFile
 
     ScreenReference(XmlAttributeValue screenName, TextRange textRange, boolean soft) {
         super(screenName, textRange, soft)
@@ -45,7 +48,7 @@ class ScreenReference extends GenericXmlReference {
     }
 
     PsiElement resolve() {
-        XmlTag containingTag = (XmlTag) getParentTag(this.getElement())
+        XmlTag containingTag = (XmlTag) XmlUtils.getParentTag(this.element)
         if (!containingTag) {
             return null
         }
@@ -53,26 +56,27 @@ class ScreenReference extends GenericXmlReference {
         if (locationAttribute) {
             if (locationAttribute.value.contains('${')) {
                 return null
-            } else {
-                Screen screen = ph.getScreenFromFileAtLocation(locationAttribute.value, this.value)
-                return screen ? screen.xmlElement : null
             }
-        } else if (isPageReferenceFromController(containingTag)) {
-            return resolveScreenInController(this.getElement(), ph)
-        } else if (isInRightFile(this.getElement(), fileType, dm)) {
-            PsiFile currentFile = this.getElement().getContainingFile()
-            Screen screen = ph.getScreenFromPsiFile(currentFile, this.getElement().getValue())
+            Screen screen = ph.getScreenFromFileAtLocation(locationAttribute.value, this.value)
+            return screen ? screen.xmlElement : null
+        } else if (XmlUtils.isPageReferenceFromController(containingTag)) {
+            return resolveScreenInController(this.element, ph)
+        } else if (XmlUtils.isInRightFile(this.element, fileType, dm)) {
+            PsiFile currentFile = this.element.containingFile
+            Screen screen = ph.getScreenFromPsiFile(currentFile, this.element.value)
             return screen ? screen.xmlElement : null
         }
         return null
     }
 
     PsiElement resolveScreenInController(XmlAttributeValue element, OfbizProjectHelper ph) {
-        String screenName = getScreenNameFromControllerString(element)
-        String controllerStringValue = element.getValue()
-        String fileComponentLocation = controllerStringValue.substring(0, controllerStringValue.length() - screenName.length() - 1)
-        this.setRangeInElement(new TextRange(controllerStringValue.indexOf('#'), controllerStringValue.length()))
-        return ph.getScreenFromFileAtLocation(fileComponentLocation, screenName).getXmlElement()
+        String screenName = XmlUtils.getScreenNameFromControllerString(element)
+        String controllerStringValue = element.value
+        String fileComponentLocation = controllerStringValue.substring(0,
+                controllerStringValue.length() - screenName.length() - 1)
+        this.rangeInElement = new TextRange(controllerStringValue.indexOf(FILE_AND_ELEMENT_SEPARATOR),
+                controllerStringValue.length())
+        return ph.getScreenFromFileAtLocation(fileComponentLocation, screenName).xmlElement
     }
 
 }

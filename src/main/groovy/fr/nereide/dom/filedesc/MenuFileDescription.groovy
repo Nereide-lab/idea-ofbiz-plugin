@@ -14,17 +14,21 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.dom.filedesc
 
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileDescription
 import fr.nereide.dom.file.MenuFile
 
+/**
+ * Part of the OFBiz DOM description
+ */
 class MenuFileDescription<S extends DomElement> extends DomFileDescription {
-    private static final String rootTagName = "menus"
+
+    private static final String ROOT_TAG = 'menus'
 
     MenuFileDescription() {
-        super(MenuFile.class, rootTagName)
+        super(MenuFile, ROOT_TAG)
     }
+
 }

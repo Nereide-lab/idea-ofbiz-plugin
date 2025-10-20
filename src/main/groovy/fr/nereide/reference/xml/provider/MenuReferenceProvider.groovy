@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.xml.provider
 
 import com.intellij.psi.PsiElement
@@ -26,12 +25,17 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.MenuReference
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class MenuReferenceProvider extends PsiReferenceProvider {
-    MenuReferenceProvider() {}
+
+    /* codenarc-disable UnusedMethodParameter */
 
     @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return []
+        /* codenarc-enable UnusedMethodParameter */
+        if (PluginActivator.getInstance(element.project).inactive) return []
         if (element instanceof XmlAttributeValue) {
             MenuReference menu = new MenuReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) menu
@@ -39,4 +43,5 @@ class MenuReferenceProvider extends PsiReferenceProvider {
         }
         return PsiReference.EMPTY_ARRAY
     }
+
 }

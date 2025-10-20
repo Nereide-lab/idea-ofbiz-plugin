@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.common
 
 import com.intellij.psi.PsiElement
@@ -24,28 +23,33 @@ import fr.nereide.dom.element.entitymodel.EntityRelation
 import fr.nereide.project.OfbizProjectHelper
 import org.jetbrains.annotations.Nullable
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class EntityReference extends PsiReferenceBase<PsiElement> {
+
     EntityReference(PsiElement entityName) {
         super(entityName)
     }
 
     @Nullable
     PsiElement resolve() {
-        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.getElement().project)
-        DomElement definition = ph.getEntity(this.getValue())
-        if (!definition) definition = ph.getViewEntity(this.getValue())
-        if (!definition) definition = ph.getEntity(getEntityNameFromGetRelated(ph))
-        return definition != null ? definition.getXmlElement() : null
+        OfbizProjectHelper ph = OfbizProjectHelper.getInstance(this.element.project)
+        DomElement definition = ph.getEntity(this.value)
+        definition = definition ?: ph.getViewEntity(this.value)
+        definition = definition ?: ph.getEntity(getEntityNameFromGetRelated(ph))
+        return definition != null ? definition.xmlElement : null
     }
 
     String getEntityNameFromGetRelated(OfbizProjectHelper ph) {
-        String wantedString = this.getValue()
+        String wantedString = this.value
         if (!wantedString) return null
-        List<EntityRelation> relations = ph.getAllEntityRelations()
+        List<EntityRelation> relations = ph.collectAllEntityRelations()
         EntityRelation matchingRel = relations.find { EntityRelation rel ->
-            wantedString == rel.getTitle().getValue() + rel.getRelEntityName().getValue()
+            wantedString == rel.title.value + rel.relEntityName.value
         }
         if (!matchingRel) return null
-        return matchingRel.getRelEntityName().getValue()
+        return matchingRel.relEntityName.value
     }
+
 }

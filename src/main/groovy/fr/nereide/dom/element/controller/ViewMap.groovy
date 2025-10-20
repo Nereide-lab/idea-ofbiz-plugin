@@ -5,11 +5,16 @@ import com.intellij.util.xml.GenericAttributeValue
 import com.intellij.util.xml.NameValue
 import com.intellij.util.xmlb.annotations.Attribute
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface ViewMap extends DomElement {
+
     @NameValue
-    @Attribute("name")
+    @Attribute('name')
     GenericAttributeValue<String> getName()
 
-    @Attribute("type")
+    @Attribute('type')
     GenericAttributeValue<String> getType()
+
 }

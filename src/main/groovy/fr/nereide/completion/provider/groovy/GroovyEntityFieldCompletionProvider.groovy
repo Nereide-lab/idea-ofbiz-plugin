@@ -14,10 +14,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.completion.provider.groovy
 
-import com.intellij.openapi.diagnostic.Logger
+import static com.intellij.psi.util.PsiTreeUtil.findChildOfType
+import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
+import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
+
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiMethod
@@ -34,71 +36,16 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrAssign
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrMethodCall
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
-import static com.intellij.psi.util.PsiTreeUtil.findChildOfType
-import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
-import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
-
+/**
+ * Entity fields completion provider for Groovy lang.
+ */
 abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletionProvider {
-    private static final Logger LOG = Logger.getInstance(GroovyEntityFieldCompletionProvider.class)
 
-    /**
-     * Tries to get the entity or view name from the declaration of the Generic value or object
-     * @param initialElement
-     * @return the name or null if not found
-     */
-    protected String retrieveEntityOrViewNameFromGrVariable(PsiVariable initialElement) {
-        PsiExpression init = initialElement.initializer
-        String declarationString = init ? init.text : initialElement.initializerGroovy?.text
-        if (declarationString && !(declarationString == 'null')) {
-            return getEntityNameFromDeclarationString(declarationString)
-        } else {
-            def oldFashionedLoop = getParentOfType(initialElement, GrLoopStatement.class)
-            if (oldFashionedLoop) {
-                return retrieveEntityOfViewNameFromOldFashionedLoop(oldFashionedLoop)
-            }
-            GrReferenceExpression potentialLoop = getPotentialLoop(initialElement)
-            if (potentialLoop && OfbizGroovyPatterns.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
-                PsiElement gvList = getGVListVariablefromLoopInstruction(potentialLoop, 0)
-                assert gvList instanceof GrVariable
-                return retrieveEntityOrViewNameFromGrVariable(gvList)
-            }
-        }
-        return getEntityNameFromLastQueryAssignment(initialElement)
-    }
+    abstract String getEntityNameFromPsiElement(PsiElement psiElement)
 
-    protected String retrieveEntityOfViewNameFromOldFashionedLoop(GrLoopStatement oldFashionedLoop) {
-        GrVariable iteratedList = null
-        if (oldFashionedLoop instanceof GrForStatement) {
-            GrForClause forDeclaration = (oldFashionedLoop as GrForStatement).getClause()
-            if (forDeclaration instanceof GrForInClause) iteratedList = forDeclaration.getIteratedExpression().resolve()
-        }
-        return iteratedList ? retrieveEntityOrViewNameFromGrVariable(iteratedList) : null
-    }
-
-    protected static PsiElement getGVListVariablefromLoopInstruction(GrReferenceExpression potentialLoop, int index) {
-        if (index > 10) return null
-        GrReferenceExpression expression = findChildOfType(potentialLoop, GrReferenceExpression.class, true)
-        PsiElement gvList = expression.resolve()
-        if (!gvList || gvList instanceof PsiMethod) { // on regarde au niveau du dessous
-            return getGVListVariablefromLoopInstruction(expression, index++)
-        }
-        return gvList
-    }
-
-    protected static GrReferenceExpression getPotentialLoop(GrVariable initialElement) {
-        PsiElement bracketsBlock = getParentOfType(initialElement, GrClosableBlock.class)
-        PsiElement fullCallBlock = getParentOfType(bracketsBlock, GrMethodCall.class)
-        PsiElement potentialLoopCall = getChildOfType(fullCallBlock, GrReferenceExpression.class) ?: null
-        return potentialLoopCall
-    }
-
-    Class getReferenceExpressionClass() {
-        return GrReferenceExpression.class
-    }
-
-    Class getAssigmentClass() {
-        return GrAssignmentExpression.class
-    }
+    final Class referenceExpressionClass = GrReferenceExpression
+    final Class assigmentClass = GrAssignmentExpression
+    final Class methodExprClass = GrMethodCall
 
     String getAssigmentString(PsiElement assign) {
         return (assign as GrAssignmentExpression).RValue.text
@@ -108,7 +55,52 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
         return (method as GrMethodCall).argumentList.expressionArguments
     }
 
-    Class getMethodExprClass() {
-        return GrMethodCall.class
+    protected static PsiElement getGVListVariablefromLoopInstruction(GrReferenceExpression potentialLoop, int index) {
+        if (index > 10) return null
+        GrReferenceExpression expression = findChildOfType(potentialLoop, GrReferenceExpression, true)
+        PsiElement gvList = expression.resolve()
+        if (!gvList || gvList instanceof PsiMethod) { // on regarde au niveau du dessous
+            return getGVListVariablefromLoopInstruction(expression, index++)
+        }
+        return gvList
     }
+
+    protected static GrReferenceExpression getPotentialLoop(GrVariable initialElement) {
+        PsiElement bracketsBlock = getParentOfType(initialElement, GrClosableBlock)
+        PsiElement fullCallBlock = getParentOfType(bracketsBlock, GrMethodCall)
+        PsiElement potentialLoopCall = getChildOfType(fullCallBlock, GrReferenceExpression) ?: null
+        return potentialLoopCall
+    }
+
+    /**
+     * Tries to get the entity or view name from the declaration of the Generic value or object
+     */
+    protected String retrieveEntityOrViewNameFromGrVariable(PsiVariable initialElement) {
+        PsiExpression init = initialElement.initializer
+        String declarationString = init ? init.text : initialElement.initializerGroovy?.text
+        if (declarationString && !(declarationString == 'null')) {
+            return getEntityNameFromDeclarationString(declarationString)
+        }
+        GrLoopStatement oldFashionedLoop = getParentOfType(initialElement, GrLoopStatement)
+        if (oldFashionedLoop) {
+            return retrieveEntityOfViewNameFromOldFashionedLoop(oldFashionedLoop)
+        }
+        GrReferenceExpression potentialLoop = getPotentialLoop(initialElement)
+        if (potentialLoop && OfbizGroovyPatterns.GROOVY_LOOP_PATTERN.accepts(potentialLoop)) {
+            PsiElement gvList = getGVListVariablefromLoopInstruction(potentialLoop, 0)
+            assert gvList instanceof GrVariable
+            return retrieveEntityOrViewNameFromGrVariable(gvList)
+        }
+        return getEntityNameFromLastQueryAssignment(initialElement)
+    }
+
+    protected String retrieveEntityOfViewNameFromOldFashionedLoop(GrLoopStatement oldFashionedLoop) {
+        GrVariable iteratedList = null
+        if (oldFashionedLoop instanceof GrForStatement) {
+            GrForClause forDeclaration = (oldFashionedLoop as GrForStatement).clause
+            if (forDeclaration instanceof GrForInClause) iteratedList = forDeclaration.iteratedExpression.resolve()
+        }
+        return iteratedList ? retrieveEntityOrViewNameFromGrVariable(iteratedList) : null
+    }
+
 }

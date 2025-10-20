@@ -14,73 +14,61 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.project.utils
 
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiLiteralExpression
+import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlElement
 import com.intellij.psi.xml.XmlFile
 import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomManager
 import fr.nereide.dom.file.ComponentFile
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
 
+/**
+ * Misc utility methods
+ */
 class MiscUtils {
 
-    /**
-     * returns the name of the component dir containing the element
-     * @param element
-     * @return
-     */
     static String getComponentName(DomElement element) {
-        return getComponentName(element.getXmlElement())
+        return getComponentName(element.xmlElement)
     }
 
-    /**
-     * returns the name of the component dir containing the element
-     * @param element
-     * @return
-     */
     static String getComponentName(PsiElement element) {
-        DomManager dm = DomManager.getDomManager(element.getProject())
-        PsiFile file = element.getContainingFile()
-        PsiDirectory dir = file.originalFile.getParent()
-        try {
-            return findComponentName(dir, dm)
-        } catch (NullPointerException ignored) {
-            return null
-        }
+        DomManager dm = DomManager.getDomManager(element.project)
+        PsiFile file = element.containingFile
+        PsiDirectory dir = file?.originalFile?.parent
+        if (!dir) return ''
+        return findComponentName(dir, dm)
     }
 
-    // TODO gneee ? why the classfile ?
     static String getComponentName(XmlElement element, Class myClassFile) {
-        DomManager dm = DomManager.getDomManager(element.getProject())
-        DomFileElement<DomElement> myFile = dm.getFileElement((element.getContainingFile() as XmlFile), myClassFile)
-        PsiDirectory dir = myFile.originalFile.parent
-        try {
-            return findComponentName(dir, dm)
-        } catch (NullPointerException ignored) {
-            return null
-        }
+        DomManager dm = DomManager.getDomManager(element.project)
+        DomFileElement<DomElement> myFile = dm.getFileElement((element.containingFile as XmlFile), myClassFile)
+        PsiDirectory dir = myFile?.originalFile?.parent
+        if (!dir) return ''
+        return findComponentName(dir, dm)
     }
 
-    private static String findComponentName(PsiDirectory dir, DomManager dm) {
-        for (def i = 0; i < 10; i++) {
-            XmlFile compoFile = dir.findFile('ofbiz-component.xml') as XmlFile
-            if (!compoFile) {
-                dir = dir.getParent()
-            } else {
-                return dm.getFileElement(compoFile, ComponentFile.class)?.getRootElement()?.getName()?.getValue()
+    static String findComponentName(PsiDirectory dir, DomManager dm) {
+        PsiDirectory dirToSearchIn = dir
+        for (int i = 0; i < 10; i++) {
+            XmlFile compoFile = dirToSearchIn.findFile('ofbiz-component.xml') as XmlFile
+            if (compoFile) {
+                return dm.getFileElement(compoFile, ComponentFile)?.rootElement?.name?.value
             }
+            dirToSearchIn = dirToSearchIn.parent
+            if (!dirToSearchIn) return ''
         }
-        return null
+        return ''
     }
 
     /**
      * Return safe uiLabelName
-     * @return
      */
     static String getUiLabelSafeValue(String text) {
         if (text.startsWith('${')) {
@@ -90,20 +78,35 @@ class MiscUtils {
     }
 
     /**
-     * return the textx of a PsiElement without the surrouding quotes
-     * @param originalElement
-     * @return
+     * return the text of a PsiElement without the surrounding quotes
      */
     static String getSafeTextValue(PsiElement originalElement) {
-        originalElement.getText().replaceAll('"', '').replaceAll('\'', '')
+        return originalElement.text.replaceAll('"', '').replaceAll('\'', '')
     }
 
     /**
      * Tests the PsiElement parameter and returns true if the element is groovy language
-     * @param el
-     * @return
      */
     static boolean isGroovy(PsiElement el) {
         return el.language.ID == 'Groovy'
     }
+
+    static String getStringValueFromPsiElement(PsiElement element) {
+        switch (element) {
+            case XmlAttributeValue:
+                return (element as XmlAttributeValue).value
+            case PsiLiteralExpression:
+                return (element as PsiLiteralExpression).value
+            case GrLiteral:
+                return (element as GrLiteral).value
+            default:
+                return element.text
+        }
+    }
+
+    static boolean isInTestDir(DomFileElement domFile) {
+        String dir = domFile.file.containingDirectory
+        return dir.contains('/tests')
+    }
+
 }

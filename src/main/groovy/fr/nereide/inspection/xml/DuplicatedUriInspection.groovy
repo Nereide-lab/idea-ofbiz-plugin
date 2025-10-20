@@ -1,5 +1,8 @@
 package fr.nereide.inspection.xml
 
+import static com.intellij.codeInspection.ProblemHighlightType.WARNING
+import static fr.nereide.inspection.InspectionBundle.message
+
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.XmlElementVisitor
@@ -14,19 +17,19 @@ import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.utils.XmlUtils
 import org.jetbrains.annotations.NotNull
 
-import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static fr.nereide.inspection.InspectionBundle.message
-
+/**
+ * Basic inspection for service duplicates
+ */
 class DuplicatedUriInspection extends OfbizBaseInspection {
 
     @Override
     @NotNull
     PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-
         return new XmlElementVisitor() {
+
             @Override
             void visitXmlAttributeValue(@NotNull XmlAttributeValue val) {
-                if (!PluginActivator.getInstance(val.project).isActive()) return
+                if (PluginActivator.getInstance(val.project).inactive) return
                 boolean isInController = OfbizXmlPatterns.URI_IN_REQUEST_DEFINITION.accepts(val)
                 boolean isElsewhereRelevant = OfbizXmlPatterns.URI_CALL.accepts(val)
                 if (!(isInController || isElsewhereRelevant)) return
@@ -38,6 +41,7 @@ class DuplicatedUriInspection extends OfbizBaseInspection {
                             WARNING)
                 }
             }
+
         }
     }
 
@@ -47,14 +51,14 @@ class DuplicatedUriInspection extends OfbizBaseInspection {
                 .getStructuredComponentRequestMaps(MiscUtils.getComponentName(attributeValue))
         return componentUrisByMountPoint.find { String mountPoint, Set<RequestMap> reqMaps ->
             return reqMaps.any { reqMap ->
-                String comparedUri = reqMap.uri.value // TODO debug to remove
                 hasSameUriAndMethodAndMountPoint(mountPoint, reqMap, attributeValue)
             }
         }
     }
 
-    private static boolean hasSameUriAndMethodAndMountPoint(String comparedMP, RequestMap comparedRM, XmlAttributeValue myUriAttr) {
-        if (comparedRM.uri.value != myUriAttr.value || comparedRM.getXmlTag() == XmlUtils.getParentTag(myUriAttr)) {
+    private static boolean hasSameUriAndMethodAndMountPoint(String comparedMP, RequestMap comparedRM,
+                                                            XmlAttributeValue myUriAttr) {
+        if (comparedRM.uri.value != myUriAttr.value || comparedRM.xmlTag == XmlUtils.getParentTag(myUriAttr)) {
             return false
         }
         XmlTag myRequestMap = XmlUtils.getParentTag(myUriAttr)
@@ -64,16 +68,19 @@ class DuplicatedUriInspection extends OfbizBaseInspection {
                 .getMountPointsOfUri(myUriAttr)
         boolean isSameMountPoint = myMountPoints.contains(comparedMP)
 
-        String comparedMethod = comparedRM.method.value ?: 'get'
+        String defaultHttpMethodName = 'get'
+        String comparedMethod = comparedRM.method.value ?: defaultHttpMethodName
 
         if (!myMethod) {
             if (!comparedMethod && isSameMountPoint) {
                 return true
-            } else myMethod = 'get'
+            }
+            myMethod = defaultHttpMethodName
         }
 
         boolean isSameMethod = myMethod == comparedMethod
         return isSameMethod && isSameMountPoint
     }
+
 }
 

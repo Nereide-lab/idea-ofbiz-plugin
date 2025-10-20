@@ -1,40 +1,42 @@
 package fr.nereide.project.worker
 
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.util.xml.DomElement
-import fr.nereide.dom.element.entitymodel.*
+import fr.nereide.dom.element.entitymodel.Alias
+import fr.nereide.dom.element.entitymodel.AliasAll
+import fr.nereide.dom.element.entitymodel.Entity
+import fr.nereide.dom.element.entitymodel.EntityField
+import fr.nereide.dom.element.entitymodel.ExtendEntity
+import fr.nereide.dom.element.entitymodel.ViewEntity
+import fr.nereide.dom.element.entitymodel.ViewEntityMember
 import fr.nereide.project.OfbizProjectHelper
 
+/**
+ * Helper class for entity and views related operations
+ */
 class EntityWorker {
 
-    private static final Logger LOG = Logger.getInstance(EntityWorker.class)
     /**
      * Returns a String list of all entity fields
-     * @param entity
-     * @return
      */
     static List<String> getEntityFields(Entity entity, OfbizProjectHelper ph) {
         return getEntityFields(entity, null, [], ph)
     }
 
-    static List<String> getEntityFields(Entity entity, String prefix, List<String> excludedFields, OfbizProjectHelper ph) {
-        List<EntityField> fields = entity.getFields().findAll { entityField ->
-            !excludedFields.contains(entityField.getName().getValue())
+    static List<String> getEntityFields(Entity entity, String prefix, List<String> excludedFields,
+                                        OfbizProjectHelper ph) {
+        List<EntityField> fields = entity.fields.findAll { entityField ->
+            !excludedFields.contains(entityField.name.value)
         }
         List<ExtendEntity> extendList = ph.getExtendEntityListForEntity(entity.entityName.value)
         if (extendList && extendList.size() > 0) {
-            fields.addAll(extendList.collect { it.getFields() })
+            fields.addAll(extendList*.fields)
         }
         return getFormatedFieldsName(fields, prefix)
     }
 
     /**
      * Returns a String list of all entity fields with prefixes, and nested views included in the search
-     * @param view
-     * @param ph
-     * @param index
-     * @return
      */
     static List<String> getViewFields(ViewEntity view, OfbizProjectHelper ph, int index) {
         return getViewFields(view, null, ph, [], index)
@@ -43,7 +45,7 @@ class EntityWorker {
     static List<String> getViewFields(ViewEntity view, String prefix, OfbizProjectHelper ph,
                                       List<String> excludedFields, int index) {
         List<String> fieldsList = []
-        if (index >= 10) return // infinite loop workaround
+        if (index >= 10) return [] // infinite loop workaround
         List<Alias> aliases = view.aliases
         List<AliasAll> aliasAllList = view.aliasAlls
         if (aliasAllList) {
@@ -59,7 +61,8 @@ class EntityWorker {
                         fieldsList.addAll(getEntityFields(currentEntity, currentPrefix, currentExcludedFields, ph))
                     } else {
                         ViewEntity currentView = ph.getViewEntity(entityName)
-                        List<String> viewFields = getViewFields(currentView, currentPrefix, ph, currentExcludedFields, index + 1)
+                        List<String> viewFields =
+                                getViewFields(currentView, currentPrefix, ph, currentExcludedFields, index + 1)
                         if (viewFields) fieldsList.addAll(viewFields)
                     }
                 }
@@ -70,14 +73,13 @@ class EntityWorker {
     }
 
     static String getEntityNameFromAlias(AliasAll aliasAllElmt, List<ViewEntityMember> members) {
-        String alias = aliasAllElmt.getEntityAlias()
-        return members.find { it.entityAlias.value == alias }?.entityName
+        String alias = aliasAllElmt.entityAlias
+        return members.find { member -> member.entityAlias.value == alias }?.entityName
     }
 
     static List<String> getListOfExcludedFieldNames(AliasAll aliasAllElmt) {
-        return aliasAllElmt.getAliasAllExcludes().collect { it.field.value }
+        return aliasAllElmt.aliasAllExcludes.collect { exclude -> exclude.field.value }
     }
-
 
     static List<String> getFormatedFieldsName(List<Alias> aliases) {
         return getFormatedFieldsName(aliases, null)
@@ -85,7 +87,7 @@ class EntityWorker {
 
     static List<String> getFormatedFieldsName(List<DomElement> fields, String prefix) {
         return fields.collect { DomElement field ->
-            "${prefix ?: ''}${field.getName()}"
+            "${prefix ?: ''}${field.name}"
         } as List<String>
     }
 

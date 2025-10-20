@@ -16,8 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.inspection.quickfix
+
+import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
+import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
@@ -31,37 +33,34 @@ import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.path.GrMethodCallExpression
 
-import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
-import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
-
+/**
+ * Quickfix for removing the unnecessary cache call
+ */
 class RemoveCacheCallFix implements LocalQuickFix {
 
-    @Override
-    String getName() {
-        return InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
-    }
+    final String name = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
 
-    @Override
-    String getFamilyName() {
-        return getName()
-    }
+    final String familyName = name
 
     @Override
     void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        PsiElement cacheExpr = descriptor.getPsiElement()
+        PsiElement cacheExpr = descriptor.psiElement
 
-        Class methodClass = PsiMethodCallExpression.class
-        Class refClass = PsiReferenceExpression.class
+        Class methodClass = PsiMethodCallExpression
+        Class refClass = PsiReferenceExpression
 
         if (MiscUtils.isGroovy(cacheExpr)) {
-            methodClass = GrMethodCallExpression.class
-            refClass = GrReferenceExpression.class
+            methodClass = GrMethodCallExpression
+            refClass = GrReferenceExpression
         }
 
+        // codenarc-disable NoDef, VariableTypeRequired
         def methodCallWithCache = getParentOfType(cacheExpr, methodClass)
         def tempExpr = getChildOfType(methodCallWithCache, refClass)
         def methodCallWithoutCache = getChildOfType(tempExpr, methodClass)
 
         methodCallWithCache.replace(methodCallWithoutCache)
+        // codenarc-enable NoDef, VariableTypeRequired
     }
+
 }

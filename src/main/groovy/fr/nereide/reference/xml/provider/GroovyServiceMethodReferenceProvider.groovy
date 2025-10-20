@@ -11,18 +11,22 @@ import fr.nereide.reference.xml.GroovyServiceDefReference
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.GroovyFile
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class GroovyServiceMethodReferenceProvider extends JavaMethodReferenceProvider {
 
     @Override
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return []
+        if (PluginActivator.getInstance(element.project).inactive) return []
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(element.project)
         String locationAttr = getClassLocation(element)
         if (!locationAttr) return PsiReference.EMPTY_ARRAY
         PsiFile targetedFile = ph.getPsiFileAtLocation(locationAttr)
         if (!targetedFile || !(targetedFile instanceof GroovyFile)) return PsiReference.EMPTY_ARRAY
         return new GroovyServiceDefReference(element as XmlAttributeValue,
-                (targetedFile as GroovyFile).getScriptClass(),
+                (targetedFile as GroovyFile).scriptClass,
                 true)
     }
+
 }

@@ -14,14 +14,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.completion.contributor
-
-import com.intellij.codeInsight.completion.CompletionType
-import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromDVEKeyMapCompletionProvider
-import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromDVECompletionProvider
-import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromGvCompletionProvider
-import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromQueryCompletionProvider
 
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.ENTITY_CALL
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_ATTRIBUTE
@@ -32,15 +25,34 @@ import static fr.nereide.project.pattern.OfbizGroovyPatterns.SERVICE_CALL
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.ENTITY_FIELD_IN_KEYMAP_IN_DVE_0
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.ENTITY_FIELD_IN_KEYMAP_IN_DVE_1
 
-class GroovyCompletionContributor extends OfbizBaseCompletionContributor {
+import com.intellij.codeInsight.completion.CompletionType
+import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromDVEKeyMapCompletionProvider
+import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromDVECompletionProvider
+import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromGvCompletionProvider
+import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromQueryCompletionProvider
+
+/**
+ * Part of the OFBiz plugin Completion system
+ */
+class GroovyCompletionContributor extends BaseCompletionContributor {
+
     GroovyCompletionContributor() {
-        this.extend(CompletionType.BASIC, ENTITY_CALL, entityOrViewNameCompletionProvider)
-        this.extend(CompletionType.BASIC, SERVICE_CALL, serviceNameCompletionProvider)
-        this.extend(CompletionType.BASIC, GENERIC_VALUE_ATTRIBUTE, new GroovyEntityFieldsFromGvCompletionProvider())
-        this.extend(CompletionType.BASIC, GENERIC_VALUE_ATTRIBUTE_GET, new GroovyEntityFieldsFromGvCompletionProvider())
-        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_QUERY, new GroovyEntityFieldsFromQueryCompletionProvider())
-        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_IN_DVE, new GroovyEntityFieldsFromDVECompletionProvider())
-        this.extend(CompletionType.BASIC, ENTITY_FIELD_IN_KEYMAP_IN_DVE_0, new GroovyEntityFieldsFromDVEKeyMapCompletionProvider(0))
-        this.extend(CompletionType.BASIC, ENTITY_FIELD_IN_KEYMAP_IN_DVE_1, new GroovyEntityFieldsFromDVEKeyMapCompletionProvider(1))
+        this.extend(CompletionType.BASIC, ENTITY_CALL,
+                entityOrViewNameCompletionProvider)
+        this.extend(CompletionType.BASIC, SERVICE_CALL,
+                serviceNameCompletionProvider)
+        this.extend(CompletionType.BASIC, GENERIC_VALUE_ATTRIBUTE,
+                new GroovyEntityFieldsFromGvCompletionProvider())
+        this.extend(CompletionType.BASIC, GENERIC_VALUE_ATTRIBUTE_GET,
+                new GroovyEntityFieldsFromGvCompletionProvider())
+        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_QUERY,
+                new GroovyEntityFieldsFromQueryCompletionProvider())
+        this.extend(CompletionType.BASIC, GENERIC_VALUE_FIELD_IN_DVE,
+                new GroovyEntityFieldsFromDVECompletionProvider())
+        this.extend(CompletionType.BASIC, ENTITY_FIELD_IN_KEYMAP_IN_DVE_0,
+                new GroovyEntityFieldsFromDVEKeyMapCompletionProvider(0))
+        this.extend(CompletionType.BASIC, ENTITY_FIELD_IN_KEYMAP_IN_DVE_1,
+                new GroovyEntityFieldsFromDVEKeyMapCompletionProvider(1))
     }
+
 }

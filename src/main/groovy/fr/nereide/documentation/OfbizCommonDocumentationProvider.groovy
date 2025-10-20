@@ -14,13 +14,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.documentation
 
 import com.intellij.lang.documentation.AbstractDocumentationProvider
 import com.intellij.openapi.util.text.HtmlBuilder
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlTag
+import fr.nereide.documentation.format.OfbizCommonDocumentationFormatter
+import fr.nereide.documentation.format.OfbizEntityDocumentationFormatter
+import fr.nereide.documentation.format.OfbizLabelDocumentationFormater
+import fr.nereide.documentation.format.OfbizServiceDocumentationFormatter
 import fr.nereide.dom.element.entitymodel.Entity
 import fr.nereide.dom.element.entitymodel.ViewEntity
 import fr.nereide.dom.element.service.Service
@@ -28,26 +31,36 @@ import fr.nereide.dom.element.uilabel.Property
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.MiscUtils
 
-import static fr.nereide.documentation.format.OfbizCommonDocumentationFormatter.*
-import static fr.nereide.documentation.format.OfbizServiceDocumentationFormatter.*
-import static fr.nereide.documentation.format.OfbizEntityDocumentationFormatter.*
-import static fr.nereide.documentation.format.OfbizViewDocumentationFormatter.*
-import static fr.nereide.documentation.format.OfbizLabelDocumentationFormater.*
-
+/**
+ * Documentation provider.
+ * This class will be reworked as soon as the test framework is up to date with the new implementation
+ * of documentation.
+ */
 class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
 
     static String getQuickNavigateInfo(PsiElement element, String elementName) {
         if (!element || !(element instanceof XmlTag)) return null
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(element.project)
-        return getTag(element) ? getQuickNavigateDocForElement(getTag(element), ph, elementName) : null
+        XmlTag tag = null
+        try {
+            tag = element as XmlTag
+        } catch (ClassCastException ignored) {
+            return ''
+        }
+        return tag ? getQuickNavigateDocForElement(tag, ph, elementName) : null
     }
 
-    static String generateDoc(PsiElement element, String elementName) {
+    static String generateDoc(PsiElement element, String elementName) { // codenarc-disable CyclomaticComplexity
         if (!element || !(element instanceof XmlTag)) return null
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(element.project)
-        XmlTag tag = getTag(element)
+        XmlTag tag = null
+        try {
+            tag = element as XmlTag
+        } catch (ClassCastException ignored) {
+            return ''
+        }
         if (!elementName || !tag) return null
-        switch (tag.getLocalName()) {
+        switch (tag.localName) {
             case 'service':
                 String serviceName = ph.getService(elementName)?.name?.value
                 return serviceName ? generateServiceDoc(serviceName, ph) : 'Service not found'
@@ -65,7 +78,7 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
     }
 
     static String getQuickNavigateDocForElement(XmlTag tag, OfbizProjectHelper ph, String elementName) {
-        switch (tag.getLocalName()) {
+        switch (tag.localName) {
             case 'entity':
                 return generateEntityQuickNavigateDoc(ph, elementName)
             case 'view-entity':
@@ -81,26 +94,25 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
     static String generateUiLabelDoc(String propertyName, OfbizProjectHelper ph) {
         Property property = ph.getProperty(propertyName)
         HtmlBuilder docBuilder = new HtmlBuilder()
-                .append(formatPropertyDefinition(property))
-                .append(formatPropertyText(property))
+                .append(OfbizLabelDocumentationFormater.formatPropertyDefinition(property))
+                .append(OfbizLabelDocumentationFormater.formatPropertyText(property))
         return docBuilder.toString()
     }
-
 
     static String generateServiceDoc(String serviceName, OfbizProjectHelper ph) {
         Service service = ph.getService(serviceName)
         HtmlBuilder docBuilder = new HtmlBuilder()
-                .append(formatServiceDefinition(service))
-                .append(formatServiceDescription(service))
-        if (service.getImplements().size() > 0) {
-            docBuilder.append(formatServiceImplements(service))
+                .append(OfbizServiceDocumentationFormatter.formatServiceDefinition(service))
+                .append(OfbizServiceDocumentationFormatter.formatServiceDescription(service))
+        if (service.implements.size() > 0) {
+            docBuilder.append(OfbizServiceDocumentationFormatter.formatServiceImplements(service))
                     .br()
         }
-        if (service.getGroup().getInvokes().size() > 0) {
-            docBuilder.append(formatServiceGroupInvoke(service))
+        if (service.group.invokes.size() > 0) {
+            docBuilder.append(OfbizServiceDocumentationFormatter.formatServiceGroupInvoke(service))
                     .br()
         }
-        docBuilder.append(formatServiceAttributes(service, ph))
+        docBuilder.append(OfbizServiceDocumentationFormatter.formatServiceAttributes(service, ph))
 
         return docBuilder.toString()
     }
@@ -108,15 +120,15 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
     static String generateEntityDoc(String entityName, OfbizProjectHelper ph) {
         Entity entity = ph.getEntity(entityName)
         HtmlBuilder docBuilder = new HtmlBuilder()
-                .append(formatEntityDefinition(entity))
-        if (entity.getFields().size() > 0) {
-            docBuilder.append(formatEntityFieldList(entityName, ph))
+                .append(OfbizCommonDocumentationFormatter.formatEntityOrViewDefinition(entity))
+        if (entity.fields.size() > 0) {
+            docBuilder.append(OfbizEntityDocumentationFormatter.formatEntityFieldList(entityName, ph))
         }
         if (ph.getExtendEntityListForEntity(entityName).size() > 0) {
-            docBuilder.append(formatExtendEntityListForEntity(entityName, ph))
+            docBuilder.append(OfbizEntityDocumentationFormatter.formatExtendEntityListForEntity(entityName, ph))
         }
-        if (entity.getRelations().size() > 0) {
-            docBuilder.append(formatEntityRelations(entityName, ph))
+        if (entity.relations.size() > 0) {
+            docBuilder.append(OfbizEntityDocumentationFormatter.formatEntityRelations(entityName, ph))
         }
         return docBuilder.toString()
     }
@@ -124,35 +136,28 @@ class OfbizCommonDocumentationProvider extends AbstractDocumentationProvider {
     static String generateViewDoc(String entityName, OfbizProjectHelper ph) {
         ViewEntity view = ph.getViewEntity(entityName)
         HtmlBuilder docBuilder = new HtmlBuilder()
-                .append(formatViewDefinition(view))
+                .append(OfbizCommonDocumentationFormatter.formatEntityOrViewDefinition(view))
         return docBuilder.toString()
-    }
-
-    static XmlTag getTag(PsiElement element) {
-        try {
-            return element as XmlTag
-        } catch (ClassCastException ignored) {
-            return null
-        }
     }
 
     static String generateEntityQuickNavigateDoc(OfbizProjectHelper ph, String elementName) {
         Entity entity = ph.getEntity(elementName)
-        return formatNavigateDocWithDomElement(entity, 'entity', elementName)
+        return OfbizCommonDocumentationFormatter.formatNavigateDocWithDomElement(entity, 'entity', elementName)
     }
 
     static String generateViewQuickNavigateDoc(OfbizProjectHelper ph, String elementName) {
         ViewEntity view = ph.getViewEntity(elementName)
-        return formatNavigateDocWithDomElement(view, 'view-entity', elementName)
+        return OfbizCommonDocumentationFormatter.formatNavigateDocWithDomElement(view, 'view-entity', elementName)
     }
 
     static String generateServiceQuickNavigateDoc(OfbizProjectHelper ph, String elementName) {
         Service service = ph.getService(elementName)
-        return formatNavigateDocWithDomElement(service, 'service', elementName)
+        return OfbizCommonDocumentationFormatter.formatNavigateDocWithDomElement(service, 'service', elementName)
     }
 
     static String generatePropertyQuickNavigateDoc(String elementName, OfbizProjectHelper ph) {
         Property property = ph.getProperty(elementName)
-        return formatNavigateDocWithDomElement(property, 'label', elementName)
+        return OfbizCommonDocumentationFormatter.formatNavigateDocWithDomElement(property, 'label', elementName)
     }
+
 }

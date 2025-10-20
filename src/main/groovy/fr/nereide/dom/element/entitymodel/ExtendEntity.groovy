@@ -6,11 +6,16 @@ import com.intellij.util.xml.NameValue
 import com.intellij.util.xml.SubTagList
 import com.intellij.util.xmlb.annotations.Attribute
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface ExtendEntity extends DomElement {
+
     @NameValue
-    @Attribute("entity-name")
+    @Attribute('entity-name')
     GenericAttributeValue<String> getEntityName()
 
-    @SubTagList("field")
+    @SubTagList('field')
     List<EntityField> getFields()
+
 }

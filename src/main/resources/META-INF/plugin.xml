@@ -50,7 +50,6 @@
         <!-- Documentation -->
         <documentationProvider implementation="fr.nereide.documentation.OfbizElementResolverForDocumentationProvider" order="first"/>
         <lang.documentationProvider language="XML" implementationClass="fr.nereide.documentation.OfbizXmlDocumentationProvider"/>
-        <lang.documentationProvider language="JAVA" implementationClass="fr.nereide.documentation.OfbizJavaDocumentationProvider"/>
 
         <!-- XML file description -->
         <dom.fileMetaData implementation="fr.nereide.dom.filedesc.ComponentFileDescription" rootTagName="ofbiz-component"/>

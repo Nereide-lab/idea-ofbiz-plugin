@@ -4,7 +4,12 @@ import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.GenericAttributeValue
 import com.intellij.util.xmlb.annotations.Attribute
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface AliasAllExclude extends DomElement {
-    @Attribute("field")
+
+    @Attribute('field')
     GenericAttributeValue<String> getField()
+
 }

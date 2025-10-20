@@ -8,7 +8,12 @@ import org.jetbrains.annotations.NotNull
 import org.jetbrains.annotations.Nullable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
+/**
+ * Class that completes the groovy patterns, and tries
+ * to get the type of a variable
+ */
 class FieldTypeCondition extends PatternCondition<PsiElement> {
+
     String[] expectedType
 
     FieldTypeCondition(@Nullable String debugMethodName, String[] expectedType) {
@@ -20,9 +25,10 @@ class FieldTypeCondition extends PatternCondition<PsiElement> {
     boolean accepts(@NotNull PsiElement element, ProcessingContext context) {
         boolean isMatch = false
         if (element instanceof GrReferenceExpression) {
-            PsiType myType = (element as GrReferenceExpression).getType()
-            isMatch = myType && expectedType.contains(myType.getCanonicalText())
+            PsiType myType = (element as GrReferenceExpression).type
+            isMatch = myType && expectedType.contains(myType.canonicalText)
         }
         return isMatch
     }
+
 }

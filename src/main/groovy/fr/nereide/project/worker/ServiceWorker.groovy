@@ -7,29 +7,31 @@ import fr.nereide.dom.element.service.ServiceAttribute
 import fr.nereide.dom.element.service.ServiceAutoAttribute
 import fr.nereide.project.OfbizProjectHelper
 
+/**
+ * Various helper methods for services
+ */
 class ServiceWorker {
+
     final static String SERVICE_ATTR_NAME = 'attribute-name'
     final static String SERVICE_ATTR_TYPE = 'attribute-type'
-    public static final ArrayList<String> IN_SERVICE_MODE = ['IN', 'INOUT']
+    public static final List<String> IN_SERVICE_MODE = ['IN', 'INOUT']
+    public static final String TRUE = 'true'
+    public static final String FALSE = 'false'
 
     static List<Map> getRequiredInAttributes(Service service, OfbizProjectHelper ph) {
-        return getServiceInAttributes(service, ph, 'false')
+        return getServiceInAttributes(service, ph, FALSE)
     }
 
     static List<Map> getOptionalInAttributes(Service service, OfbizProjectHelper ph) {
-        return getServiceInAttributes(service, ph, 'true')
+        return getServiceInAttributes(service, ph, TRUE)
     }
 
-    private static ArrayList<Map> getServiceInAttributes(Service service, OfbizProjectHelper ph, String optional) {
+    private static List<Map> getServiceInAttributes(Service service, OfbizProjectHelper ph, String optional) {
         List<ServiceAttribute> serviceAttributes = service.attributes
         List<Map> paramListToReturn = []
         // Vanilla params
-        paramListToReturn.addAll(serviceAttributes.stream()
-                .filter { optional == 'true' ? !isRequiredAttribute(it) : isRequiredAttribute(it) }
-                .filter { IN_SERVICE_MODE.contains(it.mode.value) }
-                .map { makeServiceAttrMap(it) }
-                .collect())
-        //EntityAuto
+        paramListToReturn.addAll(collectParamsInService(serviceAttributes, optional))
+        // EntityAuto
         String defaultEntityName = service.defaultEntityName.value
         if (defaultEntityName && service.engine.value == 'entity-auto') {
             Entity usedEntity = ph.getEntity(defaultEntityName)
@@ -38,11 +40,11 @@ class ServiceWorker {
             for (ServiceAutoAttribute saa : service.autoAttributes) {
                 if (saa.optional.value == optional) {
                     String includeType = saa.include.value
-                    List<EntityField> fieldsToAdd = entityFields.findAll { EntityField it ->
-                        includeType == 'pk' ? isEntityPk(pkFieldNames, it) : !isEntityPk(pkFieldNames, it)
+                    List<EntityField> fieldsToAdd = entityFields.findAll { EntityField field ->
+                        includeType == 'pk' ? isEntityPk(pkFieldNames, field) : !isEntityPk(pkFieldNames, field)
                     }
-                    fieldsToAdd.forEach {
-                        paramListToReturn.add(makeServiceAttrMap(it))
+                    fieldsToAdd.forEach { field ->
+                        paramListToReturn.add(makeServiceAttrMap(field))
                     }
                 }
             }
@@ -50,12 +52,20 @@ class ServiceWorker {
         return paramListToReturn
     }
 
+    private static List<LinkedHashMap<Object, Object>> collectParamsInService(List<ServiceAttribute> serviceAttributes,
+                                                                              String optional) {
+        return serviceAttributes.findAll { attr ->
+            optional == TRUE ? !isRequiredAttribute(attr) : isRequiredAttribute(attr) &&
+                    IN_SERVICE_MODE.contains(attr.mode.value)
+        }.collect { attr -> makeServiceAttrMap(attr) }
+    }
+
     private static boolean isEntityPk(List<String> pkFieldNames, EntityField it) {
         return pkFieldNames.contains(it.name.value)
     }
 
-    private static Collection getPkNamesList(Entity usedEntity) {
-        return usedEntity.primKeys.stream().map { it.field.value }.collect()
+    private static List<String> getPkNamesList(Entity usedEntity) {
+        return usedEntity.primKeys.collect { pk -> pk.field.value }
     }
 
     private static Map makeServiceAttrMap(ServiceAttribute it) {
@@ -73,7 +83,7 @@ class ServiceWorker {
     }
 
     private static boolean isRequiredAttribute(ServiceAttribute it) {
-        return !it.optional.value || it.optional.value == 'false'
+        return !it.optional.value || it.optional.value == FALSE
     }
 
 }

@@ -5,8 +5,13 @@ import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.GenericAttributeValue
 import com.intellij.util.xml.NameValue
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface Datasource extends DomElement {
+
     @NameValue
     @Attribute('name')
     GenericAttributeValue<String> getName()
+
 }

@@ -19,19 +19,25 @@ import fr.nereide.dom.file.MenuFile
 import fr.nereide.dom.file.ScreenFile
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.PluginActivator
+import fr.nereide.project.pattern.OfbizPluginConstants
 import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.utils.XmlUtils
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin completion system
+ */
 class RequestUriCompletionProvider extends CompletionProvider<CompletionParameters> {
 
+    // codenarc-disable UnusedMethodParameter
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
-        if (!PluginActivator.getInstance(parameters.position.project).isActive()) return
+        // codenarc-enable UnusedMethodParameter
+        if (PluginActivator.getInstance(parameters.position.project).inactive) return
         OfbizProjectHelper ph = OfbizProjectHelper.getInstance(parameters.position.project)
-        DomManager dm = ph.getDomManager()
-        PsiElement myElement = parameters.getPosition()
+        DomManager dm = ph.getDomManager() // codenarc-disable UnnecessaryGetter
+        PsiElement myElement = parameters.position
         XmlElement myAttrValue
         try {
             myAttrValue = myElement as XmlAttributeValue
@@ -39,41 +45,44 @@ class RequestUriCompletionProvider extends CompletionProvider<CompletionParamete
             myAttrValue = myElement as XmlElement
         }
         Class clazz
-        XmlFile myFile = myAttrValue.getContainingFile() as XmlFile
+        XmlFile myFile = myAttrValue.containingFile as XmlFile
         if (!myFile) return
-        if (dm.getFileElement(myFile, FormFile.class)) {
-            clazz = FormFile.class
-        } else if (dm.getFileElement(myFile, ScreenFile.class)) {
-            clazz = ScreenFile.class
-        } else if (dm.getFileElement(myFile, MenuFile.class)) {
-            clazz = MenuFile.class
-        } else if (dm.getFileElement(myFile, CompoundFile.class)) {
-            clazz = CompoundFile.class
+        if (dm.getFileElement(myFile, FormFile)) {
+            clazz = FormFile
+        } else if (dm.getFileElement(myFile, ScreenFile)) {
+            clazz = ScreenFile
+        } else if (dm.getFileElement(myFile, MenuFile)) {
+            clazz = MenuFile
+        } else if (dm.getFileElement(myFile, CompoundFile)) {
+            clazz = CompoundFile
         } else {
             return
         }
 
-        String targetType = XmlUtils.getParentTag(myAttrValue)?.getAttribute('target-type')?.getValue()
-        if (!targetType) targetType = XmlUtils.getParentTag(myAttrValue)?.getAttribute('url-mode')?.getValue()
+        String targetType = XmlUtils.getParentTag(myAttrValue)?.getAttribute('target-type')?.value ?:
+                XmlUtils.getParentTag(myAttrValue)?.getAttribute('url-mode')?.value
 
         if (targetType && targetType == 'inter-app') {
-            Map<String, List<String>> mountPointAndRequestMaps = ph.getAllMountPointsAndRequestMaps(myElement)
+            Map<String, List<String>> mountPointAndRequestMaps = ph.collectAllMountPointsAndRequestMaps()
             mountPointAndRequestMaps.forEach { String mountPoint, List uris ->
                 if (!uris) return
                 uris.forEach { uri ->
                     String lookupValue = "$mountPoint/control/$uri"
                     LookupElement lookupElement = LookupElementBuilder.create(lookupValue)
-                    result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
+                    result.addElement(PrioritizedLookupElement.withPriority(lookupElement,
+                            OfbizPluginConstants.DEFAULT_COMPLETION_PRIORITY))
                 }
             }
         } else {
             String componentName = MiscUtils.getComponentName(myAttrValue, clazz)
             Set<RequestMap> uris = ph.getComponentRequestMaps(componentName)
             uris.each { RequestMap req ->
-                LookupElement lookupElement = LookupElementBuilder.create(req.getUri().getValue())
+                LookupElement lookupElement = LookupElementBuilder.create(req.uri.value)
                         .withTailText(" Component:${MiscUtils.getComponentName(req)}" as String, true)
-                result.addElement(PrioritizedLookupElement.withPriority(lookupElement, 100))
+                result.addElement(PrioritizedLookupElement.withPriority(lookupElement,
+                        OfbizPluginConstants.DEFAULT_COMPLETION_PRIORITY))
             }
         }
     }
+
 }

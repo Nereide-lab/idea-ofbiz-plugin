@@ -9,40 +9,44 @@ import com.intellij.util.xml.SubTag
 import com.intellij.util.xml.SubTagList
 import com.intellij.util.xmlb.annotations.Attribute
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface Service extends DomElement {
 
     @NameValue
     @Stubbed
-    @Attribute("name")
+    @Attribute('name')
     GenericAttributeValue<String> getName()
 
-    @Attribute("engine")
+    @Attribute('engine')
     GenericAttributeValue<String> getEngine()
 
-    @Attribute("location")
+    @Attribute('location')
     GenericAttributeValue<String> getLocation()
 
-    @Attribute("invoke")
+    @Attribute('invoke')
     GenericAttributeValue<String> getInvoke()
 
-    @Attribute("auth")
+    @Attribute('auth')
     GenericAttributeValue<String> getAuth()
 
-    @Attribute("default-entity-name")
+    @Attribute('default-entity-name')
     GenericAttributeValue<String> getDefaultEntityName()
 
-    @SubTagList("implements")
+    @SubTagList('implements')
     List<ServiceImplements> getImplements()
 
-    @SubTag("description")
+    @SubTag('description')
     GenericDomValue<String> getDescription()
 
-    @SubTagList("attribute")
+    @SubTagList('attribute')
     List<ServiceAttribute> getAttributes()
 
-    @SubTagList("auto-attributes")
+    @SubTagList('auto-attributes')
     List<ServiceAutoAttribute> getAutoAttributes()
 
-    @SubTag("group")
+    @SubTag('group')
     ServiceGroup getGroup()
+
 }

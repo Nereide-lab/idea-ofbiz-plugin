@@ -4,12 +4,17 @@ import com.intellij.codeInsight.completion.CompletionContributor
 import fr.nereide.completion.provider.common.EntityOrViewNameCompletionProvider
 import fr.nereide.completion.provider.common.ServiceNameCompletionProvider
 
-class OfbizBaseCompletionContributor extends CompletionContributor {
+/**
+ * Part of the OFBiz plugin Completion system
+ */
+class BaseCompletionContributor extends CompletionContributor {
+
     EntityOrViewNameCompletionProvider entityOrViewNameCompletionProvider
     ServiceNameCompletionProvider serviceNameCompletionProvider
 
-    OfbizBaseCompletionContributor() {
+    BaseCompletionContributor() {
         entityOrViewNameCompletionProvider = new EntityOrViewNameCompletionProvider()
         serviceNameCompletionProvider = new ServiceNameCompletionProvider()
     }
+
 }

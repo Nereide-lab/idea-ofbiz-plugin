@@ -5,26 +5,31 @@ import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.GenericAttributeValue
 import com.intellij.util.xml.NameValue
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface Webapp extends DomElement {
+
     @NameValue
-    @Attribute("name")
+    @Attribute('name')
     GenericAttributeValue<String> getName()
 
-    @Attribute("title")
+    @Attribute('title')
     GenericAttributeValue<String> getTitle()
 
-    @Attribute("server")
+    @Attribute('server')
     GenericAttributeValue<String> getServer()
 
-    @Attribute("location")
+    @Attribute('location')
     GenericAttributeValue<String> getLocation()
 
-    @Attribute("base-permission")
+    @Attribute('base-permission')
     GenericAttributeValue<String> getBasePermission()
 
-    @Attribute("app-shortcut-screen")
+    @Attribute('app-shortcut-screen')
     GenericAttributeValue<String> getAppShortcutScreen()
 
-    @Attribute("mount-point")
+    @Attribute('mount-point')
     GenericAttributeValue<String> getMountPoint()
+
 }

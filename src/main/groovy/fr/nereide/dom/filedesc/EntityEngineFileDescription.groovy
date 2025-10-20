@@ -4,11 +4,15 @@ import com.intellij.util.xml.DomFileDescription
 import com.intellij.util.xml.DomFileElement
 import fr.nereide.dom.file.EntityEngineFile
 
+/**
+ * Part of the OFBiz DOM description
+ */
 class EntityEngineFileDescription<S extends DomFileElement> extends DomFileDescription {
 
-    private static final String rootTagName = "entity-config"
+    private static final String ROOT_TAG = 'entity-config'
 
     EntityEngineFileDescription() {
-        super(EntityEngineFile, rootTagName)
+        super(EntityEngineFile, ROOT_TAG)
     }
+
 }

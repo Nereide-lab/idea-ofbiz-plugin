@@ -14,10 +14,8 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.reference.xml.provider
 
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
@@ -27,13 +25,17 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.ViewMapReference
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Part of the OFBiz plugin reference and navigation system
+ */
 class ViewMapReferenceProvider extends PsiReferenceProvider {
-    ViewMapReferenceProvider() {}
 
-    private static final Logger LOG = Logger.getInstance(ViewMapReferenceProvider.class)
+    /* codenarc-disable UnusedMethodParameter */
 
+    @NotNull
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
-        if (!PluginActivator.getInstance(element.project).isActive()) return []
+        /* codenarc-enable UnusedMethodParameter */
+        if (PluginActivator.getInstance(element.project).inactive) return []
         if (element instanceof XmlAttributeValue) {
             ViewMapReference controller = new ViewMapReference((XmlAttributeValue) element, true)
             PsiReference[] reference = (PsiReference) controller
@@ -41,4 +43,5 @@ class ViewMapReferenceProvider extends PsiReferenceProvider {
         }
         return PsiReference.EMPTY_ARRAY
     }
+
 }

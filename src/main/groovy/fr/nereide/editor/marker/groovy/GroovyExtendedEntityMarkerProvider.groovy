@@ -5,9 +5,12 @@ import com.intellij.psi.PsiElement
 import fr.nereide.editor.marker.common.CommonEntityExtendMarkerProvider
 import fr.nereide.project.pattern.OfbizGroovyPatterns
 
+/**
+ * Groovy specific eca marker class
+ */
 class GroovyExtendedEntityMarkerProvider extends CommonEntityExtendMarkerProvider {
 
-    PsiElementPattern getPattern() { return OfbizGroovyPatterns.ENTITY_CALL }
+    final PsiElementPattern pattern = OfbizGroovyPatterns.ENTITY_CALL
+    final Class leafElementType = PsiElement
 
-    Class getLeafElementType() { return PsiElement.class }
 }

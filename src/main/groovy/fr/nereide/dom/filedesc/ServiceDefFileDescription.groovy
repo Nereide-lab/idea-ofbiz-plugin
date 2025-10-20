@@ -14,7 +14,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package fr.nereide.dom.filedesc
 
 import com.intellij.util.xml.DomElement
@@ -25,15 +24,20 @@ import org.jetbrains.annotations.Nullable
 
 import javax.swing.Icon
 
+/**
+ * Part of the OFBiz DOM description
+ */
 class ServiceDefFileDescription<S extends DomElement> extends DomFileDescription {
-    private static final String rootTagName = "services"
+
+    private static final String ROOT_TAG = 'services'
 
     ServiceDefFileDescription() {
-        super(ServiceFile.class, rootTagName)
+        super(ServiceFile, ROOT_TAG)
     }
 
     @Nullable
-    Icon getFileIcon(int flags) {
+    Icon getFileIcon(int flags) { // codenarc-disable UnusedMethodParameter
         return PluginIcons.SERVICE_FILE_ICON
     }
+
 }

@@ -7,12 +7,17 @@ import com.intellij.util.xmlb.annotations.Attribute
 
 import javax.xml.bind.annotation.XmlValue
 
+/**
+ * Part of the OFBiz DOM description
+ */
 interface EntityField extends DomElement {
+
     @NameValue
     @XmlValue
-    @Attribute("name")
+    @Attribute('name')
     GenericAttributeValue<String> getName()
 
-    @Attribute("type")
+    @Attribute('type')
     GenericAttributeValue<String> getType()
+
 }

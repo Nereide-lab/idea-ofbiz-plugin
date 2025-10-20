@@ -5,9 +5,12 @@ import com.intellij.psi.xml.XmlToken
 import fr.nereide.editor.marker.common.CommonEntityExtendMarkerProvider
 import fr.nereide.project.pattern.OfbizXmlPatterns
 
+/**
+ * Groovy specific eca marker class
+ */
 class XmlExtendedEntityMarkerProvider extends CommonEntityExtendMarkerProvider {
 
-    PsiElementPattern getPattern() { return OfbizXmlPatterns.ENTITY_OR_VIEW_CALL }
+    final PsiElementPattern pattern = OfbizXmlPatterns.ENTITY_OR_VIEW_CALL
+    final Class leafElementType = XmlToken
 
-    Class getLeafElementType() { return XmlToken.class }
 }

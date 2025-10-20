@@ -1,5 +1,8 @@
 package fr.nereide.inspection.quickfix.xml
 
+import static com.intellij.openapi.application.ApplicationManager.getApplication
+import static fr.nereide.editor.OfbizEditorBundle.message
+
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.openapi.project.Project
@@ -13,25 +16,19 @@ import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
-import static com.intellij.openapi.application.ApplicationManager.getApplication
-import static fr.nereide.editor.OfbizEditorBundle.*
-
+/**
+ * Quick-fix that attempts to create a file after a user dialog
+ */
 class CreateFileAtLocationFix implements LocalQuickFix {
 
-    @Override
-    String getName() {
-        return InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix.createfile')
-    }
+    final String name = InspectionBundle.message('inspection.location.target.file.not.found.use.quickfix.createfile')
 
-    @Override
-    String getFamilyName() {
-        return getName()
-    }
+    final String familyName = name
 
     @Override
     void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        XmlAttribute attr = descriptor.getPsiElement() as XmlAttribute
-        String val = attr.getValueElement().getValue()
+        XmlAttribute attr = descriptor.psiElement as XmlAttribute
+        String val = attr.valueElement.value
         List<String> dirsInPath = FileHandlingUtils.splitPathToList(val)
         PsiDirectory compoDir = OfbizProjectHelper.getInstance(project).getComponentDir(dirsInPath.first())
         if (!compoDir) return
@@ -54,18 +51,19 @@ class CreateFileAtLocationFix implements LocalQuickFix {
         }
 
         PsiFile fileToAdd
-        if (getApplication().isUnitTestMode()) {
-            fileToAdd = FileHandlingUtils.createFileFromTemplate(project, null, attr, fileName, current)
+        if (application.unitTestMode) {
+            fileToAdd = FileHandlingUtils.generateFileFromTemplate(project, null, attr, fileName, current)
         } else {
             OfbizSimpleListDialog dial = new OfbizDialogBuilder(project)
                     .from(['Blank', 'Screen', 'Menu', 'Form', 'Controller'])
-                    .title(message("editor.action.create.ofbiz.file.title"))
-                    .text(message("editor.action.create.ofbiz.file.select"))
+                    .title(message('editor.action.create.ofbiz.file.title'))
+                    .text(message('editor.action.create.ofbiz.file.select'))
                     .get()
             if (!dial.showAndGet()) return
-            String selected = dial.getComboBoxValueOrKey()
-            fileToAdd = FileHandlingUtils.createFileFromTemplate(project, selected, attr, fileName, current)
+            String selected = dial.comboBoxValueOrKey
+            fileToAdd = FileHandlingUtils.generateFileFromTemplate(project, selected, attr, fileName, current)
         }
         if (fileToAdd) fileToAdd.navigate(true)
     }
+
 }

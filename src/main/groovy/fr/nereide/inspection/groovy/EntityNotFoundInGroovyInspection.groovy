@@ -1,5 +1,7 @@
 package fr.nereide.inspection.groovy
 
+import static com.intellij.codeInspection.ProblemHighlightType.WARNING
+import static fr.nereide.inspection.InspectionBundle.message
 
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.PluginActivator
@@ -9,10 +11,11 @@ import org.jetbrains.plugins.groovy.codeInspection.BaseInspection
 import org.jetbrains.plugins.groovy.codeInspection.BaseInspectionVisitor
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
 
-import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static fr.nereide.inspection.InspectionBundle.message
-
+/**
+ * Inspection for entities or views not found
+ */
 class EntityNotFoundInGroovyInspection extends BaseInspection {
+
     @Override
     boolean isEnabledByDefault() {
         return true
@@ -21,9 +24,10 @@ class EntityNotFoundInGroovyInspection extends BaseInspection {
     @Override
     protected BaseInspectionVisitor buildVisitor() {
         return new BaseInspectionVisitor() {
+
             @Override
             void visitLiteralExpression(@NotNull GrLiteral element) {
-                if (!PluginActivator.getInstance(element.project).isActive() ||
+                if (PluginActivator.getInstance(element.project).inactive ||
                         !(OfbizGroovyPatterns.ENTITY_CALL.accepts(element))) return
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(element.project)
                 if (!(ph.entityOrViewExists(element.value))) {
@@ -34,6 +38,8 @@ class EntityNotFoundInGroovyInspection extends BaseInspection {
                             WARNING)
                 }
             }
+
         }
     }
+
 }

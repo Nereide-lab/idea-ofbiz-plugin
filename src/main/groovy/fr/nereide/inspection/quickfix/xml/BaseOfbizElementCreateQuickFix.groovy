@@ -7,28 +7,33 @@ import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Abstract class, base for elements creation QuickFix
+ */
 abstract class BaseOfbizElementCreateQuickFix implements LocalQuickFix {
+
     XmlFile myFile
     String myElementName
 
-    BaseOfbizElementCreateQuickFix(XmlFile file, String formName) {
+    protected BaseOfbizElementCreateQuickFix(XmlFile file, String formName) {
         myFile = file
         myElementName = formName
     }
 
     @Override
     String getFamilyName() {
-        return getName()
+        return name
     }
 
     @Override
     void applyFix(@NotNull Project project, @NotNull ProblemDescriptor descriptor) {
-        XmlTag rootTag = myFile.getRootTag()
-        XmlTag newTag = rootTag.createChildTag(getTagType(), '', '', false)
+        XmlTag rootTag = myFile.rootTag
+        XmlTag newTag = rootTag.createChildTag(tagType, '', '', false)
         newTag.setAttribute('name', myElementName)
         rootTag.addSubTag(newTag, false)
         myFile.navigate(true)
     }
 
-    String getTagType() { return null }
+    abstract String getTagType()
+
 }

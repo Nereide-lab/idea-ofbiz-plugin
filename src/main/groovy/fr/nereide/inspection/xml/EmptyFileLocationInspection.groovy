@@ -15,6 +15,9 @@ import fr.nereide.project.PluginActivator
 import fr.nereide.project.utils.FileHandlingUtils
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Inspection that checks files references to a non existing file
+ */
 class EmptyFileLocationInspection extends OfbizBaseInspection {
 
     private final AdjustFileLocationPathFix myChangePathQuickFix = new AdjustFileLocationPathFix()
@@ -24,18 +27,19 @@ class EmptyFileLocationInspection extends OfbizBaseInspection {
     @NotNull
     PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
         return new XmlElementVisitor() {
+
             @Override
             void visitXmlAttribute(@NotNull XmlAttribute attribute) {
-                if (!PluginActivator.getInstance(attribute.project).isActive()) return
-                if (!attribute.getName() || !(['path', 'location'].contains(attribute.getName()))) {
+                if (PluginActivator.getInstance(attribute.project).inactive) return
+                if (!attribute.name || !(['path', 'location'].contains(attribute.name))) {
                     return
                 }
-                String attrValue = attribute.getValue()
+                String attrValue = attribute.value
                 if (!attrValue || (!attrValue.startsWith('component://')) || (attrValue.contains('${'))) {
                     return
                 }
 
-                //Actual control
+                // Actual control
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(attribute.originalElement.project)
                 if (!ph.getPsiFileAtLocation(attrValue)) {
                     holder.registerProblem(
@@ -54,4 +58,5 @@ class EmptyFileLocationInspection extends OfbizBaseInspection {
     private static PsiDirectory doesComponentExists(OfbizProjectHelper ph, String attrValue) {
         return ph.getComponentDir(FileHandlingUtils.splitPathToList(attrValue)[0])
     }
+
 }
