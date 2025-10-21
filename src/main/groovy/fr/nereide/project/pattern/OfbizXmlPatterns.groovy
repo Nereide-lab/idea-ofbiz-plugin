@@ -46,12 +46,16 @@ class OfbizXmlPatterns {
     //============================================
     //       PATTERNS
     //============================================
-    public static final XmlAttributeValuePattern URI_CALL = xmlAttributeValue().withParent(
-            targetAttr().withParent(xmlTag().andOr(
-                    formTag(), formTagWithFormNs(),
-                    linkTag(), linkTagInFormNs(), linkTagInScreenNs(), linkTagInMenuNs(),
-                    hyperlinkTag(), hyperlinkTagInFormNs()
-            ))
+    public static final XmlAttributeValuePattern URI_CALL = xmlAttributeValue().andOr(
+            xmlAttributeValue().withParent(
+                    targetAttr().withParent(xmlTag().andOr(
+                            formTag(), formTagWithFormNs(),
+                            linkTag(), linkTagInFormNs(), linkTagInScreenNs(), linkTagInMenuNs(),
+                            hyperlinkTag(), hyperlinkTagInFormNs()
+                    ))),
+            xmlAttributeValue().withParent(targetFormNameAttr().withParent(xmlTag().andOr(
+                    lookupTag(), lookupTagInFormNs())
+            )),
     )
 
     public static final XmlAttributeValuePattern RESPONSE_CALL = xmlAttributeValue().andOr(
@@ -233,6 +237,8 @@ class OfbizXmlPatterns {
 
     static XmlAttributePattern targetAttr() { return makeAttrPattern('target') }
 
+    static XmlAttributePattern targetFormNameAttr() { return makeAttrPattern('target-form-name') }
+
     static XmlAttributePattern nameAttr() { return makeAttrPattern(NAME) }
 
     static XmlAttributePattern invokeAttr() { return makeAttrPattern(INVOKE) }
@@ -301,6 +307,12 @@ class OfbizXmlPatterns {
     static Capture includeFormTag() { return makeTagPattern('include-form') }
 
     static Capture formTag() { return makeTagPattern(FORM) }
+
+    static Capture lookupTag() { return makeTagPattern('lookup') }
+
+    static Capture lookupTagInFormNs() {
+        return makeTagPattern("${FORM_NS_PREFIX}lookup").withNamespace(FORM_NS_URL)
+    }
 
     static Capture responseTag() { return makeTagPattern('response') }
 
