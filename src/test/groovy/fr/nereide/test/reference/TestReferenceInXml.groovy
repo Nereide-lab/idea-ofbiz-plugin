@@ -79,6 +79,10 @@ class TestReferenceInXml extends BaseReferenceTestCase {
         doTest(RequestMapReference.class, 'fooRequest')
     }
 
+    void testRequestMapReferenceFromLookup() {
+        doTest(RequestMapReference.class, 'fooRequest')
+    }
+
     void testViewMapReferenceFromRequestMap() {
         doTest(ViewMapReference.class, 'MyHome')
     }

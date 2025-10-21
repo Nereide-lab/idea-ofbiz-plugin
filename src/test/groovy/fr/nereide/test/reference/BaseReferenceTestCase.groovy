@@ -91,15 +91,15 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
             refValueName = (resolve as PsiMethod).getName()
         } else {
             DomManager dm = DomManager.getDomManager(myFixture.getProject())
-            DomElement foo = dm.getDomElement(resolve)
+            DomElement element = dm.getDomElement(resolve)
             if (ref instanceof UiLabelReference) {
-                refValueName = foo.getKey()
+                refValueName = element.getKey()
             } else if (ref instanceof EntityReference) {
-                refValueName = foo.getEntityName()
+                refValueName = element.getEntityName()
             } else if (ref instanceof RequestMapReference) {
-                refValueName = foo.getUri()
+                refValueName = element.getUri()
             } else { // default
-                refValueName = foo.getName()
+                refValueName = element.getName()
             }
         }
         assert refValueName == expectedRefValueName
