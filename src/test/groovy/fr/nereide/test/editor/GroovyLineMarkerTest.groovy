@@ -12,7 +12,7 @@ class GroovyLineMarkerTest extends BaseLineMarkerTest {
 
     String getExtension() { return 'groovy' }
 
-    Class getElementTypeToFind() { return PsiElement.class }
+    Class getElementTypeToFind() { return PsiElement }
 
     void testServiceEcaMarkerInGroovy() {
         doTest(new GroovyServiceEcaEcaMarkerProvider(), '1 ECA(s) present on service')

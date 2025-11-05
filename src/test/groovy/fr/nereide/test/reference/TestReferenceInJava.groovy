@@ -33,51 +33,51 @@ class TestReferenceInJava extends BaseReferenceTestCase {
     protected String getExtension() { return 'java' }
 
     void testEntityReferenceWithFindMethod() {
-        doTest(EntityReference.class, 'HyruleCastle')
+        doTest(EntityReference, 'HyruleCastle')
     }
 
     void testEntityReferenceWithFindOneMethod() {
-        doTest(EntityReference.class, 'PiltoverData')
+        doTest(EntityReference, 'PiltoverData')
     }
 
     void testEntityReferenceWithFindListMethod() {
-        doTest(EntityReference.class, 'Enderman')
+        doTest(EntityReference, 'Enderman')
     }
 
     void testEntityReferenceWithFindAllMethod() {
-        doTest(EntityReference.class, 'TwoFlowers')
+        doTest(EntityReference, 'TwoFlowers')
     }
 
     void testEntityReferenceWithAddMemberEntityMethod() {
-        doTest(EntityReference.class, 'WeWereOnABreak')
+        doTest(EntityReference, 'WeWereOnABreak')
     }
 
     void testEntityReferenceWithFromMethod() {
-        doTest(EntityReference.class, 'Rick')
+        doTest(EntityReference, 'Rick')
     }
 
     void testEntityReferenceWithMakeValueMethod() {
-        doTest(EntityReference.class, 'PickleRick')
+        doTest(EntityReference, 'PickleRick')
     }
 
     void testServiceReferenceWithRunSync() {
-        doTest(ServiceReference.class, 'pivot')
+        doTest(ServiceReference, 'pivot')
     }
 
     void testServiceReferenceWithMakeValidContext() {
-        doTest(ServiceReference.class, 'pivot')
+        doTest(ServiceReference, 'pivot')
     }
 
     void testServiceReferenceWithSchedule() {
-        doTest(ServiceReference.class, 'pivot')
+        doTest(ServiceReference, 'pivot')
     }
 
     void testEntityReferenceWithGetRelatedMethodWithoutTitleOnTargetEntity() {
-        doTest(EntityReference.class, 'Matata2')
+        doTest(EntityReference, 'Matata2')
     }
 
     void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
-        doTest(EntityReference.class, 'Matata3')
+        doTest(EntityReference, 'Matata3')
     }
 
 }

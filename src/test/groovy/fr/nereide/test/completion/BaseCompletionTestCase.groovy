@@ -56,14 +56,14 @@ class BaseCompletionTestCase extends BaseOfbizPluginTestCase {
     }
 
     protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups, boolean move) {
-        String file = "${this.getTestName(false)}.${getFileType()}"
-        if (move && getDestination()) {
-            myFixture.moveFile(file, getDestination())
-            file = "${getDestination()}/$file"
+        String file = "${this.getTestName(false)}.${fileType}"
+        if (move && destination) {
+            myFixture.moveFile(file, destination)
+            file = "${destination}/$file"
         }
         myFixture.configureByFile(file)
         myFixture.complete(CompletionType.BASIC)
-        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
+        List<String> lookupElementStrings = myFixture.lookupElementStrings
         if (expectedLookups) {
             assertContainsElements(lookupElementStrings, expectedLookups)
             if (notExpectedLookups) {

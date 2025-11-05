@@ -15,7 +15,7 @@ class TestJavaScriptInjection extends BaseInjectionTestCase {
     }
 
 //    protected doTest() {
-//        super.doTest(JavascriptLanguage.class)
+//        super.doTest(JavascriptLanguage)
 //    }
 //
 //    void testActionAttrInForm() {

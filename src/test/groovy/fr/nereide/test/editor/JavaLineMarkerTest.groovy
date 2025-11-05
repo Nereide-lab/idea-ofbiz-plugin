@@ -12,7 +12,7 @@ class JavaLineMarkerTest extends BaseLineMarkerTest {
 
     String getExtension() { return 'java' }
 
-    Class getElementTypeToFind() { return PsiLiteralExpression.class }
+    Class getElementTypeToFind() { return PsiLiteralExpression }
 
     void testServiceEcaMarkerInJava() {
         doTest(new JavaServiceEcaEcaMarkerProvider(), '1 ECA(s) present on service')

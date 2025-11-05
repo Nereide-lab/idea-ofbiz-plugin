@@ -12,7 +12,7 @@ class XmlLineMarkerTests extends BaseLineMarkerTest {
 
     String getExtension() { return 'xml' }
 
-    Class getElementTypeToFind() { return XmlAttributeValue.class }
+    Class getElementTypeToFind() { return XmlAttributeValue }
 
     void testServiceEcaMarkerInXml() {
         doTest(new XmlServiceEcaEcaMarkerProvider(), '1 ECA(s) present on service')

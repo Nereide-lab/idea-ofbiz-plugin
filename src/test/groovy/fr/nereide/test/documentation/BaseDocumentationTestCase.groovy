@@ -43,7 +43,7 @@ class BaseDocumentationTestCase extends BaseOfbizPluginTestCase {
         final String generatedDoc = DocumentationManager.getProviderFromElement(element)
                 .getQuickNavigateInfo(element, originalElement)
         assertNotNull(generatedDoc)
-        assertSameLinesWithFile(getExpectedFileLocation(), generatedDoc)
+        assertSameLinesWithFile(expectedFileLocation, generatedDoc)
     }
 
     static void assertNotNullHoverDoc(PsiElement element, XmlAttributeValue originalElement) {
@@ -65,7 +65,7 @@ class BaseDocumentationTestCase extends BaseOfbizPluginTestCase {
     }
 
     String getExpectedFileLocation() {
-        return "${getTestDataPath()}/reference/${getTestName(false)}.html.expected"
+        return "${testDataPath}/reference/${getTestName(false)}.html.expected"
     }
 
 }

@@ -31,12 +31,13 @@ abstract class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
     }
 
     protected void doTest(LineMarkerProvider lineMarker, String tooltip) {
-        String file = "${this.getExtension()}/${this.getTestName(false)}.${this.getExtension()}"
+        String file = "${this.extension}/${this.getTestName(false)}.${this.extension}"
         myFixture.configureByFile(file)
-        PsiElement element = myFixture.findElementByText("${this.getTestName(false)}$ELEMENT_SUFFIX", this.getElementTypeToFind())
+        PsiElement element = myFixture.findElementByText("${this.getTestName(false)}$ELEMENT_SUFFIX",
+                this.elementTypeToFind)
         LineMarkerInfo lineMarkerInfo = lineMarker.getLineMarkerInfo(element)
         assertNotNull(lineMarkerInfo)
-        assertEquals(tooltip, lineMarkerInfo.getLineMarkerTooltip())
+        assertEquals(tooltip, lineMarkerInfo.lineMarkerTooltip)
     }
 
 }

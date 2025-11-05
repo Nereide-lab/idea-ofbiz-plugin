@@ -93,7 +93,9 @@ class TestCompletionInGroovy extends BaseCompletionTestCase {
 
     /**
      * <pre>
-     * {@code GenericValue myVal = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryFirst()
+     * {@code GenericValue myVal = EntityQuery.use(delegator).from('RossAndSister')
+     *                                                      .where('foo', 'bar')
+     *                                                      .queryFirst()
      * myVal.get('<caret>')
      *} </pre>
      */
@@ -105,7 +107,10 @@ class TestCompletionInGroovy extends BaseCompletionTestCase {
     /**
      * Compiled
      * <pre>
-     * {@code List<GenericValue> myVals = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryList()
+     * {@code List<GenericValue> myVals = EntityQuery.use(delegator)
+     *                      .from('RossAndSister')
+     *                      .where('foo', 'bar')
+     *                      .queryList()
      * for (GenericValue myVal : myVals) { myVal.get('<caret>') }
      *} </pre>
      */
@@ -117,7 +122,9 @@ class TestCompletionInGroovy extends BaseCompletionTestCase {
     /**
      * Script
      * <pre>
-     * {@code List<GenericValue> myVals = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryList()
+     * {@code List<GenericValue> myVals = EntityQuery.use(delegator).from('RossAndSister')
+     *                                                              .where('foo', 'bar')
+     *                                                              .queryList()
      * for (GenericValue myVal : myVals) { myVal.get('<caret>') }
      *} </pre>
      */

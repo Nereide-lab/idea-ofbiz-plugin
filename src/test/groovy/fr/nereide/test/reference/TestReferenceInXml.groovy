@@ -54,79 +54,79 @@ class TestReferenceInXml extends BaseReferenceTestCase {
 //    }
 
     void testScreenInCurrentFileReference() {
-        doTest(ScreenReference.class, 'FindFacility')
+        doTest(ScreenReference, 'FindFacility')
     }
 
     void testScreenInDistantFileReference() {
-        doTest(ScreenReference.class, 'viewprofile')
+        doTest(ScreenReference, 'viewprofile')
     }
 
     void testScreenReferenceFromViewMap() {
-        doTest(ScreenReference.class, 'viewprofile')
+        doTest(ScreenReference, 'viewprofile')
     }
 
     void testFormReferenceFromScreen() {
-        doTest(FormReference.class, 'FooForm')
+        doTest(FormReference, 'FooForm')
     }
 
     void testFileReferenceFromScreen() {
-        doTest(FileReference.class, 'FooScript')
+        doTest(FileReference, 'FooScript')
     }
 
     void testFormReferenceFromForm() {
-        doTest(FormReference.class, 'FooForm')
+        doTest(FormReference, 'FooForm')
     }
 
     void testRequestMapReferenceFromForm() {
-        doTest(RequestMapReference.class, 'fooRequest')
+        doTest(RequestMapReference, 'fooRequest')
     }
 
     void testRequestMapReferenceFromLookup() {
-        doTest(RequestMapReference.class, 'fooRequest')
+        doTest(RequestMapReference, 'fooRequest')
     }
 
     void testViewMapReferenceFromRequestMap() {
-        doTest(ViewMapReference.class, 'MyHome')
+        doTest(ViewMapReference, 'MyHome')
     }
 
     void testMenuReferenceFromScreen() {
-        doTest(MenuReference.class, 'FooMenu')
+        doTest(MenuReference, 'FooMenu')
     }
 
     void testGroovyMethodReferenceFromServiceDef() {
-        doTest(GroovyServiceDefReference.class, 'fooGroovyService')
+        doTest(GroovyServiceDefReference, 'fooGroovyService')
     }
 
     void testJavaMethodReferenceFromServiceDef() {
-        doTest(JavaMethodReference.class, 'createNote')
+        doTest(JavaMethodReference, 'createNote')
     }
 
     void testServiceDefReferenceFromServiceGroup() {
-        doTest(ServiceReference.class, 'SmileSmileSmile')
+        doTest(ServiceReference, 'SmileSmileSmile')
     }
 
     void testDataSourceReferenceFromDelegator() {
-        doTest(DatasourceReference.class, 'localderby')
+        doTest(DatasourceReference, 'localderby')
     }
 
     void testServiceDefReferenceWithMultipleImplementations() {
-        doTest(ServiceReference.class, 'MidnightInMe', true)
+        doTest(ServiceReference, 'MidnightInMe', true)
     }
 
     void testUiLabelPropertyInTitle() {
-        doTest(UiLabelReference.class, 'Baptiste')
+        doTest(UiLabelReference, 'Baptiste')
     }
 
     void testUiLabelPropertyInTitleWithOtherString() {
-        doTest(UiLabelReference.class, 'PasBaptiste')
+        doTest(UiLabelReference, 'PasBaptiste')
     }
 
     void testServiceReferenceInXmlDataFile() {
-        doTest(ServiceReference.class, 'Croissance3000Service')
+        doTest(ServiceReference, 'Croissance3000Service')
     }
 
     void testServiceEngineReferenceTest() {
-        doTest(EngineReference.class, 'entity-auto')
+        doTest(EngineReference, 'entity-auto')
     }
 
 }

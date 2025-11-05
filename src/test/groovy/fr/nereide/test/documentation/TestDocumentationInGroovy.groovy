@@ -11,8 +11,8 @@ class TestDocumentationInGroovy extends BaseDocumentationTestCase {
 
     void testHoverDocOnServiceRunCallInGroovy() {
         myFixture.configureByFile('groovy/HoverDocOnServiceRunCallInGroovy.groovy')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText('HelloWorld', GrLiteral.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('HelloWorld', GrLiteral)
 
         final String generatedDoc = DocumentationManager.getProviderFromElement(element)
                 .generateHoverDoc(element, originalElement)
@@ -21,8 +21,8 @@ class TestDocumentationInGroovy extends BaseDocumentationTestCase {
 
     void testHoverDocOnServiceRunSyncCallInGroovy() {
         myFixture.configureByFile('groovy/HoverDocOnServiceRunSyncCallInGroovy.groovy')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText('HelloWorld', GrLiteral.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('HelloWorld', GrLiteral)
 
         final String generatedDoc = DocumentationManager.getProviderFromElement(element)
                 .generateHoverDoc(element, originalElement)
@@ -31,8 +31,8 @@ class TestDocumentationInGroovy extends BaseDocumentationTestCase {
 
     void testHoverDocOnEntityInGroovy() {
         myFixture.configureByFile('groovy/HoverDocOnEntityInGroovy.groovy')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText('Vi', GrLiteral.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('Vi', GrLiteral)
 
         final String generatedDoc = DocumentationManager.getProviderFromElement(element)
                 .generateHoverDoc(element, originalElement)
@@ -41,8 +41,8 @@ class TestDocumentationInGroovy extends BaseDocumentationTestCase {
 
     void testHoverDocOnViewInGroovy() {
         myFixture.configureByFile('groovy/HoverDocOnViewInGroovy.groovy')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText('RandomView', GrLiteral.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('RandomView', GrLiteral)
 
         final String generatedDoc = DocumentationManager.getProviderFromElement(element)
                 .generateHoverDoc(element, originalElement)

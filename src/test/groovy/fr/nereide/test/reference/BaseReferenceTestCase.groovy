@@ -55,9 +55,9 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
     protected void setUp() {
         super.setUp()
         myFixture.copyDirectoryToProject('assets', '')
-        if (getDestination()) {
-            String file = "${this.getTestName(false)}.${getExtension()}"
-            myFixture.moveFile(file, getDestination())
+        if (destination) {
+            String file = "${this.getTestName(false)}.${extension}"
+            myFixture.moveFile(file, destination)
         }
     }
 
@@ -66,20 +66,22 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
     }
 
     protected void doTest(Class expectedRefType, String expectedRefValueName, boolean multiExpected) {
-        String file = "${this.getTestName(false)}.${getExtension()}"
+        String file = "${this.getTestName(false)}.${extension}"
         myFixture.configureByFile(file)
+        /* codenarc-disable UnnecessaryGetter */
         PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
+        /* codenarc-enable UnnecessaryGetter */
         if (ref instanceof PsiMultiReference) {
             PsiMultiReference multiRef = ref
-            ref = ref.getReferences().find { expectedRefType.isAssignableFrom(it.getClass()) }
+            ref = ref.references.find { expectedRefType.isAssignableFrom(it.class) }
             assertNoOtherRefType(multiRef, expectedRefType)
         }
-        assert expectedRefType.isAssignableFrom(ref.getClass())
+        assert expectedRefType.isAssignableFrom(ref.class)
         PsiElement resolve
         if (multiExpected) {
             ResolveResult[] resolves = (ref as PsiPolyVariantReference).multiResolve(false)
             assert "Multi reference for $expectedRefValueName not found", resolves.size() > 1
-            resolve = resolves[0].getElement()
+            resolve = resolves[0].element
         } else {
             resolve = ref.resolve()
             assertNotNull "Reference for $expectedRefValueName not found", resolve
@@ -87,21 +89,21 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
 
         String refValueName = ''
         if (ref instanceof FileReference) {
-            String fileName = (ref as FileReference).resolve().getName()
+            String fileName = (ref as FileReference).resolve().name
             refValueName = fileName.substring(0, fileName.indexOf('.'))
         } else if (ref instanceof JavaMethodReference || ref instanceof GroovyServiceDefReference) {
-            refValueName = (resolve as PsiMethod).getName()
+            refValueName = (resolve as PsiMethod).name
         } else {
-            DomManager dm = DomManager.getDomManager(myFixture.getProject())
+            DomManager dm = DomManager.getDomManager(myFixture.project)
             DomElement element = dm.getDomElement(resolve)
             if (ref instanceof UiLabelReference) {
-                refValueName = element.getKey()
+                refValueName = element.key
             } else if (ref instanceof EntityReference) {
-                refValueName = element.getEntityName()
+                refValueName = element.entityName
             } else if (ref instanceof RequestMapReference) {
-                refValueName = element.getUri()
+                refValueName = element.uri
             } else { // default
-                refValueName = element.getName()
+                refValueName = element.name
             }
         }
         assert refValueName == expectedRefValueName
@@ -115,9 +117,9 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
      * @param expectedRefType
      */
     private static void assertNoOtherRefType(PsiMultiReference multiRef, Class expectedRefType) {
-        assert (multiRef.getReferences() as List).stream()
-                .filter { !expectedRefType.isAssignableFrom(it.getClass()) }
-                .filter { it.getClass().getName().contains('fr.nereide') }
+        assert (multiRef.references as List).stream()
+                .filter { !expectedRefType.isAssignableFrom(it.class) }
+                .filter { it.class.name.contains('fr.nereide') }
                 .toList().size() == 0
     }
 

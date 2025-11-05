@@ -139,7 +139,7 @@ class XmlInspectionTest extends BaseInspectionTest {
         myFixture.configureByFile("$dest/$file")
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         List<String> highlightDescs = highlightInfos.collect { it.description }
-        assertFalse highlightInfos.isEmpty()
+        assertFalse highlightInfos.empty
         assert highlightDescs.contains(desc)
         final IntentionAction action = myFixture.findSingleIntention(intention)
         assertNotNull action

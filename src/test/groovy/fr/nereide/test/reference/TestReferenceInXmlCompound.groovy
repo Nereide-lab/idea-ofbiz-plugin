@@ -30,51 +30,51 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     //=====================================
 
     void testCpdFormReferenceFromCpdScreen() {
-        doTest(FormReference.class, 'FooForm')
+        doTest(FormReference, 'FooForm')
     }
 
     void testCpdGridReferenceFromCpdScreen() {
-        doTest(GridReference.class, 'MyCompoundElement')
+        doTest(GridReference, 'MyCompoundElement')
     }
 
     void testCpdScreenReferenceFromCpdScreen() {
-        doTest(ScreenReference.class, 'BarScreen')
+        doTest(ScreenReference, 'BarScreen')
     }
 
     void testCpdScreenDecoratorReferenceFromCpdScreen() {
-        doTest(ScreenReference.class, 'FooDecoratorScreen')
+        doTest(ScreenReference, 'FooDecoratorScreen')
     }
 
     void testExternalFormRefFromCpdScreen() {
-        doTest(FormReference.class, 'OneFormAmongOthers')
+        doTest(FormReference, 'OneFormAmongOthers')
     }
 
     void testExternalScreenRefFromCpdScreen() {
-        doTest(ScreenReference.class, 'MundaneScreen')
+        doTest(ScreenReference, 'MundaneScreen')
     }
 
     void testCpdMenuRefFromCpdScreen() {
-        doTest(MenuReference.class, 'FooMenu')
+        doTest(MenuReference, 'FooMenu')
     }
 
     void testExternalMenuRefFromCpdScreen() {
-        doTest(MenuReference.class, 'BarMenu')
+        doTest(MenuReference, 'BarMenu')
     }
 
     void testEntityRefFromCpdScreen() {
-        doTest(EntityReference.class, 'Entito')
+        doTest(EntityReference, 'Entito')
     }
 
     void testFileRefFromCpdScreen() {
-        doTest(FileReference.class, 'footemplate')
+        doTest(FileReference, 'footemplate')
     }
 
     void testCpdScreenRefFromExtScreen() {
-        doTest(ScreenReference.class, 'MyScreenInCpd')
+        doTest(ScreenReference, 'MyScreenInCpd')
     }
 
     void testCpdFormRefFromExtScreen() {
-        doTest(FormReference.class, 'MyFormInCpd')
+        doTest(FormReference, 'MyFormInCpd')
     }
 
     //=====================================
@@ -82,19 +82,19 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     //=====================================
 
     void testCpdRequestMapRefFromCpdForm() {
-        doTest(RequestMapReference.class, 'MyFooRequest')
+        doTest(RequestMapReference, 'MyFooRequest')
     }
 
     void testCpdScreenRefFromCpdFieldForm() {
-        doTest(ScreenReference.class, 'MyPitaScreen')
+        doTest(ScreenReference, 'MyPitaScreen')
     }
 
     void testCpdFormRefFromCpdFieldForm() {
-        doTest(FormReference.class, 'MyPitaForm')
+        doTest(FormReference, 'MyPitaForm')
     }
 
     void testCpdMenuRefFromCpdFieldForm() {
-        doTest(MenuReference.class, 'MyPitaMenu')
+        doTest(MenuReference, 'MyPitaMenu')
     }
 
     //=====================================
@@ -102,19 +102,19 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     //=====================================
 
     void testCpdViewMapRefFromCpdRequestMap() {
-        doTest(ViewMapReference.class, 'myFooResponseInCpd')
+        doTest(ViewMapReference, 'myFooResponseInCpd')
     }
 
     void testServiceRefFromCpdRequestMap() {
-        doTest(ServiceReference.class, 'DonateToQuadratureDuNet')
+        doTest(ServiceReference, 'DonateToQuadratureDuNet')
     }
 
     void testJavaEventRefFromCpdRequestMap() {
-        doTest(JavaMethodReference.class, 'login')
+        doTest(JavaMethodReference, 'login')
     }
 
     void testCpdScreenRefFromCpdViewMap() {
-        doTest(ScreenReference.class, 'MyFooScreenInCpd')
+        doTest(ScreenReference, 'MyFooScreenInCpd')
     }
 
 }

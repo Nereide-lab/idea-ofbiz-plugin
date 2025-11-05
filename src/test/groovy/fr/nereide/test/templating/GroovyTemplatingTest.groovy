@@ -16,7 +16,7 @@ class GroovyTemplatingTest extends BaseOfbizPluginTestCase {
     @Override
     protected void setUp() {
         super.setUp()
-        TemplateManagerImpl.setTemplateTesting(myFixture.getTestRootDisposable())
+        TemplateManagerImpl.setTemplateTesting(myFixture.testRootDisposable)
     }
 
     @Override
@@ -25,7 +25,7 @@ class GroovyTemplatingTest extends BaseOfbizPluginTestCase {
     }
 
     String getExpectedFileLocation() {
-        return "${getTestDataPath()}/reference/${getTestName(false)}.groovy.expected"
+        return testDataPath + '/reference/' + getTestName(false) + '.groovy.expected'
     }
 
     void testGroovyServiceSimpleExpandInGroovyScript() {
@@ -33,7 +33,7 @@ class GroovyTemplatingTest extends BaseOfbizPluginTestCase {
         myFixture.configureByFile(file)
         new ListTemplatesAction().actionPerformedImpl(myFixture.editor.project, myFixture.editor)
         (LookupManager.getActiveLookup(myFixture.editor) as LookupImpl).finishLookup(Lookup.NORMAL_SELECT_CHAR)
-        assertSameLinesWithFile(getExpectedFileLocation(), myFixture.file.text)
+        assertSameLinesWithFile(expectedFileLocation, myFixture.file.text)
     }
 
 }

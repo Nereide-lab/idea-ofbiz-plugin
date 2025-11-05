@@ -13,7 +13,7 @@ class TestGroovyInjection extends BaseInjectionTestCase {
     }
 
     protected doTest() {
-        super.doTest(GroovyLanguage.class)
+        super.doTest(GroovyLanguage)
     }
 
     void testWaitForFix() {

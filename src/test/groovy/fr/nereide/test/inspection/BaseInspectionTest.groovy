@@ -31,16 +31,17 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         return 'src/test/resources/testData/inspection'
     }
 
-    protected void doInspectionThenQuickFixWithXmlElementCreate(boolean mustFind, String intention, String desc, String expectedFileLocation,
-                                                                String elName, String elType) {
+    protected void doInspectionThenQuickFixWithXmlElementCreate(boolean mustFind, String intention, String desc,
+                                                                String expectedFileLocation, String elName,
+                                                                String elType) {
         myFixture.configureByFile(testFile)
         doHighlightTest(mustFind, desc)
         if (!mustFind) return
         findAndLaunchAction(intention)
-        PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.getFile()
-        List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, getTagFilter())
+        PsiFile fileToLookIn = expectedFileLocation ? getExpectedFile(expectedFileLocation) : myFixture.file
+        List<XmlTag> tags = PsiTreeUtil.collectElements(fileToLookIn, tagFilter)
         assert tags.any { XmlTag tag ->
-            tag.getAttribute('name')?.value == elName && tag.getName() == elType
+            tag.getAttribute('name')?.value == elName && tag.name == elType
         }
     }
 
@@ -52,12 +53,13 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         myFixture.checkResultByFile(expectedFilePath, true)
     }
 
-    protected void doFileInspectionTestWithFileCreation(boolean mustFind, String intention, String desc, String expectedFileLocation) {
+    protected void doFileInspectionTestWithFileCreation(boolean mustFind, String intention, String desc,
+                                                        String expectedFileLocation) {
         myFixture.configureByFile(testFile)
         doHighlightTest(mustFind, desc)
         if (!mustFind) return
         findAndLaunchAction(intention)
-        assertNotNull myFixture.getTempDirFixture().getFile(expectedFileLocation)
+        assertNotNull myFixture.tempDirFixture.getFile(expectedFileLocation)
     }
 
     protected void doHighlightTest(boolean mustFind, String desc) {
@@ -66,7 +68,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         if (!mustFind) {
             assert !highlightDescs.contains(desc)
         } else {
-            assertFalse highlightInfos.isEmpty()
+            assertFalse highlightInfos.empty
             assert highlightDescs.contains(desc)
         }
     }
@@ -87,11 +89,11 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
     // UTILS
     //#####################################
     String getExpectedFilePath() {
-        return "${getLang()}/${getTestName(false)}.after.${getLang()}"
+        return "${lang}/${getTestName(false)}.after.${lang}"
     }
 
     String getTestFile() {
-        return "${getLang()}/${getTestName(false)}.${getLang()}"
+        return "${lang}/${getTestName(false)}.${lang}"
     }
 
     protected void doMove() {
@@ -100,7 +102,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
     }
 
     private PsiFile getExpectedFile(String expectedFileLocation) {
-        VirtualFile virtualFile = myFixture.getTempDirFixture().getFile(expectedFileLocation)
+        VirtualFile virtualFile = myFixture.tempDirFixture.getFile(expectedFileLocation)
         PsiManager psiMan = PsiManager.getInstance(myFixture.project)
         assertNotNull virtualFile
         return psiMan.findFile(virtualFile)

@@ -33,31 +33,31 @@ class TestReferenceInGroovy extends BaseReferenceTestCase {
     protected String getExtension() { return 'groovy' }
 
     void testGroovyEntityReferenceWithFindMethod() {
-        doTest(EntityReference.class, 'Lobster')
+        doTest(EntityReference, 'Lobster')
     }
 
     void testGroovyViewEntityReferenceWithFindMethod() {
-        doTest(EntityReference.class, 'Zaun')
+        doTest(EntityReference, 'Zaun')
     }
 
     void testGroovyEntityReferenceWithFromMethod() {
-        doTest(EntityReference.class, 'PickleRick')
+        doTest(EntityReference, 'PickleRick')
     }
 
     void testGroovyServiceReferenceWithRunCall() {
-        doTest(ServiceReference.class, 'pivot')
+        doTest(ServiceReference, 'pivot')
     }
 
     void testEntityReferenceWithMakeValueMethod() {
-        doTest(EntityReference.class, 'Zaun')
+        doTest(EntityReference, 'Zaun')
     }
 
     void testEntityReferenceWithGetRelatedMethodWithoutTitleOnTargetEntity() {
-        doTest(EntityReference.class, 'Matata')
+        doTest(EntityReference, 'Matata')
     }
 
     void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
-        doTest(EntityReference.class, 'Matata1')
+        doTest(EntityReference, 'Matata1')
     }
 
 }
