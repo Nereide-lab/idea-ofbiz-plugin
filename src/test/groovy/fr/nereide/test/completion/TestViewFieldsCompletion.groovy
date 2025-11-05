@@ -1,6 +1,5 @@
 package fr.nereide.test.completion
 
-
 /**
  * <pre>
  * {@code org.apache.ofbiz.entity.GenericValue paper = from('PaperCompany')
@@ -47,4 +46,5 @@ class TestViewFieldsCompletion extends TestCompletionInGroovy {
                                  'geniusreese', 'geniusfrancis', 'geniuslois']
         doTest(expected)
     }
+
 }

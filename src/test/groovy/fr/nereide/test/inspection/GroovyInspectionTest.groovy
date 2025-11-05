@@ -8,6 +8,9 @@ import fr.nereide.inspection.groovy.ServiceNotFoundInGroovyInspection
 
 import static fr.nereide.inspection.InspectionBundle.message
 
+/**
+ * Inspection tests in groovy
+ */
 class GroovyInspectionTest extends BaseInspectionTest {
 
     @Override
@@ -67,4 +70,5 @@ class GroovyInspectionTest extends BaseInspectionTest {
         doHighlightTest(false, message('inspection.entity.not.found.display.descriptor'),
                 new EntityNotFoundInGroovyInspection())
     }
+
 }

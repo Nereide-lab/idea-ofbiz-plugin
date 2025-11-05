@@ -5,6 +5,9 @@ import fr.nereide.editor.marker.java.JavaEntityEcaMarkerProvider
 import fr.nereide.editor.marker.java.JavaExtendedEntityMarkerProvider
 import fr.nereide.editor.marker.java.JavaServiceEcaEcaMarkerProvider
 
+/**
+ * Line markers and gutter icons tests in java
+ */
 class JavaLineMarkerTest extends BaseLineMarkerTest {
 
     String getExtension() { return 'java' }
@@ -22,4 +25,5 @@ class JavaLineMarkerTest extends BaseLineMarkerTest {
     void testExtendedEntityMarkerInJava() {
         doTest(new JavaExtendedEntityMarkerProvider(), 'Entity is extended')
     }
+
 }

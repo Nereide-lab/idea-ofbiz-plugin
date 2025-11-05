@@ -5,7 +5,9 @@ import fr.nereide.inspection.xml.DuplicatedUriInspection
 
 import static fr.nereide.inspection.InspectionBundle.message
 
-
+/**
+ * Inspection tests for duplicates in Xml, specifically Uri
+ */
 class XmlUriDuplicateInspectionTest extends BaseInspectionTest {
 
     final String URI_DESC = message('inspection.uri.duplicate.display.descriptor')
@@ -34,8 +36,5 @@ class XmlUriDuplicateInspectionTest extends BaseInspectionTest {
     void testDuplicatedUriInCurrentController() { doTest(URI_DESC, URI_INSP) }
 
     void testDuplicatedUriInCurrentControllerWithDifferentMethod() { doTest(false, URI_DESC, URI_INSP) }
-
-    // TODO It's not a duplicate, it's an overload. Should be in a dedicated inspection, with info level
-//    void testDuplicatedUriButWithDifferentMountPoints() { doTest(false, URI_DESC, URI_INSP) }
 
 }

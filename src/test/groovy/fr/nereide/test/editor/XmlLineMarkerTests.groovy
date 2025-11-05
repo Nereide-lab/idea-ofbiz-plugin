@@ -1,11 +1,13 @@
 package fr.nereide.test.editor
 
-
 import com.intellij.psi.xml.XmlAttributeValue
 import fr.nereide.editor.marker.xml.XmlEntityEcaMarkerProvider
 import fr.nereide.editor.marker.xml.XmlExtendedEntityMarkerProvider
 import fr.nereide.editor.marker.xml.XmlServiceEcaEcaMarkerProvider
 
+/**
+ * Line markers and gutter icons tests in xml
+ */
 class XmlLineMarkerTests extends BaseLineMarkerTest {
 
     String getExtension() { return 'xml' }
@@ -23,4 +25,5 @@ class XmlLineMarkerTests extends BaseLineMarkerTest {
     void testExtendedEntityMarkerInXml() {
         doTest(new XmlExtendedEntityMarkerProvider(), 'Entity is extended')
     }
+
 }

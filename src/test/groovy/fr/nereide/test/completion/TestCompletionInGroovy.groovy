@@ -14,11 +14,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.completion
 
-
-class TestCompletionInGroovy extends BaseComplTestCase {
+/**
+ * Completion tests for groovy
+ */
+class TestCompletionInGroovy extends BaseCompletionTestCase {
 
     @Override
     protected String getTestDataPath() {
@@ -100,7 +101,6 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         List<String> expected = ['ross', 'monica']
         doTest(expected)
     }
-
 
     /**
      * Compiled
@@ -249,4 +249,5 @@ class TestCompletionInGroovy extends BaseComplTestCase {
     void testEntityFieldCompletionOnEntityWithExtends() {
         doTest(['field1', 'field2'])
     }
+
 }

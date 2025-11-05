@@ -1,5 +1,8 @@
 package fr.nereide.test.injection
 
+/**
+ * Injection test in javascript
+ */
 class TestJavaScriptInjection extends BaseInjectionTestCase {
 
     @Override
@@ -26,4 +29,5 @@ class TestJavaScriptInjection extends BaseInjectionTestCase {
 //    void testTargetAttrInMenu() {
 //        doTest()
 //    }
+
 }

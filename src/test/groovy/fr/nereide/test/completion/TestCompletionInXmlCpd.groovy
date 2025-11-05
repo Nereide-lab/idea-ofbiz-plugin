@@ -1,8 +1,11 @@
 package fr.nereide.test.completion
 
-class TestCompletionInXmlCpd extends BaseComplTestCase {
+/**
+ * Completion tests for Xml, compound specific
+ */
+class TestCompletionInXmlCpd extends BaseCompletionTestCase {
 
-    private static String MOVE_TO = "forest-component/widget"
+    private static String MOVE_TO = 'forest-component/widget'
 
     @Override
     protected String getTestDataPath() {

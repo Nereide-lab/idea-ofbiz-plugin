@@ -13,7 +13,11 @@ import com.intellij.psi.xml.XmlTag
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Base class for inspection tests
+ */
 abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
+
     abstract String getLang()
 
     @Override
@@ -24,7 +28,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
 
     @Override
     protected String getTestDataPath() {
-        return "src/test/resources/testData/inspection"
+        return 'src/test/resources/testData/inspection'
     }
 
     protected void doInspectionThenQuickFixWithXmlElementCreate(boolean mustFind, String intention, String desc, String expectedFileLocation,
@@ -92,7 +96,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
 
     protected void doMove() {
         String file = "xml/${this.getTestName(false)}.xml"
-        myFixture.moveFile(file, "zelda/widget")
+        myFixture.moveFile(file, 'zelda/widget')
     }
 
     private PsiFile getExpectedFile(String expectedFileLocation) {
@@ -104,6 +108,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
 
     private static PsiElementFilter getTagFilter() {
         new PsiElementFilter() {
+
             @Override
             boolean isAccepted(@NotNull PsiElement psiElement) {
                 boolean isTag = psiElement instanceof XmlTag
@@ -111,6 +116,8 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
                 boolean hasRelevantAttr = (psiElement as XmlTag).getAttribute('name')
                 return isTag && hasRelevantAttr
             }
+
         }
     }
+
 }

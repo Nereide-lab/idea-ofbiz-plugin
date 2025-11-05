@@ -1,10 +1,12 @@
 package fr.nereide.test.service
 
-
 import fr.nereide.dom.element.service.Service
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.worker.ServiceWorker
 
+/**
+ * Service worker tests
+ */
 class TestServiceAttributes extends BaseServiceTest {
 
     void testVanillaServiceAttributes() {
@@ -48,4 +50,5 @@ class TestServiceAttributes extends BaseServiceTest {
         ServiceWorker.getOptionalInAttributes(service, ph)
                 .collect { it -> it.get(ServiceWorker.SERVICE_ATTR_NAME) } as List<String>
     }
+
 }

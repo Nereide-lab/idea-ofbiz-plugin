@@ -21,7 +21,7 @@ class GroovyTemplatingTest extends BaseOfbizPluginTestCase {
 
     @Override
     protected String getTestDataPath() {
-        return "src/test/resources/testData/templating"
+        return 'src/test/resources/testData/templating'
     }
 
     String getExpectedFileLocation() {
@@ -33,6 +33,7 @@ class GroovyTemplatingTest extends BaseOfbizPluginTestCase {
         myFixture.configureByFile(file)
         new ListTemplatesAction().actionPerformedImpl(myFixture.editor.project, myFixture.editor)
         (LookupManager.getActiveLookup(myFixture.editor) as LookupImpl).finishLookup(Lookup.NORMAL_SELECT_CHAR)
-        assertSameLinesWithFile(getExpectedFileLocation(), myFixture.file.text )
+        assertSameLinesWithFile(getExpectedFileLocation(), myFixture.file.text)
     }
+
 }

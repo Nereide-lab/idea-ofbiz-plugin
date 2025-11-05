@@ -14,13 +14,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.reference
-
 
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.ServiceReference
 
+/**
+ * Reference tests in java
+ */
 class TestReferenceInJava extends BaseReferenceTestCase {
 
     @Override
@@ -78,4 +79,5 @@ class TestReferenceInJava extends BaseReferenceTestCase {
     void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
         doTest(EntityReference.class, 'Matata3')
     }
+
 }

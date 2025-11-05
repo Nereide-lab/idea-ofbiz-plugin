@@ -14,12 +14,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.reference
 
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.ServiceReference
 
+/**
+ * Reference tests in groovy
+ */
 class TestReferenceInGroovy extends BaseReferenceTestCase {
 
     @Override
@@ -57,4 +59,5 @@ class TestReferenceInGroovy extends BaseReferenceTestCase {
     void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
         doTest(EntityReference.class, 'Matata1')
     }
+
 }

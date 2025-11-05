@@ -12,6 +12,9 @@ import fr.nereide.project.OfbizProjectHelper
 
 import static fr.nereide.inspection.InspectionBundle.message
 
+/**
+ * Inspection tests for Xml
+ */
 class XmlInspectionTest extends BaseInspectionTest {
 
     String getLang() { return 'xml' }
@@ -169,4 +172,5 @@ class XmlInspectionTest extends BaseInspectionTest {
         doHighlightTest(false, message('inspection.entity.not.found.display.descriptor'),
                 new EntityNotFoundInXmlInspection())
     }
+
 }

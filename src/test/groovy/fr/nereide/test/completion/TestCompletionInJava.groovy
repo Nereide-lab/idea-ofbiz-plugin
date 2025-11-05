@@ -14,10 +14,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.completion
 
-class TestCompletionInJava extends BaseComplTestCase {
+/**
+ * Completion tests for java
+ */
+class TestCompletionInJava extends BaseCompletionTestCase {
 
     String getFileType() { return 'java' }
 
@@ -131,4 +133,5 @@ class TestCompletionInJava extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected, notExpected)
     }
+
 }

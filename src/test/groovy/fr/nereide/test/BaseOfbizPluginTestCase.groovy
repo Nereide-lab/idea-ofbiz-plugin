@@ -14,13 +14,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test
 
 import com.intellij.testFramework.LightProjectDescriptor
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.junit.Ignore
 
+/**
+ * Base test class for all plugin tests
+ */
 @Ignore('Parent class, No tests here')
 class BaseOfbizPluginTestCase extends BasePlatformTestCase {
 
@@ -28,4 +30,5 @@ class BaseOfbizPluginTestCase extends BasePlatformTestCase {
     protected LightProjectDescriptor getProjectDescriptor() {
         return new OfbizProjectDescriptor()
     }
+
 }

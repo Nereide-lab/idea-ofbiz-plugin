@@ -99,7 +99,7 @@ patchPluginXml {
 
 codenarc {
     setConfigFile(new File('config/codenarc/codenarc.groovy'))
-    sourceSets = [sourceSets.main] // Analyse le code source principal
+    sourceSets = [sourceSets.main, sourceSets.test]
     ignoreFailures = false // Échoue si des violations sont trouvées
     reportFormat = 'xml' // Format du rapport (html, xml, txt, etc.)
 }

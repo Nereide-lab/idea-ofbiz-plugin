@@ -5,6 +5,9 @@ import fr.nereide.editor.marker.groovy.GroovyEntityEcaMarkerProvider
 import fr.nereide.editor.marker.groovy.GroovyExtendedEntityMarkerProvider
 import fr.nereide.editor.marker.groovy.GroovyServiceEcaEcaMarkerProvider
 
+/**
+ * Line markers and gutter icons tests in groovy
+ */
 class GroovyLineMarkerTest extends BaseLineMarkerTest {
 
     String getExtension() { return 'groovy' }
@@ -22,4 +25,5 @@ class GroovyLineMarkerTest extends BaseLineMarkerTest {
     void testExtendedEntityMarkerInGroovy() {
         doTest(new GroovyExtendedEntityMarkerProvider(), 'Entity is extended')
     }
+
 }

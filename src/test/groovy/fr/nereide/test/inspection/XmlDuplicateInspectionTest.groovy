@@ -9,6 +9,9 @@ import fr.nereide.inspection.xml.DuplicatedServiceXmlInspection
 
 import static fr.nereide.inspection.InspectionBundle.message
 
+/**
+ * Inspection tests for duplicates in Xml
+ */
 class XmlDuplicateInspectionTest extends BaseInspectionTest {
 
     final String FORM_DESC = message('inspection.form.duplicate.display.descriptor')

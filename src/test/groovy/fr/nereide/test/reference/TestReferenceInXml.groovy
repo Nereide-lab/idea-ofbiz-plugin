@@ -14,7 +14,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.reference
 
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
@@ -30,6 +29,9 @@ import fr.nereide.reference.xml.ScreenReference
 import fr.nereide.reference.xml.EngineReference
 import fr.nereide.reference.xml.ViewMapReference
 
+/**
+ * Reference tests in xml
+ */
 class TestReferenceInXml extends BaseReferenceTestCase {
 
     @Override
@@ -126,4 +128,5 @@ class TestReferenceInXml extends BaseReferenceTestCase {
     void testServiceEngineReferenceTest() {
         doTest(EngineReference.class, 'entity-auto')
     }
+
 }

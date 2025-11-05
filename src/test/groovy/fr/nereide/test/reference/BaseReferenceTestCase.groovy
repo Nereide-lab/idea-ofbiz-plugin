@@ -14,7 +14,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.reference
 
 import com.intellij.psi.PsiElement
@@ -34,6 +33,9 @@ import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
+/**
+ * Base class for references tests
+ */
 @Ignore('Setup class, No tests here')
 class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
 

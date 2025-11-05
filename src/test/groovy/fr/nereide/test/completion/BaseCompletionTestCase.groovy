@@ -14,15 +14,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.completion
 
 import com.intellij.codeInsight.completion.CompletionType
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
+/**
+ * Base test class for all completion tests
+ */
 @Ignore('Parent class, No tests here')
-class BaseComplTestCase extends BaseOfbizPluginTestCase {
+class BaseCompletionTestCase extends BaseOfbizPluginTestCase {
 
     static final String BASE_TEST_DIR = 'src/test/resources/testData/completion'
 
@@ -38,7 +40,7 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
 
     @Override
     protected String getTestDataPath() {
-        return "src/test/resources/testData/completion"
+        return 'src/test/resources/testData/completion'
     }
 
     protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups) {
@@ -71,4 +73,5 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
             assert !lookupElementStrings
         }
     }
+
 }

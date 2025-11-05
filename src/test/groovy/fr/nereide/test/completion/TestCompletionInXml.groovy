@@ -14,10 +14,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.completion
 
-class TestCompletionInXml extends BaseComplTestCase {
+/**
+ * Completion tests for xml
+ */
+class TestCompletionInXml extends BaseCompletionTestCase {
 
     @Override
     protected String getTestDataPath() {
@@ -64,8 +66,8 @@ class TestCompletionInXml extends BaseComplTestCase {
     void testEntityNameCompletionInEntityEngineFile() {
         List<String> expected = ['Yenefer', 'Roach', 'DunderMifflin', 'Sabre', 'DunderCorporate', 'CobraKai',
                                  'Malcolm', 'Mordor', 'RossCouple', 'RossAndSister']
-        List<String> notExpected = ['WholePaperCompany', 'RecursiveView', 'CobraKaiNeverDie', 'Miyagido', 'InTheMiddle',
-                                    'LifeIsUnfair', 'PaperCompany']
+        List<String> notExpected = ['WholePaperCompany', 'RecursiveView', 'CobraKaiNeverDie', 'Miyagido',
+                                    'InTheMiddle', 'LifeIsUnfair', 'PaperCompany']
         doTest(expected, notExpected)
     }
 
@@ -133,7 +135,7 @@ class TestCompletionInXml extends BaseComplTestCase {
     }
 
     void testSectionCompletionInFindSimpleScreen() {
-        List<String> expected = ["search-options", "search-results"]
+        List<String> expected = ['search-options', 'search-results']
         doTest(expected)
     }
 

@@ -11,9 +11,12 @@ import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.ScreenReference
 
+/**
+ * Reference tests in xml, compound specific
+ */
 class TestReferenceInXmlCompound extends BaseReferenceTestCase {
 
-    private static String MOVE_TO = "FooComponent/widget"
+    private static String MOVE_TO = 'FooComponent/widget'
 
     @Override
     protected String getTestDataPath() {
@@ -113,4 +116,5 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     void testCpdScreenRefFromCpdViewMap() {
         doTest(ScreenReference.class, 'MyFooScreenInCpd')
     }
+
 }

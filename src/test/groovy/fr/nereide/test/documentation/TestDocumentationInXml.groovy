@@ -14,14 +14,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.documentation
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
 
+/**
+ * Documentation tests for xml
+ */
 class TestDocumentationInXml extends BaseDocumentationTestCase {
-
 
     /*********************
      * SERVICE DOC TESTS *
@@ -30,24 +31,23 @@ class TestDocumentationInXml extends BaseDocumentationTestCase {
     void testQuickNavigateInfoOnServiceInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnServiceInXml.xml')
         final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("HelloWorld", XmlAttributeValue.class)
+        final PsiElement originalElement = myFixture.findElementByText('HelloWorld', XmlAttributeValue.class)
         assertCorrectQuickNavigateInfo(element, originalElement)
     }
 
     void testHoverDocOnServiceInXml() {
         myFixture.configureByFile('xml/HoverDocOnServiceInXml.xml')
         final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("HelloWorld", XmlAttributeValue.class)
+        final PsiElement originalElement = myFixture.findElementByText('HelloWorld', XmlAttributeValue.class)
         assertNotNullHoverDoc(element, originalElement)
     }
 
     void testFullDocOnServiceInXml() {
         myFixture.configureByFile('xml/FullDocOnServiceInXml.xml')
         final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("HelloWorld", XmlAttributeValue.class)
+        final PsiElement originalElement = myFixture.findElementByText('HelloWorld', XmlAttributeValue.class)
         assertNotNullFullDoc(element, originalElement)
     }
-
 
     /********************
      * ENTITY DOC TESTS *
@@ -56,17 +56,16 @@ class TestDocumentationInXml extends BaseDocumentationTestCase {
     void testQuickNavigateInfoOnEntityInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnEntityInXml.xml')
         final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("Vi", XmlAttributeValue.class)
+        final PsiElement originalElement = myFixture.findElementByText('Vi', XmlAttributeValue.class)
         assertCorrectQuickNavigateInfo(element, originalElement)
     }
 
     void testHoverDocOnEntityInXml() {
         myFixture.configureByFile('xml/HoverDocOnEntityInXml.xml')
         final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("Vi", XmlAttributeValue.class)
+        final PsiElement originalElement = myFixture.findElementByText('Vi', XmlAttributeValue.class)
         assertNotNullHoverDoc(element, originalElement)
     }
-
 
     /******************
      * VIEW DOC TESTS *
@@ -75,17 +74,16 @@ class TestDocumentationInXml extends BaseDocumentationTestCase {
     void testQuickNavigateInfoOnViewInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnViewInXml.xml')
         final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("RandomView", XmlAttributeValue.class)
+        final PsiElement originalElement = myFixture.findElementByText('RandomView', XmlAttributeValue.class)
         assertCorrectQuickNavigateInfo(element, originalElement)
     }
 
     void testHoverDocOnViewInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnViewInXml.xml')
         final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("RandomView", XmlAttributeValue.class)
+        final PsiElement originalElement = myFixture.findElementByText('RandomView', XmlAttributeValue.class)
         assertNotNullHoverDoc(element, originalElement)
     }
-
 
     /**********************
      * PROPERTY DOC TESTS *
@@ -109,6 +107,7 @@ class TestDocumentationInXml extends BaseDocumentationTestCase {
         myFixture.configureByFile('xml/HoverDocOnPropertyInXml.xml')
         final PsiElement element = myFixture.getElementAtCaret()
         final PsiElement originalElement = myFixture.findElementByText('${uiLabelMap.TestPivooot}', XmlAttributeValue.class)
-        assertHoverDocContains(element, originalElement, "Piv")
+        assertHoverDocContains(element, originalElement, 'Piv')
     }
+
 }

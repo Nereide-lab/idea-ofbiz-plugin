@@ -2,6 +2,9 @@ package fr.nereide.test.injection
 
 import org.jetbrains.plugins.groovy.GroovyLanguage
 
+/**
+ * Injection test in groovy
+ */
 class TestGroovyInjection extends BaseInjectionTestCase {
 
     @Override
@@ -52,4 +55,5 @@ class TestGroovyInjection extends BaseInjectionTestCase {
     void testDescriptionAttrInForm() {
         doTest()
     }
+
 }

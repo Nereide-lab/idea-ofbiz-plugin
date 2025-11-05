@@ -6,6 +6,9 @@ import com.intellij.psi.PsiElement
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
+/**
+ * Base class for line markers and gutter icons tests
+ */
 @Ignore('Parent class, No tests here')
 abstract class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
 
@@ -35,4 +38,5 @@ abstract class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
         assertNotNull(lineMarkerInfo)
         assertEquals(tooltip, lineMarkerInfo.getLineMarkerTooltip())
     }
+
 }

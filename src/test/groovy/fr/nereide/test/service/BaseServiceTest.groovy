@@ -3,6 +3,9 @@ package fr.nereide.test.service
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
+/**
+ * Services testing base test class
+ */
 @Ignore('Setup class, No tests here')
 class BaseServiceTest extends BaseOfbizPluginTestCase {
 
@@ -14,6 +17,7 @@ class BaseServiceTest extends BaseOfbizPluginTestCase {
 
     @Override
     protected String getTestDataPath() {
-        return "src/test/resources/testData/service"
+        return 'src/test/resources/testData/service'
     }
+
 }
