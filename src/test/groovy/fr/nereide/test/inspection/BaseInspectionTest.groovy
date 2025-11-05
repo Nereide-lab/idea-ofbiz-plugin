@@ -65,11 +65,11 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
     protected void doHighlightTest(boolean mustFind, String desc) {
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         List<String> highlightDescs = highlightInfos.collect { it.description }
-        if (!mustFind) {
-            assert !highlightDescs.contains(desc)
-        } else {
+        if (mustFind) {
             assertFalse highlightInfos.empty
             assert highlightDescs.contains(desc)
+        } else {
+            assert !highlightDescs.contains(desc)
         }
     }
 
