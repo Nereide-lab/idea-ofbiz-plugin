@@ -139,10 +139,10 @@ class XmlInspectionTest extends BaseInspectionTest {
         myFixture.configureByFile("$dest/$file")
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         List<String> highlightDescs = highlightInfos.collect { it.description }
-        assertFalse highlightInfos.empty
+        assert !highlightInfos.empty
         assert highlightDescs.contains(desc)
         final IntentionAction action = myFixture.findSingleIntention(intention)
-        assertNotNull action
+        assert action
         myFixture.launchAction(action)
         assert OfbizProjectHelper.getInstance(myFixture.project).getProperty('notExistingLabel')
     }

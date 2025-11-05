@@ -42,20 +42,20 @@ class BaseDocumentationTestCase extends BaseOfbizPluginTestCase {
     void assertCorrectQuickNavigateInfo(PsiElement element, XmlAttributeValue originalElement) {
         final String generatedDoc = DocumentationManager.getProviderFromElement(element)
                 .getQuickNavigateInfo(element, originalElement)
-        assertNotNull(generatedDoc)
+        assert generatedDoc
         assertSameLinesWithFile(expectedFileLocation, generatedDoc)
     }
 
     static void assertNotNullHoverDoc(PsiElement element, XmlAttributeValue originalElement) {
         final String hoverDoc = DocumentationManager.getProviderFromElement(element)
                 .generateHoverDoc(element, originalElement)
-        assertNotNull(hoverDoc)
+        assert hoverDoc
     }
 
     static void assertNotNullFullDoc(PsiElement element, XmlAttributeValue originalElement) {
         final String hoverDoc = DocumentationManager.getProviderFromElement(element)
                 .generateDoc(element, originalElement)
-        assertNotNull(hoverDoc)
+        assert hoverDoc
     }
 
     static void assertHoverDocContains(PsiElement element, PsiElement originalElement, String expectedString) {

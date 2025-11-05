@@ -59,14 +59,14 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         doHighlightTest(mustFind, desc)
         if (!mustFind) return
         findAndLaunchAction(intention)
-        assertNotNull myFixture.tempDirFixture.getFile(expectedFileLocation)
+        assert myFixture.tempDirFixture.getFile(expectedFileLocation)
     }
 
     protected void doHighlightTest(boolean mustFind, String desc) {
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         List<String> highlightDescs = highlightInfos.collect { it.description }
         if (mustFind) {
-            assertFalse highlightInfos.empty
+            assert !highlightInfos.empty
             assert highlightDescs.contains(desc)
         } else {
             assert !highlightDescs.contains(desc)
@@ -75,7 +75,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
 
     private void findAndLaunchAction(String intention) {
         final IntentionAction action = myFixture.findSingleIntention(intention)
-        assertNotNull action
+        assert action
         myFixture.launchAction(action)
     }
 
@@ -104,7 +104,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
     private PsiFile getExpectedFile(String expectedFileLocation) {
         VirtualFile virtualFile = myFixture.tempDirFixture.getFile(expectedFileLocation)
         PsiManager psiMan = PsiManager.getInstance(myFixture.project)
-        assertNotNull virtualFile
+        assert virtualFile
         return psiMan.findFile(virtualFile)
     }
 

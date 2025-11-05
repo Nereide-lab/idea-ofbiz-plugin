@@ -84,7 +84,7 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
             resolve = resolves[0].element
         } else {
             resolve = ref.resolve()
-            assertNotNull "Reference for $expectedRefValueName not found", resolve
+            assert resolve
         }
 
         String refValueName = ''

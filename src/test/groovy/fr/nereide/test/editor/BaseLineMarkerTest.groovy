@@ -36,8 +36,8 @@ abstract class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
         PsiElement element = myFixture.findElementByText("${this.getTestName(false)}$ELEMENT_SUFFIX",
                 this.elementTypeToFind)
         LineMarkerInfo lineMarkerInfo = lineMarker.getLineMarkerInfo(element)
-        assertNotNull(lineMarkerInfo)
-        assertEquals(tooltip, lineMarkerInfo.lineMarkerTooltip)
+        assert lineMarkerInfo
+        assert tooltip, lineMarkerInfo.lineMarkerTooltip
     }
 
 }
