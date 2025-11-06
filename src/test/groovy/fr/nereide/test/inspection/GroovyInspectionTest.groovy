@@ -1,27 +1,19 @@
 package fr.nereide.test.inspection
 
+import static fr.nereide.inspection.InspectionBundle.message
+
 import fr.nereide.inspection.groovy.CacheOnNeverCacheEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedServiceGroovyInspection
 import fr.nereide.inspection.groovy.EntityNotFoundInGroovyInspection
 import fr.nereide.inspection.groovy.ServiceNotFoundInGroovyInspection
 
-import static fr.nereide.inspection.InspectionBundle.message
-
 /**
  * Inspection tests in groovy
  */
 class GroovyInspectionTest extends BaseInspectionTest {
 
-    final String lang = 'groovy'
-
-    void doNeverCacheTest(boolean mustFind) {
-        myFixture.enableInspections(new CacheOnNeverCacheEntityGroovyInspection())
-        doInspectionThenQuickFixTestWithFileEdit(mustFind,
-                message('inspection.entity.cache.on.never.cache.use.quickfix'),
-                message('inspection.entity.cache.on.never.cache.display.descriptor'))
-    }
-
+    /* codenarc-disable JUnitTestMethodWithoutAssert */
     void testCacheOnNeverCacheEntityInCompiledGroovy() {
         doNeverCacheTest(true)
     }
@@ -66,6 +58,19 @@ class GroovyInspectionTest extends BaseInspectionTest {
     void testEntityNotFoundInspectionSafety() {
         doHighlightTest(false, message('inspection.entity.not.found.display.descriptor'),
                 new EntityNotFoundInGroovyInspection())
+    }
+    /* codenarc-enable JUnitTestMethodWithoutAssert */
+
+    @Override
+    protected String getLang() {
+        return 'groovy'
+    }
+
+    protected void doNeverCacheTest(boolean mustFind) {
+        myFixture.enableInspections(new CacheOnNeverCacheEntityGroovyInspection())
+        doInspectionThenQuickFixTestWithFileEdit(mustFind,
+                message('inspection.entity.cache.on.never.cache.use.quickfix'),
+                message('inspection.entity.cache.on.never.cache.display.descriptor'))
     }
 
 }
