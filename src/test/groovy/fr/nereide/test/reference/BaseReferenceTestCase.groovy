@@ -23,7 +23,6 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.ResolveResult
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
-import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomManager
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.UiLabelReference
@@ -109,13 +108,11 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
     /**
      * Checks that no other reference type was found for an element.
      * For example, no screen reference resolved from a form
-     * @param multiRef
-     * @param expectedRefType
      */
     private static void assertNoOtherRefType(PsiMultiReference multiRef, Class expectedRefType) {
         assert (multiRef.references as List).stream()
-                .filter { !expectedRefType.isAssignableFrom(it.class) }
-                .filter { it.class.name.contains('fr.nereide') }
+                .filter { ref -> !expectedRefType.isAssignableFrom(ref.class) }
+                .filter { ref -> ref.class.name.contains('fr.nereide') }
                 .toList().size() == 0
     }
 
