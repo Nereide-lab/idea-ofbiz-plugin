@@ -28,6 +28,36 @@ import org.junit.Ignore
 @Ignore('Setup class, No tests here')
 class BaseDocumentationTestCase extends BaseOfbizPluginTestCase {
 
+    private String getExpectedFileLocation() {
+        return "${testDataPath}/reference/${getTestName(false)}.html.expected"
+    }
+
+    protected static void assertNotNullHoverDoc(PsiElement element, XmlAttributeValue originalElement) {
+        final String hoverDoc = DocumentationManager.getProviderFromElement(element)
+                .generateHoverDoc(element, originalElement)
+        assert hoverDoc
+    }
+
+    protected static void assertNotNullFullDoc(PsiElement element, XmlAttributeValue originalElement) {
+        final String hoverDoc = DocumentationManager.getProviderFromElement(element)
+                .generateDoc(element, originalElement)
+        assert hoverDoc
+    }
+
+    protected static void assertHoverDocContains(PsiElement element, PsiElement originalElement,
+                                                 String expectedString) {
+        final String hoverDoc = DocumentationManager.getProviderFromElement(element)
+                .generateDoc(element, originalElement)
+        assert hoverDoc && hoverDoc.contains(expectedString)
+    }
+
+    protected void assertCorrectQuickNavigateInfo(PsiElement element, XmlAttributeValue originalElement) {
+        final String generatedDoc = DocumentationManager.getProviderFromElement(element)
+                .getQuickNavigateInfo(element, originalElement)
+        assert generatedDoc
+        assertSameLinesWithFile(expectedFileLocation, generatedDoc)
+    }
+
     @Override
     protected void setUp() {
         super.setUp()
@@ -37,35 +67,6 @@ class BaseDocumentationTestCase extends BaseOfbizPluginTestCase {
     @Override
     protected String getTestDataPath() {
         return 'src/test/resources/testData/documentation'
-    }
-
-    void assertCorrectQuickNavigateInfo(PsiElement element, XmlAttributeValue originalElement) {
-        final String generatedDoc = DocumentationManager.getProviderFromElement(element)
-                .getQuickNavigateInfo(element, originalElement)
-        assert generatedDoc
-        assertSameLinesWithFile(expectedFileLocation, generatedDoc)
-    }
-
-    static void assertNotNullHoverDoc(PsiElement element, XmlAttributeValue originalElement) {
-        final String hoverDoc = DocumentationManager.getProviderFromElement(element)
-                .generateHoverDoc(element, originalElement)
-        assert hoverDoc
-    }
-
-    static void assertNotNullFullDoc(PsiElement element, XmlAttributeValue originalElement) {
-        final String hoverDoc = DocumentationManager.getProviderFromElement(element)
-                .generateDoc(element, originalElement)
-        assert hoverDoc
-    }
-
-    static void assertHoverDocContains(PsiElement element, PsiElement originalElement, String expectedString) {
-        final String hoverDoc = DocumentationManager.getProviderFromElement(element)
-                .generateDoc(element, originalElement)
-        assert hoverDoc && hoverDoc.contains(expectedString)
-    }
-
-    String getExpectedFileLocation() {
-        return "${testDataPath}/reference/${getTestName(false)}.html.expected"
     }
 
 }
