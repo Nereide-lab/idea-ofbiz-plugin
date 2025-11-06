@@ -399,7 +399,9 @@ ruleset {
     // MethodCount TODO explode OfbizProjectHelper into Dom specific helpers,ScreenHelper, FormHelper, .. ?
     MethodSize
     NestedBlockDepth
-    ParameterCount
+    ParameterCount {
+        maxParameters = 6
+    }
 
     // rulesets/unnecessary.xml
     AddEmptyString

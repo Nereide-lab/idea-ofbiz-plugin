@@ -13,10 +13,7 @@ import static fr.nereide.inspection.InspectionBundle.message
  */
 class GroovyInspectionTest extends BaseInspectionTest {
 
-    @Override
-    String getLang() {
-        return 'groovy'
-    }
+    final String lang = 'groovy'
 
     void doNeverCacheTest(boolean mustFind) {
         myFixture.enableInspections(new CacheOnNeverCacheEntityGroovyInspection())

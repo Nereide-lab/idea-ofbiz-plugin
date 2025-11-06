@@ -10,7 +10,7 @@ import org.junit.Ignore
 @Ignore('Parent class, No tests here')
 class BaseInjectionTestCase extends BaseOfbizPluginTestCase {
 
-    protected doTest(Class expectedLang) {
+    protected void doTest(Class expectedLang) {
         String file = "${this.getTestName(false)}.xml"
         myFixture.configureByFile(file)
         PsiElement elementAtCaret = myFixture.file.findElementAt(myFixture.caretOffset)

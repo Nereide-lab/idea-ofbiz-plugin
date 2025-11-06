@@ -18,7 +18,21 @@ import org.jetbrains.annotations.NotNull
  */
 abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
 
-    abstract String getLang()
+    private static PsiElementFilter getTagFilter() {
+        return new PsiElementFilter() {
+
+            @Override
+            boolean isAccepted(@NotNull PsiElement psiElement) {
+                boolean isTag = psiElement instanceof XmlTag
+                if (!isTag) return false
+                boolean hasRelevantAttr = (psiElement as XmlTag).getAttribute('name')
+                return isTag && hasRelevantAttr
+            }
+
+        }
+    }
+
+    protected abstract String getLang()
 
     @Override
     protected void setUp() {
@@ -64,7 +78,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
 
     protected void doHighlightTest(boolean mustFind, String desc) {
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
-        List<String> highlightDescs = highlightInfos.collect { it.description }
+        List<String> highlightDescs = highlightInfos*.description
         if (mustFind) {
             assert !highlightInfos.empty
             assert highlightDescs.contains(desc)
@@ -79,7 +93,7 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         myFixture.launchAction(action)
     }
 
-    void doHighlightTest(boolean shouldFind, String message, LocalInspectionTool inspection) {
+    protected void doHighlightTest(boolean shouldFind, String message, LocalInspectionTool inspection) {
         myFixture.enableInspections(inspection)
         myFixture.configureByFile(testFile)
         doHighlightTest(shouldFind, message)
@@ -88,11 +102,11 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
     //#####################################
     // UTILS
     //#####################################
-    String getExpectedFilePath() {
+    protected String getExpectedFilePath() {
         return "${lang}/${getTestName(false)}.after.${lang}"
     }
 
-    String getTestFile() {
+    protected String getTestFile() {
         return "${lang}/${getTestName(false)}.${lang}"
     }
 
@@ -106,20 +120,6 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         PsiManager psiMan = PsiManager.getInstance(myFixture.project)
         assert virtualFile
         return psiMan.findFile(virtualFile)
-    }
-
-    private static PsiElementFilter getTagFilter() {
-        new PsiElementFilter() {
-
-            @Override
-            boolean isAccepted(@NotNull PsiElement psiElement) {
-                boolean isTag = psiElement instanceof XmlTag
-                if (!isTag) return false
-                boolean hasRelevantAttr = (psiElement as XmlTag).getAttribute('name')
-                return isTag && hasRelevantAttr
-            }
-
-        }
     }
 
 }
