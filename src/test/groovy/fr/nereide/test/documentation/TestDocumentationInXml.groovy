@@ -90,6 +90,8 @@ class TestDocumentationInXml extends BaseDocumentationTestCase {
      * PROPERTY DOC TESTS *
      **********************/
 
+    /* codenarc-disable GStringExpressionWithinString */
+
     void testQuickNavigateInfoOnPropertyInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnPropertyInXml.xml')
         final PsiElement element = myFixture.elementAtCaret
@@ -111,5 +113,6 @@ class TestDocumentationInXml extends BaseDocumentationTestCase {
         final PsiElement originalElement = myFixture.findElementByText('${uiLabelMap.TestPivooot}', XmlAttributeValue)
         assertHoverDocContains(element, originalElement, 'Piv')
     }
+    /* codenarc-enable GStringExpressionWithinString */
 
 }
