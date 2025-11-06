@@ -18,13 +18,13 @@
  */
 package fr.nereide.test.inspection
 
+import static fr.nereide.inspection.InspectionBundle.message
+
 import fr.nereide.inspection.java.CacheOnNeverCacheEntityJavaInspection
 import fr.nereide.inspection.java.DuplicatedEntityJavaInspection
 import fr.nereide.inspection.java.DuplicatedServiceJavaInspection
 import fr.nereide.inspection.java.EntityNotFoundInJavaInspection
 import fr.nereide.inspection.java.ServiceNotFoundInJavaInspection
-
-import static fr.nereide.inspection.InspectionBundle.message
 
 /**
  * Inspection tests in java
@@ -34,13 +34,6 @@ class JavaInspectionTest extends BaseInspectionTest {
     @Override
     String getLang() {
         return 'java'
-    }
-
-    void doNeverCacheTest(boolean mustFind) {
-        myFixture.enableInspections(new CacheOnNeverCacheEntityJavaInspection())
-        doInspectionThenQuickFixTestWithFileEdit(mustFind,
-                message('inspection.entity.cache.on.never.cache.use.quickfix'),
-                message('inspection.entity.cache.on.never.cache.display.descriptor'))
     }
 
     void testCacheOnNeverCacheEntity() {
@@ -91,6 +84,10 @@ class JavaInspectionTest extends BaseInspectionTest {
     void testEntityNotFoundInspectionSafety() {
         doHighlightTest(false, message('inspection.entity.not.found.display.descriptor'),
                 new EntityNotFoundInJavaInspection())
+    }
+
+    protected void doNeverCacheTest(boolean mustFind) {
+        doNeverCacheTest(mustFind, new CacheOnNeverCacheEntityJavaInspection())
     }
 
 }

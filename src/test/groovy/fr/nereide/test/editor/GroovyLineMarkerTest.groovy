@@ -10,9 +10,7 @@ import fr.nereide.editor.marker.groovy.GroovyServiceEcaEcaMarkerProvider
  */
 class GroovyLineMarkerTest extends BaseLineMarkerTest {
 
-    String getExtension() { return 'groovy' }
-
-    Class getElementTypeToFind() { return PsiElement }
+    /* codenarc-disable JUnitTestMethodWithoutAssert */
 
     void testServiceEcaMarkerInGroovy() {
         doTest(new GroovyServiceEcaEcaMarkerProvider(), '1 ECA(s) present on service')
@@ -25,5 +23,10 @@ class GroovyLineMarkerTest extends BaseLineMarkerTest {
     void testExtendedEntityMarkerInGroovy() {
         doTest(new GroovyExtendedEntityMarkerProvider(), 'Entity is extended')
     }
+    /* codenarc-enable JUnitTestMethodWithoutAssert */
+
+    protected String getExtension() { return 'groovy' }
+
+    protected Class getElementTypeToFind() { return PsiElement }
 
 }

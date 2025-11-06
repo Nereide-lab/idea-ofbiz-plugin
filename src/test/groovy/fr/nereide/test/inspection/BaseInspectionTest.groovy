@@ -1,5 +1,7 @@
 package fr.nereide.test.inspection
 
+import static fr.nereide.inspection.InspectionBundle.message
+
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
 import com.intellij.codeInspection.LocalInspectionTool
@@ -97,6 +99,13 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         myFixture.enableInspections(inspection)
         myFixture.configureByFile(testFile)
         doHighlightTest(shouldFind, message)
+    }
+
+    protected void doNeverCacheTest(boolean mustFind, LocalInspectionTool inspection) {
+        myFixture.enableInspections(inspection)
+        doInspectionThenQuickFixTestWithFileEdit(mustFind,
+                message('inspection.entity.cache.on.never.cache.use.quickfix'),
+                message('inspection.entity.cache.on.never.cache.display.descriptor'))
     }
 
     //#####################################

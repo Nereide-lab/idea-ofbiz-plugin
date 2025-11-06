@@ -14,6 +14,7 @@ import fr.nereide.inspection.groovy.ServiceNotFoundInGroovyInspection
 class GroovyInspectionTest extends BaseInspectionTest {
 
     /* codenarc-disable JUnitTestMethodWithoutAssert */
+
     void testCacheOnNeverCacheEntityInCompiledGroovy() {
         doNeverCacheTest(true)
     }
@@ -67,10 +68,7 @@ class GroovyInspectionTest extends BaseInspectionTest {
     }
 
     protected void doNeverCacheTest(boolean mustFind) {
-        myFixture.enableInspections(new CacheOnNeverCacheEntityGroovyInspection())
-        doInspectionThenQuickFixTestWithFileEdit(mustFind,
-                message('inspection.entity.cache.on.never.cache.use.quickfix'),
-                message('inspection.entity.cache.on.never.cache.display.descriptor'))
+        doNeverCacheTest(mustFind, new CacheOnNeverCacheEntityGroovyInspection())
     }
 
 }
