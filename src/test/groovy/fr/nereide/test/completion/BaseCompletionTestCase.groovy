@@ -26,7 +26,7 @@ import org.junit.Ignore
 @Ignore('Parent class, No tests here')
 class BaseCompletionTestCase extends BaseOfbizPluginTestCase {
 
-    static final String BASE_TEST_DIR = 'src/test/resources/testData/completion'
+    protected static final String BASE_TEST_DIR = 'src/test/resources/testData/completion'
 
     protected String getDestination() { return null }
 
@@ -40,7 +40,7 @@ class BaseCompletionTestCase extends BaseOfbizPluginTestCase {
 
     @Override
     protected String getTestDataPath() {
-        return 'src/test/resources/testData/completion'
+        return BASE_TEST_DIR
     }
 
     protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups) {
