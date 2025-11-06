@@ -11,9 +11,104 @@ import fr.nereide.reference.xml.FormReference
 import fr.nereide.reference.xml.MenuReference
 import fr.nereide.reference.xml.ScreenReference
 
+/**
+ * Reference tests in xml, compound specific
+ */
 class TestReferenceInXmlCompound extends BaseReferenceTestCase {
 
-    private static String MOVE_TO = "FooComponent/widget"
+    // =====================================
+    //              SCREEN TESTS
+    // =====================================
+
+    void testCpdFormReferenceFromCpdScreen() {
+        doTest(FormReference, 'FooForm')
+    }
+
+    void testCpdGridReferenceFromCpdScreen() {
+        doTest(GridReference, 'MyCompoundElement')
+    }
+
+    void testCpdScreenReferenceFromCpdScreen() {
+        doTest(ScreenReference, 'BarScreen')
+    }
+
+    void testCpdScreenDecoratorReferenceFromCpdScreen() {
+        doTest(ScreenReference, 'FooDecoratorScreen')
+    }
+
+    void testExternalFormRefFromCpdScreen() {
+        doTest(FormReference, 'OneFormAmongOthers')
+    }
+
+    void testExternalScreenRefFromCpdScreen() {
+        doTest(ScreenReference, 'MundaneScreen')
+    }
+
+    void testCpdMenuRefFromCpdScreen() {
+        doTest(MenuReference, 'FooMenu')
+    }
+
+    void testExternalMenuRefFromCpdScreen() {
+        doTest(MenuReference, 'BarMenu')
+    }
+
+    void testEntityRefFromCpdScreen() {
+        doTest(EntityReference, 'Entito')
+    }
+
+    void testFileRefFromCpdScreen() {
+        doTest(FileReference, 'footemplate')
+    }
+
+    void testCpdScreenRefFromExtScreen() {
+        doTest(ScreenReference, 'MyScreenInCpd')
+    }
+
+    void testCpdFormRefFromExtScreen() {
+        doTest(FormReference, 'MyFormInCpd')
+    }
+
+    // ============================================
+    //              FORMS TESTS
+    // ============================================
+
+    void testCpdRequestMapRefFromCpdForm() {
+        doTest(RequestMapReference, 'MyFooRequest')
+    }
+
+    void testCpdScreenRefFromCpdFieldForm() {
+        doTest(ScreenReference, 'MyPitaScreen')
+    }
+
+    void testCpdFormRefFromCpdFieldForm() {
+        doTest(FormReference, 'MyPitaForm')
+    }
+
+    void testCpdMenuRefFromCpdFieldForm() {
+        doTest(MenuReference, 'MyPitaMenu')
+    }
+
+    // =====================================
+    //         REQUEST MAP TESTS
+    // =====================================
+
+    void testCpdViewMapRefFromCpdRequestMap() {
+        doTest(ViewMapReference, 'myFooResponseInCpd')
+    }
+
+    void testServiceRefFromCpdRequestMap() {
+        doTest(ServiceReference, 'DonateToQuadratureDuNet')
+    }
+
+    void testJavaEventRefFromCpdRequestMap() {
+        doTest(JavaMethodReference, 'login')
+    }
+
+    void testCpdScreenRefFromCpdViewMap() {
+        doTest(ScreenReference, 'MyFooScreenInCpd')
+    }
+
+    private static final String MOVE_TO = 'FooComponent/widget'
 
     @Override
     protected String getTestDataPath() {
@@ -22,95 +117,4 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
 
     protected String getDestination() { return MOVE_TO }
 
-    //=====================================
-    //              SCREEN TESTS
-    //=====================================
-
-    void testCpdFormReferenceFromCpdScreen() {
-        doTest(FormReference.class, 'FooForm')
-    }
-
-    void testCpdGridReferenceFromCpdScreen() {
-        doTest(GridReference.class, 'MyCompoundElement')
-    }
-
-    void testCpdScreenReferenceFromCpdScreen() {
-        doTest(ScreenReference.class, 'BarScreen')
-    }
-
-    void testCpdScreenDecoratorReferenceFromCpdScreen() {
-        doTest(ScreenReference.class, 'FooDecoratorScreen')
-    }
-
-    void testExternalFormRefFromCpdScreen() {
-        doTest(FormReference.class, 'OneFormAmongOthers')
-    }
-
-    void testExternalScreenRefFromCpdScreen() {
-        doTest(ScreenReference.class, 'MundaneScreen')
-    }
-
-    void testCpdMenuRefFromCpdScreen() {
-        doTest(MenuReference.class, 'FooMenu')
-    }
-
-    void testExternalMenuRefFromCpdScreen() {
-        doTest(MenuReference.class, 'BarMenu')
-    }
-
-    void testEntityRefFromCpdScreen() {
-        doTest(EntityReference.class, 'Entito')
-    }
-
-    void testFileRefFromCpdScreen() {
-        doTest(FileReference.class, 'footemplate')
-    }
-
-    void testCpdScreenRefFromExtScreen() {
-        doTest(ScreenReference.class, 'MyScreenInCpd')
-    }
-
-    void testCpdFormRefFromExtScreen() {
-        doTest(FormReference.class, 'MyFormInCpd')
-    }
-
-    //=====================================
-    //              FORMS TESTS
-    //=====================================
-
-    void testCpdRequestMapRefFromCpdForm() {
-        doTest(RequestMapReference.class, 'MyFooRequest')
-    }
-
-    void testCpdScreenRefFromCpdFieldForm() {
-        doTest(ScreenReference.class, 'MyPitaScreen')
-    }
-
-    void testCpdFormRefFromCpdFieldForm() {
-        doTest(FormReference.class, 'MyPitaForm')
-    }
-
-    void testCpdMenuRefFromCpdFieldForm() {
-        doTest(MenuReference.class, 'MyPitaMenu')
-    }
-
-    //=====================================
-    //         REQUEST MAP TESTS
-    //=====================================
-
-    void testCpdViewMapRefFromCpdRequestMap() {
-        doTest(ViewMapReference.class, 'myFooResponseInCpd')
-    }
-
-    void testServiceRefFromCpdRequestMap() {
-        doTest(ServiceReference.class, 'DonateToQuadratureDuNet')
-    }
-
-    void testJavaEventRefFromCpdRequestMap() {
-        doTest(JavaMethodReference.class, 'login')
-    }
-
-    void testCpdScreenRefFromCpdViewMap() {
-        doTest(ScreenReference.class, 'MyFooScreenInCpd')
-    }
 }

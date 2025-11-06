@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - [#34] Added a pattern for references to request map in lookups.
+- [#37] Applied Codenarc rules to test sources
 
 ## [1.7.7]
 ### Changed

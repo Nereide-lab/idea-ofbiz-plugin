@@ -14,7 +14,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test
 
 import com.intellij.openapi.application.WriteAction
@@ -25,6 +24,9 @@ import com.intellij.testFramework.LightProjectDescriptor
 import com.intellij.testFramework.PsiTestUtil
 import org.jetbrains.annotations.NotNull
 
+/**
+ * Used for adding the ofbiz project as tests dependency
+ */
 class OfbizProjectDescriptor extends LightProjectDescriptor {
 
     @Override
@@ -32,7 +34,8 @@ class OfbizProjectDescriptor extends LightProjectDescriptor {
         super.setUpProject(project, handler)
         WriteAction.run(() -> {
             Module main = ModuleManager.getInstance(project).findModuleByName(TEST_MODULE_NAME)
-            PsiTestUtil.addLibrary(main, "lib/ofbiz.jar")
+            PsiTestUtil.addLibrary(main, 'lib/ofbiz.jar')
         })
     }
+
 }

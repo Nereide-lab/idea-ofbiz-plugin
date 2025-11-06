@@ -6,20 +6,23 @@ import com.intellij.psi.PsiElement
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
+/**
+ * Base class for line markers and gutter icons tests
+ */
 @Ignore('Parent class, No tests here')
 abstract class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
 
-    static final String BASE_TEST_DIR = 'src/test/resources/testData/editor'
-    static final String ELEMENT_SUFFIX = 'Element'
+    protected static final String BASE_TEST_DIR = 'src/test/resources/testData/editor'
+    protected static final String ELEMENT_SUFFIX = 'Element'
+
+    protected abstract Class getElementTypeToFind()
+
+    protected abstract String getExtension()
 
     @Override
     protected String getTestDataPath() {
-        return "$BASE_TEST_DIR"
+        return BASE_TEST_DIR
     }
-
-    abstract Class getElementTypeToFind()
-
-    abstract String getExtension()
 
     @Override
     protected void setUp() {
@@ -28,11 +31,13 @@ abstract class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
     }
 
     protected void doTest(LineMarkerProvider lineMarker, String tooltip) {
-        String file = "${this.getExtension()}/${this.getTestName(false)}.${this.getExtension()}"
+        String file = "${this.extension}/${this.getTestName(false)}.${this.extension}"
         myFixture.configureByFile(file)
-        PsiElement element = myFixture.findElementByText("${this.getTestName(false)}$ELEMENT_SUFFIX", this.getElementTypeToFind())
+        PsiElement element = myFixture.findElementByText("${this.getTestName(false)}$ELEMENT_SUFFIX",
+                this.elementTypeToFind)
         LineMarkerInfo lineMarkerInfo = lineMarker.getLineMarkerInfo(element)
-        assertNotNull(lineMarkerInfo)
-        assertEquals(tooltip, lineMarkerInfo.getLineMarkerTooltip())
+        assert lineMarkerInfo
+        assert tooltip, lineMarkerInfo.lineMarkerTooltip
     }
+
 }

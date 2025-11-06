@@ -14,14 +14,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.documentation
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttributeValue
 
+/**
+ * Documentation tests for xml
+ */
+// codenarc-disable DuplicateStringLiteral
 class TestDocumentationInXml extends BaseDocumentationTestCase {
-
 
     /*********************
      * SERVICE DOC TESTS *
@@ -29,25 +31,24 @@ class TestDocumentationInXml extends BaseDocumentationTestCase {
 
     void testQuickNavigateInfoOnServiceInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnServiceInXml.xml')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("HelloWorld", XmlAttributeValue.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('HelloWorld', XmlAttributeValue)
         assertCorrectQuickNavigateInfo(element, originalElement)
     }
 
     void testHoverDocOnServiceInXml() {
         myFixture.configureByFile('xml/HoverDocOnServiceInXml.xml')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("HelloWorld", XmlAttributeValue.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('HelloWorld', XmlAttributeValue)
         assertNotNullHoverDoc(element, originalElement)
     }
 
     void testFullDocOnServiceInXml() {
         myFixture.configureByFile('xml/FullDocOnServiceInXml.xml')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("HelloWorld", XmlAttributeValue.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('HelloWorld', XmlAttributeValue)
         assertNotNullFullDoc(element, originalElement)
     }
-
 
     /********************
      * ENTITY DOC TESTS *
@@ -55,18 +56,17 @@ class TestDocumentationInXml extends BaseDocumentationTestCase {
 
     void testQuickNavigateInfoOnEntityInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnEntityInXml.xml')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("Vi", XmlAttributeValue.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('Vi', XmlAttributeValue)
         assertCorrectQuickNavigateInfo(element, originalElement)
     }
 
     void testHoverDocOnEntityInXml() {
         myFixture.configureByFile('xml/HoverDocOnEntityInXml.xml')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("Vi", XmlAttributeValue.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('Vi', XmlAttributeValue)
         assertNotNullHoverDoc(element, originalElement)
     }
-
 
     /******************
      * VIEW DOC TESTS *
@@ -74,41 +74,45 @@ class TestDocumentationInXml extends BaseDocumentationTestCase {
 
     void testQuickNavigateInfoOnViewInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnViewInXml.xml')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("RandomView", XmlAttributeValue.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('RandomView', XmlAttributeValue)
         assertCorrectQuickNavigateInfo(element, originalElement)
     }
 
     void testHoverDocOnViewInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnViewInXml.xml')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText("RandomView", XmlAttributeValue.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('RandomView', XmlAttributeValue)
         assertNotNullHoverDoc(element, originalElement)
     }
-
 
     /**********************
      * PROPERTY DOC TESTS *
      **********************/
 
+    /* codenarc-disable GStringExpressionWithinString */
+
     void testQuickNavigateInfoOnPropertyInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnPropertyInXml.xml')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText('${uiLabelMap.TestPivooot}', XmlAttributeValue.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('${uiLabelMap.TestPivooot}', XmlAttributeValue)
         assertCorrectQuickNavigateInfo(element, originalElement)
     }
 
     void testQuickNavigateInfoOnPropertyInNotSimpleTitleInXml() {
         myFixture.configureByFile('xml/QuickNavigateInfoOnPropertyInNotSimpleTitleInXml.xml')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText('${uiLabelMap.TestMyFooLabel}', XmlAttributeValue.class)
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture
+                .findElementByText('${uiLabelMap.TestMyFooLabel}', XmlAttributeValue)
         assertCorrectQuickNavigateInfo(element, originalElement)
     }
 
     void testHoverDocOnPropertyInXml() {
         myFixture.configureByFile('xml/HoverDocOnPropertyInXml.xml')
-        final PsiElement element = myFixture.getElementAtCaret()
-        final PsiElement originalElement = myFixture.findElementByText('${uiLabelMap.TestPivooot}', XmlAttributeValue.class)
-        assertHoverDocContains(element, originalElement, "Piv")
+        final PsiElement element = myFixture.elementAtCaret
+        final PsiElement originalElement = myFixture.findElementByText('${uiLabelMap.TestPivooot}', XmlAttributeValue)
+        assertHoverDocContains(element, originalElement, 'Piv')
     }
+    /* codenarc-enable GStringExpressionWithinString */
+
 }

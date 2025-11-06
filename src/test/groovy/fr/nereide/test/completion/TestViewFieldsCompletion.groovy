@@ -1,17 +1,16 @@
 package fr.nereide.test.completion
 
-
 /**
  * <pre>
  * {@code org.apache.ofbiz.entity.GenericValue paper = from('PaperCompany')
  * def foo = paper.<caret> }
  * </pre>
  */
+// codenarc-disable DuplicateStringLiteral
 class TestViewFieldsCompletion extends TestCompletionInGroovy {
 
     void testEntityFieldCompletionInGroovyFileWithViewNoNested() {
-        List<String> expected = ['jo', 'gabriel', 'michael'],
-                     notExpected = ['maline']
+        List<String> expected = ['jo', 'gabriel', 'michael'], notExpected = ['maline']
         doTest(expected, notExpected)
     }
 
@@ -26,14 +25,12 @@ class TestViewFieldsCompletion extends TestCompletionInGroovy {
     }
 
     void testEntityFieldCompletionInGroovyFileWithViewAndExclude() {
-        List<String> expected = ['johnny', 'johnkreese'],
-                     notExpected = ['daniel']
+        List<String> expected = ['johnny', 'johnkreese'], notExpected = ['daniel']
         doTest(expected, notExpected)
     }
 
     void testEntityFieldCompletionInGroovyFileWithViewAndExcludeViewField() {
-        List<String> expected = ['johnny'],
-                     notExpected = ['daniel', 'johnkreese']
+        List<String> expected = ['johnny'], notExpected = ['daniel', 'johnkreese']
         doTest(expected, notExpected)
     }
 
@@ -47,4 +44,5 @@ class TestViewFieldsCompletion extends TestCompletionInGroovy {
                                  'geniusreese', 'geniusfrancis', 'geniuslois']
         doTest(expected)
     }
+
 }

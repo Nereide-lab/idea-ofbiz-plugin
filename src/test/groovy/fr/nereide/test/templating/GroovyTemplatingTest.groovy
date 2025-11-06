@@ -13,26 +13,27 @@ import fr.nereide.test.BaseOfbizPluginTestCase
  */
 class GroovyTemplatingTest extends BaseOfbizPluginTestCase {
 
-    @Override
-    protected void setUp() {
-        super.setUp()
-        TemplateManagerImpl.setTemplateTesting(myFixture.getTestRootDisposable())
-    }
-
-    @Override
-    protected String getTestDataPath() {
-        return "src/test/resources/testData/templating"
-    }
-
-    String getExpectedFileLocation() {
-        return "${getTestDataPath()}/reference/${getTestName(false)}.groovy.expected"
-    }
-
     void testGroovyServiceSimpleExpandInGroovyScript() {
         String file = "${this.getTestName(false)}.groovy"
         myFixture.configureByFile(file)
         new ListTemplatesAction().actionPerformedImpl(myFixture.editor.project, myFixture.editor)
         (LookupManager.getActiveLookup(myFixture.editor) as LookupImpl).finishLookup(Lookup.NORMAL_SELECT_CHAR)
-        assertSameLinesWithFile(getExpectedFileLocation(), myFixture.file.text )
+        assertSameLinesWithFile(expectedFileLocation, myFixture.file.text)
     }
+
+    private String getExpectedFileLocation() {
+        return testDataPath + '/reference/' + getTestName(false) + '.groovy.expected'
+    }
+
+    @Override
+    protected void setUp() {
+        super.setUp()
+        TemplateManagerImpl.templateTesting = myFixture.testRootDisposable
+    }
+
+    @Override
+    protected String getTestDataPath() {
+        return 'src/test/resources/testData/templating'
+    }
+
 }

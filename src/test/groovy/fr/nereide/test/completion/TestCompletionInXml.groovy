@@ -14,17 +14,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.completion
 
-class TestCompletionInXml extends BaseComplTestCase {
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/xml"
-    }
-
-    String getFileType() { return 'xml' }
+/**
+ * Completion tests for xml
+ */
+// codenarc-disable DuplicateListLiteral, DuplicateStringLiteral
+class TestCompletionInXml extends BaseCompletionTestCase {
 
     void testEntityCompletionInXmlFile() {
         List<String> expected = ['Yenefer', 'Roach']
@@ -64,8 +60,8 @@ class TestCompletionInXml extends BaseComplTestCase {
     void testEntityNameCompletionInEntityEngineFile() {
         List<String> expected = ['Yenefer', 'Roach', 'DunderMifflin', 'Sabre', 'DunderCorporate', 'CobraKai',
                                  'Malcolm', 'Mordor', 'RossCouple', 'RossAndSister']
-        List<String> notExpected = ['WholePaperCompany', 'RecursiveView', 'CobraKaiNeverDie', 'Miyagido', 'InTheMiddle',
-                                    'LifeIsUnfair', 'PaperCompany']
+        List<String> notExpected = ['WholePaperCompany', 'RecursiveView', 'CobraKaiNeverDie', 'Miyagido',
+                                    'InTheMiddle', 'LifeIsUnfair', 'PaperCompany']
         doTest(expected, notExpected)
     }
 
@@ -133,8 +129,15 @@ class TestCompletionInXml extends BaseComplTestCase {
     }
 
     void testSectionCompletionInFindSimpleScreen() {
-        List<String> expected = ["search-options", "search-results"]
+        List<String> expected = ['search-options', 'search-results']
         doTest(expected)
     }
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/xml"
+    }
+
+    protected String getFileType() { return 'xml' }
 
 }

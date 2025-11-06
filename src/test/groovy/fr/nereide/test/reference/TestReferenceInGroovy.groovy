@@ -14,13 +14,44 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.reference
 
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.ServiceReference
 
+/**
+ * Reference tests in groovy
+ */
+// codenarc-disable DuplicateStringLiteral
 class TestReferenceInGroovy extends BaseReferenceTestCase {
+
+    void testGroovyEntityReferenceWithFindMethod() {
+        doTest(EntityReference, 'Lobster')
+    }
+
+    void testGroovyViewEntityReferenceWithFindMethod() {
+        doTest(EntityReference, 'Zaun')
+    }
+
+    void testGroovyEntityReferenceWithFromMethod() {
+        doTest(EntityReference, 'PickleRick')
+    }
+
+    void testGroovyServiceReferenceWithRunCall() {
+        doTest(ServiceReference, 'pivot')
+    }
+
+    void testEntityReferenceWithMakeValueMethod() {
+        doTest(EntityReference, 'Zaun')
+    }
+
+    void testEntityReferenceWithGetRelatedMethodWithoutTitleOnTargetEntity() {
+        doTest(EntityReference, 'Matata')
+    }
+
+    void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
+        doTest(EntityReference, 'Matata1')
+    }
 
     @Override
     protected String getTestDataPath() {
@@ -30,31 +61,4 @@ class TestReferenceInGroovy extends BaseReferenceTestCase {
     @Override
     protected String getExtension() { return 'groovy' }
 
-    void testGroovyEntityReferenceWithFindMethod() {
-        doTest(EntityReference.class, 'Lobster')
-    }
-
-    void testGroovyViewEntityReferenceWithFindMethod() {
-        doTest(EntityReference.class, 'Zaun')
-    }
-
-    void testGroovyEntityReferenceWithFromMethod() {
-        doTest(EntityReference.class, 'PickleRick')
-    }
-
-    void testGroovyServiceReferenceWithRunCall() {
-        doTest(ServiceReference.class, 'pivot')
-    }
-
-    void testEntityReferenceWithMakeValueMethod() {
-        doTest(EntityReference.class, 'Zaun')
-    }
-
-    void testEntityReferenceWithGetRelatedMethodWithoutTitleOnTargetEntity() {
-        doTest(EntityReference.class, 'Matata')
-    }
-
-    void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
-        doTest(EntityReference.class, 'Matata1')
-    }
 }

@@ -5,11 +5,12 @@ import fr.nereide.editor.marker.java.JavaEntityEcaMarkerProvider
 import fr.nereide.editor.marker.java.JavaExtendedEntityMarkerProvider
 import fr.nereide.editor.marker.java.JavaServiceEcaEcaMarkerProvider
 
+/**
+ * Line markers and gutter icons tests in java
+ */
 class JavaLineMarkerTest extends BaseLineMarkerTest {
 
-    String getExtension() { return 'java' }
-
-    Class getElementTypeToFind() { return PsiLiteralExpression.class }
+    /* codenarc-disable JUnitTestMethodWithoutAssert */
 
     void testServiceEcaMarkerInJava() {
         doTest(new JavaServiceEcaEcaMarkerProvider(), '1 ECA(s) present on service')
@@ -22,4 +23,10 @@ class JavaLineMarkerTest extends BaseLineMarkerTest {
     void testExtendedEntityMarkerInJava() {
         doTest(new JavaExtendedEntityMarkerProvider(), 'Entity is extended')
     }
+    /* codenarc-enable JUnitTestMethodWithoutAssert */
+
+    protected String getExtension() { return 'java' }
+
+    protected Class getElementTypeToFind() { return PsiLiteralExpression }
+
 }

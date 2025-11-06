@@ -14,17 +14,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.completion
 
 import com.intellij.codeInsight.completion.CompletionType
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
+/**
+ * Base test class for all completion tests
+ */
 @Ignore('Parent class, No tests here')
-class BaseComplTestCase extends BaseOfbizPluginTestCase {
+class BaseCompletionTestCase extends BaseOfbizPluginTestCase {
 
-    static final String BASE_TEST_DIR = 'src/test/resources/testData/completion'
+    protected static final String BASE_TEST_DIR = 'src/test/resources/testData/completion'
 
     protected String getDestination() { return null }
 
@@ -38,7 +40,7 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
 
     @Override
     protected String getTestDataPath() {
-        return "src/test/resources/testData/completion"
+        return BASE_TEST_DIR
     }
 
     protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups) {
@@ -54,14 +56,14 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
     }
 
     protected void doTest(List<String> expectedLookups, List<String> notExpectedLookups, boolean move) {
-        String file = "${this.getTestName(false)}.${getFileType()}"
-        if (move && getDestination()) {
-            myFixture.moveFile(file, getDestination())
-            file = "${getDestination()}/$file"
+        String file = "${this.getTestName(false)}.${fileType}"
+        if (move && destination) {
+            myFixture.moveFile(file, destination)
+            file = "${destination}/$file"
         }
         myFixture.configureByFile(file)
         myFixture.complete(CompletionType.BASIC)
-        List<String> lookupElementStrings = myFixture.getLookupElementStrings()
+        List<String> lookupElementStrings = myFixture.lookupElementStrings
         if (expectedLookups) {
             assertContainsElements(lookupElementStrings, expectedLookups)
             if (notExpectedLookups) {
@@ -71,4 +73,5 @@ class BaseComplTestCase extends BaseOfbizPluginTestCase {
             assert !lookupElementStrings
         }
     }
+
 }

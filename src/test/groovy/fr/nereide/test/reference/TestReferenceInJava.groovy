@@ -14,14 +14,64 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.reference
-
 
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.ServiceReference
 
+/**
+ * Reference tests in java
+ */
+// codenarc-disable DuplicateStringLiteral
 class TestReferenceInJava extends BaseReferenceTestCase {
+
+    void testEntityReferenceWithFindMethod() {
+        doTest(EntityReference, 'HyruleCastle')
+    }
+
+    void testEntityReferenceWithFindOneMethod() {
+        doTest(EntityReference, 'PiltoverData')
+    }
+
+    void testEntityReferenceWithFindListMethod() {
+        doTest(EntityReference, 'Enderman')
+    }
+
+    void testEntityReferenceWithFindAllMethod() {
+        doTest(EntityReference, 'TwoFlowers')
+    }
+
+    void testEntityReferenceWithAddMemberEntityMethod() {
+        doTest(EntityReference, 'WeWereOnABreak')
+    }
+
+    void testEntityReferenceWithFromMethod() {
+        doTest(EntityReference, 'Rick')
+    }
+
+    void testEntityReferenceWithMakeValueMethod() {
+        doTest(EntityReference, 'PickleRick')
+    }
+
+    void testServiceReferenceWithRunSync() {
+        doTest(ServiceReference, 'pivot')
+    }
+
+    void testServiceReferenceWithMakeValidContext() {
+        doTest(ServiceReference, 'pivot')
+    }
+
+    void testServiceReferenceWithSchedule() {
+        doTest(ServiceReference, 'pivot')
+    }
+
+    void testEntityReferenceWithGetRelatedMethodWithoutTitleOnTargetEntity() {
+        doTest(EntityReference, 'Matata2')
+    }
+
+    void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
+        doTest(EntityReference, 'Matata3')
+    }
 
     @Override
     protected String getTestDataPath() {
@@ -31,51 +81,4 @@ class TestReferenceInJava extends BaseReferenceTestCase {
     @Override
     protected String getExtension() { return 'java' }
 
-    void testEntityReferenceWithFindMethod() {
-        doTest(EntityReference.class, 'HyruleCastle')
-    }
-
-    void testEntityReferenceWithFindOneMethod() {
-        doTest(EntityReference.class, 'PiltoverData')
-    }
-
-    void testEntityReferenceWithFindListMethod() {
-        doTest(EntityReference.class, 'Enderman')
-    }
-
-    void testEntityReferenceWithFindAllMethod() {
-        doTest(EntityReference.class, 'TwoFlowers')
-    }
-
-    void testEntityReferenceWithAddMemberEntityMethod() {
-        doTest(EntityReference.class, 'WeWereOnABreak')
-    }
-
-    void testEntityReferenceWithFromMethod() {
-        doTest(EntityReference.class, 'Rick')
-    }
-
-    void testEntityReferenceWithMakeValueMethod() {
-        doTest(EntityReference.class, 'PickleRick')
-    }
-
-    void testServiceReferenceWithRunSync() {
-        doTest(ServiceReference.class, 'pivot')
-    }
-
-    void testServiceReferenceWithMakeValidContext() {
-        doTest(ServiceReference.class, 'pivot')
-    }
-
-    void testServiceReferenceWithSchedule() {
-        doTest(ServiceReference.class, 'pivot')
-    }
-
-    void testEntityReferenceWithGetRelatedMethodWithoutTitleOnTargetEntity() {
-        doTest(EntityReference.class, 'Matata2')
-    }
-
-    void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
-        doTest(EntityReference.class, 'Matata3')
-    }
 }

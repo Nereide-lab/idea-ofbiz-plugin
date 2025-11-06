@@ -1,5 +1,7 @@
 package fr.nereide.test.inspection
 
+import static fr.nereide.inspection.InspectionBundle.message
+
 import com.intellij.codeInsight.daemon.impl.HighlightInfo
 import com.intellij.codeInsight.intention.IntentionAction
 import fr.nereide.inspection.xml.EmptyFileLocationInspection
@@ -10,15 +12,15 @@ import fr.nereide.inspection.xml.ScreenNotFoundInFileLocationInspection
 import fr.nereide.inspection.xml.ServiceNotFoundInXmlInspection
 import fr.nereide.project.OfbizProjectHelper
 
-import static fr.nereide.inspection.InspectionBundle.message
-
+/**
+ * Inspection tests for Xml
+ */
+// codenarc-disable JUnitTestMethodWithoutAssert
 class XmlInspectionTest extends BaseInspectionTest {
 
-    String getLang() { return 'xml' }
-
-    //==============================
+    // =====================================
     // GROOVY TESTS
-    //==============================
+    // =====================================
     void testNoGroovyServiceFileFoundInspectionFileFix() {
         String intention = message('inspection.location.target.file.not.found.use.quickfix.fixpath')
         myFixture.enableInspections(new EmptyFileLocationInspection())
@@ -33,17 +35,9 @@ class XmlInspectionTest extends BaseInspectionTest {
         doFileInspectionTestWithFileCreation(true, intention, description, location)
     }
 
-    //==============================
+    // =====================================
     // SCREEN TESTS
-    //==============================
-    void doScreenNotFoundTest(boolean mustFind, String location, String elName) {
-        myFixture.enableInspections(new ScreenNotFoundInFileLocationInspection())
-        doInspectionThenQuickFixWithXmlElementCreate(mustFind,
-                message('inspection.screen.not.found.on.target.use.quickfix.create'),
-                message('inspection.screen.not.found.on.target.display.descriptor'),
-                location, elName, 'screen')
-    }
-
+    // =====================================
     void testNoScreenFoundInTargetFileInScreenWithLocationAttr() {
         String location = 'zelda/widget/ZeldaFoesScreens.xml'
         String elementName = 'HobegobelinScreen'
@@ -82,7 +76,8 @@ class XmlInspectionTest extends BaseInspectionTest {
 
     void testScreenIsFoundInCompoundFileFromScreenWhenThereIsntButThereIsAFormWithSameName() {
         doMove()
-        String location = 'zelda/widget/ScreenIsFoundInCompoundFileFromScreenWhenThereIsntButThereIsAFormWithSameName.xml'
+        String location =
+                'zelda/widget/ScreenIsFoundInCompoundFileFromScreenWhenThereIsntButThereIsAFormWithSameName.xml'
         String elementName = 'ILikeFairPhone'
         doScreenNotFoundTest(true, location, elementName)
     }
@@ -91,17 +86,9 @@ class XmlInspectionTest extends BaseInspectionTest {
         doScreenNotFoundTest(false, null, null)
     }
 
-    //==============================
+    // =====================================
     // FORMS TESTS
-    //==============================
-    void doFormNotFoundTest(boolean mustFind, String location, String elName) {
-        myFixture.enableInspections(new FormNotFoundInFileLocationInspection())
-        doInspectionThenQuickFixWithXmlElementCreate(mustFind,
-                message('inspection.form.not.found.on.target.use.quickfix.create'),
-                message('inspection.form.not.found.on.target.display.descriptor'),
-                location, elName, 'form')
-    }
-
+    // =====================================
     void testNoFormFoundInTargetFileInForm() {
         String location = 'zelda/widget/ZeldaFoesForms.xml'
         String elementName = 'MyZeldaFoesFormNotFound'
@@ -123,9 +110,9 @@ class XmlInspectionTest extends BaseInspectionTest {
         doFormNotFoundTest(false, null, null)
     }
 
-    //==============================
+    // =====================================
     // UILABEL TESTS
-    //==============================
+    // =====================================
     void testLabelNotFoundInScreenFile() { // TODO refactor this f test
         String desc = message('inspection.label.not.found.display.descriptor')
         String intention = message('inspection.label.not.found.quickfix.create')
@@ -135,18 +122,18 @@ class XmlInspectionTest extends BaseInspectionTest {
         myFixture.moveFile("xml/$file", dest)
         myFixture.configureByFile("$dest/$file")
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
-        List<String> highlightDescs = highlightInfos.collect { it.description }
-        assertFalse highlightInfos.isEmpty()
+        List<String> highlightDescs = highlightInfos*.description
+        assert !highlightInfos.empty
         assert highlightDescs.contains(desc)
         final IntentionAction action = myFixture.findSingleIntention(intention)
-        assertNotNull action
+        assert action
         myFixture.launchAction(action)
         assert OfbizProjectHelper.getInstance(myFixture.project).getProperty('notExistingLabel')
     }
 
-    //==============================
+    // =====================================
     // SERVICES TESTS
-    //==============================
+    // =====================================
     void testServiceNotFoundInspection() {
         doHighlightTest(true, message('inspection.service.not.found.display.descriptor'),
                 new ServiceNotFoundInXmlInspection())
@@ -157,9 +144,9 @@ class XmlInspectionTest extends BaseInspectionTest {
                 new ServiceNotFoundInXmlInspection())
     }
 
-    //==============================
+    // =====================================
     // ENTITY TESTS
-    //==============================
+    // =====================================
     void testEntityNotFoundInspection() {
         doHighlightTest(true, message('inspection.entity.not.found.display.descriptor'),
                 new EntityNotFoundInXmlInspection())
@@ -169,4 +156,23 @@ class XmlInspectionTest extends BaseInspectionTest {
         doHighlightTest(false, message('inspection.entity.not.found.display.descriptor'),
                 new EntityNotFoundInXmlInspection())
     }
+
+    protected String getLang() { return 'xml' }
+
+    private void doFormNotFoundTest(boolean mustFind, String location, String elName) {
+        myFixture.enableInspections(new FormNotFoundInFileLocationInspection())
+        doInspectionThenQuickFixWithXmlElementCreate(mustFind,
+                message('inspection.form.not.found.on.target.use.quickfix.create'),
+                message('inspection.form.not.found.on.target.display.descriptor'),
+                location, elName, 'form')
+    }
+
+    private void doScreenNotFoundTest(boolean mustFind, String location, String elName) {
+        myFixture.enableInspections(new ScreenNotFoundInFileLocationInspection())
+        doInspectionThenQuickFixWithXmlElementCreate(mustFind,
+                message('inspection.screen.not.found.on.target.use.quickfix.create'),
+                message('inspection.screen.not.found.on.target.display.descriptor'),
+                location, elName, 'screen')
+    }
+
 }

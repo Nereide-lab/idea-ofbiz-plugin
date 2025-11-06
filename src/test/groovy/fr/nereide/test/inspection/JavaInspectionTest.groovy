@@ -16,8 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.inspection
+
+import static fr.nereide.inspection.InspectionBundle.message
 
 import fr.nereide.inspection.java.CacheOnNeverCacheEntityJavaInspection
 import fr.nereide.inspection.java.DuplicatedEntityJavaInspection
@@ -25,21 +26,12 @@ import fr.nereide.inspection.java.DuplicatedServiceJavaInspection
 import fr.nereide.inspection.java.EntityNotFoundInJavaInspection
 import fr.nereide.inspection.java.ServiceNotFoundInJavaInspection
 
-import static fr.nereide.inspection.InspectionBundle.message
-
+/**
+ * Inspection tests in java
+ */
 class JavaInspectionTest extends BaseInspectionTest {
 
-    @Override
-    String getLang() {
-        return 'java'
-    }
-
-    void doNeverCacheTest(boolean mustFind) {
-        myFixture.enableInspections(new CacheOnNeverCacheEntityJavaInspection())
-        doInspectionThenQuickFixTestWithFileEdit(mustFind,
-                message('inspection.entity.cache.on.never.cache.use.quickfix'),
-                message('inspection.entity.cache.on.never.cache.display.descriptor'))
-    }
+    /* codenarc-disable JUnitTestMethodWithoutAssert */
 
     void testCacheOnNeverCacheEntity() {
         doNeverCacheTest(true)
@@ -90,4 +82,15 @@ class JavaInspectionTest extends BaseInspectionTest {
         doHighlightTest(false, message('inspection.entity.not.found.display.descriptor'),
                 new EntityNotFoundInJavaInspection())
     }
+    /* codenarc-enable JUnitTestMethodWithoutAssert */
+
+    @Override
+    protected String getLang() {
+        return 'java'
+    }
+
+    protected void doNeverCacheTest(boolean mustFind) {
+        doNeverCacheTest(mustFind, new CacheOnNeverCacheEntityJavaInspection())
+    }
+
 }

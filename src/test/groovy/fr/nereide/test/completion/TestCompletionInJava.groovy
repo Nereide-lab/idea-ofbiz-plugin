@@ -14,17 +14,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.completion
 
-class TestCompletionInJava extends BaseComplTestCase {
-
-    String getFileType() { return 'java' }
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/java"
-    }
+/**
+ * Completion tests for java
+ */
+// codenarc-disable DuplicateListLiteral, DuplicateStringLiteral
+class TestCompletionInJava extends BaseCompletionTestCase {
 
     /**
      * {@code EntityQuery.from("<caret>"); }
@@ -42,9 +38,9 @@ class TestCompletionInJava extends BaseComplTestCase {
         doTest(expected)
     }
 
-    //**********************************************
+    // =====================================***
     //                 ENTITY FIELDS              //
-    //**********************************************
+    // =====================================***
 
     /**
      * <pre>
@@ -89,8 +85,8 @@ class TestCompletionInJava extends BaseComplTestCase {
     /**
      * <pre> {@code GenericValue testData;
      *  try {
-     *      testData = //..
-     *  } catch {//.. }
+     *      testData = // ..
+     *  } catch { //.. }
      *  String foo = testData.get("<caret>");}
      *  </pre>
      */
@@ -131,4 +127,12 @@ class TestCompletionInJava extends BaseComplTestCase {
         List<String> expected = ['michael', 'maline']
         doTest(expected, notExpected)
     }
+
+    protected String getFileType() { return 'java' }
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/java"
+    }
+
 }

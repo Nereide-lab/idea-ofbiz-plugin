@@ -1,15 +1,9 @@
 package fr.nereide.test.completion
 
-class TestCompletionInXmlCpd extends BaseComplTestCase {
-
-    private static String MOVE_TO = "forest-component/widget"
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/compound"
-    }
-
-    protected String getDestination() { return MOVE_TO }
+/**
+ * Completion tests for Xml, compound specific
+ */
+class TestCompletionInXmlCpd extends BaseCompletionTestCase {
 
     void testScreenCompletionInIncludeScreenInCpd() {
         doTest(['Kelvin'], true)
@@ -34,6 +28,15 @@ class TestCompletionInXmlCpd extends BaseComplTestCase {
     void testSectionCompletionInSearchFindCompoundScreen() {
         doTest(['actions', 'menu-bar', 'single', 'content', 'list'])
     }
+
+    private static final String MOVE_TO = 'forest-component/widget'
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/compound"
+    }
+
+    protected String getDestination() { return MOVE_TO }
 
 }
 

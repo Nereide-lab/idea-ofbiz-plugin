@@ -14,18 +14,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.completion
 
-
-class TestCompletionInGroovy extends BaseComplTestCase {
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/groovy"
-    }
-
-    String getFileType() { return 'groovy' }
+/**
+ * Completion tests for groovy
+ */
+// codenarc-disable DuplicateListLiteral, DuplicateStringLiteral
+class TestCompletionInGroovy extends BaseCompletionTestCase {
 
     /**
      * {@code def myVar = EntityQuery.use(delegator).from('<caret>').queryFirst()}
@@ -53,9 +48,9 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         doTest(expected)
     }
 
-    //**********************************************
+    // =====================================***
     //                 ENTITY FIELDS              //
-    //**********************************************
+    // =====================================***
 
     /**
      * <pre>
@@ -92,7 +87,9 @@ class TestCompletionInGroovy extends BaseComplTestCase {
 
     /**
      * <pre>
-     * {@code GenericValue myVal = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryFirst()
+     * {@code GenericValue myVal = EntityQuery.use(delegator).from('RossAndSister')
+     *                                                      .where('foo', 'bar')
+     *                                                      .queryFirst()
      * myVal.get('<caret>')
      *} </pre>
      */
@@ -101,11 +98,13 @@ class TestCompletionInGroovy extends BaseComplTestCase {
         doTest(expected)
     }
 
-
     /**
      * Compiled
      * <pre>
-     * {@code List<GenericValue> myVals = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryList()
+     * {@code List<GenericValue> myVals = EntityQuery.use(delegator)
+     *                      .from('RossAndSister')
+     *                      .where('foo', 'bar')
+     *                      .queryList()
      * for (GenericValue myVal : myVals) { myVal.get('<caret>') }
      *} </pre>
      */
@@ -117,7 +116,9 @@ class TestCompletionInGroovy extends BaseComplTestCase {
     /**
      * Script
      * <pre>
-     * {@code List<GenericValue> myVals = EntityQuery.use(delegator).from('RossAndSister').where('foo', 'bar').queryList()
+     * {@code List<GenericValue> myVals = EntityQuery.use(delegator).from('RossAndSister')
+     *                                                              .where('foo', 'bar')
+     *                                                              .queryList()
      * for (GenericValue myVal : myVals) { myVal.get('<caret>') }
      *} </pre>
      */
@@ -148,7 +149,7 @@ class TestCompletionInGroovy extends BaseComplTestCase {
      * Compiled
      * {@code
      * GenericValue myVal = null
-     * try { //query
+     * try { // query
      * } catch (Exception ignored) { }
      * myVal.get('<caret>')
      *}
@@ -162,7 +163,7 @@ class TestCompletionInGroovy extends BaseComplTestCase {
      * Script
      * {@code
      * GenericValue myVal = null
-     * try { //query
+     * try { // query
      * } catch (Exception ignored) { }
      * myVal.get('<caret>')
      *}
@@ -249,4 +250,11 @@ class TestCompletionInGroovy extends BaseComplTestCase {
     void testEntityFieldCompletionOnEntityWithExtends() {
         doTest(['field1', 'field2'])
     }
+
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/groovy"
+    }
+
+    protected String getFileType() { return 'groovy' }
+
 }

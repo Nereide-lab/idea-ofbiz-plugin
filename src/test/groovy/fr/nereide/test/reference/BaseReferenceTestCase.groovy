@@ -14,7 +14,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package fr.nereide.test.reference
 
 import com.intellij.psi.PsiElement
@@ -24,7 +23,6 @@ import com.intellij.psi.PsiReference
 import com.intellij.psi.ResolveResult
 import com.intellij.psi.impl.source.resolve.reference.impl.PsiMultiReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
-import com.intellij.util.xml.DomElement
 import com.intellij.util.xml.DomManager
 import fr.nereide.reference.common.EntityReference
 import fr.nereide.reference.common.UiLabelReference
@@ -34,88 +32,99 @@ import fr.nereide.reference.xml.RequestMapReference
 import fr.nereide.test.BaseOfbizPluginTestCase
 import org.junit.Ignore
 
+/**
+ * Base class for references tests
+ */
 @Ignore('Setup class, No tests here')
 class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
 
-    static final String BASE_TEST_DIR = 'src/test/resources/testData/reference'
+    protected static final String BASE_TEST_DIR = 'src/test/resources/testData/reference'
 
-    /**
-     * Default reference test file extention is xml
-     */
     protected String getExtension() { return 'xml' }
 
-    /**
-     * Used for moving files in tests in case there is need for reference resolving
-     */
     protected String getDestination() { return null }
 
     @Override
     protected void setUp() {
         super.setUp()
         myFixture.copyDirectoryToProject('assets', '')
-        if (getDestination()) {
-            String file = "${this.getTestName(false)}.${getExtension()}"
-            myFixture.moveFile(file, getDestination())
+        if (destination) {
+            String file = "${this.getTestName(false)}.${extension}"
+            myFixture.moveFile(file, destination)
         }
+    }
+
+    protected void doTest(boolean mustFind) {
+        doTest(null, null, false, mustFind)
     }
 
     protected void doTest(Class expectedRefType, String expectedRefValueName) {
-        doTest(expectedRefType, expectedRefValueName, false)
+        doTest(expectedRefType, expectedRefValueName, false, true)
     }
 
     protected void doTest(Class expectedRefType, String expectedRefValueName, boolean multiExpected) {
-        String file = "${this.getTestName(false)}.${getExtension()}"
+        doTest(expectedRefType, expectedRefValueName, multiExpected, true)
+    }
+
+    protected void doTest(Class expectedRefType, String expectedRefValueName, boolean multiExpected, boolean mustFind) {
+        String file = "${this.getTestName(false)}.${extension}"
         myFixture.configureByFile(file)
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
-        if (ref instanceof PsiMultiReference) {
-            PsiMultiReference multiRef = ref
-            ref = ref.getReferences().find { expectedRefType.isAssignableFrom(it.getClass()) }
+        /* codenarc-disable UnnecessaryGetter */
+        PsiReference myRef = myFixture.getReferenceAtCaretPositionWithAssertion()
+        if (!mustFind) {
+            assert !myRef.resolve()
+            return
+        }
+        /* codenarc-enable UnnecessaryGetter */
+        if (myRef instanceof PsiMultiReference) {
+            PsiMultiReference multiRef = myRef
+            myRef = myRef.references.find { ref -> expectedRefType.isAssignableFrom(ref.class) }
             assertNoOtherRefType(multiRef, expectedRefType)
         }
-        assert expectedRefType.isAssignableFrom(ref.getClass())
+        assert expectedRefType.isAssignableFrom(myRef.class)
         PsiElement resolve
         if (multiExpected) {
-            ResolveResult[] resolves = (ref as PsiPolyVariantReference).multiResolve(false)
+            ResolveResult[] resolves = (myRef as PsiPolyVariantReference).multiResolve(false)
             assert "Multi reference for $expectedRefValueName not found", resolves.size() > 1
-            resolve = resolves[0].getElement()
+            resolve = resolves[0].element
         } else {
-            resolve = ref.resolve()
-            assertNotNull "Reference for $expectedRefValueName not found", resolve
+            resolve = myRef.resolve()
+            assert resolve
         }
-
-        String refValueName = ''
-        if (ref instanceof FileReference) {
-            String fileName = (ref as FileReference).resolve().getName()
-            refValueName = fileName.substring(0, fileName.indexOf('.'))
-        } else if (ref instanceof JavaMethodReference || ref instanceof GroovyServiceDefReference) {
-            refValueName = (resolve as PsiMethod).getName()
-        } else {
-            DomManager dm = DomManager.getDomManager(myFixture.getProject())
-            DomElement element = dm.getDomElement(resolve)
-            if (ref instanceof UiLabelReference) {
-                refValueName = element.getKey()
-            } else if (ref instanceof EntityReference) {
-                refValueName = element.getEntityName()
-            } else if (ref instanceof RequestMapReference) {
-                refValueName = element.getUri()
-            } else { // default
-                refValueName = element.getName()
-            }
+        DomManager dm = DomManager.getDomManager(myFixture.project)
+        String refValueName
+        switch (myRef) {
+            case FileReference:
+                String fileName = (myRef as FileReference).resolve().name
+                refValueName = fileName.substring(0, fileName.indexOf('.'))
+                break
+            case JavaMethodReference:
+            case GroovyServiceDefReference:
+                refValueName = (resolve as PsiMethod).name
+                break
+            case UiLabelReference:
+                refValueName = dm.getDomElement(resolve).key
+                break
+            case EntityReference:
+                refValueName = dm.getDomElement(resolve).entityName
+                break
+            case RequestMapReference:
+                refValueName = dm.getDomElement(resolve).uri
+                break
+            default:
+                refValueName = dm.getDomElement(resolve).name
         }
         assert refValueName == expectedRefValueName
-
     }
 
     /**
      * Checks that no other reference type was found for an element.
      * For example, no screen reference resolved from a form
-     * @param multiRef
-     * @param expectedRefType
      */
     private static void assertNoOtherRefType(PsiMultiReference multiRef, Class expectedRefType) {
-        assert (multiRef.getReferences() as List).stream()
-                .filter { !expectedRefType.isAssignableFrom(it.getClass()) }
-                .filter { it.getClass().getName().contains('fr.nereide') }
+        assert (multiRef.references as List).stream()
+                .filter { ref -> !expectedRefType.isAssignableFrom(ref.class) }
+                .filter { ref -> ref.class.name.contains('fr.nereide') }
                 .toList().size() == 0
     }
 
