@@ -80,25 +80,28 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
             resolve = myRef.resolve()
             assert resolve
         }
-
+        DomManager dm = DomManager.getDomManager(myFixture.project)
         String refValueName
-        if (myRef instanceof FileReference) {
-            String fileName = (myRef as FileReference).resolve().name
-            refValueName = fileName.substring(0, fileName.indexOf('.'))
-        } else if (myRef instanceof JavaMethodReference || myRef instanceof GroovyServiceDefReference) {
-            refValueName = (resolve as PsiMethod).name
-        } else {
-            DomManager dm = DomManager.getDomManager(myFixture.project)
-            DomElement element = dm.getDomElement(resolve)
-            if (myRef instanceof UiLabelReference) {
-                refValueName = element.key
-            } else if (myRef instanceof EntityReference) {
-                refValueName = element.entityName
-            } else if (myRef instanceof RequestMapReference) {
-                refValueName = element.uri
-            } else { // default
-                refValueName = element.name
-            }
+        switch (myRef) {
+            case FileReference:
+                String fileName = (myRef as FileReference).resolve().name
+                refValueName = fileName.substring(0, fileName.indexOf('.'))
+                break
+            case JavaMethodReference:
+            case GroovyServiceDefReference:
+                refValueName = (resolve as PsiMethod).name
+                break
+            case UiLabelReference:
+                refValueName = dm.getDomElement(resolve).key
+                break
+            case EntityReference:
+                refValueName = dm.getDomElement(resolve).entityName
+                break
+            case RequestMapReference:
+                refValueName = dm.getDomElement(resolve).uri
+                break
+            default:
+                refValueName = dm.getDomElement(resolve).name
         }
         assert refValueName == expectedRefValueName
     }
