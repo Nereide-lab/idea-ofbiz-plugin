@@ -16,18 +16,9 @@ import fr.nereide.reference.xml.ScreenReference
  */
 class TestReferenceInXmlCompound extends BaseReferenceTestCase {
 
-    private static String MOVE_TO = 'FooComponent/widget'
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/compound"
-    }
-
-    protected String getDestination() { return MOVE_TO }
-
-    //=====================================
+    // =====================================
     //              SCREEN TESTS
-    //=====================================
+    // =====================================
 
     void testCpdFormReferenceFromCpdScreen() {
         doTest(FormReference, 'FooForm')
@@ -77,9 +68,9 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
         doTest(FormReference, 'MyFormInCpd')
     }
 
-    //=====================================
+    // ============================================
     //              FORMS TESTS
-    //=====================================
+    // ============================================
 
     void testCpdRequestMapRefFromCpdForm() {
         doTest(RequestMapReference, 'MyFooRequest')
@@ -97,9 +88,9 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
         doTest(MenuReference, 'MyPitaMenu')
     }
 
-    //=====================================
+    // =====================================
     //         REQUEST MAP TESTS
-    //=====================================
+    // =====================================
 
     void testCpdViewMapRefFromCpdRequestMap() {
         doTest(ViewMapReference, 'myFooResponseInCpd')
@@ -116,5 +107,14 @@ class TestReferenceInXmlCompound extends BaseReferenceTestCase {
     void testCpdScreenRefFromCpdViewMap() {
         doTest(ScreenReference, 'MyFooScreenInCpd')
     }
+
+    private static final String MOVE_TO = 'FooComponent/widget'
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/compound"
+    }
+
+    protected String getDestination() { return MOVE_TO }
 
 }

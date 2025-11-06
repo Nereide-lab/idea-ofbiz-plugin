@@ -8,11 +8,8 @@ import fr.nereide.editor.marker.xml.XmlServiceEcaEcaMarkerProvider
 /**
  * Line markers and gutter icons tests in xml
  */
+// codenarc-disable JUnitTestMethodWithoutAssert
 class XmlLineMarkerTests extends BaseLineMarkerTest {
-
-    String getExtension() { return 'xml' }
-
-    Class getElementTypeToFind() { return XmlAttributeValue }
 
     void testServiceEcaMarkerInXml() {
         doTest(new XmlServiceEcaEcaMarkerProvider(), '1 ECA(s) present on service')
@@ -25,5 +22,9 @@ class XmlLineMarkerTests extends BaseLineMarkerTest {
     void testExtendedEntityMarkerInXml() {
         doTest(new XmlExtendedEntityMarkerProvider(), 'Entity is extended')
     }
+
+    protected String getExtension() { return 'xml' }
+
+    protected Class getElementTypeToFind() { return XmlAttributeValue }
 
 }
