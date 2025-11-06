@@ -12,17 +12,17 @@ import org.junit.Ignore
 @Ignore('Parent class, No tests here')
 abstract class BaseLineMarkerTest extends BaseOfbizPluginTestCase {
 
-    static final String BASE_TEST_DIR = 'src/test/resources/testData/editor'
-    static final String ELEMENT_SUFFIX = 'Element'
+    protected static final String BASE_TEST_DIR = 'src/test/resources/testData/editor'
+    protected static final String ELEMENT_SUFFIX = 'Element'
+
+    protected abstract Class getElementTypeToFind()
+
+    protected abstract String getExtension()
 
     @Override
     protected String getTestDataPath() {
-        return "$BASE_TEST_DIR"
+        return BASE_TEST_DIR
     }
-
-    abstract Class getElementTypeToFind()
-
-    abstract String getExtension()
 
     @Override
     protected void setUp() {

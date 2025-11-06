@@ -39,16 +39,10 @@ import org.junit.Ignore
 @Ignore('Setup class, No tests here')
 class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
 
-    static final String BASE_TEST_DIR = 'src/test/resources/testData/reference'
+    protected static final String BASE_TEST_DIR = 'src/test/resources/testData/reference'
 
-    /**
-     * Default reference test file extention is xml
-     */
     protected String getExtension() { return 'xml' }
 
-    /**
-     * Used for moving files in tests in case there is need for reference resolving
-     */
     protected String getDestination() { return null }
 
     @Override
@@ -69,45 +63,44 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
         String file = "${this.getTestName(false)}.${extension}"
         myFixture.configureByFile(file)
         /* codenarc-disable UnnecessaryGetter */
-        PsiReference ref = myFixture.getReferenceAtCaretPositionWithAssertion()
+        PsiReference myRef = myFixture.getReferenceAtCaretPositionWithAssertion()
         /* codenarc-enable UnnecessaryGetter */
-        if (ref instanceof PsiMultiReference) {
-            PsiMultiReference multiRef = ref
-            ref = ref.references.find { expectedRefType.isAssignableFrom(it.class) }
+        if (myRef instanceof PsiMultiReference) {
+            PsiMultiReference multiRef = myRef
+            myRef = myRef.references.find { ref -> expectedRefType.isAssignableFrom(ref.class) }
             assertNoOtherRefType(multiRef, expectedRefType)
         }
-        assert expectedRefType.isAssignableFrom(ref.class)
+        assert expectedRefType.isAssignableFrom(myRef.class)
         PsiElement resolve
         if (multiExpected) {
-            ResolveResult[] resolves = (ref as PsiPolyVariantReference).multiResolve(false)
+            ResolveResult[] resolves = (myRef as PsiPolyVariantReference).multiResolve(false)
             assert "Multi reference for $expectedRefValueName not found", resolves.size() > 1
             resolve = resolves[0].element
         } else {
-            resolve = ref.resolve()
+            resolve = myRef.resolve()
             assert resolve
         }
 
-        String refValueName = ''
-        if (ref instanceof FileReference) {
-            String fileName = (ref as FileReference).resolve().name
+        String refValueName
+        if (myRef instanceof FileReference) {
+            String fileName = (myRef as FileReference).resolve().name
             refValueName = fileName.substring(0, fileName.indexOf('.'))
-        } else if (ref instanceof JavaMethodReference || ref instanceof GroovyServiceDefReference) {
+        } else if (myRef instanceof JavaMethodReference || myRef instanceof GroovyServiceDefReference) {
             refValueName = (resolve as PsiMethod).name
         } else {
             DomManager dm = DomManager.getDomManager(myFixture.project)
             DomElement element = dm.getDomElement(resolve)
-            if (ref instanceof UiLabelReference) {
+            if (myRef instanceof UiLabelReference) {
                 refValueName = element.key
-            } else if (ref instanceof EntityReference) {
+            } else if (myRef instanceof EntityReference) {
                 refValueName = element.entityName
-            } else if (ref instanceof RequestMapReference) {
+            } else if (myRef instanceof RequestMapReference) {
                 refValueName = element.uri
             } else { // default
                 refValueName = element.name
             }
         }
         assert refValueName == expectedRefValueName
-
     }
 
     /**
