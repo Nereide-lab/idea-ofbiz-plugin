@@ -32,26 +32,16 @@ import fr.nereide.reference.xml.ViewMapReference
 /**
  * Reference tests in xml
  */
+// codenarc-disable DuplicateStringLiteral
 class TestReferenceInXml extends BaseReferenceTestCase {
 
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/xml"
+    void testScreenNotFoundReferenceInCurrentFile() {
+        doTest(false)
     }
 
-//    void testScreenNotFoundReferenceInCurrentFile() {
-//        String file = 'xml/ScreenNotFoundReferenceInCurrentFile.xml'
-//        myFixture.configureByFile(file)
-//        PsiReference ref = myFixture.getReferenceAtCaretPosition(file)
-//        assertNull ref.resolve()
-//    }
-//
-//    void testScreenNotFoundReferenceInDistantFile() {
-//        String file = 'xml/ScreenNotFoundReferenceInDistantFile.xml'
-//        myFixture.configureByFile(file)
-//        PsiReference ref = myFixture.getReferenceAtCaretPosition(file)
-//        assertNull ref.resolve()
-//    }
+    void testScreenNotFoundReferenceInDistantFile() {
+        doTest(false)
+    }
 
     void testScreenInCurrentFileReference() {
         doTest(ScreenReference, 'FindFacility')
@@ -127,6 +117,11 @@ class TestReferenceInXml extends BaseReferenceTestCase {
 
     void testServiceEngineReferenceTest() {
         doTest(EngineReference, 'entity-auto')
+    }
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/xml"
     }
 
 }

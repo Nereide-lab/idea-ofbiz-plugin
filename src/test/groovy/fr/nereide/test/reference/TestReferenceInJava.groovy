@@ -22,15 +22,8 @@ import fr.nereide.reference.common.ServiceReference
 /**
  * Reference tests in java
  */
+// codenarc-disable DuplicateStringLiteral
 class TestReferenceInJava extends BaseReferenceTestCase {
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/java"
-    }
-
-    @Override
-    protected String getExtension() { return 'java' }
 
     void testEntityReferenceWithFindMethod() {
         doTest(EntityReference, 'HyruleCastle')
@@ -79,5 +72,13 @@ class TestReferenceInJava extends BaseReferenceTestCase {
     void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
         doTest(EntityReference, 'Matata3')
     }
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/java"
+    }
+
+    @Override
+    protected String getExtension() { return 'java' }
 
 }

@@ -54,15 +54,27 @@ class BaseReferenceTestCase extends BaseOfbizPluginTestCase {
         }
     }
 
+    protected void doTest(boolean mustFind) {
+        doTest(null, null, false, mustFind)
+    }
+
     protected void doTest(Class expectedRefType, String expectedRefValueName) {
-        doTest(expectedRefType, expectedRefValueName, false)
+        doTest(expectedRefType, expectedRefValueName, false, true)
     }
 
     protected void doTest(Class expectedRefType, String expectedRefValueName, boolean multiExpected) {
+        doTest(expectedRefType, expectedRefValueName, multiExpected, true)
+    }
+
+    protected void doTest(Class expectedRefType, String expectedRefValueName, boolean multiExpected, boolean mustFind) {
         String file = "${this.getTestName(false)}.${extension}"
         myFixture.configureByFile(file)
         /* codenarc-disable UnnecessaryGetter */
         PsiReference myRef = myFixture.getReferenceAtCaretPositionWithAssertion()
+        if (!mustFind) {
+            assert !myRef.resolve()
+            return
+        }
         /* codenarc-enable UnnecessaryGetter */
         if (myRef instanceof PsiMultiReference) {
             PsiMultiReference multiRef = myRef

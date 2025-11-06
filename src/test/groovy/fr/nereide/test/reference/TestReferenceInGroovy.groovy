@@ -22,15 +22,8 @@ import fr.nereide.reference.common.ServiceReference
 /**
  * Reference tests in groovy
  */
+// codenarc-disable DuplicateStringLiteral
 class TestReferenceInGroovy extends BaseReferenceTestCase {
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/groovy"
-    }
-
-    @Override
-    protected String getExtension() { return 'groovy' }
 
     void testGroovyEntityReferenceWithFindMethod() {
         doTest(EntityReference, 'Lobster')
@@ -59,5 +52,13 @@ class TestReferenceInGroovy extends BaseReferenceTestCase {
     void testEntityReferenceWithGetRelatedMethodWithTitleOnTargetEntity() {
         doTest(EntityReference, 'Matata1')
     }
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/groovy"
+    }
+
+    @Override
+    protected String getExtension() { return 'groovy' }
 
 }

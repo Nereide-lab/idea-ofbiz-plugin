@@ -7,19 +7,6 @@ import org.jetbrains.plugins.groovy.GroovyLanguage
  */
 class TestGroovyInjection extends BaseInjectionTestCase {
 
-    @Override
-    protected String getTestDataPath() {
-        return 'src/test/resources/testData/injection/xml/groovy'
-    }
-
-    protected doTest() {
-        super.doTest(GroovyLanguage)
-    }
-
-    void testWaitForFix() {
-        assert true
-    }
-
     void testValueAttrInSetTagInScreen() {
         doTest()
     }
@@ -54,6 +41,15 @@ class TestGroovyInjection extends BaseInjectionTestCase {
 
     void testDescriptionAttrInForm() {
         doTest()
+    }
+
+    @Override
+    protected String getTestDataPath() {
+        return 'src/test/resources/testData/injection/xml/groovy'
+    }
+
+    protected void doTest() {
+        super.doTest(GroovyLanguage)
     }
 
 }
