@@ -149,7 +149,7 @@ class TestCompletionInGroovy extends BaseCompletionTestCase {
      * Compiled
      * {@code
      * GenericValue myVal = null
-     * try { //query
+     * try { // query
      * } catch (Exception ignored) { }
      * myVal.get('<caret>')
      *}
@@ -163,7 +163,7 @@ class TestCompletionInGroovy extends BaseCompletionTestCase {
      * Script
      * {@code
      * GenericValue myVal = null
-     * try { //query
+     * try { // query
      * } catch (Exception ignored) { }
      * myVal.get('<caret>')
      *}

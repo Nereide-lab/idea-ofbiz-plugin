@@ -3,16 +3,8 @@ package fr.nereide.test.completion
 /**
  * Completion tests for xml that needs some files moving around
  */
+// codenarc-disable DuplicateListLiteral, DuplicateStringLiteral
 class TestCompletionInXmlWithMove extends BaseCompletionTestCase {
-
-    private static String MOVE_TO = 'pilgrim/widget'
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/xml"
-    }
-
-    protected String getDestination() { return MOVE_TO }
 
     void testTargetCompletionInForm() {
         doTest(['someTarget', 'some-other/target'], true)
@@ -92,5 +84,13 @@ class TestCompletionInXmlWithMove extends BaseCompletionTestCase {
                 'myIncludedRequest1',
                 'myIncludedRequest2'], true)
     }
+
+    private static final String MOVE_TO = 'pilgrim/widget'
+
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/xml"
+    }
+
+    protected String getDestination() { return MOVE_TO }
 
 }

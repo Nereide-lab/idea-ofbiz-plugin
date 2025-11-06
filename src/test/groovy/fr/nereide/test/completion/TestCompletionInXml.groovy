@@ -19,14 +19,8 @@ package fr.nereide.test.completion
 /**
  * Completion tests for xml
  */
+// codenarc-disable DuplicateListLiteral, DuplicateStringLiteral
 class TestCompletionInXml extends BaseCompletionTestCase {
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/xml"
-    }
-
-    String getFileType() { return 'xml' }
 
     void testEntityCompletionInXmlFile() {
         List<String> expected = ['Yenefer', 'Roach']
@@ -138,5 +132,12 @@ class TestCompletionInXml extends BaseCompletionTestCase {
         List<String> expected = ['search-options', 'search-results']
         doTest(expected)
     }
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/xml"
+    }
+
+    protected String getFileType() { return 'xml' }
 
 }

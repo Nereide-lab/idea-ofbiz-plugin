@@ -19,14 +19,8 @@ package fr.nereide.test.completion
 /**
  * Completion tests for java
  */
+// codenarc-disable DuplicateListLiteral, DuplicateStringLiteral
 class TestCompletionInJava extends BaseCompletionTestCase {
-
-    String getFileType() { return 'java' }
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/java"
-    }
 
     /**
      * {@code EntityQuery.from("<caret>"); }
@@ -91,8 +85,8 @@ class TestCompletionInJava extends BaseCompletionTestCase {
     /**
      * <pre> {@code GenericValue testData;
      *  try {
-     *      testData = //..
-     *  } catch {//.. }
+     *      testData = // ..
+     *  } catch { //.. }
      *  String foo = testData.get("<caret>");}
      *  </pre>
      */
@@ -132,6 +126,13 @@ class TestCompletionInJava extends BaseCompletionTestCase {
         List<String> notExpected = ['gabriel', 'jo']
         List<String> expected = ['michael', 'maline']
         doTest(expected, notExpected)
+    }
+
+    protected String getFileType() { return 'java' }
+
+    @Override
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/java"
     }
 
 }

@@ -7,6 +7,7 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals
 /**
  * Documentation tests for groovy
  */
+// codenarc-disable DuplicateStringLiteral
 class TestDocumentationInGroovy extends BaseDocumentationTestCase {
 
     void testHoverDocOnServiceRunCallInGroovy() {

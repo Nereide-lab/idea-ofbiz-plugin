@@ -22,6 +22,7 @@ import com.intellij.psi.xml.XmlAttributeValue
 /**
  * Documentation tests for xml
  */
+// codenarc-disable DuplicateStringLiteral
 class TestDocumentationInXml extends BaseDocumentationTestCase {
 
     /*********************
