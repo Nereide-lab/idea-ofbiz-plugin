@@ -19,14 +19,8 @@ package fr.nereide.test.completion
 /**
  * Completion tests for groovy
  */
+// codenarc-disable DuplicateListLiteral, DuplicateStringLiteral
 class TestCompletionInGroovy extends BaseCompletionTestCase {
-
-    @Override
-    protected String getTestDataPath() {
-        return "$BASE_TEST_DIR/groovy"
-    }
-
-    String getFileType() { return 'groovy' }
 
     /**
      * {@code def myVar = EntityQuery.use(delegator).from('<caret>').queryFirst()}
@@ -54,9 +48,9 @@ class TestCompletionInGroovy extends BaseCompletionTestCase {
         doTest(expected)
     }
 
-    //**********************************************
+    // *********************************************
     //                 ENTITY FIELDS              //
-    //**********************************************
+    // *********************************************
 
     /**
      * <pre>
@@ -256,5 +250,11 @@ class TestCompletionInGroovy extends BaseCompletionTestCase {
     void testEntityFieldCompletionOnEntityWithExtends() {
         doTest(['field1', 'field2'])
     }
+
+    protected String getTestDataPath() {
+        return "$BASE_TEST_DIR/groovy"
+    }
+
+    protected String getFileType() { return 'groovy' }
 
 }

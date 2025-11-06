@@ -10,9 +10,7 @@ import fr.nereide.editor.marker.java.JavaServiceEcaEcaMarkerProvider
  */
 class JavaLineMarkerTest extends BaseLineMarkerTest {
 
-    String getExtension() { return 'java' }
-
-    Class getElementTypeToFind() { return PsiLiteralExpression }
+    /* codenarc-disable JUnitTestMethodWithoutAssert */
 
     void testServiceEcaMarkerInJava() {
         doTest(new JavaServiceEcaEcaMarkerProvider(), '1 ECA(s) present on service')
@@ -25,5 +23,10 @@ class JavaLineMarkerTest extends BaseLineMarkerTest {
     void testExtendedEntityMarkerInJava() {
         doTest(new JavaExtendedEntityMarkerProvider(), 'Entity is extended')
     }
+    /* codenarc-enable JUnitTestMethodWithoutAssert */
+
+    protected String getExtension() { return 'java' }
+
+    protected Class getElementTypeToFind() { return PsiLiteralExpression }
 
 }

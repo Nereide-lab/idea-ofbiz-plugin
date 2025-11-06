@@ -31,10 +31,7 @@ import fr.nereide.inspection.java.ServiceNotFoundInJavaInspection
  */
 class JavaInspectionTest extends BaseInspectionTest {
 
-    @Override
-    String getLang() {
-        return 'java'
-    }
+    /* codenarc-disable JUnitTestMethodWithoutAssert */
 
     void testCacheOnNeverCacheEntity() {
         doNeverCacheTest(true)
@@ -84,6 +81,12 @@ class JavaInspectionTest extends BaseInspectionTest {
     void testEntityNotFoundInspectionSafety() {
         doHighlightTest(false, message('inspection.entity.not.found.display.descriptor'),
                 new EntityNotFoundInJavaInspection())
+    }
+    /* codenarc-enable JUnitTestMethodWithoutAssert */
+
+    @Override
+    protected String getLang() {
+        return 'java'
     }
 
     protected void doNeverCacheTest(boolean mustFind) {
