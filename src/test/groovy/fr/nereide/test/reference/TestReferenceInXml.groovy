@@ -111,6 +111,14 @@ class TestReferenceInXml extends BaseReferenceTestCase {
         doTest(UiLabelReference, 'PasBaptiste')
     }
 
+    void testUiLabelPropertyInTitleAfterAnOtherProperty() {
+        doTest(UiLabelReference, 'Baptiste')
+    }
+
+    void testUiLabelPropertyInTitleAfterFourOtherProperty() {
+        doTest(UiLabelReference, 'FifthProperty')
+    }
+
     void testServiceReferenceInXmlDataFile() {
         doTest(ServiceReference, 'Croissance3000Service')
     }

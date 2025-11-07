@@ -16,6 +16,8 @@
  */
 package fr.nereide.reference.common.provider
 
+import static fr.nereide.project.pattern.OfbizPluginConstants.DYNAMIC_STRING_DOLLAR
+
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
@@ -36,14 +38,21 @@ class UiLabelReferenceProvider extends PsiReferenceProvider {
     PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull ProcessingContext context) {
         /* codenarc-enable UnusedMethodParameter */
         if (PluginActivator.getInstance(element.project).inactive) return []
-        UiLabelReference property
         String labelValue = element.text.replaceAll('"', '')
-        if (labelValue.startsWith('${')) {
-            property = new UiLabelReference(element, new UiLabelTextRange(element))
+        List<PsiReference> reference = []
+        if (labelValue.contains('${')) {
+            if (labelValue.split(DYNAMIC_STRING_DOLLAR).size() > 1) {
+                List<String> labels = labelValue.split(DYNAMIC_STRING_DOLLAR)
+                for (int i = 0; i < labels.size(); i++) {
+                    if (!labels[i].trim()) continue
+                    reference << (PsiReference) new UiLabelReference(element, new UiLabelTextRange(element, i))
+                }
+            } else {
+                reference = [new UiLabelReference(element, new UiLabelTextRange(element))]
+            }
         } else {
-            property = new UiLabelReference(element)
+            reference = [new UiLabelReference(element)]
         }
-        PsiReference[] reference = (PsiReference) property
         return reference ?: PsiReference.EMPTY_ARRAY
     }
 

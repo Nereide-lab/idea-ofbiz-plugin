@@ -113,7 +113,7 @@ class XmlInspectionTest extends BaseInspectionTest {
     // =====================================
     // UILABEL TESTS
     // =====================================
-    void testLabelNotFoundInScreenFile() { // TODO refactor this f test
+    void testLabelNotFoundInScreenFile() {
         String desc = message('inspection.label.not.found.display.descriptor')
         String intention = message('inspection.label.not.found.quickfix.create')
         myFixture.enableInspections(new LabelNotFoundInXmlInspection())
@@ -129,6 +129,18 @@ class XmlInspectionTest extends BaseInspectionTest {
         assert action
         myFixture.launchAction(action)
         assert OfbizProjectHelper.getInstance(myFixture.project).getProperty('notExistingLabel')
+    }
+
+    void testNoInspectionOnFirstOfMultipleLabels() {
+        myFixture.configureByFile(testFile)
+        ['FirstProperty', 'SecondProperty', 'ThirdProperty', 'FourthProperty', 'FifthProperty'].forEach {
+            label -> assert OfbizProjectHelper.getInstance(myFixture.project).getProperty(label)
+        }
+        String desc = message('inspection.label.not.found.display.descriptor')
+        myFixture.enableInspections(new LabelNotFoundInXmlInspection())
+        List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
+        List<String> descriptions = highlightInfos*.description
+        assert !(descriptions.contains(desc))
     }
 
     // =====================================

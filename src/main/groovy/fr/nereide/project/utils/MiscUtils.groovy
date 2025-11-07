@@ -72,7 +72,9 @@ class MiscUtils {
      */
     static String getUiLabelSafeValue(String text) {
         if (text.startsWith('${')) {
-            return text.substring(13, text.length() - 1)
+            return text.trim().substring(13, text.length() - 1)
+        } else if (text.startsWith('{')) {
+            return text.trim().substring(12, text.length() - 1)
         }
         return text
     }

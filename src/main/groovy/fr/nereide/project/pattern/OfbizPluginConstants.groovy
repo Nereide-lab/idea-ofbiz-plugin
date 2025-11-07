@@ -29,6 +29,9 @@ class OfbizPluginConstants {
     // Strings
     public static final String QUERY_FROM_STATEMENT = 'from('
     public static final String DYNAMIC_VIEW_ENTITY_CLASS_NAME = 'DynamicViewEntity'
+    public static final String DYNAMIC_STRING_DOLLAR = '\\$'
+    public static final String DOT_MAP_PROP_ACCESSOR = '.'
+    public static final String CLOSING_BRACKET = '}'
 
     static Object makeMethodParameterPattern(PsiJavaElementPattern<? extends PsiLiteral, ?> elementPattern,
                                              String methodName, String className, int index) {
