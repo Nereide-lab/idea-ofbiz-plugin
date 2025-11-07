@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.7.8]
 ### Added
 - [#34] Added a pattern for references to request map in lookups.
 - [#37] Applied Codenarc rules to test sources
