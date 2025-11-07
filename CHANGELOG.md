@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - [#34] Added a pattern for references to request map in lookups.
 - [#37] Applied Codenarc rules to test sources
+- [#36] Improves the UiLabelReference system to enable references in multi labels attributes
+  - Improves the inspection accordingly
 
 ## [1.7.7]
 ### Changed

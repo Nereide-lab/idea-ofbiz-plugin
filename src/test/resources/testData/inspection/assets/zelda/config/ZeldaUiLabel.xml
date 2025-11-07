@@ -1,3 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ofbiz.apache.org/dtds/ofbiz-properties.xsd">
+    <property key="FirstProperty">
+        <value xml:lang="fr"> One</value>
+    </property>
+    <property key="SecondProperty">
+        <value xml:lang="fr">Two</value>
+    </property>
+    <property key="ThirdProperty">
+        <value xml:lang="fr">Three</value>
+    </property>
+    <property key="FourthProperty">
+        <value xml:lang="fr">Four</value>
+    </property>
+    <property key="FifthProperty">
+        <value xml:lang="fr">Five</value>
+    </property>
 </resource>

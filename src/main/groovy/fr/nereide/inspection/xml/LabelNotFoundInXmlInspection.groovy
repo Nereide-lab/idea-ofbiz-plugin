@@ -1,5 +1,6 @@
 package fr.nereide.inspection.xml
 
+import static fr.nereide.project.pattern.OfbizPluginConstants.DYNAMIC_STRING_DOLLAR
 import static fr.nereide.project.utils.MiscUtils.getUiLabelSafeValue
 
 import com.intellij.codeInspection.ProblemHighlightType
@@ -33,14 +34,20 @@ class LabelNotFoundInXmlInspection extends OfbizBaseInspection {
                 if (PluginActivator.getInstance(attribute.project).inactive) return
                 if (!OfbizXmlPatterns.LABEL_CALL.accepts(attribute.valueElement)) return
                 OfbizProjectHelper ph = OfbizProjectHelper.getInstance(attribute.project)
-                String labelName = attribute.value
-                if (!ph.getProperty(getUiLabelSafeValue(labelName)))
+                String[] labels = attribute.value.split(DYNAMIC_STRING_DOLLAR)*.trim()
+                for (int i = 0; i < labels.size(); i++) {
+                    if (labels[i].trim().empty || ph.getProperty(getUiLabelSafeValue(labels[i]))) {
+                        continue
+                    }
+                    String foo = labels[i]
+                    String foo1 = getUiLabelSafeValue(labels[i])
                     holder.registerProblem(
                             attribute,
                             InspectionBundle.message('inspection.label.not.found.display.descriptor'),
                             ProblemHighlightType.WARNING,
-                            new UiLabelTextRange(attribute),
+                            new UiLabelTextRange(attribute, i),
                             myQuickFix)
+                }
             }
 
         }

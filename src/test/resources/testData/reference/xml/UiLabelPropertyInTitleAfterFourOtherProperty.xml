@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<screens>
+    <screen name="FooScreen">
+        <section>
+            <widgets>
+                <screenlet title="${uiLabelMap.FirstProperty} ${uiLabelMap.SecondProperty} ${uiLabelMap.ThirdProperty} ${uiLabelMap.FourthProperty} ${uiLabelMap.Fift<caret>hProperty}"/>
+            </widgets>
+        </section>
+    </screen>
+</screens>
+
