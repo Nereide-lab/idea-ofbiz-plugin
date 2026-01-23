@@ -63,6 +63,10 @@ class TestReferenceInXml extends BaseReferenceTestCase {
         doTest(FileReference, 'FooScript')
     }
 
+    void testFileReferenceFromThemeFile() {
+        doTest(FileReference, 'AFile')
+    }
+
     void testFormReferenceFromForm() {
         doTest(FormReference, 'FooForm')
     }

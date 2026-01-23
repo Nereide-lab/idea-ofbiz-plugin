@@ -108,12 +108,17 @@ class OfbizXmlPatterns {
             )
     )
 
-    public static final XmlAttributeValuePattern FILE_CALL = xmlAttributeValue().withParent(
-            xmlAttribute().withName('entity-xml-url', 'xml-resource', 'extends-resource',
-                    'resourceValue', 'resource', 'template', PAGE, LOCATION, 'image-location',
-                    'component-location', 'fallback-location', 'default-fallback-location',
-                    'default-location', 'path')
-    ).andNot(dynamicElement())
+    public static final XmlAttributeValuePattern FILE_CALL = xmlAttributeValue().andOr(
+            xmlAttributeValue().withParent(
+                    xmlAttribute().withName('entity-xml-url', 'xml-resource', 'extends-resource',
+                            'resourceValue', 'resource', 'template', PAGE, LOCATION, 'image-location',
+                            'component-location', 'fallback-location', 'default-fallback-location',
+                            'default-location', 'path')
+            ).andNot(dynamicElement()),
+            xmlAttributeValue().withParent(xmlAttribute().withName('value')
+                    .withParent(xmlTag().withName('property'))
+            ).andNot(dynamicElement())
+    )
 
     public static final XmlAttributeValuePattern SCREEN_CALL = xmlAttributeValue().andOr(
             xmlAttributeValue().withParent(pageAttr().withParent(viewMapTag().withChild(typeScreenAttrValue()))),
