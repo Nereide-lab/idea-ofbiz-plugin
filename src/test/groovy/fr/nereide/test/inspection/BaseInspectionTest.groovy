@@ -78,6 +78,11 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         assert myFixture.tempDirFixture.getFile(expectedFileLocation)
     }
 
+    protected void doAndSetupHighlightTest(boolean mustFind, String desc) {
+        myFixture.configureByFile(testFile)
+        doHighlightTest(mustFind, desc)
+    }
+
     protected void doHighlightTest(boolean mustFind, String desc) {
         List<HighlightInfo> highlightInfos = myFixture.doHighlighting()
         List<String> highlightDescs = highlightInfos*.description
