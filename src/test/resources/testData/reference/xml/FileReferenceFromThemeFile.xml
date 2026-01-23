@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme name="dione"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://ofbiz.apache.org/Widget-Theme"
+       xsi:schemaLocation="http://ofbiz.apache.org/Widget-Theme http://ofbiz.apache.org/dtds/widget-theme.xsd">
+    <theme-properties>
+        <property name="VT_HDR_TMPLT_LOC" value="component://commonext/template/AFi<caret>le.ftl"/>
+    </theme-properties>
+</theme>

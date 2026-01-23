@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- [#67] Adds the inspection for controller requests without security
+- [#38] Adds the inspection for controller requests without security
+- [#39] Adds a new pattern for file references in theme files
 
 ## [1.7.9]
 ### Changed
