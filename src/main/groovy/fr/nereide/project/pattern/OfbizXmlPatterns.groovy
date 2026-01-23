@@ -42,6 +42,7 @@ class OfbizXmlPatterns {
     public static final String PAGE = 'page'
     public static final String INVOKE = 'invoke'
     public static final String DYNAMIC_START = '${'
+    public static final String VALUE = 'value'
 
     //============================================
     //       PATTERNS
@@ -115,7 +116,7 @@ class OfbizXmlPatterns {
                             'component-location', 'fallback-location', 'default-fallback-location',
                             'default-location', 'path')
             ).andNot(dynamicElement()),
-            xmlAttributeValue().withParent(xmlAttribute().withName('value')
+            xmlAttributeValue().withParent(xmlAttribute().withName(VALUE)
                     .withParent(xmlTag().withName('property'))
             ).andNot(dynamicElement())
     )
@@ -238,7 +239,7 @@ class OfbizXmlPatterns {
 
     static XmlAttributePattern extendsAttr() { return makeAttrPattern('extends') }
 
-    static XmlAttributePattern valueAttr() { return makeAttrPattern('value') }
+    static XmlAttributePattern valueAttr() { return makeAttrPattern(VALUE) }
 
     static XmlAttributePattern targetAttr() { return makeAttrPattern('target') }
 
