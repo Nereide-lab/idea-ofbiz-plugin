@@ -21,7 +21,7 @@ class JavaMethodReference extends PsiReferenceBase<XmlElement> {
 
     @Nullable
     PsiElement resolve() {
-        return this.currentClass.methods.find { method -> method.name == this.value }
+        return this.currentClass?.methods?.find { method -> method.name == this.value }
     }
 
 }

@@ -125,6 +125,15 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="fr.nereide.inspection.xml.EntityNotFoundInXmlInspection"/>
+        <localInspection language="XML"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.controller.no.auth.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.probable.bugs"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.xml.NoAuthOnRequestInspection"/>
 
         <!-- Java Code inspections -->
         <localInspection language="JAVA"

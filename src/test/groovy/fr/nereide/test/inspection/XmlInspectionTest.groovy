@@ -8,6 +8,7 @@ import fr.nereide.inspection.xml.EmptyFileLocationInspection
 import fr.nereide.inspection.xml.EntityNotFoundInXmlInspection
 import fr.nereide.inspection.xml.FormNotFoundInFileLocationInspection
 import fr.nereide.inspection.xml.LabelNotFoundInXmlInspection
+import fr.nereide.inspection.xml.NoAuthOnRequestInspection
 import fr.nereide.inspection.xml.ScreenNotFoundInFileLocationInspection
 import fr.nereide.inspection.xml.ServiceNotFoundInXmlInspection
 import fr.nereide.project.OfbizProjectHelper
@@ -33,6 +34,12 @@ class XmlInspectionTest extends BaseInspectionTest {
         myFixture.enableInspections(new EmptyFileLocationInspection())
         String location = 'zelda/webcommon/WEB-INF/zelda-controller.xml'
         doFileInspectionTestWithFileCreation(true, intention, description, location)
+    }
+
+    void testNoAuthInControlerInspection() {
+        String description = message('inspection.controller.no.auth.descriptor')
+        myFixture.enableInspections(new NoAuthOnRequestInspection())
+        doAndSetupHighlightTest(true, description)
     }
 
     // =====================================
