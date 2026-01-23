@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.7.10]
 ### Added
 - [#38] Adds the inspection for controller requests without security
 - [#39] Adds a new pattern for file references in theme files
