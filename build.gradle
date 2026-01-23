@@ -33,7 +33,7 @@ dependencies {
         testFramework(TestFrameworkType.Platform.INSTANCE)
     }
     implementation 'org.apache.groovy:groovy:4.0.26'
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.13.0'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.15.0'
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.12.2'

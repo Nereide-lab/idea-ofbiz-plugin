@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.9]
+### Changed
+- [#NA] Updated min version to `261`, and updated `commons-text` to 1.15.
+
 ## [1.7.8]
 ### Added
 - [#34] Added a pattern for references to request map in lookups.
