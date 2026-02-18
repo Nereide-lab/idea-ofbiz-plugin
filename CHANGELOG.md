@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.11]
+### Changed
+- [#NA] Updated intellij platform plugin from 2.7 to 2.11
+- [#NA] Updated changelog plugin version from 2.2.1 to 2.5.0
+- [#NA] Updated intellij version from 2025.2 to 2025.3
+- [#NA] Updated gradle version from 8.8 to 8.14
+- [#NA] Other small updates
+
 ## [1.7.10]
 ### Added
 - [#38] Adds the inspection for controller requests without security

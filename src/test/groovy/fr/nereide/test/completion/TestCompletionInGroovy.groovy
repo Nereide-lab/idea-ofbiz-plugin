@@ -48,10 +48,6 @@ class TestCompletionInGroovy extends BaseCompletionTestCase {
         doTest(expected)
     }
 
-    // =====================================***
-    //                 ENTITY FIELDS              //
-    // =====================================***
-
     /**
      * <pre>
      * {@code List<org.apache.ofbiz.entity.GenericValue> rings = from('Mordor')

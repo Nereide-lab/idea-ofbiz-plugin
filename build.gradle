@@ -8,10 +8,10 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 //   BUILD
 //============================================
 plugins {
-    id 'org.jetbrains.intellij.platform' version '2.7.0'
+    id 'org.jetbrains.intellij.platform' version '2.11.0'
     id 'groovy'
     id 'java'
-    id 'org.jetbrains.changelog' version '2.2.1'
+    id 'org.jetbrains.changelog' version '2.5.0'
     id 'codenarc'
 }
 
@@ -24,22 +24,22 @@ repositories {
 
 dependencies {
     intellijPlatform {
-        intellijIdeaCommunity('2025.2')
+        intellijIdea('2025.3')
         // rollbacking IJ version for now (see https://youtrack.jetbrains.com/issue/IDEA-366433/Duplicate-content-root-and-file-not-treated-as-source)
-        bundledPlugins('com.intellij.java', 'org.intellij.groovy', 'org.intellij.intelliLang')
+        bundledPlugins('com.intellij.java', 'org.intellij.groovy')
         pluginVerifier()
         zipSigner()
         instrumentationTools()
         testFramework(TestFrameworkType.Platform.INSTANCE)
     }
     implementation 'org.apache.groovy:groovy:4.0.26'
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.15.0'
+    implementation 'org.apache.commons:commons-text:1.15.0'
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.12.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.14.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.14.3'
 
     // specify last codenarc version for java 17 compliance
-    codenarc('org.codenarc:CodeNarc:3.6.0')
+    codenarc('org.codenarc:CodeNarc:3.7.0')
 }
 
 java {
