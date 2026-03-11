@@ -22,7 +22,7 @@ import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_ATTRI
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_FIELD_IN_DVE
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.GENERIC_VALUE_FIELD_QUERY
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.SERVICE_CALL
-import static fr.nereide.project.pattern.OfbizGroovyPatterns.SERVICE_OUT_PARAMETER
+// import static fr.nereide.project.pattern.OfbizGroovyPatterns.SERVICE_OUT_PARAMETER
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.ENTITY_FIELD_IN_KEYMAP_IN_DVE_0
 import static fr.nereide.project.pattern.OfbizGroovyPatterns.ENTITY_FIELD_IN_KEYMAP_IN_DVE_1
 
@@ -31,7 +31,8 @@ import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromDVEKeyMapComp
 import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromDVECompletionProvider
 import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromGvCompletionProvider
 import fr.nereide.completion.provider.groovy.GroovyEntityFieldsFromQueryCompletionProvider
-import fr.nereide.completion.provider.groovy.GroovyServiceFieldsCompletionProvider
+
+// import fr.nereide.completion.provider.groovy.GroovyServiceFieldsCompletionProvider
 
 /**
  * Part of the OFBiz plugin Completion system
@@ -55,8 +56,8 @@ class GroovyCompletionContributor extends BaseCompletionContributor {
                 new GroovyEntityFieldsFromDVEKeyMapCompletionProvider(0))
         this.extend(CompletionType.BASIC, ENTITY_FIELD_IN_KEYMAP_IN_DVE_1,
                 new GroovyEntityFieldsFromDVEKeyMapCompletionProvider(1))
-        this.extend(CompletionType.BASIC, SERVICE_OUT_PARAMETER,
-                new GroovyServiceFieldsCompletionProvider())
+//        this.extend(CompletionType.BASIC, SERVICE_OUT_PARAMETER,
+//                new GroovyServiceFieldsCompletionProvider())
     }
 
 }

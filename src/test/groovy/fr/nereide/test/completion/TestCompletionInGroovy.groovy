@@ -247,17 +247,17 @@ class TestCompletionInGroovy extends BaseCompletionTestCase {
         doTest(['field1', 'field2'])
     }
 
-    void testServiceOutParameterWithDsl() {
-        doTest(['shooter', 'rts', 'money'])
-    }
-
-    void testSimpleImplementingServiceOutParameterWithDsl() {
-        doTest(['shooter', 'rts', 'money'])
-    }
-
-    void testServiceOutParameterWithDslOnMapThirdUse() {
-        doTest(['shooter', 'rts', 'money'])
-    }
+//    void testServiceOutParameterWithDsl() {
+//        doTest(['shooter', 'rts', 'money'])
+//    }
+//
+//    void testSimpleImplementingServiceOutParameterWithDsl() {
+//        doTest(['shooter', 'rts', 'money'])
+//    }
+//
+//    void testServiceOutParameterWithDslOnMapThirdUse() {
+//        doTest(['shooter', 'rts', 'money'])
+//    }
 
     protected String getTestDataPath() {
         return "$BASE_TEST_DIR/groovy"

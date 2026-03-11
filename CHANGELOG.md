@@ -4,10 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.13]
+### fixed
+- [#NA] disables groovy service out completions, because they break other things
+
 ## [1.7.12]
 ### Added
 - [#41] Added completion in groovy on a map used on a service call.
-- ### Changed
+### Changed
 - [#41] updated intellij build version from '2025.3' to '2025.3.3'
 
 ## [1.7.11]
