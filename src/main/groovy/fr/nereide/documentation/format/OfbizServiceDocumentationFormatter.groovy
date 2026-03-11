@@ -6,8 +6,8 @@ import static com.intellij.lang.documentation.DocumentationMarkup.GRAYED_ELEMENT
 import static com.intellij.openapi.util.text.HtmlChunk.Element
 import static com.intellij.openapi.util.text.HtmlChunk.nbsp
 import static com.intellij.openapi.util.text.HtmlChunk.text
-import static fr.nereide.project.worker.ServiceWorker.getOptionalInAttributes
-import static fr.nereide.project.worker.ServiceWorker.getRequiredInAttributes
+import static fr.nereide.project.worker.ServiceWorker.getOptionalInParameters
+import static fr.nereide.project.worker.ServiceWorker.getRequiredInParameters
 import static fr.nereide.project.worker.ServiceWorker.SERVICE_ATTR_NAME
 import static fr.nereide.project.worker.ServiceWorker.SERVICE_ATTR_TYPE
 
@@ -79,8 +79,8 @@ class OfbizServiceDocumentationFormatter extends OfbizCommonDocumentationFormatt
 
     static void formatAttributeListForDisplay(boolean required, Service service, OfbizProjectHelper ph,
                                               HtmlBuilder attributesBuilder) {
-        List<Map> optionalAttributes = required ? getRequiredInAttributes(service, ph) :
-                getOptionalInAttributes(service, ph)
+        List<Map> optionalAttributes = required ? getRequiredInParameters(service, ph) :
+                getOptionalInParameters(service, ph)
         optionalAttributes.forEach { optAttr ->
             HtmlBuilder attrBuilder = new HtmlBuilder()
                     .append(text("${optAttr.get(SERVICE_ATTR_NAME)}"))

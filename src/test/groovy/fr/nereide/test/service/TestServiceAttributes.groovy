@@ -42,11 +42,11 @@ class TestServiceAttributes extends BaseServiceTest {
     }
 
     private static List<String> getRequiredAttrNames(Service service, OfbizProjectHelper ph) {
-        return ServiceWorker.getRequiredInAttributes(service, ph)*.get(ServiceWorker.SERVICE_ATTR_NAME) as List<String>
+        return ServiceWorker.getRequiredInParameters(service, ph)*.get(ServiceWorker.SERVICE_ATTR_NAME) as List<String>
     }
 
     private static List<String> getOptionalAttrNames(Service service, OfbizProjectHelper ph) {
-        return ServiceWorker.getOptionalInAttributes(service, ph)*.get(ServiceWorker.SERVICE_ATTR_NAME) as List<String>
+        return ServiceWorker.getOptionalInParameters(service, ph)*.get(ServiceWorker.SERVICE_ATTR_NAME) as List<String>
     }
 
 }

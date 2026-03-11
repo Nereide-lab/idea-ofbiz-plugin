@@ -24,4 +24,12 @@
     <service name="makeHorse" default-entity-name="Horse" engine="entity-auto">
         <attribute name="hayTons" type="Int" mode="IN"/>
     </service>
+    <service name="makeGame">
+        <attribute name="money" type="String" mode="INOUT"/>
+        <attribute name="shooter" type="String" mode="OUT"/>
+        <attribute name="rts" type="String" mode="OUT"/>
+    </service>
+    <service name="makeGameImpl">
+        <implements service="makeGame"/>
+    </service>
 </services>
