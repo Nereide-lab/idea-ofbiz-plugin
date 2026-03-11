@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+### Added
+- [#41] Added completion in groovy on a map used on a service call.
+- ### Changed
+- [#41] updated intellij build version from '2025.3' to '2025.3.3'
+
 ## [1.7.11]
 ### Changed
 - [#NA] Updated intellij platform plugin from 2.7 to 2.11
