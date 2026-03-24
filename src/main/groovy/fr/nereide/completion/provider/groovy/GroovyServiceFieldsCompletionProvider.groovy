@@ -67,27 +67,34 @@ class GroovyServiceFieldsCompletionProvider extends CompletionProvider<Completio
     }
 
     private static String extractServiceNameFromCall(PsiElement element) {
-        GrReferenceExpression qualifier = (element.parent as GrReferenceExpression)
-                .qualifier as GrReferenceExpression
-        GrVariable serviceResult = qualifier.resolve() as GrVariable
-        List<GrAssignmentExpression> assignments = PsiUtils.getGroovyVariableAssignements(serviceResult)
-        GrMethodCall serviceCall
-        if (assignments) {
-            GrAssignmentExpression lastAssignment = assignments.findAll { expr ->
-                expr.textOffset < element.textOffset
-            }.last()
-            serviceCall = PsiTreeUtil.findChildOfType(lastAssignment, GrMethodCall)
-        } else {
-            GrExpression initializer = (serviceResult as GrVariable).initializerGroovy
-            serviceCall = initializer as GrMethodCall
-        }
+        String serviceName
+        try {
+            GrReferenceExpression qualifier = (element.parent as GrReferenceExpression)
+                    .qualifier as GrReferenceExpression
+            GrVariable serviceResult = qualifier.resolve() as GrVariable
+            List<GrAssignmentExpression> assignments = PsiUtils.getGroovyVariableAssignements(serviceResult)
+            GrMethodCall serviceCall
+            if (assignments) {
+                GrAssignmentExpression lastAssignment = assignments.findAll { expr ->
+                    expr.textOffset < element.textOffset
+                }.last()
+                serviceCall = PsiTreeUtil.findChildOfType(lastAssignment, GrMethodCall)
+            } else {
+                GrExpression initializer = (serviceResult as GrVariable).initializerGroovy
+                serviceCall = initializer as GrMethodCall
+            }
 
-        if (serviceCall?.invokedExpression?.text != 'run') return null
-        GrNamedArgument serviceArg = serviceCall.namedArguments.find { arg -> arg.labelName == 'service' }
-        if (!serviceArg || !(serviceArg.expression instanceof GrLiteral)) {
+            if (serviceCall?.invokedExpression?.text != 'run') return null
+            GrNamedArgument serviceArg = serviceCall.namedArguments.find { arg -> arg.labelName == 'service' }
+            if (!serviceArg || !(serviceArg.expression instanceof GrLiteral)) {
+                return null
+            }
+            serviceName = serviceArg.expression.value?.toString()
+        } catch (ClassCastException ignored) {
             return null
         }
-        return serviceArg.expression.value?.toString()
+
+        return serviceName
     }
 
 }
