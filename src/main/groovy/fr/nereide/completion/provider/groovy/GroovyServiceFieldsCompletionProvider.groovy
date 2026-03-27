@@ -91,7 +91,7 @@ class GroovyServiceFieldsCompletionProvider extends CompletionProvider<Completio
             }
             serviceName = serviceArg.expression.value?.toString()
         } catch (ClassCastException ignored) {
-            return null
+            return ''
         }
 
         return serviceName
