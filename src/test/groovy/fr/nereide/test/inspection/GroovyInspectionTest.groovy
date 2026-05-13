@@ -16,6 +16,8 @@
  */
 package fr.nereide.test.inspection
 
+import fr.nereide.inspection.groovy.CacheOnQueryCountGroovyInspection
+
 import static fr.nereide.inspection.InspectionBundle.message
 
 import fr.nereide.inspection.groovy.CacheOnNeverCacheEntityGroovyInspection
@@ -45,6 +47,10 @@ class GroovyInspectionTest extends BaseInspectionTest {
 
     void testCacheOnNeverCacheEntityIGroovyScriptWithFalseParameter() {
         doNeverCacheTest(false)
+    }
+
+    void testCacheOnQueryCount() {
+        doCacheOnQueryCountTest(true)
     }
 
     void testDuplicatedServiceInspection() {
@@ -81,6 +87,10 @@ class GroovyInspectionTest extends BaseInspectionTest {
     @Override
     protected String getLang() {
         return 'groovy'
+    }
+
+    protected void doCacheOnQueryCountTest(boolean mustFind) {
+        doQueryCountCacheTest(mustFind, new CacheOnQueryCountGroovyInspection())
     }
 
     protected void doNeverCacheTest(boolean mustFind) {

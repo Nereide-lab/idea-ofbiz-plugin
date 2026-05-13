@@ -36,7 +36,7 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.path.GrM
  */
 class RemoveCacheCallFix implements LocalQuickFix {
 
-    final String name = InspectionBundle.message('inspection.entity.cache.on.never.cache.use.quickfix')
+    final String name = InspectionBundle.message('inspection.entity.remove.cache.quickfix')
 
     final String familyName = name
 

@@ -228,5 +228,14 @@
                          enabledByDefault="true"
                          level="WARNING"
                          implementationClass="fr.nereide.inspection.groovy.EntityNotFoundInGroovyInspection"/>
+        <localInspection language="Groovy"
+                         bundle="messages.InspectionBundle"
+                         key="inspection.entity.cache.on.count.display.name"
+                         groupPath="OFBiz"
+                         groupBundle="messages.InspectionsBundle"
+                         groupKey="group.names.probable.bugs"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="fr.nereide.inspection.groovy.CacheOnQueryCountGroovyInspection"/>
     </extensions>
 </idea-plugin>

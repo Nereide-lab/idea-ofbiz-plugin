@@ -16,6 +16,8 @@
  */
 package fr.nereide.inspection.common
 
+import com.intellij.openapi.project.Project
+
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
 import static fr.nereide.completion.provider.common.EntityFieldCompletionProvider.getEntityNameFromDeclarationString
 import static fr.nereide.inspection.InspectionBundle.message
@@ -69,14 +71,24 @@ class InspectionUtil {
         return ((PsiTypes.booleanType() == cacheParam.type) && (cacheParam.value == Boolean.FALSE))
     }
 
+
+    static PsiClass getEntityQueryClass(Project project) {
+        return JavaPsiFacade.getInstance(project).findClass(ENTITY_QUERY_CLASS, GlobalSearchScope.allScope(project))
+    }
+
     /**
      * Checks if the cache call really is OFBiz's
      */
-    static boolean isCacheFromEntityQuery(PsiMethod method) {
-        PsiClass entityQueryClass = JavaPsiFacade.getInstance(method.project)
-                .findClass(ENTITY_QUERY_CLASS, GlobalSearchScope.allScope(method.project))
-        if (!entityQueryClass) return false
-        return entityQueryClass.methods.contains(method) && method.name == 'cache'
+    static boolean isCacheFromEntityQuery(PsiElement element) {
+        return getEntityQueryClass(element.project).getMethods()
+                .findAll { method -> method.name == 'cache' }
+                .any { method -> method == element }
+    }
+
+    static boolean isQueryCountFromEntityQuery(PsiElement element) {
+        return getEntityQueryClass(element.project).getMethods()
+                .findAll { method -> method.name == 'queryCount' }
+                .any { method -> method == element }
     }
 
     static void checkAndRegisterCacheOnNeverCacheEntity(PsiElement exp, ProblemsHolder holder,

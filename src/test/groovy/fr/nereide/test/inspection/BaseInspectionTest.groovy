@@ -122,10 +122,17 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         doHighlightTest(shouldFind, message)
     }
 
+    protected void doQueryCountCacheTest(boolean mustFind, LocalInspectionTool inspection) {
+        myFixture.enableInspections(inspection)
+        doInspectionThenQuickFixTestWithFileEdit(mustFind,
+                message('inspection.entity.remove.cache.quickfix'),
+                message('inspection.entity.cache.on.count.display.descriptor'))
+    }
+
     protected void doNeverCacheTest(boolean mustFind, LocalInspectionTool inspection) {
         myFixture.enableInspections(inspection)
         doInspectionThenQuickFixTestWithFileEdit(mustFind,
-                message('inspection.entity.cache.on.never.cache.use.quickfix'),
+                message('inspection.entity.remove.cache.quickfix'),
                 message('inspection.entity.cache.on.never.cache.display.descriptor'))
     }
 
