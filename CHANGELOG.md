@@ -3,9 +3,9 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
-## [Unreleased]
+## [1.7.15]
 ### Changed
-- [#42] Updates and adds license header to project files
+- [#NA] Update intellij dependency version and compatible intellij IDE versions
 
 ## [1.7.14]
 ### Fixed
