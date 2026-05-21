@@ -40,8 +40,7 @@ class XmlInspectionTest extends BaseInspectionTest {
     // =====================================
     void testNoGroovyServiceFileFoundInspectionFileFix() {
         String intention = message('inspection.location.target.file.not.found.use.quickfix.fixpath')
-        myFixture.enableInspections(new EmptyFileLocationInspection())
-        doInspectionThenQuickFixTestWithFileEdit(true, intention, null)
+        doInspectionThenQuickFixTestWithFileEdit(new EmptyFileLocationInspection(), true, intention, null)
     }
 
     void testNoGroovyServiceFileFoundInspectionFileCreate() {

@@ -23,6 +23,7 @@ import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiReferenceExpression
 import com.intellij.psi.PsiVariable
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
+import fr.nereide.project.utils.MiscUtils
 
 /**
  * Entity fields completion provider for Java
@@ -36,7 +37,7 @@ abstract class JavaEntityFieldsCompletionProvider extends EntityFieldCompletionP
         PsiReferenceExpression iteratedValue = forStatement.iteratedValue as PsiReferenceExpression
         if (iteratedValue) {
             PsiVariable iteratedValueVariable = iteratedValue.resolve() as PsiVariable
-            return getEntityNameFromDeclarationString(iteratedValueVariable.initializer.text)
+            return MiscUtils.getEntityNameFromDeclarationString(iteratedValueVariable.initializer.text)
         }
         return null
     }

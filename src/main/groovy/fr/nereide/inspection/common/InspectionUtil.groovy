@@ -16,18 +16,16 @@
  */
 package fr.nereide.inspection.common
 
-import com.intellij.openapi.project.Project
+
+import fr.nereide.project.OfbizClassUtil
 
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static fr.nereide.completion.provider.common.EntityFieldCompletionProvider.getEntityNameFromDeclarationString
+import static fr.nereide.project.utils.MiscUtils.getEntityNameFromDeclarationString
 import static fr.nereide.inspection.InspectionBundle.message
-import static fr.nereide.project.pattern.OfbizPluginConstants.ENTITY_QUERY_CLASS
 import static fr.nereide.project.utils.MiscUtils.isGroovy
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiAnnotationMemberValue
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiExpressionList
@@ -35,7 +33,6 @@ import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiTypes
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlFile
@@ -71,22 +68,17 @@ class InspectionUtil {
         return ((PsiTypes.booleanType() == cacheParam.type) && (cacheParam.value == Boolean.FALSE))
     }
 
-
-    static PsiClass getEntityQueryClass(Project project) {
-        return JavaPsiFacade.getInstance(project).findClass(ENTITY_QUERY_CLASS, GlobalSearchScope.allScope(project))
-    }
-
     /**
      * Checks if the cache call really is OFBiz's
      */
     static boolean isCacheFromEntityQuery(PsiElement element) {
-        return getEntityQueryClass(element.project).getMethods()
+        return OfbizClassUtil.getEntityQueryClass(element.project).getMethods()
                 .findAll { method -> method.name == 'cache' }
                 .any { method -> method == element }
     }
 
     static boolean isQueryCountFromEntityQuery(PsiElement element) {
-        return getEntityQueryClass(element.project).getMethods()
+        return OfbizClassUtil.getEntityQueryClass(element.project).getMethods()
                 .findAll { method -> method.name == 'queryCount' }
                 .any { method -> method == element }
     }

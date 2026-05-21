@@ -77,7 +77,9 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         }
     }
 
-    protected void doInspectionThenQuickFixTestWithFileEdit(boolean mustFind, String intention, String desc) {
+    protected void doInspectionThenQuickFixTestWithFileEdit(LocalInspectionTool inspection, boolean mustFind,
+                                                            String intention, String desc) {
+        myFixture.enableInspections(inspection)
         myFixture.configureByFile(testFile)
         doHighlightTest(mustFind, desc)
         if (!mustFind) return
@@ -120,20 +122,6 @@ abstract class BaseInspectionTest extends BaseOfbizPluginTestCase {
         myFixture.enableInspections(inspection)
         myFixture.configureByFile(testFile)
         doHighlightTest(shouldFind, message)
-    }
-
-    protected void doQueryCountCacheTest(boolean mustFind, LocalInspectionTool inspection) {
-        myFixture.enableInspections(inspection)
-        doInspectionThenQuickFixTestWithFileEdit(mustFind,
-                message('inspection.entity.remove.cache.quickfix'),
-                message('inspection.entity.cache.on.count.display.descriptor'))
-    }
-
-    protected void doNeverCacheTest(boolean mustFind, LocalInspectionTool inspection) {
-        myFixture.enableInspections(inspection)
-        doInspectionThenQuickFixTestWithFileEdit(mustFind,
-                message('inspection.entity.remove.cache.quickfix'),
-                message('inspection.entity.cache.on.never.cache.display.descriptor'))
     }
 
     //#####################################

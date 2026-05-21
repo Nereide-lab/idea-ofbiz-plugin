@@ -16,6 +16,8 @@
  */
 package fr.nereide.completion.provider.java
 
+import fr.nereide.project.utils.MiscUtils
+
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 
 import com.intellij.psi.PsiElement
@@ -38,7 +40,7 @@ class JavaEntityFieldsFromGvMethodCompletionProvider extends JavaEntityFieldsCom
         PsiExpression gvInit = gvVariable.initializer
         if (gvInit) {
             // init instruction easily found, basic case
-            return getEntityNameFromDeclarationString(gvInit.text)
+            return MiscUtils.getEntityNameFromDeclarationString(gvInit.text)
         }
         // search for for loop
         PsiForeachStatement basicFor = getParentOfType(element, PsiForeachStatement)

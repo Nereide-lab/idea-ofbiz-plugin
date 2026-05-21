@@ -16,6 +16,8 @@
  */
 package fr.nereide.completion.provider.common
 
+import fr.nereide.project.utils.MiscUtils
+
 import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfType
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import static fr.nereide.project.pattern.OfbizPluginConstants.DYNAMIC_VIEW_ENTITY_CLASS_NAME
@@ -43,28 +45,12 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 import org.jetbrains.plugins.groovy.lang.psi.dataFlow.types.TypeInferenceHelper
 
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-
 /**
  * Part of the OFBiz plugin completion system
  */
 abstract class EntityFieldCompletionProvider extends CompletionProvider<CompletionParameters> {
 
-    private static final Pattern ENTITY_NAME_PATTERN = Pattern.compile("(['\"](.*?)['\"])")
     public static final String DBLE_QUOTE = '\"'
-
-    /**
-     * Extracts entity name from declarations like
-     * <code> EntityQuery.use(delegator).from() </code>
-     * @param declaration the declaration string
-     * @return the entity name
-     */
-    static String getEntityNameFromDeclarationString(String declaration) {
-        Matcher matcher = ENTITY_NAME_PATTERN.matcher(declaration)
-        String entityName = matcher.find() ? matcher.group(0) : null
-        return entityName ? entityName.substring(1, entityName.length() - 1) : null
-    }
 
     /**
      * Add lookup element to display, with the fields and the entity name at the end of the line
@@ -86,7 +72,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
     static String getEntityNameFromQuery(PsiElement element, Class methodTypeClass) {
         PsiElement originMethod = getParentOfType(element, methodTypeClass)
         if (originMethod && originMethod.text.contains(OfbizPluginConstants.QUERY_FROM_STATEMENT)) {
-            return getEntityNameFromDeclarationString(originMethod.text)
+            return MiscUtils.getEntityNameFromDeclarationString(originMethod.text)
         }
         return null
     }
@@ -117,7 +103,7 @@ abstract class EntityFieldCompletionProvider extends CompletionProvider<Completi
         }.toList()?.last()
         if (!lastQuery) return ''
         PsiElement lastAssignExpr = getParentOfType(lastQuery.element, assigmentClass)
-        return getEntityNameFromDeclarationString(getAssigmentString(lastAssignExpr))
+        return MiscUtils.getEntityNameFromDeclarationString(getAssigmentString(lastAssignExpr))
     }
 
     /**

@@ -88,7 +88,9 @@ class JavaInspectionTest extends BaseInspectionTest {
     }
 
     protected void doNeverCacheTest(boolean mustFind) {
-        doNeverCacheTest(mustFind, new CacheOnNeverCacheEntityJavaInspection())
+        doInspectionThenQuickFixTestWithFileEdit(new CacheOnNeverCacheEntityJavaInspection(), mustFind,
+                message('inspection.entity.remove.cache.quickfix'),
+                message('inspection.entity.cache.on.never.cache.display.descriptor'))
     }
 
 }

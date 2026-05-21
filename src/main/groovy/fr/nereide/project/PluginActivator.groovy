@@ -56,9 +56,7 @@ final class PluginActivator {
         if (ApplicationManager.application.unitTestMode) {
             return true
         }
-
-        JavaPsiFacade jpf = JavaPsiFacade.getInstance(project)
-        return jpf.findPackage(OfbizPluginConstants.BASE_OFB_PACKAGE) != null
+        return OfbizClassUtil.findPackage(project, OfbizPluginConstants.BASE_OFB_PACKAGE)
     }
 
 }

@@ -16,6 +16,8 @@
  */
 package fr.nereide.completion.provider.groovy
 
+import fr.nereide.project.utils.MiscUtils
+
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType
 import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
@@ -79,7 +81,7 @@ abstract class GroovyEntityFieldCompletionProvider extends EntityFieldCompletion
         PsiExpression init = initialElement.initializer
         String declarationString = init ? init.text : initialElement.initializerGroovy?.text
         if (declarationString && !(declarationString == 'null')) {
-            return getEntityNameFromDeclarationString(declarationString)
+            return MiscUtils.getEntityNameFromDeclarationString(declarationString)
         }
         GrLoopStatement oldFashionedLoop = getParentOfType(initialElement, GrLoopStatement)
         if (oldFashionedLoop) {

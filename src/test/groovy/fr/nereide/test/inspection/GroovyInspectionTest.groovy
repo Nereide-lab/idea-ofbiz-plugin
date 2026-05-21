@@ -90,11 +90,15 @@ class GroovyInspectionTest extends BaseInspectionTest {
     }
 
     protected void doCacheOnQueryCountTest(boolean mustFind) {
-        doQueryCountCacheTest(mustFind, new CacheOnQueryCountGroovyInspection())
+        doInspectionThenQuickFixTestWithFileEdit(new CacheOnQueryCountGroovyInspection(), mustFind,
+                message('inspection.entity.remove.cache.quickfix'),
+                message('inspection.entity.cache.on.count.display.descriptor'))
     }
 
     protected void doNeverCacheTest(boolean mustFind) {
-        doNeverCacheTest(mustFind, new CacheOnNeverCacheEntityGroovyInspection())
+        doInspectionThenQuickFixTestWithFileEdit(new CacheOnNeverCacheEntityGroovyInspection(), mustFind,
+                message('inspection.entity.remove.cache.quickfix'),
+                message('inspection.entity.cache.on.never.cache.display.descriptor'))
     }
 
 }

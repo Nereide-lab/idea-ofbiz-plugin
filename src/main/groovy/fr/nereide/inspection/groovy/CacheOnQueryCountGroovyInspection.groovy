@@ -17,15 +17,13 @@
 package fr.nereide.inspection.groovy
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.PsiAnnotationMemberValue
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiMethod
-import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.util.PsiTreeUtil
 import fr.nereide.inspection.common.InspectionUtil
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
+import fr.nereide.project.OfbizClassUtil
 import fr.nereide.project.PluginActivator
-import fr.nereide.project.pattern.OfbizPluginConstants
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.codeInspection.GroovyLocalInspectionTool
 import org.jetbrains.plugins.groovy.lang.psi.GroovyElementVisitor
@@ -34,7 +32,7 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrRefere
 
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
 import static fr.nereide.inspection.InspectionBundle.message
-import static fr.nereide.project.utils.MiscUtils.isGroovy
+
 /**
  * Groovy quickfix
  */
@@ -53,51 +51,43 @@ class CacheOnQueryCountGroovyInspection extends GroovyLocalInspectionTool {
         return new GroovyElementVisitor() {
 
             @Override
-            void visitReferenceExpression(GrReferenceExpression exp) {
-                if (PluginActivator.getInstance(exp.project).inactive) return
+            void visitReferenceExpression(GrReferenceExpression cacheCallCandidate) {
+                if (PluginActivator.getInstance(cacheCallCandidate.project).inactive) return
 
-                PsiMethod method
-                Class methodCallClass = isGroovy(exp) ? GrMethodCall : PsiMethodCallExpression
+                PsiMethod cacheMethodCandidate
                 try {
-                    if (!exp.resolve() || !exp.resolve() instanceof PsiMethod) {
+                    if (!cacheCallCandidate.resolve() || !cacheCallCandidate.resolve() instanceof PsiMethod) {
                         return
                     }
-                    method = exp.resolve() as PsiMethod
+                    cacheMethodCandidate = cacheCallCandidate.resolve() as PsiMethod
                 } catch (ClassCastException ignored) {
                     return
                 }
 
-                if (!InspectionUtil.isCacheFromEntityQuery(method)) return
-                if (InspectionUtil.cacheCallHasFalseParameter(exp)) return
+                if (!InspectionUtil.isCacheFromEntityQuery(cacheMethodCandidate)) return
+                if (InspectionUtil.cacheCallHasFalseParameter(cacheCallCandidate)) return
 
-                def call1 = PsiTreeUtil.getParentOfType(exp, methodCallClass)
-                def call2 = PsiTreeUtil.getParentOfType(call1, methodCallClass)
-
-                if (!isQueryCountFromEntityQuery(call2, methodCallClass)) {
-                    return
+                GrMethodCall countCandidate1 = PsiTreeUtil.getParentOfType(cacheCallCandidate, GrMethodCall)
+                if(!countCandidate1 || !isQueryCountFromEntityQuery(countCandidate1?.explicitCallReference?.resolve())) {
+                    GrMethodCall countCandidate2 = PsiTreeUtil.getParentOfType(countCandidate1, GrMethodCall)
+                    if(!countCandidate2 || !isQueryCountFromEntityQuery(countCandidate2?.explicitCallReference?.resolve())) {
+                        return
+                    }
                 }
 
-                PsiElement cachePsiEl = exp.lastChild
+                PsiElement cachePsiEl = cacheCallCandidate.lastChild
                 holder.registerProblem(cachePsiEl,
                         message('inspection.entity.cache.on.count.display.descriptor'),
                         WARNING,
                         myQuickFix
                 )
             }
-
         }
     }
 
-    private static boolean isQueryCountFromEntityQuery(PsiAnnotationMemberValue call2, methodCallClass) {
-        PsiElement[] candidates = PsiTreeUtil.collectElements(call2) { element ->
-            if (!methodCallClass.isAssignableFrom(element.class)) return false
-            return element?.invokedExpression?.referenceName == 'queryCount'
-        }
-
-        return candidates.any() { element ->
-            GrReferenceExpression ref = element.getInvokedExpression() as GrReferenceExpression
-            PsiMethod resolved = ref?.resolve() as PsiMethod
-            resolved?.containingClass?.qualifiedName == OfbizPluginConstants.ENTITY_QUERY_CLASS
-        }
+    static boolean isQueryCountFromEntityQuery(PsiElement countMethodCandidate) {
+        return OfbizClassUtil.getEntityQueryClass(countMethodCandidate.project).getMethods()
+                .findAll { method -> method.name == 'queryCount' }
+                .any { method -> method == countMethodCandidate }
     }
 }

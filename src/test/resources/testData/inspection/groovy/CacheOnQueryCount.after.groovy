@@ -15,4 +15,4 @@
  * under the License.
  */
 
-Map map = from('Gustave').ca<caret>che().queryCount()
+Map map = from('Gustave').queryCount()
