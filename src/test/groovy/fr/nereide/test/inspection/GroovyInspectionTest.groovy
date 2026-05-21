@@ -16,10 +16,9 @@
  */
 package fr.nereide.test.inspection
 
-import fr.nereide.inspection.groovy.CacheOnQueryCountGroovyInspection
-
 import static fr.nereide.inspection.InspectionBundle.message
 
+import fr.nereide.inspection.groovy.CacheOnQueryCountGroovyInspection
 import fr.nereide.inspection.groovy.CacheOnNeverCacheEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedServiceGroovyInspection

@@ -19,7 +19,6 @@ package fr.nereide.project
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
-import com.intellij.psi.JavaPsiFacade
 import fr.nereide.project.pattern.OfbizPluginConstants
 import org.jetbrains.annotations.NotNull
 

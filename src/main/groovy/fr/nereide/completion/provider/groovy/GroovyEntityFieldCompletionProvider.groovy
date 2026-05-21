@@ -16,8 +16,6 @@
  */
 package fr.nereide.completion.provider.groovy
 
-import fr.nereide.project.utils.MiscUtils
-
 import static com.intellij.psi.util.PsiTreeUtil.findChildOfType
 import static com.intellij.psi.util.PsiTreeUtil.getChildOfType
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
@@ -28,6 +26,7 @@ import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiVariable
 import fr.nereide.completion.provider.common.EntityFieldCompletionProvider
 import fr.nereide.project.pattern.OfbizGroovyPatterns
+import fr.nereide.project.utils.MiscUtils
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrForStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrLoopStatement
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable

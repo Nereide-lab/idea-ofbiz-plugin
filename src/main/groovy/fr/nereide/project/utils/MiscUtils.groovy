@@ -33,7 +33,6 @@ import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals
 
 import java.util.regex.Matcher
 
-
 /**
  * Misc utility methods
  */

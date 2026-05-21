@@ -16,8 +16,6 @@
  */
 package fr.nereide.completion.provider.java
 
-import fr.nereide.project.utils.MiscUtils
-
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 
 import com.intellij.psi.PsiElement
@@ -25,6 +23,7 @@ import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiForeachStatement
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiVariable
+import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.utils.PsiUtils
 
 /**

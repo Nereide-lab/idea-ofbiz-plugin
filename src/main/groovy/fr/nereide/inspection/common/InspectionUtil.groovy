@@ -16,9 +16,6 @@
  */
 package fr.nereide.inspection.common
 
-
-import fr.nereide.project.OfbizClassUtil
-
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
 import static fr.nereide.project.utils.MiscUtils.getEntityNameFromDeclarationString
 import static fr.nereide.inspection.InspectionBundle.message
@@ -38,6 +35,7 @@ import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
+import fr.nereide.project.OfbizClassUtil
 import fr.nereide.project.worker.EntityWorker
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.arguments.GrArgumentList
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
@@ -72,13 +70,13 @@ class InspectionUtil {
      * Checks if the cache call really is OFBiz's
      */
     static boolean isCacheFromEntityQuery(PsiElement element) {
-        return OfbizClassUtil.getEntityQueryClass(element.project).getMethods()
+        return OfbizClassUtil.getEntityQueryClass(element.project).methods
                 .findAll { method -> method.name == 'cache' }
                 .any { method -> method == element }
     }
 
     static boolean isQueryCountFromEntityQuery(PsiElement element) {
-        return OfbizClassUtil.getEntityQueryClass(element.project).getMethods()
+        return OfbizClassUtil.getEntityQueryClass(element.project).methods
                 .findAll { method -> method.name == 'queryCount' }
                 .any { method -> method == element }
     }
@@ -87,7 +85,8 @@ class InspectionUtil {
                                                         RemoveCacheCallFix myQuickFix) {
         PsiMethod cacheMethodCandidate
         try {
-            if (!cacheCallCandidate.resolve() || !cacheCallCandidate.resolve() instanceof PsiMethod) {
+            if (!cacheCallCandidate.resolve() || !(cacheCallCandidate.resolve() instanceof PsiMethod)) {
+                // codenarc-disable UnnecessaryInstanceOfCheck
                 return
             }
             cacheMethodCandidate = cacheCallCandidate.resolve() as PsiMethod
@@ -110,17 +109,21 @@ class InspectionUtil {
     static boolean queryHasCountMethod(PsiElement cacheCallCandidate) {
         boolean isGroovy = isGroovy(cacheCallCandidate)
 
-        PsiElement countCandidate1 = PsiTreeUtil.getParentOfType(cacheCallCandidate, isGroovy ? GrMethodCall : PsiMethodCallExpression)
+        PsiElement countCandidate1 = PsiTreeUtil.getParentOfType(cacheCallCandidate, isGroovy ? GrMethodCall :
+                PsiMethodCallExpression)
         if (!countCandidate1) {
             return false
         }
-        PsiElement method = isGroovy ? countCandidate1?.explicitCallReference?.resolve() : countCandidate1?.methodExpression?.resolve()
+        PsiElement method = isGroovy ? countCandidate1?.explicitCallReference?.resolve() :
+                countCandidate1?.methodExpression?.resolve()
         if (!isQueryCountFromEntityQuery(method)) {
-            PsiElement countCandidate2 = PsiTreeUtil.getParentOfType(countCandidate1, isGroovy ? GrMethodCall : PsiMethodCallExpression)
+            PsiElement countCandidate2 = PsiTreeUtil.getParentOfType(countCandidate1, isGroovy ? GrMethodCall :
+                    PsiMethodCallExpression)
             if (!countCandidate2) {
                 return false
             }
-            method = isGroovy ? countCandidate2?.explicitCallReference?.resolve() : countCandidate2?.methodExpression?.resolve()
+            method = isGroovy ? countCandidate2?.explicitCallReference?.resolve() :
+                    countCandidate2?.methodExpression?.resolve()
             return isQueryCountFromEntityQuery(method)
         }
         return true
@@ -131,7 +134,7 @@ class InspectionUtil {
         PsiMethod method
         Class methodCallClass = isGroovy(cacheCallCandidate) ? GrMethodCall : PsiMethodCallExpression
         try {
-            if (!cacheCallCandidate.resolve() || !cacheCallCandidate.resolve() instanceof PsiMethod) {
+            if (!cacheCallCandidate.resolve() || !(cacheCallCandidate.resolve() instanceof PsiMethod)) {
                 // codenarc-disable UnnecessaryInstanceOfCheck
                 return
             }

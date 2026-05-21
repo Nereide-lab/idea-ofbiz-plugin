@@ -16,8 +16,6 @@
  */
 package fr.nereide.completion.provider.common
 
-import fr.nereide.project.utils.MiscUtils
-
 import static com.intellij.psi.util.PsiTreeUtil.getChildrenOfType
 import static com.intellij.psi.util.PsiTreeUtil.getParentOfType
 import static fr.nereide.project.pattern.OfbizPluginConstants.DYNAMIC_VIEW_ENTITY_CLASS_NAME
@@ -39,6 +37,7 @@ import fr.nereide.dom.element.entitymodel.ViewEntity
 import fr.nereide.project.OfbizProjectHelper
 import fr.nereide.project.PluginActivator
 import fr.nereide.project.pattern.OfbizPluginConstants
+import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.utils.PsiUtils
 import org.jetbrains.annotations.NotNull
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.GrVariable

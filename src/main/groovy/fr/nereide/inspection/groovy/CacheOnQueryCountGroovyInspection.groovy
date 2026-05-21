@@ -47,6 +47,7 @@ class CacheOnQueryCountGroovyInspection extends GroovyLocalInspectionTool {
                 if (PluginActivator.getInstance(cacheCallCandidate.project).inactive) return
                 InspectionUtil.checkAndRegisterCacheOnQueryCountEntity(cacheCallCandidate, holder, myQuickFix)
             }
+
         }
     }
 

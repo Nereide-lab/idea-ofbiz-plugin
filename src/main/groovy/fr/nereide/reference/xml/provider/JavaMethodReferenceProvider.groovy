@@ -16,7 +16,6 @@
  */
 package fr.nereide.reference.xml.provider
 
-
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
