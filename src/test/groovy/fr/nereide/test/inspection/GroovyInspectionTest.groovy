@@ -53,6 +53,10 @@ class GroovyInspectionTest extends BaseInspectionTest {
         doCacheOnQueryCountTest(true)
     }
 
+    void testCacheOnQueryCountFalseParam() {
+        doCacheOnQueryCountTest(false)
+    }
+
     void testDuplicatedServiceInspection() {
         doHighlightTest(true, message('inspection.service.duplicate.display.descriptor'),
                 new DuplicatedServiceGroovyInspection())
