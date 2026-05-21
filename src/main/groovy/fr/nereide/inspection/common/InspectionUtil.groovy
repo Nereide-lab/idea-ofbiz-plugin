@@ -83,28 +83,72 @@ class InspectionUtil {
                 .any { method -> method == element }
     }
 
-    static void checkAndRegisterCacheOnNeverCacheEntity(PsiElement exp, ProblemsHolder holder,
+    static void checkAndRegisterCacheOnQueryCountEntity(PsiElement cacheCallCandidate, ProblemsHolder holder,
                                                         RemoveCacheCallFix myQuickFix) {
-        PsiMethod method
-        Class methodCallClass = isGroovy(exp) ? GrMethodCall : PsiMethodCallExpression
+        PsiMethod cacheMethodCandidate
         try {
-            if (!exp.resolve() || !exp.resolve() instanceof PsiMethod) { // codenarc-disable UnnecessaryInstanceOfCheck
+            if (!cacheCallCandidate.resolve() || !cacheCallCandidate.resolve() instanceof PsiMethod) {
                 return
             }
-            method = exp.resolve() as PsiMethod
+            cacheMethodCandidate = cacheCallCandidate.resolve() as PsiMethod
+        } catch (ClassCastException ignored) {
+            return
+        }
+
+        if (!isCacheFromEntityQuery(cacheMethodCandidate)) return
+        if (cacheCallHasFalseParameter(cacheCallCandidate)) return
+        if (!queryHasCountMethod(cacheCallCandidate)) return
+
+        PsiElement cachePsiEl = cacheCallCandidate.lastChild
+        holder.registerProblem(cachePsiEl,
+                message('inspection.entity.cache.on.count.display.descriptor'),
+                WARNING,
+                myQuickFix
+        )
+    }
+
+    static boolean queryHasCountMethod(PsiElement cacheCallCandidate) {
+        boolean isGroovy = isGroovy(cacheCallCandidate)
+
+        PsiElement countCandidate1 = PsiTreeUtil.getParentOfType(cacheCallCandidate, isGroovy ? GrMethodCall : PsiMethodCallExpression)
+        if (!countCandidate1) {
+            return false
+        }
+        PsiElement method = isGroovy ? countCandidate1?.explicitCallReference?.resolve() : countCandidate1?.methodExpression?.resolve()
+        if (!isQueryCountFromEntityQuery(method)) {
+            PsiElement countCandidate2 = PsiTreeUtil.getParentOfType(countCandidate1, isGroovy ? GrMethodCall : PsiMethodCallExpression)
+            if (!countCandidate2) {
+                return false
+            }
+            method = isGroovy ? countCandidate2?.explicitCallReference?.resolve() : countCandidate2?.methodExpression?.resolve()
+            return isQueryCountFromEntityQuery(method)
+        }
+        return true
+    }
+
+    static void checkAndRegisterCacheOnNeverCacheEntity(PsiElement cacheCallCandidate, ProblemsHolder holder,
+                                                        RemoveCacheCallFix myQuickFix) {
+        PsiMethod method
+        Class methodCallClass = isGroovy(cacheCallCandidate) ? GrMethodCall : PsiMethodCallExpression
+        try {
+            if (!cacheCallCandidate.resolve() || !cacheCallCandidate.resolve() instanceof PsiMethod) {
+                // codenarc-disable UnnecessaryInstanceOfCheck
+                return
+            }
+            method = cacheCallCandidate.resolve() as PsiMethod
         } catch (ClassCastException ignored) {
             return
         }
 
         if (!isCacheFromEntityQuery(method)) return
-        if (cacheCallHasFalseParameter(exp)) return
+        if (cacheCallHasFalseParameter(cacheCallCandidate)) return
 
-        PsiAnnotationMemberValue query = PsiTreeUtil.getParentOfType(exp, methodCallClass)
+        PsiAnnotationMemberValue query = PsiTreeUtil.getParentOfType(cacheCallCandidate, methodCallClass)
         String entityName = getEntityNameFromDeclarationString(query.text)
         if (!entityName) return
-        if (!EntityWorker.entityOrViewHasNeverCacheTrueAttr(entityName, exp.project)) return
+        if (!EntityWorker.entityOrViewHasNeverCacheTrueAttr(entityName, cacheCallCandidate.project)) return
 
-        PsiElement cachePsiEl = exp.lastChild
+        PsiElement cachePsiEl = cacheCallCandidate.lastChild
         holder.registerProblem(cachePsiEl,
                 message('inspection.entity.cache.on.never.cache.display.descriptor'),
                 WARNING,

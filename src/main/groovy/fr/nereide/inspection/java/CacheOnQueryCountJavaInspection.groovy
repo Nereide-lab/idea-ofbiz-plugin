@@ -14,39 +14,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package fr.nereide.inspection.groovy
+package fr.nereide.inspection.java
 
+import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
+import com.intellij.psi.JavaElementVisitor
+import com.intellij.psi.PsiElementVisitor
+import com.intellij.psi.PsiReferenceExpression
 import fr.nereide.inspection.common.InspectionUtil
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
 import fr.nereide.project.PluginActivator
 import org.jetbrains.annotations.NotNull
-import org.jetbrains.plugins.groovy.codeInspection.GroovyLocalInspectionTool
-import org.jetbrains.plugins.groovy.lang.psi.GroovyElementVisitor
-import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
 /**
  * Inspection for cache used with query count method
  */
-class CacheOnQueryCountGroovyInspection extends GroovyLocalInspectionTool {
+class CacheOnQueryCountJavaInspection extends LocalInspectionTool {
 
     private final RemoveCacheCallFix myQuickFix = new RemoveCacheCallFix()
 
     @Override
-    boolean isEnabledByDefault() {
-        return true
-    }
-
-    @Override
     @NotNull
-    GroovyElementVisitor buildGroovyVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-        return new GroovyElementVisitor() {
+    PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
+        return new JavaElementVisitor() {
 
             @Override
-            void visitReferenceExpression(GrReferenceExpression cacheCallCandidate) {
-                if (PluginActivator.getInstance(cacheCallCandidate.project).inactive) return
-                InspectionUtil.checkAndRegisterCacheOnQueryCountEntity(cacheCallCandidate, holder, myQuickFix)
+            void visitReferenceExpression(PsiReferenceExpression exp) {
+                if (PluginActivator.getInstance(exp.project).inactive) return
+                InspectionUtil.checkAndRegisterCacheOnQueryCountEntity(exp, holder, myQuickFix)
             }
+
         }
     }
 

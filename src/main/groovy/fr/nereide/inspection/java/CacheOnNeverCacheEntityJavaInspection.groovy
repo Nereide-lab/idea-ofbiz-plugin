@@ -39,9 +39,9 @@ class CacheOnNeverCacheEntityJavaInspection extends OfbizBaseInspection {
         return new JavaElementVisitor() {
 
             @Override
-            void visitReferenceExpression(PsiReferenceExpression exp) {
-                if (PluginActivator.getInstance(exp.project).inactive) return
-                InspectionUtil.checkAndRegisterCacheOnNeverCacheEntity(exp, holder, myQuickFix)
+            void visitReferenceExpression(PsiReferenceExpression cacheCallCandidate) {
+                if (PluginActivator.getInstance(cacheCallCandidate.project).inactive) return
+                InspectionUtil.checkAndRegisterCacheOnNeverCacheEntity(cacheCallCandidate, holder, myQuickFix)
             }
 
         }

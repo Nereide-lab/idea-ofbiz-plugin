@@ -19,6 +19,7 @@ package fr.nereide.test.inspection
 import static fr.nereide.inspection.InspectionBundle.message
 
 import fr.nereide.inspection.java.CacheOnNeverCacheEntityJavaInspection
+import fr.nereide.inspection.java.CacheOnQueryCountJavaInspection
 import fr.nereide.inspection.java.DuplicatedEntityJavaInspection
 import fr.nereide.inspection.java.DuplicatedServiceJavaInspection
 import fr.nereide.inspection.java.EntityNotFoundInJavaInspection
@@ -49,6 +50,14 @@ class JavaInspectionTest extends BaseInspectionTest {
 
     void testCacheOnViewIncludingNeverCacheEntity() {
         doNeverCacheTest(false)
+    }
+
+    void testCacheOnQueryCount() {
+        doCacheOnQueryCountTest(true)
+    }
+
+    void testCacheOnQueryCountFalseParam() {
+        doCacheOnQueryCountTest(false)
     }
 
     void testDuplicatedServiceInspection() {
@@ -91,6 +100,12 @@ class JavaInspectionTest extends BaseInspectionTest {
         doInspectionThenQuickFixTestWithFileEdit(new CacheOnNeverCacheEntityJavaInspection(), mustFind,
                 message('inspection.entity.remove.cache.quickfix'),
                 message('inspection.entity.cache.on.never.cache.display.descriptor'))
+    }
+
+    protected void doCacheOnQueryCountTest(boolean mustFind) {
+        doInspectionThenQuickFixTestWithFileEdit(new CacheOnQueryCountJavaInspection(), mustFind,
+                message('inspection.entity.remove.cache.quickfix'),
+                message('inspection.entity.cache.on.count.display.descriptor'))
     }
 
 }
