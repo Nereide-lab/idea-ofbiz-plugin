@@ -17,15 +17,12 @@
 package fr.nereide.inspection.common
 
 import static com.intellij.codeInspection.ProblemHighlightType.WARNING
-import static fr.nereide.completion.provider.common.EntityFieldCompletionProvider.getEntityNameFromDeclarationString
+import static fr.nereide.project.utils.MiscUtils.getEntityNameFromDeclarationString
 import static fr.nereide.inspection.InspectionBundle.message
-import static fr.nereide.project.pattern.OfbizPluginConstants.ENTITY_QUERY_CLASS
 import static fr.nereide.project.utils.MiscUtils.isGroovy
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiAnnotationMemberValue
-import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiExpressionList
@@ -33,12 +30,12 @@ import com.intellij.psi.PsiLiteralExpression
 import com.intellij.psi.PsiMethod
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiTypes
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlFile
 import com.intellij.psi.xml.XmlTag
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
+import fr.nereide.project.OfbizClassUtil
 import fr.nereide.project.worker.EntityWorker
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.arguments.GrArgumentList
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrExpression
@@ -72,35 +69,89 @@ class InspectionUtil {
     /**
      * Checks if the cache call really is OFBiz's
      */
-    static boolean isCacheFromEntityQuery(PsiMethod method) {
-        PsiClass entityQueryClass = JavaPsiFacade.getInstance(method.project)
-                .findClass(ENTITY_QUERY_CLASS, GlobalSearchScope.allScope(method.project))
-        if (!entityQueryClass) return false
-        return entityQueryClass.methods.contains(method) && method.name == 'cache'
+    static boolean isCacheFromEntityQuery(PsiElement element) {
+        return OfbizClassUtil.getEntityQueryClass(element.project).methods
+                .findAll { method -> method.name == 'cache' }
+                .any { method -> method == element }
     }
 
-    static void checkAndRegisterCacheOnNeverCacheEntity(PsiElement exp, ProblemsHolder holder,
+    static boolean isQueryCountFromEntityQuery(PsiElement element) {
+        return OfbizClassUtil.getEntityQueryClass(element.project).methods
+                .findAll { method -> method.name == 'queryCount' }
+                .any { method -> method == element }
+    }
+
+    static void checkAndRegisterCacheOnQueryCountEntity(PsiElement cacheCallCandidate, ProblemsHolder holder,
                                                         RemoveCacheCallFix myQuickFix) {
-        PsiMethod method
-        Class methodCallClass = isGroovy(exp) ? GrMethodCall : PsiMethodCallExpression
+        PsiMethod cacheMethodCandidate
         try {
-            if (!exp.resolve() || !exp.resolve() instanceof PsiMethod) { // codenarc-disable UnnecessaryInstanceOfCheck
+            if (!cacheCallCandidate.resolve() || !(cacheCallCandidate.resolve() instanceof PsiMethod)) {
+                // codenarc-disable UnnecessaryInstanceOfCheck
                 return
             }
-            method = exp.resolve() as PsiMethod
+            cacheMethodCandidate = cacheCallCandidate.resolve() as PsiMethod
+        } catch (ClassCastException ignored) {
+            return
+        }
+
+        if (!isCacheFromEntityQuery(cacheMethodCandidate)) return
+        if (cacheCallHasFalseParameter(cacheCallCandidate)) return
+        if (!queryHasCountMethod(cacheCallCandidate)) return
+
+        PsiElement cachePsiEl = cacheCallCandidate.lastChild
+        holder.registerProblem(cachePsiEl,
+                message('inspection.entity.cache.on.count.display.descriptor'),
+                WARNING,
+                myQuickFix
+        )
+    }
+
+    static boolean queryHasCountMethod(PsiElement cacheCallCandidate) {
+        boolean isGroovy = isGroovy(cacheCallCandidate)
+
+        PsiElement countCandidate1 = PsiTreeUtil.getParentOfType(cacheCallCandidate, isGroovy ? GrMethodCall :
+                PsiMethodCallExpression)
+        if (!countCandidate1) {
+            return false
+        }
+        PsiElement method = isGroovy ? countCandidate1?.explicitCallReference?.resolve() :
+                countCandidate1?.methodExpression?.resolve()
+        if (!isQueryCountFromEntityQuery(method)) {
+            PsiElement countCandidate2 = PsiTreeUtil.getParentOfType(countCandidate1, isGroovy ? GrMethodCall :
+                    PsiMethodCallExpression)
+            if (!countCandidate2) {
+                return false
+            }
+            method = isGroovy ? countCandidate2?.explicitCallReference?.resolve() :
+                    countCandidate2?.methodExpression?.resolve()
+            return isQueryCountFromEntityQuery(method)
+        }
+        return true
+    }
+
+    static void checkAndRegisterCacheOnNeverCacheEntity(PsiElement cacheCallCandidate, ProblemsHolder holder,
+                                                        RemoveCacheCallFix myQuickFix) {
+        PsiMethod method
+        Class methodCallClass = isGroovy(cacheCallCandidate) ? GrMethodCall : PsiMethodCallExpression
+        try {
+            if (!cacheCallCandidate.resolve() || !(cacheCallCandidate.resolve() instanceof PsiMethod)) {
+                // codenarc-disable UnnecessaryInstanceOfCheck
+                return
+            }
+            method = cacheCallCandidate.resolve() as PsiMethod
         } catch (ClassCastException ignored) {
             return
         }
 
         if (!isCacheFromEntityQuery(method)) return
-        if (cacheCallHasFalseParameter(exp)) return
+        if (cacheCallHasFalseParameter(cacheCallCandidate)) return
 
-        PsiAnnotationMemberValue query = PsiTreeUtil.getParentOfType(exp, methodCallClass)
+        PsiAnnotationMemberValue query = PsiTreeUtil.getParentOfType(cacheCallCandidate, methodCallClass)
         String entityName = getEntityNameFromDeclarationString(query.text)
         if (!entityName) return
-        if (!EntityWorker.entityOrViewHasNeverCacheTrueAttr(entityName, exp.project)) return
+        if (!EntityWorker.entityOrViewHasNeverCacheTrueAttr(entityName, cacheCallCandidate.project)) return
 
-        PsiElement cachePsiEl = exp.lastChild
+        PsiElement cachePsiEl = cacheCallCandidate.lastChild
         holder.registerProblem(cachePsiEl,
                 message('inspection.entity.cache.on.never.cache.display.descriptor'),
                 WARNING,

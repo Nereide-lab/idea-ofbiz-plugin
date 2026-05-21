@@ -14,34 +14,38 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package fr.nereide.inspection.java
+package fr.nereide.inspection.groovy
 
 import com.intellij.codeInspection.ProblemsHolder
-import com.intellij.psi.JavaElementVisitor
-import com.intellij.psi.PsiElementVisitor
-import com.intellij.psi.PsiReferenceExpression
 import fr.nereide.inspection.common.InspectionUtil
-import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
 import fr.nereide.project.PluginActivator
 import org.jetbrains.annotations.NotNull
+import org.jetbrains.plugins.groovy.codeInspection.GroovyLocalInspectionTool
+import org.jetbrains.plugins.groovy.lang.psi.GroovyElementVisitor
+import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.GrReferenceExpression
 
 /**
- * Checks never cache call in java
+ * Inspection for cache used with query count method
  */
-class CacheOnNeverCacheEntityJavaInspection extends OfbizBaseInspection {
+class CacheOnQueryCountGroovyInspection extends GroovyLocalInspectionTool {
 
     private final RemoveCacheCallFix myQuickFix = new RemoveCacheCallFix()
 
     @Override
+    boolean isEnabledByDefault() {
+        return true
+    }
+
+    @Override
     @NotNull
-    PsiElementVisitor buildVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
-        return new JavaElementVisitor() {
+    GroovyElementVisitor buildGroovyVisitor(@NotNull final ProblemsHolder holder, boolean isOnTheFly) {
+        return new GroovyElementVisitor() {
 
             @Override
-            void visitReferenceExpression(PsiReferenceExpression cacheCallCandidate) {
+            void visitReferenceExpression(GrReferenceExpression cacheCallCandidate) {
                 if (PluginActivator.getInstance(cacheCallCandidate.project).inactive) return
-                InspectionUtil.checkAndRegisterCacheOnNeverCacheEntity(cacheCallCandidate, holder, myQuickFix)
+                InspectionUtil.checkAndRegisterCacheOnQueryCountEntity(cacheCallCandidate, holder, myQuickFix)
             }
 
         }

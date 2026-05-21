@@ -16,6 +16,8 @@
  */
 package fr.nereide.project.utils
 
+import static fr.nereide.project.pattern.OfbizPluginConstants.ENTITY_NAME_PATTERN
+
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
@@ -28,6 +30,8 @@ import com.intellij.util.xml.DomFileElement
 import com.intellij.util.xml.DomManager
 import fr.nereide.dom.file.ComponentFile
 import org.jetbrains.plugins.groovy.lang.psi.api.statements.expressions.literals.GrLiteral
+
+import java.util.regex.Matcher
 
 /**
  * Misc utility methods
@@ -109,6 +113,18 @@ class MiscUtils {
     static boolean isInTestDir(DomFileElement domFile) {
         String dir = domFile.file.containingDirectory
         return dir.contains('/tests')
+    }
+
+    /**
+     * Extracts entity name from declarations like
+     * <code> EntityQuery.use(delegator).from() </code>
+     * @param declaration the declaration string
+     * @return the entity name
+     */
+    static String getEntityNameFromDeclarationString(String declaration) {
+        Matcher matcher = ENTITY_NAME_PATTERN.matcher(declaration)
+        String entityName = matcher.find() ? matcher.group(0) : null
+        return entityName ? entityName.substring(1, entityName.length() - 1) : null
     }
 
 }

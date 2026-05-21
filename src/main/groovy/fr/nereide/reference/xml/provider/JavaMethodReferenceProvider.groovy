@@ -16,17 +16,16 @@
  */
 package fr.nereide.reference.xml.provider
 
-import com.intellij.psi.JavaPsiFacade
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 import com.intellij.psi.PsiReferenceProvider
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
+import fr.nereide.project.OfbizClassUtil
 import fr.nereide.project.PluginActivator
 import fr.nereide.reference.xml.JavaMethodReference
 import org.jetbrains.annotations.NotNull
@@ -52,8 +51,7 @@ class JavaMethodReferenceProvider extends PsiReferenceProvider {
         }
         String classLocation = getClassLocation(element)
         if (!classLocation) return PsiReference.EMPTY_ARRAY
-        PsiClass aClass = JavaPsiFacade.getInstance(element.project)
-                .findClass(classLocation, GlobalSearchScope.allScope(element.project))
+        PsiClass aClass = OfbizClassUtil.findClass(element.project, classLocation)
         return (PsiReference) new JavaMethodReference((XmlAttributeValue) element, aClass, true)
     }
 

@@ -23,6 +23,7 @@ import com.intellij.psi.PsiExpression
 import com.intellij.psi.PsiForeachStatement
 import com.intellij.psi.PsiMethodCallExpression
 import com.intellij.psi.PsiVariable
+import fr.nereide.project.utils.MiscUtils
 import fr.nereide.project.utils.PsiUtils
 
 /**
@@ -38,7 +39,7 @@ class JavaEntityFieldsFromGvMethodCompletionProvider extends JavaEntityFieldsCom
         PsiExpression gvInit = gvVariable.initializer
         if (gvInit) {
             // init instruction easily found, basic case
-            return getEntityNameFromDeclarationString(gvInit.text)
+            return MiscUtils.getEntityNameFromDeclarationString(gvInit.text)
         }
         // search for for loop
         PsiForeachStatement basicFor = getParentOfType(element, PsiForeachStatement)

@@ -43,9 +43,9 @@ class CacheOnNeverCacheEntityGroovyInspection extends GroovyLocalInspectionTool 
         return new GroovyElementVisitor() {
 
             @Override
-            void visitReferenceExpression(GrReferenceExpression exp) {
-                if (PluginActivator.getInstance(exp.project).inactive) return
-                InspectionUtil.checkAndRegisterCacheOnNeverCacheEntity(exp, holder, myQuickFix)
+            void visitReferenceExpression(GrReferenceExpression cacheCallCandidate) {
+                if (PluginActivator.getInstance(cacheCallCandidate.project).inactive) return
+                InspectionUtil.checkAndRegisterCacheOnNeverCacheEntity(cacheCallCandidate, holder, myQuickFix)
             }
 
         }

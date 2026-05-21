@@ -20,6 +20,8 @@ import com.intellij.patterns.PsiJavaElementPattern
 import com.intellij.patterns.PsiJavaPatterns
 import com.intellij.psi.PsiLiteral
 
+import java.util.regex.Pattern
+
 /**
  * String constants
  */
@@ -48,6 +50,7 @@ class OfbizPluginConstants {
     public static final String DYNAMIC_STRING_DOLLAR = '\\$'
     public static final String DOT_MAP_PROP_ACCESSOR = '.'
     public static final String CLOSING_BRACKET = '}'
+    public static final Pattern ENTITY_NAME_PATTERN = Pattern.compile("(['\"](.*?)['\"])")
 
     static Object makeMethodParameterPattern(PsiJavaElementPattern<? extends PsiLiteral, ?> elementPattern,
                                              String methodName, String className, int index) {

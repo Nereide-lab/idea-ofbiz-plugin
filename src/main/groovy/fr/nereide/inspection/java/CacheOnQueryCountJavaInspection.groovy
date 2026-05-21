@@ -16,20 +16,20 @@
  */
 package fr.nereide.inspection.java
 
+import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.psi.JavaElementVisitor
 import com.intellij.psi.PsiElementVisitor
 import com.intellij.psi.PsiReferenceExpression
 import fr.nereide.inspection.common.InspectionUtil
-import fr.nereide.inspection.common.OfbizBaseInspection
 import fr.nereide.inspection.quickfix.RemoveCacheCallFix
 import fr.nereide.project.PluginActivator
 import org.jetbrains.annotations.NotNull
 
 /**
- * Checks never cache call in java
+ * Inspection for cache used with query count method
  */
-class CacheOnNeverCacheEntityJavaInspection extends OfbizBaseInspection {
+class CacheOnQueryCountJavaInspection extends LocalInspectionTool {
 
     private final RemoveCacheCallFix myQuickFix = new RemoveCacheCallFix()
 
@@ -39,9 +39,9 @@ class CacheOnNeverCacheEntityJavaInspection extends OfbizBaseInspection {
         return new JavaElementVisitor() {
 
             @Override
-            void visitReferenceExpression(PsiReferenceExpression cacheCallCandidate) {
-                if (PluginActivator.getInstance(cacheCallCandidate.project).inactive) return
-                InspectionUtil.checkAndRegisterCacheOnNeverCacheEntity(cacheCallCandidate, holder, myQuickFix)
+            void visitReferenceExpression(PsiReferenceExpression exp) {
+                if (PluginActivator.getInstance(exp.project).inactive) return
+                InspectionUtil.checkAndRegisterCacheOnQueryCountEntity(exp, holder, myQuickFix)
             }
 
         }

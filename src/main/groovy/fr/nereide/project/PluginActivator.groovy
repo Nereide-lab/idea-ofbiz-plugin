@@ -19,7 +19,6 @@ package fr.nereide.project
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
-import com.intellij.psi.JavaPsiFacade
 import fr.nereide.project.pattern.OfbizPluginConstants
 import org.jetbrains.annotations.NotNull
 
@@ -56,9 +55,7 @@ final class PluginActivator {
         if (ApplicationManager.application.unitTestMode) {
             return true
         }
-
-        JavaPsiFacade jpf = JavaPsiFacade.getInstance(project)
-        return jpf.findPackage(OfbizPluginConstants.BASE_OFB_PACKAGE) != null
+        return OfbizClassUtil.findPackage(project, OfbizPluginConstants.BASE_OFB_PACKAGE)
     }
 
 }

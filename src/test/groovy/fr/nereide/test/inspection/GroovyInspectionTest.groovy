@@ -18,6 +18,7 @@ package fr.nereide.test.inspection
 
 import static fr.nereide.inspection.InspectionBundle.message
 
+import fr.nereide.inspection.groovy.CacheOnQueryCountGroovyInspection
 import fr.nereide.inspection.groovy.CacheOnNeverCacheEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedEntityGroovyInspection
 import fr.nereide.inspection.groovy.DuplicatedServiceGroovyInspection
@@ -45,6 +46,14 @@ class GroovyInspectionTest extends BaseInspectionTest {
 
     void testCacheOnNeverCacheEntityIGroovyScriptWithFalseParameter() {
         doNeverCacheTest(false)
+    }
+
+    void testCacheOnQueryCount() {
+        doCacheOnQueryCountTest(true)
+    }
+
+    void testCacheOnQueryCountFalseParam() {
+        doCacheOnQueryCountTest(false)
     }
 
     void testDuplicatedServiceInspection() {
@@ -83,8 +92,16 @@ class GroovyInspectionTest extends BaseInspectionTest {
         return 'groovy'
     }
 
+    protected void doCacheOnQueryCountTest(boolean mustFind) {
+        doInspectionThenQuickFixTestWithFileEdit(new CacheOnQueryCountGroovyInspection(), mustFind,
+                message('inspection.entity.remove.cache.quickfix'),
+                message('inspection.entity.cache.on.count.display.descriptor'))
+    }
+
     protected void doNeverCacheTest(boolean mustFind) {
-        doNeverCacheTest(mustFind, new CacheOnNeverCacheEntityGroovyInspection())
+        doInspectionThenQuickFixTestWithFileEdit(new CacheOnNeverCacheEntityGroovyInspection(), mustFind,
+                message('inspection.entity.remove.cache.quickfix'),
+                message('inspection.entity.cache.on.never.cache.display.descriptor'))
     }
 
 }

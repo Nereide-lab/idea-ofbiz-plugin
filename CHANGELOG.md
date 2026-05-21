@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+## [Unreleased]
+### Added
+- [#44] adds an inspection for calls to cache on query count.
+### Changed
+- [#44] Small refactos
+
 ## [1.7.15]
 ### Changed
 - [#NA] Update intellij dependency version and compatible intellij IDE versions
